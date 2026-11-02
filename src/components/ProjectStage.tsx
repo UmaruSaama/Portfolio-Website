@@ -16,17 +16,19 @@ const COOLDOWN_MS = 700; // ignore further wheel input after a step (trackpad in
 const SWIPE_THRESHOLD = 50;
 const PLAYER_ID = "project-video-player";
 
-// Player reveal: grows out of the card's centre into the full card.
-const CLIP_CLOSED = "inset(46% 46% 46% 46% round 20px)";
+// Player reveal: wipes in from the card's right edge (next to the video button).
+const CLIP_CLOSED = "inset(0% 0% 0% 100% round 20px)";
 const CLIP_OPEN = "inset(0% 0% 0% 0% round 20px)";
 
 type Actions = {
   goTo: (next: number) => void;
   openVideo: () => void;
   closeVideo: (then?: () => void) => void;
+  videoActive: () => boolean;
   cursorMove: (e: React.PointerEvent) => void;
   cursorShow: (e: React.PointerEvent) => void;
   cursorHide: () => void;
+  cursorPress: (down: boolean) => void;
 };
 
 const noop = () => {};
@@ -50,9 +52,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
     goTo: noop,
     openVideo: noop,
     closeVideo: noop,
+    videoActive: () => false,
     cursorMove: noop,
     cursorShow: noop,
     cursorHide: noop,
+    cursorPress: noop,
   });
 
   useGSAP(
@@ -82,25 +86,31 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       }
 
       // ---------- custom cursor ----------
+      // Centred on the pointer with xPercent/yPercent (GSAP owns the transform,
+      // so a CSS translate would be overwritten). quickTo reuses one tween per
+      // axis instead of creating a tween on every pointermove.
       const cursorEl = cursor.current;
-      const moveX = cursorEl ? gsap.quickTo(cursorEl, "x", { duration: 0.35, ease: "power3.out" }) : null;
-      const moveY = cursorEl ? gsap.quickTo(cursorEl, "y", { duration: 0.35, ease: "power3.out" }) : null;
+      if (cursorEl) gsap.set(cursorEl, { xPercent: -50, yPercent: -50, scale: 0.5, autoAlpha: 0 });
+      const moveX = cursorEl ? gsap.quickTo(cursorEl, "x", { duration: 0.18, ease: "power3.out" }) : null;
+      const moveY = cursorEl ? gsap.quickTo(cursorEl, "y", { duration: 0.18, ease: "power3.out" }) : null;
       let cursorVisible = false;
 
       const cursorHide = safe(() => {
         if (!cursorEl || !cursorVisible) return;
         cursorVisible = false;
-        gsap.to(cursorEl, { scale: 0.4, autoAlpha: 0, duration: 0.2, ease: "power2.in", overwrite: "auto" });
+        gsap.to(cursorEl, { scale: 0.5, autoAlpha: 0, duration: 0.18, ease: "power2.in", overwrite: "auto" });
       });
 
       const cursorShow = safe((e: React.PointerEvent) => {
         if (!cursorEl || !finePointer || videoOpenRef.current || e.pointerType !== "mouse") return;
-        if (!cursorVisible) {
-          // Jump to the pointer first so it doesn't fly in from the last spot.
-          gsap.set(cursorEl, { x: e.clientX, y: e.clientY });
-          cursorVisible = true;
-          gsap.to(cursorEl, { scale: 1, autoAlpha: 1, duration: 0.3, ease: "back.out(2)", overwrite: "auto" });
-        }
+        if (cursorVisible) return;
+        cursorVisible = true;
+        // Jump to the pointer first (and reset the quickTo targets) so it
+        // doesn't fly in from where it was last hidden.
+        gsap.set(cursorEl, { x: e.clientX, y: e.clientY });
+        moveX?.tween.invalidate();
+        moveY?.tween.invalidate();
+        gsap.to(cursorEl, { scale: 1, autoAlpha: 1, duration: 0.25, ease: "back.out(2)", overwrite: "auto" });
       });
 
       const cursorMove = safe((e: React.PointerEvent) => {
@@ -112,11 +122,16 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         moveY?.(e.clientY);
       });
 
+      const cursorPress = safe((down: boolean) => {
+        if (!cursorEl || !cursorVisible) return;
+        gsap.to(cursorEl, { scale: down ? 0.9 : 1, duration: 0.15, ease: "power2.out", overwrite: "auto" });
+      });
+
       // ---------- slides ----------
       const goTo = safe((next: number) => {
         const current = activeRef.current;
         if (busy.current || next === current || next < 0 || next >= projects.length) return;
-        if (videoOpenRef.current) {
+        if (videoOpenRef.current || actions.current.videoActive()) {
           actions.current.closeVideo(() => goTo(next));
           return;
         }
@@ -158,86 +173,105 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
             { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.06, ease: "power3.out" },
             0.3,
           )
-          .fromTo(b.media, { y: 60 * dir, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" }, 0.4);
+          .fromTo(
+            b.media,
+            { y: 60 * dir, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" },
+            0.4,
+          );
       });
 
       // ---------- card ⇄ video player ----------
+      // One timeline per opening, played forward to open and reversed to
+      // close, so toggling mid-transition turns around smoothly from wherever
+      // it is instead of jumping. The player wipes in from the right edge
+      // while the card content drifts left and fades: one continuous push.
+      let videoTl: gsap.core.Timeline | null = null;
+      let afterClose: (() => void) | null = null;
+
+      const onOpened = () => {
+        player.current?.querySelector<HTMLElement>("[data-player-focus]")?.focus({ preventScroll: true });
+        video.current?.play().catch(() => {});
+      };
+
+      const onClosed = () => {
+        const slide = slides.current[activeRef.current];
+        if (slide) {
+          const { text, media } = parts(slide);
+          gsap.set([text, media], { clearProps: "transform,opacity,visibility" });
+        }
+        videoTl?.kill();
+        videoTl = null;
+        const then = afterClose;
+        afterClose = null;
+        then?.();
+      };
+
+      const buildVideoTl = (slide: HTMLElement) => {
+        const { text, media } = parts(slide);
+        const inner = player.current?.querySelector("[data-player-inner]") ?? [];
+        return gsap
+          .timeline({ paused: true, onComplete: onOpened, onReverseComplete: onClosed })
+          .set(player.current, { autoAlpha: 1 }, 0)
+          .fromTo(
+            player.current,
+            { clipPath: CLIP_CLOSED },
+            { clipPath: CLIP_OPEN, duration: 0.95, ease: "power3.inOut" },
+            0,
+          )
+          .fromTo(inner, { xPercent: 12 }, { xPercent: 0, duration: 0.95, ease: "power3.inOut" }, 0)
+          .to(media, { xPercent: -8, autoAlpha: 0, duration: 0.8, ease: "power2.inOut" }, 0.05)
+          .to(text, { x: -60, autoAlpha: 0, duration: 0.7, stagger: 0.04, ease: "power2.inOut" }, 0.1);
+      };
+
       const openVideo = safe(() => {
         if (busy.current || videoOpenRef.current) return;
         const slide = slides.current[activeRef.current];
         if (!slide || !player.current) return;
 
-        busy.current = true;
         videoOpenRef.current = true;
         setVideoOpen(true);
         cursorHide();
+        afterClose = null;
 
-        const { text, media } = parts(slide);
-        const done = () => {
-          busy.current = false;
-          player.current?.querySelector<HTMLElement>("[data-player-focus]")?.focus();
-          video.current?.play().catch(() => {});
-        };
-
+        if (!videoTl) videoTl = buildVideoTl(slide);
         if (reduce) {
-          gsap.set([text, media], { autoAlpha: 0 });
-          gsap.set(player.current, { autoAlpha: 1, clipPath: CLIP_OPEN });
-          done();
+          videoTl.progress(1).pause();
+          onOpened();
           return;
         }
-
-        gsap
-          .timeline({ onComplete: done })
-          .to(text, { y: -16, autoAlpha: 0, duration: 0.3, stagger: 0.03, ease: "power2.in" }, 0)
-          .to(media, { y: 40, scale: 0.96, autoAlpha: 0, duration: 0.4, ease: "power2.in" }, 0)
-          .set(player.current, { autoAlpha: 1 }, 0.15)
-          // fromTo with both strings: the browser shortens the computed inset(),
-          // which would make GSAP interpolate mismatched numbers.
-          .fromTo(
-            player.current,
-            { clipPath: CLIP_CLOSED },
-            { clipPath: CLIP_OPEN, duration: 0.7, ease: "expo.inOut" },
-            0.15,
-          );
+        videoTl.timeScale(1).play();
       });
 
       const closeVideo = safe((then?: () => void) => {
-        if (busy.current || !videoOpenRef.current) return;
-        const slide = slides.current[activeRef.current];
-        if (!slide || !player.current) return;
+        if (!videoTl) return;
+        if (then) afterClose = then;
+        if (!videoOpenRef.current) return; // already closing; `then` will run when it finishes
 
-        busy.current = true;
-        video.current?.pause();
+        videoOpenRef.current = false;
         setVideoOpen(false);
-
-        const { text, media } = parts(slide);
-        const done = () => {
-          gsap.set([text, media], { clearProps: "transform,opacity,visibility" });
-          videoOpenRef.current = false;
-          busy.current = false;
-          then?.();
-        };
+        video.current?.pause();
 
         if (reduce) {
-          gsap.set(player.current, { autoAlpha: 0, clipPath: CLIP_CLOSED });
-          done();
+          videoTl.progress(0).pause();
+          onClosed();
           return;
         }
-
-        gsap
-          .timeline({ onComplete: done })
-          .fromTo(
-            player.current,
-            { clipPath: CLIP_OPEN },
-            { clipPath: CLIP_CLOSED, duration: 0.55, ease: "expo.inOut" },
-            0,
-          )
-          .set(player.current, { autoAlpha: 0 })
-          .to(text, { y: 0, autoAlpha: 1, duration: 0.45, stagger: 0.05, ease: "power3.out" }, 0.35)
-          .to(media, { y: 0, scale: 1, autoAlpha: 1, duration: 0.55, ease: "power3.out" }, 0.4);
+        videoTl.timeScale(1.2).reverse();
       });
 
-      actions.current = { goTo, openVideo, closeVideo, cursorMove, cursorShow, cursorHide };
+      const videoActive = () => videoTl !== null;
+
+      actions.current = {
+        goTo,
+        openVideo,
+        closeVideo,
+        videoActive,
+        cursorMove,
+        cursorShow,
+        cursorHide,
+        cursorPress,
+      };
 
       // ---------- input: wheel, keys, swipe ----------
       let acc = 0;
@@ -246,7 +280,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
 
       const onWheel = (e: WheelEvent) => {
         e.preventDefault();
-        if (videoOpenRef.current) return; // scrolling inside the player shouldn't change project
+        if (videoOpenRef.current || videoActive()) return; // no project changes while the player is up
         const now = performance.now();
         if (now < lockedUntil) return;
         acc += e.deltaY;
@@ -332,6 +366,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         onPointerEnter={(e) => actions.current.cursorShow(e)}
         onPointerMove={(e) => actions.current.cursorMove(e)}
         onPointerLeave={() => actions.current.cursorHide()}
+        onPointerDown={() => actions.current.cursorPress(true)}
+        onPointerUp={() => actions.current.cursorPress(false)}
       >
         <span className={styles.glow} aria-hidden="true" />
         <span className={styles.topLine} aria-hidden="true" />
@@ -400,22 +436,24 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           aria-hidden={!videoOpen}
           inert={!videoOpen}
         >
-          {current.videoSrc ? (
-            <video
-              key={current.slug}
-              ref={video}
-              className={styles.video}
-              src={current.videoSrc}
-              controls
-              playsInline
-              preload="metadata"
-              data-player-focus
-            />
-          ) : (
-            <p className={styles.playerEmpty} tabIndex={-1} data-player-focus>
-              The product video for {current.title.accent} isn&rsquo;t added yet.
-            </p>
-          )}
+          <div className={styles.playerInner} data-player-inner>
+            {current.videoSrc ? (
+              <video
+                key={current.slug}
+                ref={video}
+                className={styles.video}
+                src={current.videoSrc}
+                controls
+                playsInline
+                preload="metadata"
+                data-player-focus
+              />
+            ) : (
+              <p className={styles.playerEmpty} tabIndex={-1} data-player-focus>
+                The product video for {current.title.accent} isn&rsquo;t added yet.
+              </p>
+            )}
+          </div>
           <button type="button" className={styles.playerClose} onClick={() => actions.current.closeVideo()}>
             Close
           </button>
