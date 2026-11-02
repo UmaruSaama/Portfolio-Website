@@ -1,7 +1,37 @@
 .page {
   --v: min(1px, calc(100vw / 1440));
+
+  /* Figma CS tokens (Placement-Portfolio variables) */
+  --cs-text-primary: rgba(255, 255, 255, 0.92);
+  --cs-text-secondary: rgba(255, 255, 255, 0.6);
+  --cs-text-tertiary: rgba(255, 255, 255, 0.5);
+  --cs-white-04: rgba(255, 255, 255, 0.04);
+  --cs-white-08: rgba(255, 255, 255, 0.08);
+  --cs-white-10: rgba(255, 255, 255, 0.1);
+  --cs-white-14: rgba(255, 255, 255, 0.14);
+  --cs-white-40: rgba(255, 255, 255, 0.4);
+  --cs-white-70: rgba(255, 255, 255, 0.7);
+  --cs-white-80: rgba(255, 255, 255, 0.8);
+  --cs-white-86: rgba(255, 255, 255, 0.86);
+  --cs-surface-04: #0a0a0a;
+  --cs-surface-06: #0f0f0f;
+  --cs-surface-08: #141414;
+  --cs-surface-10: #1a1a1a;
+  --cs-surface-12: #1f1f1f;
+  --cs-surface-14: #242424;
+  --cs-surface-24: #3d3d3d;
+  --cs-pink: #ff375f;
+  --cs-pink-14: rgba(255, 55, 95, 0.14);
+  --cs-pink-28: rgba(255, 55, 95, 0.28);
+  --cs-mint: #00dac3;
+  --cs-mint-28: rgba(0, 218, 195, 0.28);
+  --cs-yellow: #ffd600;
+  --cs-yellow-28: rgba(255, 214, 0, 0.28);
+
   background: var(--hero-bg, #0f0f0f);
-  color: #fff;
+  color: var(--cs-text-primary);
+  font-family: "Hanken Grotesk Variable", system-ui, sans-serif;
+  font-stretch: 100%;
 }
 
 /* Figma "Content": 1020 wide, chapters 96 apart. */

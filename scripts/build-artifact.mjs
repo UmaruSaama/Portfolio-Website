@@ -4,7 +4,7 @@
 //
 // Usage: npm run build:artifact
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, cpSync, rmSync } from "node:fs";
 import { join, extname } from "node:path";
 import { execSync } from "node:child_process";
 
@@ -91,6 +91,13 @@ if (existsSync(imageDir)) {
     html = html.split(`/images/${f}`).join(dataUri(`/images/${f}`));
   }
 }
+
+// 5. Case-study media stays as separate files of the multi-file artifact
+//    (too heavy to inline). Root-relative "/cs/..." becomes "cs/..." so it
+//    resolves next to index.html wherever the artifact is served.
+html = html.replace(/(["'`(])\/cs\//g, "$1cs/");
+rmSync(join(DEST, "cs"), { recursive: true, force: true });
+if (existsSync(join(OUT, "cs"))) cpSync(join(OUT, "cs"), join(DEST, "cs"), { recursive: true });
 
 mkdirSync(DEST, { recursive: true });
 writeFileSync(join(DEST, "index.html"), html);

@@ -1,0 +1,341 @@
+/* ---------- toolbar controls (Figma "Controls") ---------- */
+
+.switchRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.switchRow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.switch {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: 100px;
+  background: var(--cs-white-14);
+  transition: background-color 0.2s ease;
+}
+
+.switch[data-on] {
+  background: var(--cs-pink);
+}
+
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.switch[data-on] .knob {
+  transform: translateX(14px);
+}
+
+.ctrlLabel {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-white-80);
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--cs-white-10);
+}
+
+.segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--cs-white-08);
+  border-radius: 10px;
+  background: var(--cs-white-04);
+}
+
+.segBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.segBtn:hover {
+  color: #fff;
+}
+
+.segBtn[aria-checked="true"],
+.segBtn[aria-current="true"] {
+  background: var(--cs-white-14);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.modeBtn {
+  padding: 6px 10px;
+  cursor: default;
+}
+
+.modeBtn:disabled {
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+}
+
+.soon {
+  padding: 1px 6px;
+  border-radius: 100px;
+  background: var(--cs-pink-14);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cs-pink);
+}
+
+/* ---------- stage (Figma "Stage", 1020 × 640) ---------- */
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 600fr) minmax(0, 310fr);
+  grid-template-rows: auto 1fr;
+  column-gap: calc(30 * var(--v));
+  row-gap: calc(35 * var(--v));
+  min-height: calc(640 * var(--v));
+  padding: calc(56 * var(--v)) calc(40 * var(--v)) calc(48 * var(--v));
+}
+
+.headline {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-primary);
+}
+
+/* The device box: same size for every device, so switching never moves the page. */
+.deviceArea {
+  position: relative;
+  aspect-ratio: 600 / 445;
+  container-type: size;
+  display: grid;
+  place-items: center;
+}
+
+.device {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  animation: deviceIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes deviceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .device {
+    animation: none;
+  }
+}
+
+/* Desktop: the Figma MacBook render (frame + screen). */
+.macbook {
+  position: relative;
+  width: 100%;
+}
+
+.macbook img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Pins are positioned in the MacBook's 600 × 438.7 frame; the PNG adds a shadow below. */
+.annotations {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 98.58%;
+  pointer-events: none;
+}
+
+.highlight {
+  position: absolute;
+  border: 1px dashed var(--cs-pink);
+  border-radius: 4px;
+  background: rgba(255, 55, 95, 0.05);
+}
+
+.pin,
+.stepPin {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cs-pink);
+  box-shadow: 0 0 0 3px rgba(255, 55, 95, 0.22);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+}
+
+.pin {
+  position: absolute;
+  animation: pinIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.pin:nth-of-type(2) {
+  animation-delay: 0.06s;
+}
+
+.pin:nth-of-type(3) {
+  animation-delay: 0.12s;
+}
+
+@keyframes pinIn {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+/* Tablet and phone: CSS frames fitted to the box (container units), so any
+   screen ratio fits without cropping. --r is the screen's width / height. */
+.frame {
+  --bezel: 9px;
+  padding: var(--bezel);
+  border-radius: 24px;
+  background: #0b0b0b;
+  box-shadow:
+    inset 0 0 0 1.5px #3a3a3a,
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 24px 48px -16px rgba(0, 0, 0, 0.7);
+}
+
+.frame img {
+  display: block;
+  height: auto;
+  border-radius: 15px;
+}
+
+.device[data-variant="tl"] .frame img {
+  width: min(calc(96cqw - 18px), calc((96cqh - 18px) * 1194 / 834));
+}
+
+.device[data-variant="tp"] .frame img {
+  width: min(calc(96cqw - 18px), calc((96cqh - 18px) * 834 / 1194));
+}
+
+.frame[data-kind="phone"] {
+  --bezel: 7px;
+  border-radius: 32px;
+}
+
+.frame[data-kind="phone"] img {
+  width: min(calc(96cqw - 14px), calc((96cqh - 14px) * 390 / 844));
+  border-radius: 26px;
+}
+
+/* ---------- steps (Figma "Story steps") ---------- */
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: calc(11 * var(--v));
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  column-gap: 14px;
+  align-items: start;
+}
+
+.stepTitle {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--cs-text-primary);
+}
+
+.stepBody {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.persona {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  column-gap: 12px;
+  align-items: start;
+  padding-top: 21px;
+  border-top: 1px solid var(--cs-white-10);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.personaQuote {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+/* Narrow (tablet-width browsers): stack the steps under the device. */
+@media (max-width: 1099px) {
+  .stage {
+    grid-template-columns: 1fr;
+  }
+}

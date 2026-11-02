@@ -1,0 +1,654 @@
+/* 05 · What I learned (Figma 329:2154). Shared blocks used by 06 live here too. */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--cs-text-tertiary);
+}
+
+/* ---------- shared: block header, figure, cards, appendix ---------- */
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(32 * var(--v));
+}
+
+.blockHead {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(20 * var(--v));
+}
+
+.blockTitle {
+  flex: 0 0 calc(500 * var(--v));
+}
+
+.blockBody {
+  /* +4px: Figma text boxes are sized to the glyphs; give the browser the same line breaks */
+  flex: 0 1 calc(var(--bw, 500) * var(--v) + 4px);
+}
+
+.fig {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.fig > div {
+  width: 100%;
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+  text-align: right;
+}
+
+/* Figma "Panel": 24px radius, surface/14 hairline, page surface */
+.panel {
+  position: relative;
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.icon {
+  flex: none;
+  display: block;
+  color: #55b499; /* heroicons outline tint used on every Figma card */
+}
+
+.split {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(19 * var(--v));
+}
+
+.splitLead {
+  flex: 0 1 calc(500 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cardStack {
+  flex: 0 0 calc(501 * var(--v));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.iconCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 31px; /* 32 in Figma, stroke outside layout */
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  background: var(--cs-surface-06);
+}
+
+.iconCardText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Figma breaks lines greedily; cs.body's text-wrap: pretty moves words down */
+.iconCardText p,
+.insight p,
+.finding p {
+  text-wrap: wrap;
+}
+
+.appendix {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--cs-white-08);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+.appendixTarget {
+  color: var(--cs-pink);
+}
+
+/* ---------- dots / tones ---------- */
+
+.dot {
+  flex: none;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dotWhite {
+  background: var(--cs-white-86);
+}
+
+.dotPink,
+.pink {
+  background: var(--cs-pink);
+}
+
+.mint {
+  background: var(--cs-mint);
+}
+
+.yellow {
+  background: var(--cs-yellow);
+}
+
+.text_mint {
+  color: var(--cs-mint);
+}
+
+.text_pink {
+  color: var(--cs-pink);
+}
+
+.text_yellow {
+  color: var(--cs-yellow);
+}
+
+/* ---------- survey chart (329:2194) ---------- */
+
+.survey {
+  min-height: calc(608 * var(--v));
+  padding: calc(43 * var(--v)) calc(55 * var(--v)) calc(57 * var(--v));
+}
+
+.surveyTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--cs-text-primary);
+}
+
+.surveyCols {
+  margin-top: calc(36 * var(--v));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: calc(56 * var(--v));
+  align-items: start;
+}
+
+.surveyCol {
+  min-width: 0;
+}
+
+.surveyHead {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: inherit;
+}
+
+.surveyHeadLabel {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--cs-text-primary);
+  white-space: nowrap;
+}
+
+.surveyBase {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--cs-text-tertiary);
+  text-align: right;
+}
+
+.rows {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  align-items: start;
+}
+
+.count {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.countNum {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--cs-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.countBase {
+  position: relative;
+  top: 2px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--cs-text-tertiary);
+}
+
+.rowMain {
+  position: relative;
+  padding-top: 3px;
+}
+
+.rowLine {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.rowLabel {
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--cs-text-secondary);
+}
+
+.pct {
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.track {
+  position: relative;
+  display: block;
+  height: 6px;
+  margin-top: 10px;
+  border-radius: 3px;
+  background: var(--cs-surface-14);
+}
+
+.bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.barWhite {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.barPink {
+  background: var(--cs-pink);
+}
+
+.barPinkSoft {
+  background: rgba(255, 56, 94, 0.42);
+}
+
+/* 95% range: 1px line with 9px end ticks */
+.range {
+  position: absolute;
+  top: 3px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.range::before,
+.range::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 1px;
+  height: 9px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.range::before {
+  left: 0;
+}
+
+.range::after {
+  right: 0;
+}
+
+.howTo {
+  margin-top: 46px;
+  padding: 17px 19px 18px;
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 16px;
+  background: var(--cs-surface-10);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.howToTitle {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cs-text-tertiary);
+}
+
+.howToKey {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.keyTrack {
+  flex: none;
+  width: 64px;
+  margin-top: 5px;
+}
+
+.keyTrack .track {
+  margin-top: 0;
+}
+
+.howToText {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--cs-text-secondary);
+}
+
+/* ---------- competitor table (329:2233) ---------- */
+
+.figures {
+  display: flex;
+  flex-direction: column;
+  gap: calc(64 * var(--v));
+}
+
+.tablePanel {
+  padding: 16px calc(32 * var(--v));
+  background: var(--cs-surface-06);
+}
+
+.compTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+}
+
+.compTable th,
+.compTable td {
+  box-sizing: border-box;
+  padding: 20px 24px 20px 0;
+  vertical-align: top;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.compTable th:last-child,
+.compTable td:last-child {
+  padding-right: 0;
+}
+
+.compTable thead th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.compTable thead th:nth-child(1) {
+  width: 18.24%;
+}
+
+.compTable thead th:nth-child(2) {
+  width: 42.14%;
+}
+
+.compTable tbody th {
+  font-size: 16px;
+}
+
+.compTable thead tr,
+.compTable tbody tr:not(:last-child) {
+  border-bottom: 1px solid var(--cs-surface-14);
+}
+
+.compTable .compWell {
+  color: var(--cs-text-tertiary);
+}
+
+/* ---------- published findings (329:2258) ---------- */
+
+.findings {
+  min-height: calc(262 * var(--v));
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 8px 0;
+}
+
+.findingRow {
+  width: calc(847 * var(--v));
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.finding {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 31px 27px;
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  background: var(--cs-surface-10);
+}
+
+.findingHead {
+  text-wrap: wrap;
+}
+
+.findingBig {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+  color: var(--cs-text-primary);
+}
+
+.findingBy {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+/* ---------- affinity map (329:2292) ---------- */
+
+.affinity {
+  min-height: calc(438 * var(--v));
+  padding: calc(47 * var(--v)) calc(50 * var(--v)) 32px;
+}
+
+.clusters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(24 * var(--v));
+  align-items: start;
+}
+
+.cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.clusterHead {
+  margin: 0;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: inherit;
+}
+
+.clusterTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--cs-text-primary);
+}
+
+.clusterCount {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+.notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.note {
+  padding: 12px 14px;
+  border: 1px solid;
+  border-radius: 12px;
+  background: var(--cs-white-04);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.note_mint {
+  border-color: var(--cs-mint-28);
+}
+
+.note_pink {
+  border-color: var(--cs-pink-28);
+}
+
+.note_yellow {
+  border-color: var(--cs-yellow-28);
+}
+
+/* ---------- insight → screen (329:2339) ---------- */
+
+.pairsStage {
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 8px calc(56 * var(--v));
+}
+
+.pairs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(56 * var(--v));
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: 300fr 560fr;
+  column-gap: calc(48 * var(--v));
+  align-items: center;
+}
+
+.pairFlip {
+  grid-template-columns: 560fr 300fr;
+}
+
+.pairFlip .insight {
+  order: 2;
+}
+
+.insight {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.insightCluster {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.screen {
+  min-width: 0;
+}
+
+/* Exports include the 48px drop shadow (608 = 560 + 48). */
+.screen img {
+  display: block;
+  width: calc(100% * 608 / 560);
+  max-width: none;
+  height: auto;
+}
+
+.shadowLeft img {
+  margin-left: calc(-100% * 48 / 560);
+}

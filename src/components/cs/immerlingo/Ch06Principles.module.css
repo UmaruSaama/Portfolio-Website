@@ -1,0 +1,466 @@
+/* 06 · From insight to principle (Figma 329:2373). Shared blocks come from Ch05Learned.module.css. */
+
+/* ---------- JTBD figure (329:2390) ---------- */
+
+.jtbd {
+  min-height: calc(396 * var(--v));
+  display: flex;
+  align-items: center;
+  padding: calc(27 * var(--v)) calc(55 * var(--v));
+}
+
+.jtbdCards {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.jtbdCard {
+  display: flex;
+  align-items: flex-start;
+  padding: 23px 31px; /* 24/32 in Figma, stroke outside layout */
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  background: var(--cs-surface-10);
+}
+
+.jtbdLabel {
+  flex: 0 0 calc(232 * var(--v));
+  margin: 0;
+  padding-right: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.jtbdList {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+/* ---------- design challenge (329:2414) ---------- */
+
+.challenge {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 48px 24px;
+  border-radius: 24px;
+  background: var(--cs-surface-10);
+}
+
+.challengeLine {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 500px;
+  max-width: 60%;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(255, 214, 0, 0), var(--cs-yellow) 50%, rgba(255, 214, 0, 0));
+}
+
+/* Figma "Glow": 200px yellow ellipse, heavily blurred, centred on the top edge */
+.challengeGlow {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 1100px;
+  height: 1100px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 214, 0, 0.075),
+    rgba(255, 214, 0, 0.035) 45%,
+    rgba(255, 214, 0, 0) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.challengeHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.challengeBadge {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  border: 2px solid rgba(255, 214, 0, 0.4);
+  border-radius: 50%;
+  background: rgba(255, 214, 0, 0.1);
+}
+
+.challengeIcon {
+  display: block;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--cs-white-86);
+}
+
+.challengeLabel {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-text-secondary);
+}
+
+.challengeQ {
+  max-width: 910px;
+  text-wrap: wrap;
+  text-align: center;
+}
+
+/* ---------- core principles (329:2458) ---------- */
+
+.principles {
+  display: flex;
+  flex-direction: column;
+  gap: calc(48 * var(--v));
+}
+
+.principlesHead {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filterRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.filterTitle {
+  flex: 1 1 auto;
+}
+
+.filterBody {
+  flex: 0 0 calc(501 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.filterLead {
+  max-width: 430px;
+}
+
+.drives {
+  margin: 0;
+  padding-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.drivesLabel {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.drivesText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-primary);
+}
+
+/* ---------- evidence / decision tables (329:2501, 444:7754) ---------- */
+
+.chainPanel {
+  padding: calc(47 * var(--v)) calc(55 * var(--v));
+}
+
+.evidencePanel {
+  min-height: calc(588 * var(--v));
+}
+
+.chain {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+}
+
+.chain th,
+.chain td {
+  box-sizing: border-box;
+  padding: 20px 12px 20px 0;
+  vertical-align: middle;
+}
+
+.chain th:last-child,
+.chain td:last-child {
+  padding-right: 0;
+}
+
+.chain thead th,
+.chain thead td {
+  padding-top: 0;
+  padding-bottom: 14px;
+  vertical-align: top;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cs-text-secondary);
+}
+
+.chain thead tr {
+  border-bottom: 1px solid var(--cs-white-10);
+}
+
+.chain tbody tr {
+  border-bottom: 1px solid var(--cs-white-08);
+}
+
+.evidence tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.evidence thead th {
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.decisions thead th {
+  line-height: 1.4;
+}
+
+/* column widths: Figma px for the pill/arrow columns (their content is px-sized),
+   evidence as a share of the 908 / 906 wide table, the last column takes the rest */
+.evidence .cEvidence {
+  width: 37.67%;
+}
+
+.evidence .cArrow {
+  width: 36px;
+}
+
+.evidence .cPrinciple {
+  width: 180px;
+}
+
+.decisions .cEvidence {
+  width: 34.44%;
+}
+
+.decisions .cArrow {
+  width: 30px;
+}
+
+.decisions .cPrinciple {
+  width: 188px;
+}
+
+.arrow {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.evidence .arrowCell {
+  text-align: center;
+}
+
+.decisions .arrow {
+  line-height: 1.4;
+}
+
+.evFinding {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.evSource {
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+.evFeature {
+  margin: 0 -3px 0 0; /* Figma box is glyph-tight; keep its line breaks */
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-primary);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-secondary);
+  white-space: nowrap;
+}
+
+.decisions .pill {
+  line-height: 1.4;
+  color: var(--cs-text-primary);
+}
+
+.pillFixed {
+  width: 168px;
+}
+
+.pill_mint {
+  border-color: rgba(0, 218, 195, 0.55);
+  background: rgba(0, 218, 195, 0.1);
+}
+
+.pill_pink {
+  border-color: rgba(255, 55, 95, 0.55);
+  background: rgba(255, 55, 95, 0.1);
+}
+
+.pill_yellow {
+  border-color: rgba(255, 214, 0, 0.55);
+  background: rgba(255, 214, 0, 0.1);
+}
+
+.pillDot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px 6px;
+  border: 1px solid var(--cs-white-14);
+  border-radius: 6px;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-white-70);
+  white-space: nowrap;
+}
+
+.decFinding {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--cs-text-secondary);
+}
+
+.decTitle {
+  margin: 0;
+  padding-right: 4px; /* match Figma's line breaks */
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-text-primary);
+}
+
+.decWhere {
+  margin: 6px 0 0;
+  line-height: 1.4;
+}
+
+/* "Not in v1 – S1" dashed callout */
+.notInV1 {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px dashed rgba(255, 55, 95, 0.55);
+  border-radius: 16px;
+}
+
+.notHead {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.notTitle {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-text-primary);
+}
+
+.notTag {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 55, 95, 0.55);
+  border-radius: 999px;
+  background: var(--cs-pink-14);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-text-primary);
+  white-space: nowrap;
+}
+
+.notCols {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.notCols dt {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-text-tertiary);
+}
+
+.notCols dd {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--cs-text-secondary);
+}

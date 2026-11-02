@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { chapterAnchor, type Project } from "@/data/projects";
 import { CaseStudyHero } from "./CaseStudyHero";
 import { ChapterRail } from "./ChapterRail";
+import { chapterComponents } from "./cs/registry";
 import styles from "./CaseStudy.module.css";
 
 /**
@@ -20,20 +21,24 @@ export function CaseStudy({ project, back }: { project: Project; back: ReactNode
       <CaseStudyHero project={project} back={back} />
 
       <div className={styles.content}>
-        {chapters.slice(1).map((c, i) => (
-          <section
-            key={c.id}
-            id={chapterAnchor(c.id)}
-            className={styles.chapter}
-            aria-labelledby={`${c.id}-h`}
-          >
-            <p className={styles.num}>{pad(i + 2)}</p>
-            <h2 id={`${c.id}-h`} className={styles.heading}>
-              {c.label}
-            </h2>
-            <div className={styles.placeholder}>Section in progress</div>
-          </section>
-        ))}
+        {chapters.slice(1).map((c, i) => {
+          const Built = chapterComponents[project.slug]?.[c.id];
+          if (Built) return <Built key={c.id} />;
+          return (
+            <section
+              key={c.id}
+              id={chapterAnchor(c.id)}
+              className={styles.chapter}
+              aria-labelledby={`${c.id}-h`}
+            >
+              <p className={styles.num}>{pad(i + 2)}</p>
+              <h2 id={`${c.id}-h`} className={styles.heading}>
+                {c.label}
+              </h2>
+              <div className={styles.placeholder}>Section in progress</div>
+            </section>
+          );
+        })}
       </div>
 
       {chapters.length > 1 && <ChapterRail chapters={chapters} />}

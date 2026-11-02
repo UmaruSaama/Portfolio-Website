@@ -1,0 +1,79 @@
+/* 12 · Close (Figma 329:3870): surface/10 card, mint glow + hairline at the top */
+
+.close {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(246 * var(--v));
+  padding: calc(48 * var(--v)) calc(24 * var(--v));
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      calc(560 * var(--v)) calc(300 * var(--v)) at 50% calc(-13 * var(--v)),
+      rgba(0, 218, 195, 0.085),
+      rgba(0, 218, 195, 0.03) 60%,
+      transparent
+    ),
+    var(--cs-surface-10);
+}
+
+.divider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(500 * var(--v));
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(97, 220, 188, 0), rgb(97, 220, 188) 50%, rgba(97, 220, 188, 0));
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: calc(910 * var(--v));
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ring {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(0, 218, 195, 0.4);
+  border-radius: 100px;
+  background: rgba(0, 218, 195, 0.1);
+  color: var(--cs-mint);
+}
+
+.ring svg {
+  width: 20px;
+  height: 20px;
+}
+
+.goal {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-text-secondary);
+}
+
+.statement {
+  text-align: center;
+  text-wrap: wrap; /* Figma breaks this line greedily */
+}

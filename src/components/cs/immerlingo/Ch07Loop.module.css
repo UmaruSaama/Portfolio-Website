@@ -1,0 +1,339 @@
+/* 07 · Shaping the loop (Figma 329:2557) */
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(32 * var(--v));
+}
+
+/* Two-column section head: H2 left (500), body right (500), 20 apart */
+.splitHead {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(20 * var(--v));
+}
+
+.splitTitle,
+.splitBody {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* ---------- figure stages ---------- */
+
+/* doubled class: wins over the shared stage background regardless of CSS order */
+.iaStage.iaStage,
+.sketchStage.sketchStage,
+.wireStage.wireStage {
+  background: var(--cs-surface-06);
+}
+
+.iaStage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(56 * var(--v));
+  min-height: calc(842 * var(--v));
+  padding: calc(48 * var(--v)) calc(40 * var(--v)) calc(56 * var(--v));
+}
+
+.sketchStage {
+  min-height: calc(640 * var(--v));
+  padding-top: calc(94 * var(--v));
+}
+
+.sketches {
+  display: block;
+  width: calc(940 / 1020 * 100%);
+  height: auto;
+  margin-left: calc(40 / 1020 * 100%);
+}
+
+.wireStage {
+  min-height: calc(640 * var(--v));
+}
+
+.wireframes {
+  display: block;
+  width: calc(620 / 1020 * 100%);
+  height: auto;
+  margin-left: calc(200 / 1020 * 100%);
+}
+
+/* ---------- information architecture ---------- */
+
+.caption {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--cs-text-tertiary);
+}
+
+.num {
+  color: var(--cs-text-tertiary);
+}
+
+/* Pill node: surface/12, white/60 border */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 100px;
+  background: var(--cs-surface-12);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--cs-text-secondary);
+  white-space: nowrap;
+}
+
+.pillHub {
+  gap: 8px;
+  padding: 8px 12px;
+  border-color: rgba(255, 55, 95, 0.55);
+  background: var(--cs-pink-28);
+}
+
+.hubLabel {
+  color: var(--cs-text-primary);
+}
+
+.flowBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.flow {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 8px;
+}
+
+.flowStep {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 4px;
+}
+
+.dash {
+  width: 8px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.flowEnd {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--cs-text-primary);
+}
+
+/* Tree: root node, connectors, six sections */
+.tree {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  --tree-gap: calc(12 * var(--v));
+}
+
+.root {
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 55, 95, 0.55);
+  border-radius: 100px;
+  background: var(--cs-pink-28);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--cs-text-primary);
+  white-space: nowrap;
+}
+
+.connectors {
+  position: relative;
+  align-self: stretch;
+  height: 20px;
+}
+
+.stem {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* horizontal rail from the first column's centre to the last's */
+.rail {
+  position: absolute;
+  top: 20px;
+  left: calc((100% - 5 * var(--tree-gap)) / 12);
+  right: calc((100% - 5 * var(--tree-gap)) / 12);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.sections {
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--tree-gap);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.drop {
+  width: 1px;
+  height: 20px;
+  margin-bottom: 0;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.sectionNode {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--v));
+  padding: 12px calc(16 * var(--v));
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 100px;
+  background: var(--cs-surface-12);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--cs-text-primary);
+  white-space: nowrap;
+}
+
+.sectionNum {
+  font-size: 12px;
+  color: var(--cs-text-tertiary);
+}
+
+.items {
+  align-self: stretch;
+  margin: 10px 0 0;
+  padding: 6px 0 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-left: calc(16 * var(--v));
+  line-height: normal;
+}
+
+.sub {
+  padding-left: calc(32 * var(--v));
+  color: var(--cs-text-tertiary);
+}
+
+.itemNum {
+  flex: none;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cs-text-tertiary);
+}
+
+.itemLabel {
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--cs-text-secondary);
+}
+
+.sub .itemLabel {
+  color: var(--cs-text-tertiary);
+}
+
+.hubItem {
+  display: flex;
+  padding-left: calc(8 * var(--v));
+}
+
+.hubNote {
+  margin: 0;
+  padding-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--cs-text-secondary);
+  text-align: center;
+}
+
+.hubDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 55, 95, 0.55);
+}
+
+/* Navigation by device */
+.devices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deviceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.deviceLabel {
+  margin: 0;
+  flex: none;
+  width: 140px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--cs-text-secondary);
+}
+
+.tabs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tabs .pill {
+  padding: 8px 12px;
+}
+
+.deviceNote {
+  margin: 0;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--cs-text-tertiary);
+}

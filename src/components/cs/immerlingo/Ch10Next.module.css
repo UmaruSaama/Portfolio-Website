@@ -1,0 +1,77 @@
+/* 10 · What's next (Figma 329:3806) */
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Next step cards: three equal panels, 16 apart */
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  gap: calc(16 * var(--v));
+}
+
+.step {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: calc(252 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: calc(32 * var(--v) - 1px); /* Figma border sits inside the 32 */
+}
+
+.stepLabel {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-text-secondary);
+}
+
+/* Assumptions: H2 left (500), cards right (501), 19 apart */
+.assumptions {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(19 * var(--v));
+}
+
+.assumptionsTitle {
+  flex: 0 1 calc(500 * var(--v));
+  min-width: 0;
+}
+
+.assumptionList {
+  flex: 0 1 calc(501 * var(--v));
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--v));
+}
+
+.assumption {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: calc(32 * var(--v) - 1px); /* Figma border sits inside the 32 */
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  color: #57b89c;
+}
+
+.assumptionText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
