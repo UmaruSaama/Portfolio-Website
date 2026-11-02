@@ -443,9 +443,6 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         const slide = slides.current[activeRef.current];
         const cardEl = card.current;
         if (!slide || !cardEl) return;
-        caseOpen = true;
-        caseOpenRef.current = true;
-
         // Settle the card: no tilt, no drift, no cursor.
         cursorHide();
         gsap.killTweensOf(cardEl); // the tilt quickTo tweens are the only ones on the card
@@ -460,7 +457,9 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         // Mount the overlay synchronously so it can be measured now.
         flushSync(() => setCaseSlug(slug));
         const overlay = caseOverlay.current;
-        if (!overlay) return;
+        if (!overlay) return; // not mounted (e.g. called during a render): nothing changed, still clickable
+        caseOpen = true;
+        caseOpenRef.current = true;
         const hero = overlay.querySelector<HTMLElement>("[data-hero]")!;
         const heroCopy = overlay.querySelector<HTMLElement>("[data-copy]")!;
         const heroDevice = overlay.querySelector<HTMLElement>("[data-device]")!;
@@ -515,7 +514,10 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           onComplete: () => {
             overlay.style.clipPath = "none"; // let the hero scroll unclipped
             if (!urlPushed) pushUrl(slug);
-            overlay.querySelector<HTMLElement>("[data-bar] button")?.focus({ preventScroll: true });
+            // Move focus into the case study after a click; not on a deep link
+            // (no one has interacted yet, so a focus ring would look stray).
+            if (!instant)
+              overlay.querySelector<HTMLElement>("[data-bar] button")?.focus({ preventScroll: true });
           },
           onReverseComplete: finishClose,
         });
@@ -610,8 +612,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       if (IN_ARTIFACT) {
         const slug = location.hash.slice(1);
         if (slug && projects[0]?.slug === slug) {
-          urlPushed = true;
-          openCase(slug, true);
+          // After this effect: flushSync can't mount the overlay mid-render.
+          requestAnimationFrame(() => {
+            urlPushed = true;
+            openCase(slug, true);
+          });
         }
       }
 

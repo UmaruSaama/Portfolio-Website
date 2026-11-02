@@ -6,12 +6,12 @@ import styles from "./ChapterRail.module.css";
 
 type Chapter = { id: string; label: string };
 
-
 /**
- * Left-hand chapter pagination for a case study. Same object as the home
- * page's project rail (dots in a soft pill), on the dark surface: the
- * current chapter's dot stretches into a bar, hovering or focusing a dot
- * names its chapter, and a counter under the rail keeps you oriented.
+ * Left-hand chapter pagination for a case study: the home page's dot pill,
+ * expanded into a table of contents. Every chapter name is always visible
+ * next to its dot; the current chapter's dot stretches into a bar and its
+ * name goes full white. Where the margin is too narrow for names
+ * (1024-1359px) it falls back to dots only.
  *
  * Scroll-spy uses IntersectionObserver against the viewport, which works
  * both on the /work/<slug> page (window scrolls) and in the home page's
@@ -50,31 +50,25 @@ export function ChapterRail({ chapters }: { chapters: Chapter[] }) {
 
   return (
     <nav className={styles.rail} aria-label="Case study chapters" data-rail>
-      <ol className={styles.dots}>
+      <ol className={styles.list}>
         {chapters.map((c, i) => (
           <li key={c.id}>
             <button
               type="button"
-              className={styles.dot}
+              className={styles.item}
               data-active={i === active ? "" : undefined}
               aria-current={i === active ? "step" : undefined}
               onClick={() => go(i)}
             >
-              <span className="visually-hidden">
-                {pad(i + 1)} {c.label}
-              </span>
-              <span className={styles.tip} aria-hidden="true">
-                <span className={styles.tipNum}>{pad(i + 1)}</span>
+              <span className={styles.dot} aria-hidden="true" />
+              <span className={styles.label}>
+                <span className={styles.num}>{pad(i + 1)}</span>
                 {c.label}
               </span>
             </button>
           </li>
         ))}
       </ol>
-      <p className={styles.count} aria-hidden="true">
-        {pad(active + 1)}
-        <span className={styles.countTotal}> / {pad(chapters.length)}</span>
-      </p>
     </nav>
   );
 }

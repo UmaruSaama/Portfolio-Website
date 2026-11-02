@@ -1,113 +1,112 @@
+/*
+  Sits in the left margin of the 1020 content column. Its left edge moves
+  in as the margin shrinks, so the names never reach the content:
+  1920 -> 80px, 1440 -> 24px.
+*/
 .rail {
+  --v: min(1px, calc(100vw / 1440));
   position: fixed;
-  left: var(--page-x);
+  left: clamp(24px, calc((100vw - 1020 * var(--v)) / 2 - 190px), 80px);
   top: 50%;
   translate: 0 -50%;
   z-index: 70;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
 }
 
-.dots {
+.list {
+  position: relative;
   list-style: none;
   margin: 0;
+  padding: 16px 0;
+}
+
+/* The soft pill behind the dots, as on the home page rail. */
+.list::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
   width: 24px;
-  padding: 16px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px; /* 24px pitch, same as the home rail */
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.06);
 }
 
-.dots li {
+.item {
+  position: relative;
   display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 24px; /* 24px pitch, same as the home rail */
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .dot {
-  position: relative;
+  flex: none;
   width: 8px;
   height: 8px;
-  padding: 0;
-  border: 0;
+  margin: 0 8px; /* centred in the 24px pill */
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.4); /* 3.9:1 on the rail */
-  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4); /* 3.9:1 on the pill */
   transition:
     height 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     background-color 0.25s ease;
 }
 
-/* 24px hit area without changing the drawn size */
-.dot::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-}
-
-.dot:hover {
-  background: rgba(255, 255, 255, 0.75);
-}
-
-.dot[data-active] {
-  height: 20px;
-  margin: -6px 0;
-  background: #fff;
-}
-
-/* Chapter name: a small bubble in the site's own materials. */
-.tip {
-  position: absolute;
-  left: calc(100% + 18px);
-  top: 50%;
+.label {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(6px);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1;
   white-space: nowrap;
-  color: #fff;
-  opacity: 0;
-  transform: translate(-6px, -50%) scale(0.92);
-  transform-origin: left center;
-  pointer-events: none;
-  transition:
-    opacity 0.18s ease,
-    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: rgba(255, 255, 255, 0.55); /* 6.1:1 on #0F0F0F */
+  transition: color 0.25s ease;
 }
 
-.tipNum {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.dot:hover .tip,
-.dot:focus-visible .tip {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
-
-.count {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1;
+.num {
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.item:hover .label,
+.item:focus-visible .label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.item:hover .dot {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.item[data-active] .dot {
+  height: 20px;
+  background: #fff;
+}
+
+.item[data-active] .label {
   color: #fff;
 }
 
-.countTotal {
-  color: rgba(255, 255, 255, 0.5);
+.item[data-active] .num {
+  color: var(--accent);
+}
+
+/* Not enough margin for names: dots only (names stay for screen readers). */
+@media (max-width: 1359px) {
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
 }
 
 @media (max-width: 1023px) {
   .rail {
-    display: none; /* the content column needs the margin */
+    display: none;
   }
 }
