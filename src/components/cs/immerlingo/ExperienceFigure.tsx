@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Figure } from "../Primitives";
 import type { ExperienceFigure as Data } from "./ch08Figures";
 import { useDeviceView, type Device } from "./DeviceView";
@@ -17,11 +17,12 @@ import styles from "./ExperienceFigure.module.css";
 
 const SCREENS = "/cs/immerlingo/screens";
 
-const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] = [
-  { id: "d", label: "Desktop", Icon: IconDesktop },
-  { id: "t", label: "Tablet", Icon: IconTablet },
-  { id: "m", label: "Phone", Icon: IconMobile },
-];
+const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] =
+  [
+    { id: "d", label: "Desktop", Icon: IconDesktop },
+    { id: "t", label: "Tablet", Icon: IconTablet },
+    { id: "m", label: "Phone", Icon: IconMobile },
+  ];
 
 const ORIENTATIONS = [
   { o: "l", name: "landscape", OIcon: IconLandscape },
@@ -49,9 +50,31 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
       activeOrientation.current?.focus({ preventScroll: true });
     }
   }, [view.device]);
+  // Mode is per figure: each card can show its own (placeholder) video.
+  const [mode, setMode] = useState<"interactive" | "video">("interactive");
+  const video = mode === "video";
+
+  // Sliding thumb under the active mode button.
+  const modeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [thumb, setThumb] = useState<{ x: number; w: number } | null>(null);
+  useLayoutEffect(() => {
+    const measure = () => {
+      const b = modeRefs.current[mode];
+      if (b) setThumb({ x: b.offsetLeft, w: b.offsetWidth });
+    };
+    measure();
+    // Fonts can load after first paint and change the button widths.
+    document.fonts?.ready.then(measure);
+  }, [mode]);
+
   const variant = view.device === "t" ? `t${view.orientation}` : view.device; // d | tl | tp | m
-  const title = view.device !== "d" && fig.touchTitle ? fig.touchTitle : fig.title;
-  const pinsOn = view.annotations && view.device === "d" && fig.highlights.length > 0;
+  const title =
+    view.device !== "d" && fig.touchTitle ? fig.touchTitle : fig.title;
+  const pinsOn =
+    !video &&
+    view.annotations &&
+    view.device === "d" &&
+    fig.highlights.length > 0;
   const deviceLabel =
     view.device === "d"
       ? "desktop"
@@ -60,135 +83,210 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
         : `tablet, ${view.orientation === "l" ? "landscape" : "portrait"}`;
 
   const controls = (
-    <>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={view.annotations}
-        className={styles.switchRow}
-        onClick={() => view.setAnnotations(!view.annotations)}
-        disabled={view.device !== "d"}
-        title={view.device === "d" ? undefined : "Annotations are drawn on the desktop screens"}
+    <div className={styles.controlsRow}>
+      {/* Annotations + device switch fold away in video mode (width and
+          opacity animate together; inert so they leave the tab order). */}
+      <div
+        className={styles.fold}
+        data-folded={video ? "" : undefined}
+        inert={video}
       >
-        <span className={styles.switch} data-on={view.annotations ? "" : undefined} aria-hidden="true">
-          <span className={styles.knob} />
-        </span>
-        <span className={styles.ctrlLabel}>Annotations</span>
-      </button>
-
-      <span className={styles.divider} aria-hidden="true" />
-
-      {/* Device switch. Tablet expands in place into a nested orientation
-          switch (a box within the selected box) instead of a second toggle. */}
-      <div className={styles.segment} role="group" aria-label="Device">
-        {DEVICES.map(({ id, label, Icon }) =>
-          id === "t" && view.device === "t" ? (
-            <span key={id} className={styles.nested} role="group" aria-label="Tablet orientation">
-              {ORIENTATIONS.map(({ o, name, OIcon }) => (
-                <button
-                  key={o}
-                  ref={view.orientation === o ? activeOrientation : undefined}
-                  type="button"
-                  aria-pressed={view.orientation === o}
-                  aria-label={`Tablet, ${name}`}
-                  title={`Tablet, ${name}`}
-                  className={styles.innerBtn}
-                  onClick={() => view.setOrientation(o)}
-                >
-                  <OIcon />
-                </button>
-              ))}
-            </span>
-          ) : (
+        <div className={styles.foldInner}>
+          <div className={styles.foldContent}>
             <button
-              key={id}
               type="button"
-              aria-pressed={view.device === id}
-              aria-label={label}
-              title={label}
-              className={styles.segBtn}
-              onClick={() => {
-                if (id === "t") focusOrientation.current = true;
-                view.setDevice(id);
-              }}
+              role="switch"
+              aria-checked={view.annotations}
+              className={styles.switchRow}
+              onClick={() => view.setAnnotations(!view.annotations)}
+              disabled={view.device !== "d"}
+              title={
+                view.device === "d"
+                  ? undefined
+                  : "Annotations are drawn on the desktop screens"
+              }
             >
-              <Icon />
+              <span
+                className={styles.switch}
+                data-on={view.annotations ? "" : undefined}
+                aria-hidden="true"
+              >
+                <span className={styles.knob} />
+              </span>
+              <span className={styles.ctrlLabel}>Annotations</span>
             </button>
-          ),
+
+            <span className={styles.divider} aria-hidden="true" />
+
+            {/* Device switch. Tablet expands in place into a nested orientation
+          switch (a box within the selected box) instead of a second toggle. */}
+            <div className={styles.segment} role="group" aria-label="Device">
+              {DEVICES.map(({ id, label, Icon }) =>
+                id === "t" && view.device === "t" ? (
+                  <span
+                    key={id}
+                    className={styles.nested}
+                    role="group"
+                    aria-label="Tablet orientation"
+                  >
+                    {ORIENTATIONS.map(({ o, name, OIcon }) => (
+                      <button
+                        key={o}
+                        ref={
+                          view.orientation === o ? activeOrientation : undefined
+                        }
+                        type="button"
+                        aria-pressed={view.orientation === o}
+                        aria-label={`Tablet, ${name}`}
+                        title={`Tablet, ${name}`}
+                        className={styles.innerBtn}
+                        onClick={() => view.setOrientation(o)}
+                      >
+                        <OIcon />
+                      </button>
+                    ))}
+                  </span>
+                ) : (
+                  <button
+                    key={id}
+                    type="button"
+                    aria-pressed={view.device === id}
+                    aria-label={label}
+                    title={label}
+                    className={styles.segBtn}
+                    onClick={() => {
+                      if (id === "t") focusOrientation.current = true;
+                      view.setDevice(id);
+                    }}
+                  >
+                    <Icon />
+                  </button>
+                ),
+              )}
+            </div>
+
+            <span className={styles.divider} aria-hidden="true" />
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`${styles.segment} ${styles.modeSeg}`}
+        role="group"
+        aria-label="Mode"
+      >
+        {thumb && (
+          <span
+            className={styles.modeThumb}
+            style={{ transform: `translateX(${thumb.x}px)`, width: thumb.w }}
+            aria-hidden="true"
+          />
         )}
+        {(
+          [
+            ["interactive", "Interactive", IconCursor],
+            ["video", "Video", IconFilm],
+          ] as const
+        ).map(([m, label, MIcon]) => (
+          <button
+            key={m}
+            ref={(el) => {
+              modeRefs.current[m] = el;
+            }}
+            type="button"
+            aria-pressed={mode === m}
+            className={`${styles.segBtn} ${styles.modeBtn}`}
+            data-thumb={thumb ? "" : undefined}
+            onClick={() => setMode(m)}
+          >
+            <MIcon />
+            {label}
+          </button>
+        ))}
       </div>
-
-      <span className={styles.divider} aria-hidden="true" />
-
-      <div className={styles.segment} aria-label="Mode">
-        <span className={`${styles.segBtn} ${styles.modeBtn}`} aria-current="true">
-          <IconCursor />
-          Interactive
-        </span>
-        <button
-          type="button"
-          className={`${styles.segBtn} ${styles.modeBtn}`}
-          disabled
-          aria-describedby={`${fig.slug}-soon`}
-        >
-          <IconFilm />
-          Video
-          <span id={`${fig.slug}-soon`} className={styles.soon}>
-            Soon
-          </span>
-        </button>
-      </div>
-    </>
+    </div>
   );
 
   return (
-    <Figure type="Interactive" title={title} controls={controls} stageClassName={styles.stage} glow>
+    <Figure
+      type={video ? "Video" : "Interactive"}
+      title={title}
+      controls={controls}
+      stageClassName={styles.stage}
+      glow
+    >
       <p className={styles.headline}>{fig.headline}</p>
 
       <div className={styles.deviceArea}>
-        <div key={variant} className={styles.device} data-variant={variant}>
-          {variant === "d" ? (
-            <div className={styles.macbook}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
-              <img
-                src={`${SCREENS}/${fig.slug}-d.webp`}
-                alt={`${title}, ${deviceLabel} screen`}
-                width={600}
-                height={445}
-                loading="lazy"
-                decoding="async"
-              />
-              {pinsOn && (
-                <div className={styles.annotations} aria-hidden="true">
-                  {fig.highlights.map((h, i) => (
-                    <span
-                      key={`h${i}`}
-                      className={styles.highlight}
-                      style={{ left: `${h.left}%`, top: `${h.top}%`, width: `${h.width}%`, height: `${h.height}%` }}
-                    />
-                  ))}
-                  {fig.pins.map((p, i) => (
-                    <span key={`p${i}`} className={styles.pin} style={{ left: `${p.left}%`, top: `${p.top}%` }}>
-                      {i + 1}
-                    </span>
-                  ))}
-                </div>
-              )}
+        {video ? (
+          <div key="video" className={styles.device}>
+            <div className={styles.videoSlot}>
+              <span className={styles.videoTag}>Video</span>
+              <p className={styles.videoTitle}>{title} walkthrough</p>
+              <p className={styles.videoSpec}>
+                Coming soon · 16:9, loops, no sound
+              </p>
             </div>
-          ) : (
-            <div className={styles.frame} data-kind={view.device === "m" ? "phone" : "tablet"}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
-              <img
-                src={`${SCREENS}/${fig.slug}-${variant}.webp`}
-                alt={`${title}, ${deviceLabel} screen`}
-                width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
-                height={variant === "tl" ? 834 : variant === "tp" ? 1194 : 844}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div key={variant} className={styles.device} data-variant={variant}>
+            {variant === "d" ? (
+              <div className={styles.macbook}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
+                <img
+                  src={`${SCREENS}/${fig.slug}-d.webp`}
+                  alt={`${title}, ${deviceLabel} screen`}
+                  width={600}
+                  height={445}
+                  loading="lazy"
+                  decoding="async"
+                />
+                {pinsOn && (
+                  <div className={styles.annotations} aria-hidden="true">
+                    {fig.highlights.map((h, i) => (
+                      <span
+                        key={`h${i}`}
+                        className={styles.highlight}
+                        style={{
+                          left: `${h.left}%`,
+                          top: `${h.top}%`,
+                          width: `${h.width}%`,
+                          height: `${h.height}%`,
+                        }}
+                      />
+                    ))}
+                    {fig.pins.map((p, i) => (
+                      <span
+                        key={`p${i}`}
+                        className={styles.pin}
+                        style={{ left: `${p.left}%`, top: `${p.top}%` }}
+                      >
+                        {i + 1}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div
+                className={styles.frame}
+                data-kind={view.device === "m" ? "phone" : "tablet"}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
+                <img
+                  src={`${SCREENS}/${fig.slug}-${variant}.webp`}
+                  alt={`${title}, ${deviceLabel} screen`}
+                  width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
+                  height={
+                    variant === "tl" ? 834 : variant === "tp" ? 1194 : 844
+                  }
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className={styles.side}>

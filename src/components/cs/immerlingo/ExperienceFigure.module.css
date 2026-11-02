@@ -154,25 +154,135 @@
   }
 }
 
+/* Own row so the fold can animate its trailing gap away with it. */
+.controlsRow {
+  display: flex;
+  align-items: center;
+}
+
+/* Collapses to zero width: 1fr -> 0fr column + fade. */
+.fold {
+  display: grid;
+  grid-template-columns: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-columns 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.3s ease 0.12s;
+}
+
+.fold[data-folded] {
+  grid-template-columns: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-columns 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.05s,
+    opacity 0.2s ease;
+}
+
+/* No padding on the grid item itself, or the 0fr track can't reach 0. */
+.foldInner {
+  min-width: 0;
+  margin: -4px 0 -4px -4px;
+  overflow: hidden;
+}
+
+.foldContent {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  /* room for focus rings, then the 14px gap to the mode switch */
+  padding: 4px 14px 4px 4px;
+  width: max-content;
+}
+
+/* Controls drift toward the mode switch as they fade, then back. */
+.foldContent {
+  transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.fold[data-folded] .foldContent {
+  transform: translateX(24px) scale(0.96);
+}
+
+.modeSeg {
+  position: relative;
+  isolation: isolate;
+}
+
+.modeThumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  z-index: -1;
+  border-radius: 7px;
+  background: var(--cs-white-14);
+  transition:
+    transform 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+    width 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
 .modeBtn {
   padding: 6px 10px;
-  cursor: default;
 }
 
-.modeBtn:disabled {
-  color: rgba(255, 255, 255, 0.4);
-  cursor: not-allowed;
+/* With the thumb in place, the pressed button keeps a clear fill. */
+.modeBtn[data-thumb][aria-pressed="true"] {
+  background: none;
 }
 
-.soon {
-  padding: 1px 6px;
-  border-radius: 100px;
-  background: var(--cs-pink-14);
-  font-size: 10px;
-  letter-spacing: 0.04em;
+/* Video mode placeholder in the device box (same box, so nothing shifts). */
+.videoSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px dashed var(--cs-white-14);
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.05), transparent 70%),
+    var(--cs-white-04);
+  text-align: center;
+}
+
+.videoTag {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--cs-white-08);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--cs-pink);
+  color: var(--cs-white-70);
 }
+
+.videoTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-primary);
+}
+
+.videoSpec {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-text-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fold,
+  .fold[data-folded],
+  .foldContent,
+  .modeThumb {
+    transition: none;
+  }
+}
+
 
 /* ---------- stage (Figma "Stage", 1020 × 640) ---------- */
 
