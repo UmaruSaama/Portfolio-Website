@@ -218,9 +218,19 @@
   line-height: 0;
 }
 
-.media img {
-  width: 100%;
-  height: auto;
+
+.copyText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The iPad preview: same component and size as the case-study hero, so the
+   click can carry it across. Top margin = the bezel's overhang above the
+   screen box (5.91% of 662). */
+.mediaDevice {
+  width: calc(883 * var(--u));
+  margin: calc(39 * var(--u)) auto 0;
 }
 
 /* Placeholder slides: the outline of the device the render will sit in,
@@ -374,6 +384,35 @@
   top: 16px;
   right: 16px;
   cursor: pointer;
+}
+
+/* ---------- card -> case study overlay ---------- */
+
+.caseOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #0f0f0f;
+  visibility: hidden; /* the morph timeline reveals it */
+}
+
+/* The overlay's surface is animated; the hero itself stays transparent. */
+.caseHero {
+  --hero-bg: transparent;
+}
+
+.caseCardGlow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(245, 35, 75, 0.16), rgba(245, 35, 75, 0.05) 55%, transparent);
+  pointer-events: none;
+}
+
+.stage[data-case-open] .cursor {
+  display: none;
 }
 
 /* ---------- right side + corner ---------- */
@@ -535,5 +574,10 @@
   .mediaEmpty {
     width: 100%;
     height: 200px;
+  }
+
+  .mediaDevice {
+    width: 88%;
+    margin-top: 20px;
   }
 }

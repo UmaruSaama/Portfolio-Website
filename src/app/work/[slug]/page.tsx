@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
+import { CaseStudyHero } from "@/components/CaseStudyHero";
+import { ArrowLeftIcon } from "@/components/icons";
+import action from "@/components/Action.module.css";
 
 export function generateStaticParams() {
   return projects.filter((p) => !p.placeholder).map((p) => ({ slug: p.slug }));
@@ -12,12 +15,18 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   if (!project) notFound();
 
   return (
-    <main style={{ minHeight: "100dvh", display: "grid", placeContent: "center", textAlign: "center", gap: 12 }}>
-      <h1 style={{ fontSize: 40, fontWeight: 650 }}>{project.title.accent}</h1>
-      <p style={{ color: "var(--label-secondary)" }}>The full case study page is next on the list.</p>
-      <Link href="/" style={{ textDecoration: "underline" }}>
-        Back to work
-      </Link>
+    <main>
+      <CaseStudyHero
+        project={project}
+        back={
+          <Link href="/" className={`${action.action} ${action.onDark}`}>
+            <span className={`${action.disc} ${action.glass}`} aria-hidden="true">
+              <ArrowLeftIcon />
+            </span>
+            Work
+          </Link>
+        }
+      />
     </main>
   );
 }

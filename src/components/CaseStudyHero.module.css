@@ -1,0 +1,142 @@
+/*
+  Figma frame is 1440 wide. --v is one Figma px, capped at 1px so the hero
+  stops growing past 1440 (same sizes as the home card at 1920).
+*/
+.hero {
+  --v: min(1px, calc(100vw / 1440));
+  /* Text inks are variables so the morph can tween them dark -> light. */
+  --ink: var(--hero-ink, rgba(255, 255, 255, 0.88));
+  --ink-2: var(--hero-ink-2, rgba(255, 255, 255, 0.64));
+  --ink-tags: var(--hero-ink-tags, #fff);
+
+  position: relative;
+  min-height: 100dvh;
+  padding-bottom: calc(152 * var(--v));
+  background: var(--hero-bg, #0f0f0f);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* Figma "Glow": 500px pink ellipse, heavily blurred, centred on the top edge. */
+.glow {
+  position: absolute;
+  left: 50%;
+  top: calc(-560 * var(--v));
+  width: calc(1500 * var(--v));
+  height: calc(1250 * var(--v));
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(245, 35, 75, 0.2),
+    rgba(245, 35, 75, 0.07) 55%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Pinned so the way back is always one click away while reading. */
+.bar {
+  position: fixed;
+  top: 24px;
+  left: var(--page-x);
+  z-index: 70;
+}
+
+.copy {
+  position: relative;
+  width: calc(697 * var(--v));
+  margin: 0 auto;
+  padding-top: calc(128 * var(--v));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  font-size: max(calc(12 * var(--v)), 10px);
+  text-transform: uppercase;
+  color: var(--ink-tags);
+}
+
+.tags li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: calc(32 * var(--v));
+  padding: 0 calc(16 * var(--v));
+}
+
+.tags li + li::before {
+  content: "";
+  position: absolute;
+  left: calc(-2.5 * var(--v));
+  width: calc(5 * var(--v));
+  height: calc(5 * var(--v));
+  border-radius: 16px;
+  background: var(--accent);
+}
+
+.title {
+  margin-top: calc(4 * var(--v));
+  width: 100%;
+  padding: calc(4 * var(--v)) 0;
+  font-size: calc(48 * var(--v));
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.summary {
+  width: calc(660 * var(--v));
+  margin-top: calc(12 * var(--v));
+  font-size: max(calc(16 * var(--v)), 14px);
+  font-stretch: var(--stretch-body);
+  line-height: 1.4;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Screen box at y 477 in the frame; the copy block ends near 325. */
+.device {
+  position: relative;
+  width: calc(883 * var(--v));
+  margin: calc(152 * var(--v)) auto 0;
+}
+
+@media (max-width: 767px) {
+  .hero {
+    --v: calc(100vw / 760);
+    padding-top: 76px; /* clears the pinned Work button */
+  }
+
+  .copy {
+    width: auto;
+    padding: 24px 20px 0;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .summary {
+    width: auto;
+    font-size: 15px;
+  }
+
+  .device {
+    width: calc(100% - 64px);
+    margin-top: 48px;
+  }
+}

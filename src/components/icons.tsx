@@ -33,3 +33,17 @@ export function PlayIcon() {
     </svg>
   );
 }
+
+export function ArrowLeftIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M13 8H3.5M7.5 3.5 3 8l4.5 4.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

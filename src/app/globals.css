@@ -1,4 +1,5 @@
 @import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource-variable/hanken-grotesk/index.css"; /* case-study body face */
 
 :root {
   /* Tokens from Figma (Placement-Portfolio · Main Page) */

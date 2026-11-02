@@ -1,13 +1,15 @@
 "use client";
 
-import Image from "next/image";
+import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import type { Project } from "@/data/projects";
 import { VideoToggle } from "./VideoToggle";
-import { ArrowIcon, CloseIcon } from "./icons";
+import { ArrowIcon, ArrowLeftIcon, CloseIcon } from "./icons";
+import { DeviceMock } from "./DeviceMock";
+import { CaseStudyHero } from "./CaseStudyHero";
 import action from "./Action.module.css";
 import styles from "./ProjectStage.module.css";
 
@@ -33,19 +35,26 @@ type Actions = {
   cursorPress: (down: boolean) => void;
   tiltMove: (e: React.PointerEvent) => void;
   tiltReset: () => void;
+  openCase: (slug: string) => void;
+  requestCloseCase: () => void;
 };
 
 const noop = () => {};
 const IN_ARTIFACT = process.env.NEXT_PUBLIC_ARTIFACT === "1";
 // Inside the artifact only "/" exists, so internal links do nothing there.
 const artifactGuard = IN_ARTIFACT ? (e: React.MouseEvent) => e.preventDefault() : undefined;
+// Let cmd/ctrl/shift/middle clicks open the real page in a new tab.
+const isPlainClick = (e: React.MouseEvent) =>
+  e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
 
 export function ProjectStage({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [caseSlug, setCaseSlug] = useState<string | null>(null);
 
   const activeRef = useRef(0);
   const videoOpenRef = useRef(false);
+  const caseOpenRef = useRef(false);
   const busy = useRef(false);
 
   const root = useRef<HTMLDivElement>(null);
@@ -54,6 +63,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
   const video = useRef<HTMLVideoElement>(null);
   const cursor = useRef<HTMLDivElement>(null);
   const card = useRef<HTMLElement>(null);
+  const caseOverlay = useRef<HTMLDivElement>(null);
 
   const actions = useRef<Actions>({
     goTo: noop,
@@ -66,6 +76,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
     cursorPress: noop,
     tiltMove: noop,
     tiltReset: noop,
+    openCase: noop,
+    requestCloseCase: noop,
   });
 
   useGSAP(
@@ -208,12 +220,6 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         ? slides.current
             .map((sl) => sl?.querySelector("[data-anim='media'] > *"))
             .filter((el): el is Element => !!el)
-            .map((el) => {
-              // 3% overscan, anchored at the top, so a ±DRIFT px shift never
-              // exposes the edge of the render's own background panel.
-              gsap.set(el, { scale: 1.03, transformOrigin: "50% 0%" });
-              return el;
-            })
             .map((el) => ({
               x: gsap.quickTo(el, "x", { duration: 0.9, ease: "power3.out" }),
               y: gsap.quickTo(el, "y", { duration: 0.9, ease: "power3.out" }),
@@ -248,7 +254,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       // ---------- slides ----------
       const goTo = safe((next: number) => {
         const current = activeRef.current;
-        if (busy.current || next === current || next < 0 || next >= projects.length) return;
+        if (busy.current || caseOpenRef.current || next === current || next < 0 || next >= projects.length)
+          return;
         if (videoOpenRef.current || actions.current.videoActive()) {
           actions.current.closeVideo(() => goTo(next));
           return;
@@ -383,6 +390,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       const videoActive = () => videoTl !== null;
 
       actions.current = {
+        ...actions.current,
         goTo,
         openVideo,
         closeVideo,
@@ -395,12 +403,227 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         tiltReset,
       };
 
+      // ---------- card -> case study (shared-element morph) ----------
+      // The case-study hero is mounted in a fixed overlay that starts as an
+      // exact copy of the card: clipped to the card's rect, card grey, copy
+      // and iPad sitting where the card's are, text inks dark. One timeline
+      // then grows the clip to the viewport, darkens the surface, glides the
+      // copy and the device to their hero positions and turns the inks light.
+      // Reversing the same timeline is the way back. Only after it finishes
+      // does the URL change (/work/<slug>, or #<slug> inside the artifact).
+      let caseTl: gsap.core.Timeline | null = null;
+      let caseOpen = false;
+      let urlPushed = false;
+      const W = () => document.documentElement.clientWidth;
+      const H = () => window.innerHeight;
+      const rectClip = (r: DOMRect, radius: number) =>
+        `inset(${r.top}px ${W() - r.right}px ${H() - r.bottom}px ${r.left}px round ${radius}px)`;
+      const FULL_CLIP = "inset(0px 0px 0px 0px round 0px)";
+
+      const pushUrl = (slug: string) => {
+        if (IN_ARTIFACT) {
+          if (location.hash !== `#${slug}`) location.hash = slug;
+        } else {
+          window.history.pushState({ caseStudy: slug }, "", `/work/${slug}`);
+        }
+        urlPushed = true;
+      };
+
+      const finishClose = () => {
+        caseTl?.kill();
+        caseTl = null;
+        caseOpen = false;
+        caseOpenRef.current = false;
+        setCaseSlug(null);
+        card.current?.querySelector<HTMLElement>("a[data-cta]")?.focus({ preventScroll: true });
+      };
+
+      const openCase = safe((slug: string, instant = false) => {
+        if (caseOpen || busy.current || videoOpenRef.current || videoActive()) return;
+        const slide = slides.current[activeRef.current];
+        const cardEl = card.current;
+        if (!slide || !cardEl) return;
+        caseOpen = true;
+        caseOpenRef.current = true;
+
+        // Settle the card: no tilt, no drift, no cursor.
+        cursorHide();
+        gsap.killTweensOf(cardEl); // the tilt quickTo tweens are the only ones on the card
+        gsap.set(cardEl, { rotationX: 0, rotationY: 0 });
+        const cardDevice = slide.querySelector<HTMLElement>("[data-device]");
+        const driftEl = slide.querySelector("[data-anim='media'] > *");
+        if (driftEl) {
+          gsap.killTweensOf(driftEl);
+          gsap.set(driftEl, { x: 0, y: 0 });
+        }
+
+        // Mount the overlay synchronously so it can be measured now.
+        flushSync(() => setCaseSlug(slug));
+        const overlay = caseOverlay.current;
+        if (!overlay) return;
+        const hero = overlay.querySelector<HTMLElement>("[data-hero]")!;
+        const heroCopy = overlay.querySelector<HTMLElement>("[data-copy]")!;
+        const heroDevice = overlay.querySelector<HTMLElement>("[data-device]")!;
+        const heroGlow = overlay.querySelector<HTMLElement>("[data-glow]");
+        const heroBar = overlay.querySelector<HTMLElement>("[data-bar]");
+        const cardGlowCopy = overlay.querySelector<HTMLElement>("[data-card-glow]");
+        overlay.scrollTop = 0;
+
+        const cardRect = cardEl.getBoundingClientRect();
+        const cTags = slide.querySelector("ul")!.getBoundingClientRect();
+        const cTitle = slide.querySelector("h2")!.getBoundingClientRect();
+        const hTags = heroCopy.querySelector("ul")!.getBoundingClientRect();
+        const hTitle = heroCopy.querySelector("h1")!.getBoundingClientRect();
+        const hCopy = heroCopy.getBoundingClientRect();
+        const cDev = cardDevice?.getBoundingClientRect();
+        const hDev = heroDevice.getBoundingClientRect();
+        const cardGlow = cardEl.querySelector<HTMLElement>("[data-card-glow-src]")?.getBoundingClientRect();
+
+        // Copy: scale about the tags' top centre so they land on each other.
+        const copyScale = cTitle.width / hTitle.width;
+        const originY = hTags.top - hCopy.top;
+        const copyFrom = {
+          x: cTitle.left + cTitle.width / 2 - (hTitle.left + hTitle.width / 2),
+          y: cTags.top - hTags.top,
+          scale: copyScale,
+          transformOrigin: `50% ${originY}px`,
+        };
+        const devFrom = cDev
+          ? {
+              x: cDev.left - hDev.left,
+              y: cDev.top - hDev.top,
+              scale: cDev.width / hDev.width,
+              transformOrigin: "0 0",
+            }
+          : { autoAlpha: 0 };
+        if (cardGlowCopy && cardGlow) {
+          gsap.set(cardGlowCopy, {
+            left: cardGlow.left,
+            top: cardGlow.top,
+            width: cardGlow.width,
+            height: cardGlow.height,
+          });
+        }
+
+        const fadeOut = root.current?.querySelectorAll("[data-case-fade]") ?? [];
+        const cta = slide.querySelector("[data-cta]");
+
+        caseTl = gsap.timeline({
+          paused: true,
+          defaults: { ease: "power3.inOut" },
+          onComplete: () => {
+            overlay.style.clipPath = "none"; // let the hero scroll unclipped
+            if (!urlPushed) pushUrl(slug);
+            heroBar?.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
+          },
+          onReverseComplete: finishClose,
+        });
+        caseTl
+          // Phase 1: things that only exist on the home page step aside.
+          .to([...fadeOut, cta].filter(Boolean), { autoAlpha: 0, duration: 0.2, ease: "power2.out" }, 0)
+          // Phase 2: the overlay, identical to the card, takes over and grows.
+          .set(overlay, { autoAlpha: 1 }, 0.16)
+          .fromTo(
+            overlay,
+            { clipPath: rectClip(cardRect, 20), backgroundColor: "#f2f2f2" },
+            { clipPath: FULL_CLIP, backgroundColor: "#0f0f0f", duration: 0.95 },
+            0.16,
+          )
+          .fromTo(heroCopy, copyFrom, { x: 0, y: 0, scale: 1, duration: 0.95 }, 0.16)
+          .fromTo(
+            hero,
+            {
+              "--hero-ink": "rgba(0,0,0,0.85)",
+              "--hero-ink-2": "rgba(0,0,0,0.6)",
+              "--hero-ink-tags": "rgba(0,0,0,0.85)",
+            },
+            {
+              "--hero-ink": "rgba(255,255,255,0.88)",
+              "--hero-ink-2": "rgba(255,255,255,0.64)",
+              "--hero-ink-tags": "rgba(255,255,255,1)",
+              duration: 0.7,
+              ease: "power2.inOut",
+            },
+            0.36,
+          )
+          .fromTo(heroDevice, devFrom, { x: 0, y: 0, scale: 1, autoAlpha: 1, duration: 0.95 }, 0.16)
+          .fromTo(cardGlowCopy, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, ease: "power2.out" }, 0.16)
+          .fromTo(heroGlow, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.7, ease: "power2.out" }, 0.5)
+          .fromTo(
+            heroBar,
+            { autoAlpha: 0, x: -8 },
+            { autoAlpha: 1, x: 0, duration: 0.35, ease: "power2.out" },
+            0.95,
+          );
+
+        if (instant || reduce) caseTl.progress(1);
+        else caseTl.play();
+      });
+
+      // Reverse the morph. Called when the URL goes back (button, browser
+      // back, Escape), or directly if the URL was never changed.
+      const closeCase = safe(() => {
+        if (!caseTl || !caseOpen) return;
+        urlPushed = false;
+        const overlay = caseOverlay.current;
+        const run = () => {
+          if (reduce) {
+            caseTl?.progress(0);
+            finishClose();
+          } else {
+            caseTl?.timeScale(1.15).reverse();
+          }
+        };
+        if (overlay && overlay.scrollTop > 0) {
+          gsap.to(overlay, { scrollTop: 0, duration: 0.35, ease: "power2.inOut", onComplete: run });
+        } else run();
+      });
+
+      const requestCloseCase = safe(() => {
+        if (!caseOpen) return;
+        if (urlPushed && !IN_ARTIFACT)
+          window.history.back(); // popstate runs closeCase
+        else if (urlPushed && IN_ARTIFACT)
+          location.hash = ""; // hashchange runs closeCase
+        else closeCase();
+      });
+
+      const onPopState = () => {
+        // Hash changes fire popstate too; inside the artifact hashchange owns it.
+        if (IN_ARTIFACT) return;
+        if (caseOpen && !location.pathname.startsWith("/work/")) closeCase();
+      };
+      const onHashChange = () => {
+        if (!IN_ARTIFACT) return;
+        const slug = location.hash.slice(1);
+        if (!slug && caseOpen) closeCase();
+        else if (slug && !caseOpen && projects.some((p) => p.slug === slug && !p.placeholder)) {
+          const idx = projects.findIndex((p) => p.slug === slug);
+          if (idx === activeRef.current) openCase(slug);
+        }
+      };
+      window.addEventListener("popstate", onPopState);
+      window.addEventListener("hashchange", onHashChange);
+
+      // Deep link inside the artifact: #<slug> opens straight into the hero.
+      if (IN_ARTIFACT) {
+        const slug = location.hash.slice(1);
+        if (slug && projects[0]?.slug === slug) {
+          urlPushed = true;
+          openCase(slug, true);
+        }
+      }
+
+      actions.current.openCase = openCase;
+      actions.current.requestCloseCase = requestCloseCase;
+
       // ---------- input: wheel, keys, swipe ----------
       let acc = 0;
       let lockedUntil = 0;
       let touchY: number | null = null;
 
       const onWheel = (e: WheelEvent) => {
+        if (caseOpenRef.current) return; // the case study scrolls normally
         e.preventDefault();
         if (videoOpenRef.current || videoActive()) return; // no project changes while the player is up
         const now = performance.now();
@@ -416,6 +639,10 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       const onKey = (e: KeyboardEvent) => {
         const t = e.target as HTMLElement | null;
         if (t && /^(INPUT|TEXTAREA|SELECT|VIDEO)$/.test(t.tagName)) return;
+        if (caseOpenRef.current) {
+          if (e.key === "Escape") requestCloseCase();
+          return;
+        }
         if (e.key === "Escape" && videoOpenRef.current) {
           closeVideo();
           return;
@@ -438,7 +665,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         touchY = e.touches[0]?.clientY ?? null;
       };
       const onTouchEnd = (e: TouchEvent) => {
-        if (touchY === null || videoOpenRef.current) return;
+        if (touchY === null || videoOpenRef.current || caseOpenRef.current) return;
         const dy = touchY - (e.changedTouches[0]?.clientY ?? touchY);
         if (Math.abs(dy) > SWIPE_THRESHOLD) goTo(activeRef.current + Math.sign(dy));
         touchY = null;
@@ -449,6 +676,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       window.addEventListener("touchstart", onTouchStart, { passive: true });
       window.addEventListener("touchend", onTouchEnd);
       return () => {
+        window.removeEventListener("popstate", onPopState);
+        window.removeEventListener("hashchange", onHashChange);
         window.removeEventListener("wheel", onWheel);
         window.removeEventListener("keydown", onKey);
         window.removeEventListener("touchstart", onTouchStart);
@@ -459,10 +688,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
   );
 
   const current = projects[active];
+  const caseProject = caseSlug ? projects.find((p) => p.slug === caseSlug) : undefined;
 
   return (
-    <div className={styles.stage} ref={root}>
-      <div className={styles.rail}>
+    <div className={styles.stage} ref={root} data-case-open={caseSlug ? "" : undefined}>
+      <div className={styles.rail} data-case-fade>
         <ol className={styles.dots} aria-label="Projects">
           {projects.map((p, i) => (
             <li key={p.slug}>
@@ -497,8 +727,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         onPointerDown={() => actions.current.cursorPress(true)}
         onPointerUp={() => actions.current.cursorPress(false)}
       >
-        <span className={styles.glow} aria-hidden="true" />
-        <span className={styles.topLine} aria-hidden="true" />
+        <span className={styles.glow} aria-hidden="true" data-card-glow-src />
+        <span className={styles.topLine} aria-hidden="true" data-case-fade />
 
         {projects.map((p, i) => (
           <div
@@ -519,32 +749,43 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               <Link
                 href={`/work/${p.slug}`}
                 className={styles.cardLink}
-                prefetch={!IN_ARTIFACT}
-                onClick={artifactGuard}
+                prefetch={false}
+                onClick={(e) => {
+                  if (!IN_ARTIFACT && !isPlainClick(e)) return;
+                  e.preventDefault();
+                  actions.current.openCase(p.slug);
+                }}
                 tabIndex={-1}
                 aria-hidden="true"
               />
             )}
 
             <div className={styles.copy}>
-              <ul className={styles.tags} data-anim="text">
-                {p.tags.map((tag) => (
-                  <li key={tag}>{tag}</li>
-                ))}
-              </ul>
-              <h2 className={styles.title} data-anim="text">
-                <span className={styles.accent}>{p.title.accent}</span> {p.title.rest}
-              </h2>
-              <p className={styles.summary} data-anim="text">
-                {p.summary}
-              </p>
+              <div className={styles.copyText} data-copy>
+                <ul className={styles.tags} data-anim="text">
+                  {p.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+                <h2 className={styles.title} data-anim="text">
+                  <span className={styles.accent}>{p.title.accent}</span> {p.title.rest}
+                </h2>
+                <p className={styles.summary} data-anim="text">
+                  {p.summary}
+                </p>
+              </div>
               {!p.placeholder && (
                 <Link
                   href={`/work/${p.slug}`}
                   className={`${action.action} ${action.inCard} ${styles.cta}`}
                   data-anim="text"
-                  prefetch={!IN_ARTIFACT}
-                  onClick={artifactGuard}
+                  data-cta
+                  prefetch={false}
+                  onClick={(e) => {
+                    if (!IN_ARTIFACT && !isPlainClick(e)) return;
+                    e.preventDefault();
+                    actions.current.openCase(p.slug);
+                  }}
                 >
                   <span className={`${action.disc} ${action.accent} ${styles.ctaDisc}`} aria-hidden="true">
                     <ArrowIcon />
@@ -555,15 +796,10 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
             </div>
 
             <div className={styles.media} data-anim="media">
-              {p.image ? (
-                <Image
-                  src={p.image.src}
-                  alt={p.image.alt}
-                  width={p.image.width}
-                  height={p.image.height}
-                  priority={i === 0}
-                  sizes="(max-width: 767px) 100vw, 1097px"
-                />
+              {p.screen ? (
+                <div className={styles.mediaDevice}>
+                  <DeviceMock screen={p.screen} />
+                </div>
               ) : (
                 <div className={styles.mediaEmpty}>
                   <span className={styles.mediaEmptyScreen}>Case study in progress</span>
@@ -630,6 +866,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       {/* Only projects that have (or will have) a product video get the button. */}
       <div
         className={styles.side}
+        data-case-fade
         data-hidden={current.placeholder ? "" : undefined}
         inert={current.placeholder}
       >
@@ -649,8 +886,44 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         </span>
       </div>
 
+      {caseProject && (
+        <div
+          ref={caseOverlay}
+          className={styles.caseOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${caseProject.title.accent}: case study`}
+        >
+          {/* Stand-in for the card's own glow, faded out as the surface darkens. */}
+          <span className={styles.caseCardGlow} aria-hidden="true" data-card-glow />
+          <div data-hero className={styles.caseHero}>
+            <CaseStudyHero
+              project={caseProject}
+              back={
+                <button
+                  type="button"
+                  className={`${action.action} ${action.onDark}`}
+                  onClick={() => actions.current.requestCloseCase()}
+                >
+                  <span className={`${action.disc} ${action.glass}`} aria-hidden="true">
+                    <ArrowLeftIcon />
+                  </span>
+                  Work
+                </button>
+              }
+            />
+          </div>
+        </div>
+      )}
+
       {/* The chick is the way to the About page: personality with a job. */}
-      <Link href="/about" className={styles.chick} onClick={artifactGuard} prefetch={!IN_ARTIFACT}>
+      <Link
+        href="/about"
+        data-case-fade
+        className={styles.chick}
+        onClick={artifactGuard}
+        prefetch={!IN_ARTIFACT}
+      >
         <span aria-hidden="true">🐤</span>
         <span className={styles.chickTip}>About me</span>
       </Link>

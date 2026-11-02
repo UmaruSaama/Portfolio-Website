@@ -6,8 +6,8 @@ export type Project = {
   /** Title split so the accent phrase can be coloured. */
   title: { accent: string; rest: string };
   summary: string;
-  /** Hero render shown at the bottom of the card. */
-  image?: { src: string; width: number; height: number; alt: string };
+  /** What the iPad screen shows (card preview and case-study hero). */
+  screen?: { kind: "placeholder"; label: string; spec: string; tag: string };
   /** Product video for the "Product video" button. */
   videoSrc?: string;
   placeholder?: boolean;
@@ -23,11 +23,11 @@ export const projects: Project[] = [
     },
     summary:
       "A Japanese learning app where learners look up words while watching anime or reading manga, save them as scene-linked flashcards for spaced review, and choose content rated by how much of it they’ll understand.",
-    image: {
-      src: "/images/immerlingo-hero.png",
-      width: 1097,
-      height: 432,
-      alt: "ImmerLingo Home on iPad: greeting, 3-day streak, Japanese level 1 progress and score breakdown.",
+    screen: {
+      kind: "placeholder",
+      tag: "GIF",
+      label: "Hero walkthrough",
+      spec: "883 × 662 · 4:3 landscape · loops, no sound",
     },
   },
   ...[2, 3, 4].map(
