@@ -54,6 +54,40 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
   const [mode, setMode] = useState<"interactive" | "video">("interactive");
   const video = mode === "video";
 
+  // Annotations off = clean view: the notes fade and the screen grows to
+  // fill the card. The device box keeps its layout slot (nothing reflows);
+  // a measured translate + scale moves it, so the change is one smooth
+  // transform. Re-measured on resize.
+  const full = !view.annotations;
+  const areaRef = useRef<HTMLDivElement>(null);
+  const [fit, setFit] = useState<React.CSSProperties | null>(null);
+  useLayoutEffect(() => {
+    const area = areaRef.current;
+    const stage = area?.parentElement;
+    if (!area || !stage) return;
+    const measure = () => {
+      const k = stage.clientWidth / 1020; // Figma px
+      const pad = 40 * k;
+      const w = area.offsetWidth;
+      const h = area.offsetHeight;
+      const sc = Math.min(
+        (stage.clientHeight - 2 * pad) / h,
+        (stage.clientWidth - 2 * pad) / w,
+      );
+      const x = (stage.clientWidth - w * sc) / 2 - area.offsetLeft;
+      const y = (stage.clientHeight - h * sc) / 2 - area.offsetTop;
+      setFit({
+        "--fx": `${x}px`,
+        "--fy": `${y}px`,
+        "--fs": sc,
+      } as React.CSSProperties);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(stage);
+    return () => ro.disconnect();
+  }, []);
+
   // Sliding thumb under the active mode button.
   const modeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const [thumb, setThumb] = useState<{ x: number; w: number } | null>(null);
@@ -99,12 +133,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
               aria-checked={view.annotations}
               className={styles.switchRow}
               onClick={() => view.setAnnotations(!view.annotations)}
-              disabled={view.device !== "d"}
-              title={
-                view.device === "d"
-                  ? undefined
-                  : "Annotations are drawn on the desktop screens"
-              }
+              title="Off: hide the notes and show the screen across the whole card"
             >
               <span
                 className={styles.switch}
@@ -215,11 +244,21 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
       stageClassName={styles.stage}
       glow
     >
-      <p className={styles.headline} inert={video}>
+      <p
+        className={styles.headline}
+        data-hidden={full ? "" : undefined}
+        inert={video || full}
+      >
         {fig.headline}
       </p>
 
-      <div className={styles.deviceArea} inert={video}>
+      <div
+        ref={areaRef}
+        className={styles.deviceArea}
+        data-full={full ? "" : undefined}
+        style={fit ?? undefined}
+        inert={video}
+      >
         <div key={variant} className={styles.device} data-variant={variant}>
           {variant === "d" ? (
             <div className={styles.macbook}>
@@ -277,7 +316,11 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
         </div>
       </div>
 
-      <div className={styles.side} inert={video}>
+      <div
+        className={styles.side}
+        data-hidden={full ? "" : undefined}
+        inert={video || full}
+      >
         <ol className={styles.steps}>
           {fig.steps.map((s, i) => (
             <li key={s.title} className={styles.step}>

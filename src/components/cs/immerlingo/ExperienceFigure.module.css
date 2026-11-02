@@ -332,6 +332,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .deviceArea,
+  .deviceArea[data-full],
+  .headline,
+  .side,
+  .headline[data-hidden],
+  .side[data-hidden],
   .player,
   .player[data-on],
   .playerEmpty,
@@ -343,7 +349,6 @@
     transition: none;
   }
 }
-
 
 /* ---------- stage (Figma "Stage", 1020 × 640) ---------- */
 
@@ -373,6 +378,38 @@
   container-type: size;
   display: grid;
   place-items: center;
+  transform-origin: 0 0;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Annotations off: grow into the whole card (vars measured in JS). */
+.deviceArea[data-full] {
+  transform: translate(var(--fx, 0), var(--fy, 0)) scale(var(--fs, 1));
+  transition-delay: 0.08s;
+}
+
+/* Headline and steps fade out first, back in after the screen settles. */
+.headline,
+.side {
+  transition:
+    opacity 0.35s ease 0.35s,
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+.headline[data-hidden],
+.side[data-hidden] {
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    translate 0.3s ease;
+}
+
+.side[data-hidden] {
+  translate: 16px 0;
+}
+
+.headline[data-hidden] {
+  translate: 0 -8px;
 }
 
 .device {
