@@ -45,11 +45,14 @@ export function Opener({
   title,
   introTitle,
   intro,
+  introTitleWidth,
 }: {
   eyebrow: string;
   title: ReactNode;
   introTitle?: ReactNode;
   intro?: ReactNode;
+  /** Figma width of the intro title when it is wider than the default 292. */
+  introTitleWidth?: number;
 }) {
   return (
     <header className={styles.opener}>
@@ -57,7 +60,14 @@ export function Opener({
       <h2 className={`${cs.h1} ${styles.openerTitle}`}>{title}</h2>
       {(introTitle || intro) && (
         <div className={styles.introRow}>
-          {introTitle && <h3 className={`${cs.h3} ${styles.introTitle}`}>{introTitle}</h3>}
+          {introTitle && (
+            <h3
+              className={`${cs.h3} ${styles.introTitle}`}
+              style={introTitleWidth ? { flexBasis: `${introTitleWidth + 4}px` } : undefined}
+            >
+              {introTitle}
+            </h3>
+          )}
           {intro && <div className={styles.introBody}>{intro}</div>}
         </div>
       )}

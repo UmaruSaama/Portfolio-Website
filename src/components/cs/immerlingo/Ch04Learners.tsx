@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { Chapter, ChapterEnd, Opener } from "../Primitives";
 import cs from "../cs.module.css";
 import styles from "./Ch04Learners.module.css";
+import { AppendixPointer } from "../AppendixPointer";
 
 type Persona = {
   key: string;
@@ -360,7 +361,7 @@ export function Ch04Learners() {
         <p className={styles.appendix}>
           <span>Full detail:</span>
           <span>Stage-by-stage experience flow</span>
-          <span className={styles.appendixLink}>→ Appendix D</span>
+          <AppendixPointer section="d" className={styles.appendixLink} />
         </p>
         <ChapterEnd>I needed to know how common their story was.</ChapterEnd>
       </div>

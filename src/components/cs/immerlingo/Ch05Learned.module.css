@@ -136,6 +136,26 @@
 
 .appendixTarget {
   color: var(--cs-pink);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.appendixTarget:hover,
+.appendixTarget:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+.appendixTarget:focus-visible {
+  outline: 2px solid var(--cs-pink);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 /* ---------- dots / tones ---------- */

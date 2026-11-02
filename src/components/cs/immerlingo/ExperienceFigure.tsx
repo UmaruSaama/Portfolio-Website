@@ -34,6 +34,7 @@ const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] = 
 export function ExperienceFigure({ fig }: { fig: Data }) {
   const view = useDeviceView();
   const variant = view.device === "t" ? `t${view.orientation}` : view.device; // d | tl | tp | m
+  const title = view.device !== "d" && fig.touchTitle ? fig.touchTitle : fig.title;
   const pinsOn = view.annotations && view.device === "d" && fig.highlights.length > 0;
   const deviceLabel =
     view.device === "d"
@@ -129,7 +130,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
   );
 
   return (
-    <Figure type="Interactive" title={fig.title} controls={controls} stageClassName={styles.stage}>
+    <Figure type="Interactive" title={title} controls={controls} stageClassName={styles.stage}>
       <p className={styles.headline}>{fig.headline}</p>
 
       <div className={styles.deviceArea}>
@@ -139,7 +140,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
               {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
               <img
                 src={`${SCREENS}/${fig.slug}-d.webp`}
-                alt={`${fig.title}, ${deviceLabel} screen`}
+                alt={`${title}, ${deviceLabel} screen`}
                 width={600}
                 height={445}
                 loading="lazy"
@@ -167,7 +168,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
               {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
               <img
                 src={`${SCREENS}/${fig.slug}-${variant}.webp`}
-                alt={`${fig.title}, ${deviceLabel} screen`}
+                alt={`${title}, ${deviceLabel} screen`}
                 width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
                 height={variant === "tl" ? 834 : variant === "tp" ? 1194 : 844}
                 loading="lazy"

@@ -207,7 +207,7 @@ export function Ch06Principles() {
             ))}
           </div>
         </Fig>
-        <AppendixLink what="Full friction list and complete JTBD" target="Appendix C" />
+        <AppendixLink what="Full friction list and complete JTBD" section="c" />
       </section>
 
       {/* 329:2414 — Design challenge */}

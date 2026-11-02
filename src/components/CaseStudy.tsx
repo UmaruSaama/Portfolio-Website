@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { chapterAnchor, type Project } from "@/data/projects";
 import { CaseStudyHero } from "./CaseStudyHero";
 import { ChapterRail } from "./ChapterRail";
-import { chapterComponents } from "./cs/registry";
+import { appendixComponents, chapterComponents } from "./cs/registry";
+import { AppendixPanel } from "./cs/AppendixPanel";
 import styles from "./CaseStudy.module.css";
 
 /**
@@ -15,6 +16,7 @@ import styles from "./CaseStudy.module.css";
 export function CaseStudy({ project, back }: { project: Project; back: ReactNode }) {
   const chapters = project.chapters ?? [];
   const pad = (n: number) => String(n).padStart(2, "0");
+  const appendix = appendixComponents[project.slug];
 
   return (
     <div className={styles.page}>
@@ -42,6 +44,12 @@ export function CaseStudy({ project, back }: { project: Project; back: ReactNode
       </div>
 
       {chapters.length > 1 && <ChapterRail chapters={chapters} />}
+
+      {appendix && (
+        <AppendixPanel title={appendix.title} sections={appendix.sections}>
+          <appendix.Content />
+        </AppendixPanel>
+      )}
     </div>
   );
 }

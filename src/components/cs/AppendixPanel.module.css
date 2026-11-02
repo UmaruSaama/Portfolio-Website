@@ -1,0 +1,163 @@
+/*
+  Appendix panel: a full-height sheet from the right, wide enough for the
+  1020 content column plus gutters. Lives in the top layer (<dialog>), so
+  it sits above the pinned Work button and the chapter rail.
+*/
+
+.dialog {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cs-text-primary);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background: transparent;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.panel {
+  --gutter: clamp(28px, 4.4vw, 64px);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(100vw, calc(1020 * var(--v) + 2 * var(--gutter)));
+  background: var(--cs-surface-06);
+  border-left: 1px solid var(--cs-white-10);
+  box-shadow: -24px 0 80px rgba(0, 0, 0, 0.5);
+}
+
+.scroller {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+/* Sticky header: title, close, and the A–D section tabs. */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px var(--gutter) 16px;
+  background: rgba(15, 15, 15, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--cs-white-08);
+}
+
+.headRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-text-secondary);
+}
+
+.close {
+  font-size: 16px;
+}
+
+.tabs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 14px 6px 6px;
+  border: 1px solid var(--cs-white-10);
+  border-radius: 100px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--cs-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tab:hover {
+  border-color: var(--cs-white-40);
+  color: var(--cs-text-primary);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--cs-pink);
+  outline-offset: 2px;
+}
+
+.tabLetter {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--cs-white-08);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cs-text-primary);
+}
+
+.tab[aria-current="true"] {
+  border-color: var(--cs-pink-28);
+  background: var(--cs-pink-14);
+  color: var(--cs-text-primary);
+}
+
+.tab[aria-current="true"] .tabLetter {
+  background: var(--cs-pink);
+  color: #fff;
+}
+
+.body {
+  width: calc(1020 * var(--v));
+  max-width: calc(100% - 48px);
+  margin: 0 auto;
+  padding: calc(48 * var(--v)) 0 calc(160 * var(--v));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: none;
+  }
+}

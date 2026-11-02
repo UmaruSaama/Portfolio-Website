@@ -1,0 +1,477 @@
+/* ImmerLingo appendix A–D (Figma 150:5006). Column = 1020 Figma px. */
+
+.appendix {
+  display: flex;
+  flex-direction: column;
+  gap: calc(192 * var(--v));
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: calc(96 * var(--v));
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(32 * var(--v));
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Figma "Panel": hairline, 24 radius, page surface. */
+.panel {
+  position: relative;
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+}
+
+/* ---------- row cards (5W1H, JTBD) ---------- */
+
+.rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rowCard {
+  display: grid;
+  grid-template-columns: calc(232 * var(--v)) 1fr;
+  padding: 23px 31px; /* 24/32 in Figma, stroke outside layout */
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  background: var(--cs-surface-10);
+}
+
+.rowCard dt {
+  padding-right: 16px;
+}
+
+.rowLines {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rowLines p {
+  text-wrap: wrap;
+}
+
+.fiveW {
+  padding: calc(48 * var(--v)) calc(87 * var(--v));
+}
+
+.jtbdPanel {
+  padding: calc(38 * var(--v)) calc(56 * var(--v)) calc(58 * var(--v));
+}
+
+.jtbdPanel .rows {
+  gap: 20px;
+}
+
+/* ---------- split: title left (500), content right (500) ---------- */
+
+.split {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(20 * var(--v));
+}
+
+.splitTitle {
+  flex: 0 1 calc(500 * var(--v));
+}
+
+.splitBody {
+  flex: 0 1 calc(500 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.splitHalf {
+  flex: 0 1 calc(500 * var(--v));
+}
+
+/* ---------- grouped icon cards ---------- */
+
+.iconList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.iconItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 32px;
+  border-radius: 8px;
+  background: var(--cs-surface-10);
+}
+
+.iconItem p {
+  text-wrap: wrap;
+}
+
+.icon {
+  flex: none;
+  display: block;
+  width: 32px;
+  height: 32px;
+  padding: 4px; /* 24px glyph in a 32px slot, as in Figma */
+}
+
+.yellow {
+  color: #f8d849;
+}
+
+.pink {
+  color: var(--cs-pink);
+}
+
+.muted {
+  color: var(--cs-white-40);
+}
+
+/* ---------- six-week timeline ---------- */
+
+.timelinePanel {
+  padding: calc(69 * var(--v)) calc(57 * var(--v)) calc(69 * var(--v));
+}
+
+.timeline {
+  position: relative;
+  min-height: calc(543 * var(--v));
+}
+
+.weeks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-left: 1px solid transparent;
+}
+
+.weeks li {
+  position: relative;
+  padding-top: 16px;
+  text-align: center;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cs-text-primary);
+}
+
+/* Column rules: bright at the top, fading out (Figma gradient stroke). */
+.weeks li::before,
+.weeks li:last-child::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.64), rgba(255, 255, 255, 0));
+}
+
+.weeks li:last-child::after {
+  left: auto;
+  right: 0;
+}
+
+.phases {
+  margin: 0;
+  padding: calc(58 * var(--v)) 0 0;
+  list-style: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--v));
+}
+
+.phase {
+  position: relative;
+  margin-left: var(--left);
+  width: var(--width);
+  min-height: calc(114 * var(--v));
+  display: grid;
+  grid-template-columns: auto;
+  align-content: start;
+  justify-items: start;
+  padding: 15px 23px;
+  border: 1px solid rgba(36, 36, 36, 0.6);
+  border-radius: 24px;
+  /* Figma draws the whole card at 60%; only the surface is faded here so
+     the labels keep their contrast. */
+  background: rgba(26, 26, 26, 0.72);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Hatched tail: the part of this phase that overlaps the next one. */
+.phase::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--overlap);
+  z-index: -1;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0 1px,
+    transparent 1px 5.66px
+  );
+}
+
+.phaseIcon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  background: var(--cs-white-10);
+  color: #fff;
+}
+
+.phaseTitle {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cs-text-primary);
+}
+
+.phaseSub {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+/* ---------- SWOT ---------- */
+
+.swotPanel {
+  padding: calc(48 * var(--v)) calc(56 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: calc(34 * var(--v));
+}
+
+.logos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.logos img {
+  display: block;
+  width: calc(775 * var(--v));
+  height: auto;
+  max-width: 100%;
+}
+
+.more {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+.swot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.swotCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 23px 31px;
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  background: var(--cs-surface-10);
+}
+
+.swotCard h4 {
+  margin-bottom: 4px;
+}
+
+.swotCard p {
+  text-wrap: wrap;
+}
+
+/* ---------- citation cards ---------- */
+
+.citePanel {
+  padding: calc(48 * var(--v)) calc(87 * var(--v));
+}
+
+.citeRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.citeCard {
+  min-height: calc(552 * var(--v));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 23px 31px;
+  border: 1px solid var(--cs-surface-14);
+  border-radius: 24px;
+  background: var(--cs-surface-10);
+}
+
+.cite {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cite p {
+  text-wrap: wrap;
+}
+
+.citeBy {
+  text-align: right;
+}
+
+/* ---------- journey ---------- */
+
+.journeyPanel {
+  padding: calc(48 * var(--v)) calc(136 * var(--v)) calc(48 * var(--v)) calc(54 * var(--v));
+}
+
+.journey {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: calc(150 * var(--v)) 1fr;
+  column-gap: calc(7 * var(--v));
+}
+
+.stageCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 11px;
+}
+
+.pill {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 14px 22px;
+  border: 2px solid var(--cs-surface-14);
+  border-radius: 100px;
+  background: var(--cs-surface-12);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+  white-space: nowrap;
+}
+
+.arrow {
+  display: block;
+  margin: 12px 0;
+  color: var(--cs-white-80);
+}
+
+.lane {
+  position: relative;
+  padding-top: 19px;
+}
+
+.laneLine {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    #fff 10%,
+    #fff 90%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.actions {
+  margin: 0;
+  padding: 0 0 0 17%;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 8%;
+}
+
+.action {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--cs-text-tertiary);
+}
+
+.dot {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 7px var(--cs-surface-06);
+}
+
+.actionNum {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1180px) {
+  .rowCard {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+  }
+}

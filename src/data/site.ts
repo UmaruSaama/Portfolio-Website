@@ -3,10 +3,9 @@
 export const site = {
   name: "Shivam",
   tagline: "I design experiences that feel simple",
-  // TODO: real LinkedIn profile URL
-  linkedin: "https://www.linkedin.com/",
-  // TODO: real contact address
-  contact: "mailto:hello@example.com",
+  // From the CV (Website page, Placement-Portfolio)
+  linkedin: "https://www.linkedin.com/in/shivam-umaru/",
+  contact: "mailto:shivam.bdes@iitg.ac.in",
 };
 
 export type NavItem = {

@@ -1,5 +1,6 @@
 import { Chapter, ChapterEnd, Figure, Opener } from "../Primitives";
 import styles from "./Ch03Problem.module.css";
+import { AppendixPointer } from "../AppendixPointer";
 
 type Avatar = "youtube" | "reddit" | "forum";
 type Tier = "back" | "mid";
@@ -159,7 +160,7 @@ export function Ch03Problem() {
         <p className={styles.appendix}>
           <span>Full detail:</span>
           <span>5W1H breakdown, constraints and timeline</span>
-          <span className={styles.appendixLink}>→ Appendix A</span>
+          <AppendixPointer section="a" className={styles.appendixLink} />
         </p>
         <ChapterEnd>Two learners showed this most clearly.</ChapterEnd>
       </div>

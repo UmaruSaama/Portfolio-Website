@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { Chapter, ChapterEnd, Opener } from "../Primitives";
 import cs from "../cs.module.css";
 import s from "./Ch05Learned.module.css";
+import { AppendixPointer } from "../AppendixPointer";
 
 /* ------------------------------------------------------------------ */
 /* Pieces shared by chapters 05 and 06 (same Figma components).        */
@@ -78,12 +79,12 @@ export function IconCard({ icon, title, children }: { icon: IconName; title: Rea
 }
 
 /** "Appendix link": hairline, label, description and pink pointer. */
-export function AppendixLink({ what, target }: { what: string; target: string }) {
+export function AppendixLink({ what, section }: { what: string; section: string }) {
   return (
     <p className={s.appendix}>
       <span>Full detail:</span>
       <span>{what}</span>
-      <span className={s.appendixTarget}>→ {target}</span>
+      <AppendixPointer section={section} className={s.appendixTarget} />
     </p>
   );
 }
@@ -405,7 +406,7 @@ export function Ch05Learned() {
             </ul>
           </Fig>
         </div>
-        <AppendixLink what="SWOT, full source quotes and published studies" target="Appendix B" />
+        <AppendixLink what="SWOT, full source quotes and published studies" section="b" />
       </section>
 
       {/* 329:2280 — Insights opener */}

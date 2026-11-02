@@ -12,6 +12,8 @@ export type Annot = {
 export type ExperienceFigure = {
   slug: string;
   title: string;
+  /** Title on touch devices (tablet/phone), when it differs (Figma case study T/M). */
+  touchTitle?: string;
   part: 1 | 2;
   headline: string;
   steps: { title: string; body: string }[];
@@ -135,6 +137,7 @@ export const experienceFigures: ExperienceFigure[] = [
   {
     slug: "hover-lookup",
     title: "Hover lookup",
+    touchTitle: "Tap to look up",
     part: 1,
     headline: "Look up a word without stopping the story.",
     steps: [
