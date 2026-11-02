@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:artifact": "node scripts/build-artifact.mjs"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
