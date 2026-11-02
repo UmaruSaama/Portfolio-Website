@@ -4,6 +4,10 @@ Umaru's portfolio site. Next.js (App Router, TypeScript) + GSAP.
 
 ## Run locally
 
+On Windows, double-click `start-dev.bat`. It installs packages when needed, starts the dev server and opens the browser.
+
+Or from a terminal:
+
 ```bash
 npm install
 npm run dev
