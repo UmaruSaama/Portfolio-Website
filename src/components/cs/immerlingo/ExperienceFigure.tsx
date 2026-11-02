@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Figure } from "../Primitives";
 import type { ExperienceFigure as Data } from "./ch08Figures";
 import { useDeviceView, type Device } from "./DeviceView";
@@ -22,6 +23,11 @@ const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] = 
   { id: "m", label: "Phone", Icon: IconMobile },
 ];
 
+const ORIENTATIONS = [
+  { o: "l", name: "landscape", OIcon: IconLandscape },
+  { o: "p", name: "portrait", OIcon: IconPortrait },
+] as const;
+
 /**
  * "Interactive" figure from chapter 08: toolbar (annotations, device,
  * tablet orientation, mode) over a stage with the headline, the app on the
@@ -33,6 +39,16 @@ const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] = 
  */
 export function ExperienceFigure({ fig }: { fig: Data }) {
   const view = useDeviceView();
+  // The tablet button unmounts when it expands; keep keyboard focus on the
+  // orientation that replaced it (only in the figure that was clicked).
+  const focusOrientation = useRef(false);
+  const activeOrientation = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (view.device === "t" && focusOrientation.current) {
+      focusOrientation.current = false;
+      activeOrientation.current?.focus({ preventScroll: true });
+    }
+  }, [view.device]);
   const variant = view.device === "t" ? `t${view.orientation}` : view.device; // d | tl | tp | m
   const title = view.device !== "d" && fig.touchTitle ? fig.touchTitle : fig.title;
   const pinsOn = view.annotations && view.device === "d" && fig.highlights.length > 0;
@@ -62,49 +78,45 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
 
       <span className={styles.divider} aria-hidden="true" />
 
-      <div className={styles.segment} role="radiogroup" aria-label="Device">
-        {DEVICES.map(({ id, label, Icon }) => (
-          <button
-            key={id}
-            type="button"
-            role="radio"
-            aria-checked={view.device === id}
-            aria-label={label}
-            title={label}
-            className={styles.segBtn}
-            onClick={() => view.setDevice(id)}
-          >
-            <Icon />
-          </button>
-        ))}
+      {/* Device switch. Tablet expands in place into a nested orientation
+          switch (a box within the selected box) instead of a second toggle. */}
+      <div className={styles.segment} role="group" aria-label="Device">
+        {DEVICES.map(({ id, label, Icon }) =>
+          id === "t" && view.device === "t" ? (
+            <span key={id} className={styles.nested} role="group" aria-label="Tablet orientation">
+              {ORIENTATIONS.map(({ o, name, OIcon }) => (
+                <button
+                  key={o}
+                  ref={view.orientation === o ? activeOrientation : undefined}
+                  type="button"
+                  aria-pressed={view.orientation === o}
+                  aria-label={`Tablet, ${name}`}
+                  title={`Tablet, ${name}`}
+                  className={styles.innerBtn}
+                  onClick={() => view.setOrientation(o)}
+                >
+                  <OIcon />
+                </button>
+              ))}
+            </span>
+          ) : (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={view.device === id}
+              aria-label={label}
+              title={label}
+              className={styles.segBtn}
+              onClick={() => {
+                if (id === "t") focusOrientation.current = true;
+                view.setDevice(id);
+              }}
+            >
+              <Icon />
+            </button>
+          ),
+        )}
       </div>
-
-      {view.device === "t" && (
-        <div className={styles.segment} role="radiogroup" aria-label="Tablet orientation">
-          <button
-            type="button"
-            role="radio"
-            aria-checked={view.orientation === "l"}
-            aria-label="Landscape"
-            title="Landscape"
-            className={styles.segBtn}
-            onClick={() => view.setOrientation("l")}
-          >
-            <IconLandscape />
-          </button>
-          <button
-            type="button"
-            role="radio"
-            aria-checked={view.orientation === "p"}
-            aria-label="Portrait"
-            title="Portrait"
-            className={styles.segBtn}
-            onClick={() => view.setOrientation("p")}
-          >
-            <IconPortrait />
-          </button>
-        </div>
-      )}
 
       <span className={styles.divider} aria-hidden="true" />
 
