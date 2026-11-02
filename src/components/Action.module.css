@@ -1,0 +1,87 @@
+/*
+  One action anatomy for the whole site, taken from the Figma's
+  "Product video" button: a 44px disc holding an icon, with an 18px
+  condensed label beside it. Variants change only the disc fill.
+*/
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--label-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.disc {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 100px;
+  background: var(--fill-tertiary);
+  color: #000;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.25s ease,
+    box-shadow 0.35s ease;
+}
+
+.disc svg {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.action:hover .disc,
+.action:focus-visible .disc {
+  transform: scale(1.08);
+}
+
+/* Primary: the accent disc, with the card's pink glow as its halo. */
+.accent {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 0 rgba(245, 35, 75, 0);
+}
+
+.action:hover .accent,
+.action:focus-visible .accent {
+  box-shadow: 0 0 0 6px rgba(245, 35, 75, 0.14);
+}
+
+.action:hover .accent svg,
+.action:focus-visible .accent svg {
+  transform: translateX(2px);
+}
+
+/* On the dark player. */
+.glass {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.onDark {
+  color: #fff;
+}
+
+/* Inside the card the action scales with the card like the rest of it. */
+.inCard {
+  gap: calc(10 * var(--u));
+  font-size: max(calc(18 * var(--u)), 15px);
+}
+
+.inCard .disc {
+  width: max(calc(44 * var(--u)), 36px);
+  height: max(calc(44 * var(--u)), 36px);
+}

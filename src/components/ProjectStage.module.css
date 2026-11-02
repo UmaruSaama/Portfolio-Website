@@ -180,44 +180,17 @@
   text-wrap: pretty;
 }
 
-/* Visible way into the case study; the whole card is clickable too. */
+/* Visible way into the case study (Action anatomy, primary variant). */
 .cta {
   position: relative;
   z-index: 2;
-  margin-top: calc(14 * var(--u));
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: max(calc(40 * var(--u)), 34px);
-  padding: 0 max(calc(18 * var(--u)), 14px);
-  border-radius: 100px;
-  background: rgba(0, 0, 0, 0.88);
-  color: #fff;
-  font-size: max(calc(16 * var(--u)), 14px);
-  transition: background-color 0.2s ease;
+  margin-top: calc(16 * var(--u));
 }
 
-.cta:hover {
-  background: #000;
-}
-
-.ctaArrow {
-  display: inline-block;
-  transition: transform 0.25s ease;
-}
-
-.cta:hover .ctaArrow,
-.card:hover .ctaArrow {
-  transform: translateX(3px);
-}
-
-.soon {
-  margin-top: calc(14 * var(--u));
-  height: max(calc(40 * var(--u)), 34px);
-  display: flex;
-  align-items: center;
-  font-size: max(calc(14 * var(--u)), 13px);
-  color: var(--label-secondary);
+/* The whole card is the link, so hovering anywhere on it previews the CTA. */
+.card:hover .ctaDisc {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(245, 35, 75, 0.14);
 }
 
 .media {
@@ -230,15 +203,25 @@
   height: auto;
 }
 
+/* Placeholder slides: the outline of the device the render will sit in,
+   so the card keeps its shape without pretending to show work. */
 .mediaEmpty {
   height: calc(432 * var(--u));
+  margin: 0 auto;
+  width: calc(883 * var(--u));
+  padding: calc(14 * var(--u)) calc(14 * var(--u)) 0;
+  border-radius: calc(44 * var(--u)) calc(44 * var(--u)) 0 0;
+  background: rgba(0, 0, 0, 0.035);
+}
+
+.mediaEmptyScreen {
   display: grid;
   place-items: center;
-  border: 1px dashed var(--label-tertiary);
-  border-bottom: 0;
-  border-radius: 12px 12px 0 0;
-  font-size: 14px;
-  line-height: 1.2;
+  height: 100%;
+  border-radius: calc(30 * var(--u)) calc(30 * var(--u)) 0 0;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: max(calc(16 * var(--u)), 14px);
+  line-height: 1;
   color: var(--label-secondary);
 }
 
@@ -257,30 +240,49 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .card:not([data-video]),
-  .card:not([data-video]) .cardLink {
+  .card:not([data-video]):not([data-placeholder]),
+  .card:not([data-video]):not([data-placeholder]) .cardLink {
     cursor: none;
   }
 }
 
+/* The one expressive element: an accent disc that squashes and stretches
+   along the direction of travel (see ProjectStage cursor code). */
 .cursor {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 30;
-  padding: 10px 16px;
-  border-radius: 100px;
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  font-size: 15px;
-  line-height: 1;
-  white-space: nowrap;
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
   pointer-events: none;
   /* GSAP sets the real values; this keeps it hidden before hydration */
   opacity: 0;
   visibility: hidden;
   will-change: transform, opacity;
-  contain: layout paint;
+}
+
+.cursorDisc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 8px rgba(245, 35, 75, 0.12),
+    0 10px 30px -8px rgba(245, 35, 75, 0.55);
+  will-change: transform;
+}
+
+.cursorLabel {
+  position: relative;
+  font-size: 15px;
+  line-height: 1.05;
+  font-weight: var(--w-semibold);
+  text-align: center;
+  color: #fff;
+  letter-spacing: 0.01em;
 }
 
 /* ---------- video player (replaces the card content) ---------- */
@@ -292,7 +294,7 @@
   display: grid;
   place-items: center;
   border-radius: inherit;
-  background: #0e0e10;
+  background: #000;
   color: #fff;
 }
 
@@ -311,8 +313,9 @@
 }
 
 .playerEmpty {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.72);
+  display: grid;
+  justify-items: center;
+  gap: 10px;
   padding: 24px;
   text-align: center;
 }
@@ -321,22 +324,27 @@
   outline: none;
 }
 
+.playerEmptyTitle {
+  font-size: max(calc(28 * var(--u)), 22px);
+  font-weight: var(--w-semibold);
+  line-height: 1.1;
+  color: #fff;
+}
+
+.playerEmptyBody {
+  max-width: 34ch;
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-stretch: var(--stretch-body);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .playerClose {
   position: absolute;
   top: 16px;
   right: 16px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
-  font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.playerClose:hover {
-  background: rgba(255, 255, 255, 0.24);
 }
 
 /* ---------- right side + corner ---------- */
@@ -376,18 +384,38 @@
   transform: translateY(-6px) rotate(-8deg);
 }
 
+/* Speech bubble: personality, but in the site's own materials
+   (soft fill, 6px radius, condensed label). */
 .chickTip {
-  font-size: 14px;
-  color: var(--label-secondary);
+  position: relative;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--fill-tertiary);
+  font-size: 15px;
+  color: var(--label-primary);
   opacity: 0;
-  translate: -4px 0;
-  transition: opacity 0.2s ease, translate 0.2s ease;
+  transform: translateX(-6px) scale(0.85);
+  transform-origin: left center;
+  transition:
+    opacity 0.2s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chickTip::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  translate: 0 -50%;
+  border: 5px solid transparent;
+  border-left: 0;
+  border-right-color: var(--fill-tertiary);
 }
 
 .chick:hover .chickTip,
 .chick:focus-visible .chickTip {
   opacity: 1;
-  translate: 0 0;
+  transform: none;
 }
 
 /* ---------- smaller screens ---------- */
@@ -475,6 +503,7 @@
   }
 
   .mediaEmpty {
+    width: 100%;
     height: 200px;
   }
 }

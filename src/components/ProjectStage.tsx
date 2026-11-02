@@ -7,6 +7,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import type { Project } from "@/data/projects";
 import { VideoToggle } from "./VideoToggle";
+import { ArrowIcon, CloseIcon } from "./icons";
+import action from "./Action.module.css";
 import styles from "./ProjectStage.module.css";
 
 gsap.registerPlugin(useGSAP);
@@ -88,31 +90,58 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       }
 
       // ---------- custom cursor ----------
-      // Centred on the pointer with xPercent/yPercent (GSAP owns the transform,
-      // so a CSS translate would be overwritten). quickTo reuses one tween per
-      // axis instead of creating a tween on every pointermove.
+      // Outer element: position (quickTo per axis, centred with x/yPercent
+      // because GSAP owns the transform) and show/hide scale.
+      // Inner disc: squash-and-stretch along the direction of travel, so the
+      // cursor reads as a soft object being dragged, then springs round when
+      // the pointer stops. The label stays upright and unstretched.
       const cursorEl = cursor.current;
-      if (cursorEl) gsap.set(cursorEl, { xPercent: -50, yPercent: -50, scale: 0.5, autoAlpha: 0 });
-      const moveX = cursorEl ? gsap.quickTo(cursorEl, "x", { duration: 0.18, ease: "power3.out" }) : null;
-      const moveY = cursorEl ? gsap.quickTo(cursorEl, "y", { duration: 0.18, ease: "power3.out" }) : null;
+      const discEl = cursorEl?.querySelector<HTMLElement>("[data-cursor-disc]") ?? null;
+      if (cursorEl) gsap.set(cursorEl, { xPercent: -50, yPercent: -50, scale: 0, autoAlpha: 0 });
+      const moveX = cursorEl ? gsap.quickTo(cursorEl, "x", { duration: 0.22, ease: "power3.out" }) : null;
+      const moveY = cursorEl ? gsap.quickTo(cursorEl, "y", { duration: 0.22, ease: "power3.out" }) : null;
+      const stretchTo = discEl
+        ? gsap.quickTo(discEl, "scaleX", { duration: 0.25, ease: "power2.out" })
+        : null;
+      const squashTo = discEl ? gsap.quickTo(discEl, "scaleY", { duration: 0.25, ease: "power2.out" }) : null;
+      // Rotation is set instantly: tweening it would spin the disc whenever
+      // the angle wraps. The stretch is symmetric, so -90..90 covers it.
+      const setAngle = discEl ? gsap.quickSetter(discEl, "rotation", "deg") : null;
       let cursorVisible = false;
+      let last = { x: 0, y: 0, t: 0 };
+      let settle: gsap.core.Tween | null = null;
+
+      const relax = () => {
+        stretchTo?.(1);
+        squashTo?.(1);
+      };
 
       const cursorHide = safe(() => {
         if (!cursorEl || !cursorVisible) return;
         cursorVisible = false;
-        gsap.to(cursorEl, { scale: 0.5, autoAlpha: 0, duration: 0.18, ease: "power2.in", overwrite: "auto" });
+        settle?.kill();
+        relax();
+        gsap.to(cursorEl, { scale: 0, autoAlpha: 0, duration: 0.2, ease: "power2.in", overwrite: "auto" });
       });
 
       const cursorShow = safe((e: React.PointerEvent) => {
         if (!cursorEl || !finePointer || videoOpenRef.current || e.pointerType !== "mouse") return;
+        // Nothing to open on a placeholder, so no "view" cursor there.
+        if (projects[activeRef.current]?.placeholder) return;
         if (cursorVisible) return;
         cursorVisible = true;
-        // Jump to the pointer first (and reset the quickTo targets) so it
-        // doesn't fly in from where it was last hidden.
-        gsap.set(cursorEl, { x: e.clientX, y: e.clientY });
-        moveX?.tween.invalidate();
-        moveY?.tween.invalidate();
-        gsap.to(cursorEl, { scale: 1, autoAlpha: 1, duration: 0.25, ease: "back.out(2)", overwrite: "auto" });
+        // Start the follow tweens at the pointer so it grows in place
+        // instead of flying in from where it was last hidden.
+        moveX?.(e.clientX, e.clientX);
+        moveY?.(e.clientY, e.clientY);
+        last = { x: e.clientX, y: e.clientY, t: performance.now() };
+        gsap.to(cursorEl, {
+          scale: 1,
+          autoAlpha: 1,
+          duration: 0.45,
+          ease: "elastic.out(1, 0.6)",
+          overwrite: "auto",
+        });
       });
 
       const cursorMove = safe((e: React.PointerEvent) => {
@@ -122,11 +151,36 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         }
         moveX?.(e.clientX);
         moveY?.(e.clientY);
+        if (reduce || !discEl) return;
+
+        const now = performance.now();
+        const dt = Math.max(now - last.t, 8);
+        const dx = e.clientX - last.x;
+        const dy = e.clientY - last.y;
+        last = { x: e.clientX, y: e.clientY, t: now };
+
+        const speed = Math.hypot(dx, dy) / dt; // px per ms
+        const stretch = Math.min(speed * 0.12, 0.35);
+        if (stretch > 0.02) {
+          let angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+          if (angle > 90) angle -= 180;
+          if (angle < -90) angle += 180;
+          setAngle?.(angle);
+          stretchTo?.(1 + stretch);
+          squashTo?.(1 - stretch * 0.6);
+        }
+        settle?.kill();
+        settle = gsap.delayedCall(0.08, relax);
       });
 
       const cursorPress = safe((down: boolean) => {
         if (!cursorEl || !cursorVisible) return;
-        gsap.to(cursorEl, { scale: down ? 0.9 : 1, duration: 0.15, ease: "power2.out", overwrite: "auto" });
+        gsap.to(cursorEl, {
+          scale: down ? 0.86 : 1,
+          duration: 0.2,
+          ease: down ? "power2.out" : "back.out(3)",
+          overwrite: "auto",
+        });
       });
 
       // ---------- slides ----------
@@ -145,6 +199,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         busy.current = true;
         activeRef.current = next;
         setActive(next);
+        if (projects[next]?.placeholder) cursorHide();
 
         if (reduce) {
           gsap.set(from, { autoAlpha: 0 });
@@ -339,7 +394,6 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
   );
 
   const current = projects[active];
-  const cursorLabel = current.placeholder ? "Coming soon" : "View case study";
 
   return (
     <div className={styles.stage} ref={root}>
@@ -362,6 +416,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       <section
         className={styles.card}
         data-video={videoOpen ? "open" : undefined}
+        data-placeholder={current.placeholder ? "" : undefined}
         aria-roledescription="carousel"
         aria-label="Selected work"
         onPointerEnter={(e) => actions.current.cursorShow(e)}
@@ -411,22 +466,18 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               <p className={styles.summary} data-anim="text">
                 {p.summary}
               </p>
-              {p.placeholder ? (
-                <p className={styles.soon} data-anim="text">
-                  Case study coming soon
-                </p>
-              ) : (
+              {!p.placeholder && (
                 <Link
                   href={`/work/${p.slug}`}
-                  className={styles.cta}
+                  className={`${action.action} ${action.inCard} ${styles.cta}`}
                   data-anim="text"
                   prefetch={!IN_ARTIFACT}
                   onClick={artifactGuard}
                 >
-                  Read case study
-                  <span aria-hidden="true" className={styles.ctaArrow}>
-                    →
+                  <span className={`${action.disc} ${action.accent} ${styles.ctaDisc}`} aria-hidden="true">
+                    <ArrowIcon />
                   </span>
+                  Read case study
                 </Link>
               )}
             </div>
@@ -442,7 +493,9 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                   sizes="(max-width: 767px) 100vw, 1097px"
                 />
               ) : (
-                <div className={styles.mediaEmpty}>Hero render goes here</div>
+                <div className={styles.mediaEmpty}>
+                  <span className={styles.mediaEmptyScreen}>Case study in progress</span>
+                </div>
               )}
             </div>
           </div>
@@ -470,13 +523,34 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                 data-player-focus
               />
             ) : (
-              <p className={styles.playerEmpty} tabIndex={-1} data-player-focus>
-                The product video for {current.title.accent} isn&rsquo;t added yet.
-              </p>
+              <div className={styles.playerEmpty} tabIndex={-1} data-player-focus>
+                <p className={styles.playerEmptyTitle}>The product video is still being edited.</p>
+                <p className={styles.playerEmptyBody}>
+                  The case study walks through the same flows, screen by screen.
+                </p>
+                {!current.placeholder && (
+                  <Link
+                    href={`/work/${current.slug}`}
+                    className={`${action.action} ${action.onDark}`}
+                    prefetch={!IN_ARTIFACT}
+                    onClick={artifactGuard}
+                  >
+                    <span className={`${action.disc} ${action.accent}`} aria-hidden="true">
+                      <ArrowIcon />
+                    </span>
+                    Read case study
+                  </Link>
+                )}
+              </div>
             )}
           </div>
-          <button type="button" className={styles.playerClose} onClick={() => actions.current.closeVideo()}>
-            Close
+          <button
+            type="button"
+            className={`${action.disc} ${action.glass} ${styles.playerClose}`}
+            aria-label="Close video"
+            onClick={() => actions.current.closeVideo()}
+          >
+            <CloseIcon />
           </button>
         </div>
       </section>
@@ -495,7 +569,12 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       </div>
 
       <div ref={cursor} className={styles.cursor} aria-hidden="true">
-        {cursorLabel}
+        <span className={styles.cursorDisc} data-cursor-disc />
+        <span className={styles.cursorLabel}>
+          View
+          <br />
+          case study
+        </span>
       </div>
 
       {/* The chick is the way to the About page: personality with a job. */}
