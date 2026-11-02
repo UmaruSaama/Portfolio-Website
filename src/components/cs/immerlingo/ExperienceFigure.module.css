@@ -524,6 +524,18 @@
   width: min(calc(96cqw - 18px), calc((96cqh - 18px) * 834 / 1194));
 }
 
+/* Screen box: annotations are % of the screen (Figma T/M), so they
+   scale with it. Pins may sit a few px outside the screen edge. */
+.screen {
+  position: relative;
+}
+
+.screenAnnotations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 .frame[data-kind="phone"] {
   --bezel: 7px;
   border-radius: 32px;

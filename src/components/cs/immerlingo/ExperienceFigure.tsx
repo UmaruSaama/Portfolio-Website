@@ -2,7 +2,11 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Figure } from "../Primitives";
-import type { ExperienceFigure as Data } from "./ch08Figures";
+import {
+  experienceFigures,
+  type ExperienceFigure as Data,
+} from "./ch08Figures";
+import { touchAnnotations } from "./ch08TouchAnnotations";
 import { useDeviceView, type Device } from "./DeviceView";
 import {
   IconCursor,
@@ -109,6 +113,13 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
     view.annotations &&
     view.device === "d" &&
     fig.highlights.length > 0;
+  // Tablet landscape and phone annotations (Figma T/M); none for portrait.
+  const figIndex = experienceFigures.findIndex((f) => f.slug === fig.slug);
+  const touch =
+    variant === "tl" || variant === "m"
+      ? touchAnnotations(figIndex, variant)
+      : undefined;
+  const touchOn = !video && view.annotations;
   const deviceLabel =
     view.device === "d"
       ? "desktop"
@@ -302,15 +313,44 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
               className={styles.frame}
               data-kind={view.device === "m" ? "phone" : "tablet"}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
-              <img
-                src={`${SCREENS}/${fig.slug}-${variant}.webp`}
-                alt={`${title}, ${deviceLabel} screen`}
-                width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
-                height={variant === "tl" ? 834 : variant === "tp" ? 1194 : 844}
-                loading="lazy"
-                decoding="async"
-              />
+              <div className={styles.screen}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
+                <img
+                  src={`${SCREENS}/${fig.slug}-${variant}.webp`}
+                  alt={`${title}, ${deviceLabel} screen`}
+                  width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
+                  height={
+                    variant === "tl" ? 834 : variant === "tp" ? 1194 : 844
+                  }
+                  loading="lazy"
+                  decoding="async"
+                />
+                {touchOn && touch && (
+                  <div className={styles.screenAnnotations} aria-hidden="true">
+                    {touch.hs.map(([l, t, w, h], i) => (
+                      <span
+                        key={`h${i}`}
+                        className={styles.highlight}
+                        style={{
+                          left: `${l}%`,
+                          top: `${t}%`,
+                          width: `${w}%`,
+                          height: `${h}%`,
+                        }}
+                      />
+                    ))}
+                    {touch.ps.map(([l, t], i) => (
+                      <span
+                        key={`p${i}`}
+                        className={styles.pin}
+                        style={{ left: `${l}%`, top: `${t}%` }}
+                      >
+                        {i + 1}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
