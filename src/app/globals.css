@@ -3,14 +3,16 @@
 :root {
   /* Tokens from Figma (Placement-Portfolio · Main Page) */
   --label-primary: rgba(0, 0, 0, 0.85);
-  --label-secondary: rgba(0, 0, 0, 0.5);
-  --label-tertiary: rgba(0, 0, 0, 0.25);
-  --label-muted: #8e8e93;
+  /* Secondary greys raised from the Figma values to pass WCAG AA 4.5:1
+     on both white and the card surface (#f2f2f2). */
+  --label-secondary: rgba(0, 0, 0, 0.6); /* 5.5:1 on card, 5.7:1 on white */
+  --label-tertiary: rgba(0, 0, 0, 0.25); /* decorative only */
+  --label-muted: #6e6e73; /* 5.1:1 on white (was #8e8e93, 3.3:1) */
+  --dot-idle: rgba(0, 0, 0, 0.45); /* 3.3:1 non-text on the rail */
   --fill-tertiary: rgba(0, 0, 0, 0.05);
   --fill-quaternary: rgba(0, 0, 0, 0.03);
   --accent: #f5234b;
-  --accent-80: rgba(245, 35, 75, 0.8);
-  --claude: #de7356;
+  --claude: #b8502f; /* darkened Claude orange, 5.0:1 on white */
   --radius-sm: 6px;
   --radius-card: 20px;
   --page-x: 80px;
@@ -38,6 +40,7 @@ body {
 body {
   font-family: var(--font-ui);
   font-stretch: var(--stretch);
+  --stretch-body: 100%; /* body copy reads better at normal width */
   font-weight: var(--w-medium);
   background: #fff;
   color: var(--label-primary);

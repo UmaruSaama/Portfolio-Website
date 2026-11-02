@@ -45,6 +45,8 @@
 
 .tagline {
   color: var(--label-muted);
+  font-stretch: var(--stretch-body);
+  font-size: 15px;
 }
 
 .period {
@@ -76,6 +78,13 @@
   font-size: 16px;
   color: var(--label-secondary);
   white-space: nowrap;
+}
+
+.ext {
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 0.8em;
+  translate: 0 -0.15em;
 }
 
 .claude {

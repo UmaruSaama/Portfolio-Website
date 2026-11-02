@@ -16,10 +16,10 @@ export type NavItem = {
 };
 
 export const nav: NavItem[] = [
-  { label: "Product", href: "/" },
+  { label: "Work", href: "/" },
   { label: "Motion", href: "/motion" },
   { label: "Archive", href: "/archive" },
-  { label: "about Me", href: "/about" },
+  { label: "About", href: "/about" },
   { label: "LinkedIn", href: site.linkedin, external: true },
   { label: "Contact", href: site.contact, external: true },
 ];

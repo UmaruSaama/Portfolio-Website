@@ -25,7 +25,7 @@ export function SiteHeader() {
       <NavLinks />
 
       <p className={styles.credit}>
-        Developed with <span className={styles.claude}>Claude Code</span>.
+        Designed in Figma, built with <span className={styles.claude}>Claude Code</span>.
       </p>
     </header>
   );

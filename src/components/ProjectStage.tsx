@@ -33,6 +33,8 @@ type Actions = {
 
 const noop = () => {};
 const IN_ARTIFACT = process.env.NEXT_PUBLIC_ARTIFACT === "1";
+// Inside the artifact only "/" exists, so internal links do nothing there.
+const artifactGuard = IN_ARTIFACT ? (e: React.MouseEvent) => e.preventDefault() : undefined;
 
 export function ProjectStage({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
@@ -355,7 +357,6 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
             </li>
           ))}
         </ol>
-        <Image className={styles.sparkle} src="/images/sparkle.png" alt="" width={20} height={18} />
       </div>
 
       <section
@@ -384,16 +385,18 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${projects.length}`}
           >
-            {/* Whole card is the link; it sits under nothing interactive. */}
+            {/* Click-anywhere layer for mouse users. Hidden from keyboard and
+                screen readers: the visible "Read case study" button below is
+                the real, focusable link to the same page. */}
             {!p.placeholder && (
               <Link
                 href={`/work/${p.slug}`}
                 className={styles.cardLink}
                 prefetch={!IN_ARTIFACT}
-                onClick={IN_ARTIFACT ? (e) => e.preventDefault() : undefined}
-              >
-                <span className="visually-hidden">View case study: {p.title.accent}</span>
-              </Link>
+                onClick={artifactGuard}
+                tabIndex={-1}
+                aria-hidden="true"
+              />
             )}
 
             <div className={styles.copy}>
@@ -408,6 +411,24 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               <p className={styles.summary} data-anim="text">
                 {p.summary}
               </p>
+              {p.placeholder ? (
+                <p className={styles.soon} data-anim="text">
+                  Case study coming soon
+                </p>
+              ) : (
+                <Link
+                  href={`/work/${p.slug}`}
+                  className={styles.cta}
+                  data-anim="text"
+                  prefetch={!IN_ARTIFACT}
+                  onClick={artifactGuard}
+                >
+                  Read case study
+                  <span aria-hidden="true" className={styles.ctaArrow}>
+                    →
+                  </span>
+                </Link>
+              )}
             </div>
 
             <div className={styles.media} data-anim="media">
@@ -460,7 +481,12 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         </div>
       </section>
 
-      <div className={styles.side}>
+      {/* Only projects that have (or will have) a product video get the button. */}
+      <div
+        className={styles.side}
+        data-hidden={current.placeholder ? "" : undefined}
+        inert={current.placeholder}
+      >
         <VideoToggle
           open={videoOpen}
           controls={PLAYER_ID}
@@ -472,9 +498,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         {cursorLabel}
       </div>
 
-      <span className={styles.chick} aria-hidden="true">
-        🐤
-      </span>
+      {/* The chick is the way to the About page: personality with a job. */}
+      <Link href="/about" className={styles.chick} onClick={artifactGuard} prefetch={!IN_ARTIFACT}>
+        <span aria-hidden="true">🐤</span>
+        <span className={styles.chickTip}>About me</span>
+      </Link>
 
       <p className="visually-hidden" aria-live="polite">
         {videoOpen
