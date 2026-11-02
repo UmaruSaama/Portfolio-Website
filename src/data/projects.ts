@@ -30,7 +30,7 @@ export const projects: Project[] = [
       alt: "ImmerLingo Home on iPad: greeting, 3-day streak, Japanese level 1 progress and score breakdown.",
     },
   },
-  ...[2, 3, 4, 5].map(
+  ...[2, 3, 4].map(
     (n): Project => ({
       slug: `project-0${n}`,
       tags: ["Case study"],
