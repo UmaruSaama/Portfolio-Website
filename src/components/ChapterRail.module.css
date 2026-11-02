@@ -60,6 +60,7 @@
   align-items: baseline;
   gap: 6px;
   font-size: 14px;
+  font-weight: 500; /* Hanken Medium, as the Figma CS labels */
   line-height: 1;
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.55); /* 6.1:1 on #0F0F0F */
@@ -70,6 +71,31 @@
   font-size: 11px;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.4);
+}
+
+/*
+  Full Figma chapter names need ~190px; the rail only has that much room
+  once its left edge stops at 80px and the column margin is wide enough
+  (≥ 1680px). Below that, long names use their short form. The full name
+  stays in the accessibility tree either way.
+*/
+.short {
+  display: none;
+}
+
+@media (max-width: 1679px) {
+  .full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .short {
+    display: inline;
+  }
 }
 
 .item:hover .label,
@@ -95,7 +121,7 @@
 }
 
 /* Not enough margin for names: dots only (names stay for screen readers). */
-@media (max-width: 1359px) {
+@media (max-width: 1439px) { /* below this "Meet the learners" comes within 16px of the column */
   .label {
     position: absolute;
     width: 1px;

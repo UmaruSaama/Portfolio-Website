@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { chapterAnchor } from "@/data/projects";
 import styles from "./ChapterRail.module.css";
 
-type Chapter = { id: string; label: string };
+type Chapter = { id: string; label: string; short?: string };
 
 /**
  * Left-hand chapter pagination for a case study: the home page's dot pill,
@@ -63,7 +63,16 @@ export function ChapterRail({ chapters }: { chapters: Chapter[] }) {
               <span className={styles.dot} aria-hidden="true" />
               <span className={styles.label}>
                 <span className={styles.num}>{pad(i + 1)}</span>
-                {c.label}
+                {c.short ? (
+                  <>
+                    <span className={styles.full}>{c.label}</span>
+                    <span className={styles.short} aria-hidden="true">
+                      {c.short}
+                    </span>
+                  </>
+                ) : (
+                  c.label
+                )}
               </span>
             </button>
           </li>

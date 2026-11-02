@@ -11,8 +11,12 @@ export type Project = {
   summary: string;
   /** What the iPad screen shows (card preview and case-study hero). */
   screen?: { kind: "placeholder"; label: string; spec: string; tag: string };
-  /** Case-study chapters, in order (Figma "Content" frames). Drives the left rail. */
-  chapters?: { id: string; label: string }[];
+  /**
+   * Case-study chapters, in order. `label` = the Figma chapter frame name
+   * ("NN · Label"); `short` is shown in the rail where the full name would
+   * reach the content column.
+   */
+  chapters?: { id: string; label: string; short?: string }[];
   /** Product video for the "Product video" button. */
   videoSrc?: string;
   placeholder?: boolean;
@@ -34,10 +38,10 @@ export const projects: Project[] = [
       { id: "problem", label: "The problem" },
       { id: "learners", label: "Meet the learners" },
       { id: "learned", label: "What I learned" },
-      { id: "principles", label: "Principles" },
+      { id: "principles", label: "From insight to principle", short: "Principles" },
       { id: "loop", label: "Shaping the loop" },
       { id: "experience", label: "The experience" },
-      { id: "system", label: "The system" },
+      { id: "system", label: "The system underneath", short: "The system" },
       { id: "next", label: "What’s next" },
       { id: "reflection", label: "Reflection" },
       { id: "close", label: "Close" },
