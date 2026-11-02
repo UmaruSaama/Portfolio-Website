@@ -2,13 +2,6 @@
    Illustrations inside figure stages are drawn on the Figma grid in --v units,
    so each stage scales as a whole with the 1020 column. */
 
-.wideTitle {
-  /* Figma sets this statement 950 wide (one line), wider than the opener's 669 */
-  display: inline-block;
-  width: max-content;
-  max-width: calc(950 * var(--v));
-}
-
 .block {
   display: flex;
   flex-direction: column;

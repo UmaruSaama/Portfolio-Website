@@ -331,6 +331,7 @@ export function Ch04Learners() {
       <div className={styles.opener}>
         <Opener
           eyebrow="The learners"
+          titleWidth={950}
           title="Two learners, two levels, one need: real content they can follow."
           introTitle="Who I designed for"
           intro={

@@ -33,9 +33,9 @@
   font-size: clamp(30px, 2.78vw, 40px);
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.0125em;
+  letter-spacing: -0.005em; /* CS/H1: -0.5% */
   color: var(--cs-text-primary);
-  text-wrap: balance;
+  text-wrap: wrap; /* Figma breaks greedily; balance moved words */
 }
 
 .h2 {
@@ -44,7 +44,7 @@
   font-weight: 500;
   line-height: 1.25;
   color: var(--cs-text-primary);
-  text-wrap: balance;
+  text-wrap: wrap; /* Figma breaks greedily; balance moved words */
 }
 
 .h3 {

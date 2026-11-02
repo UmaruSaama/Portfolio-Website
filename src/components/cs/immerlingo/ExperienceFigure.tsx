@@ -130,7 +130,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
   );
 
   return (
-    <Figure type="Interactive" title={title} controls={controls} stageClassName={styles.stage}>
+    <Figure type="Interactive" title={title} controls={controls} stageClassName={styles.stage} glow>
       <p className={styles.headline}>{fig.headline}</p>
 
       <div className={styles.deviceArea}>

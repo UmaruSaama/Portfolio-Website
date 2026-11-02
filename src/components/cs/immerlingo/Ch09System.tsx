@@ -369,7 +369,8 @@ export function Ch09System() {
     <Chapter id="system" label="The system underneath">
       <Opener
         eyebrow="The system underneath"
-        title={<span className={s.wideTitle}>A small system keeps every screen consistent.</span>}
+        titleWidth={950}
+        title="A small system keeps every screen consistent."
         introTitle="Typography"
         intro={
           <p className={cs.body}>

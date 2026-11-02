@@ -294,10 +294,16 @@
   align-items: start;
 }
 
+/* Figma's 274px text boxes fit a few glyphs more than the browser's
+   variable Hanken; 6px of slack keeps Figma's line breaks. */
+.step > :last-child {
+  margin-right: -6px;
+}
+
 .stepTitle {
   margin: 0 0 4px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400; /* Figma: Hanken Regular 16 */
   line-height: 1.5;
   color: var(--cs-text-primary);
 }

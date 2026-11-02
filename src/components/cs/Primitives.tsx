@@ -46,6 +46,7 @@ export function Opener({
   introTitle,
   intro,
   introTitleWidth,
+  titleWidth = 669,
 }: {
   eyebrow: string;
   title: ReactNode;
@@ -53,11 +54,15 @@ export function Opener({
   intro?: ReactNode;
   /** Figma width of the intro title when it is wider than the default 292. */
   introTitleWidth?: number;
+  /** Figma width of the H1 text box (669 by default; some chapters use 950). */
+  titleWidth?: number;
 }) {
   return (
     <header className={styles.opener}>
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className={`${cs.h1} ${styles.openerTitle}`}>{title}</h2>
+      <h2 className={`${cs.h1} ${styles.openerTitle}`} style={titleWidth !== 669 ? { maxWidth: `calc(${titleWidth} * var(--v))` } : undefined}>
+        {title}
+      </h2>
       {(introTitle || intro) && (
         <div className={styles.introRow}>
           {introTitle && (
@@ -116,13 +121,14 @@ export function Figure({
   controls,
   children,
   stageClassName,
-  glow = true,
+  glow = false,
 }: {
   type: string;
   title: string;
   controls?: ReactNode;
   children: ReactNode;
   stageClassName?: string;
+  /** Figma stage "Glow" (the ch08 figures have one; most stages don't). */
   glow?: boolean;
 }) {
   return (

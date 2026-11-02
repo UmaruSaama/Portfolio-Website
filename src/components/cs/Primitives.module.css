@@ -27,12 +27,15 @@
   color: var(--cs-text-secondary);
 }
 
+/* Figma: 10px white dot in a 20px slot, soft white glow (r10, spread 3, 25%) */
 .eyebrowDot {
   flex: none;
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
+  margin: 5px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--cs-pink) 0 5px, transparent 5.5px), var(--cs-pink-14);
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.25);
 }
 
 .openerTitle {
@@ -91,11 +94,23 @@
 /* ---------- figure frame ---------- */
 
 .figure {
+  position: relative;
   margin: 0;
-  border: 1px solid var(--cs-white-10);
   border-radius: 24px;
   overflow: hidden;
   background: var(--cs-surface-06);
+}
+
+/* Figma strokes sit inside the frame: draw the hairline on top instead of
+   adding 2px to every figure's height. */
+.figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 1px solid var(--cs-white-10);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .toolbar {
@@ -149,20 +164,27 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(180deg, #141414, #0f0f0f);
+  background: var(--cs-surface-06); /* Figma stage fill #0F0F0F, flat */
 }
 
-/* Figma stage "Glow": 500px pink ellipse, blurred, upper left */
+/*
+  Figma stage "Glow": a 500px #B2415B ellipse under a 1000px layer blur.
+  The blur spreads it into a faint, almost flat wash, so it is drawn as a
+  wide radial gradient calibrated against Figma renders (centre ≈ 10%,
+  ~3% at 680px, gone by 1000px), centred on the ellipse (340, 340).
+*/
 .stageGlow {
   position: absolute;
-  left: calc(90 * var(--v));
-  top: calc(90 * var(--v));
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 55, 95, 0.12), transparent);
-  pointer-events: none;
+  inset: 0;
   z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at calc(340 * var(--v)) calc(340 * var(--v)),
+    rgb(178 65 91 / 0.105) 0,
+    rgb(178 65 91 / 0.095) calc(380 * var(--v)),
+    rgb(178 65 91 / 0.03) calc(680 * var(--v)),
+    rgb(178 65 91 / 0) calc(1000 * var(--v))
+  );
 }
 
 /* ---------- small pieces ---------- */

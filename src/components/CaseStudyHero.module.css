@@ -14,6 +14,11 @@
   padding-bottom: calc(152 * var(--v));
   background: var(--hero-bg, #0f0f0f);
   color: var(--ink);
+  /* The case-study page sets Hanken for chapters; the hero keeps the
+     card's condensed UI face (Figma: SF Pro Condensed) so the morph
+     from the home card doesn't swap fonts mid-flight. */
+  font-family: var(--font-ui);
+  font-stretch: var(--stretch);
   overflow: hidden;
 }
 
@@ -84,7 +89,7 @@
 }
 
 .title {
-  margin-top: calc(4 * var(--v));
+  margin-top: calc(2 * var(--v));
   width: 100%;
   padding: calc(4 * var(--v)) 0;
   font-size: calc(48 * var(--v));
@@ -100,10 +105,12 @@
 
 .summary {
   width: calc(660 * var(--v));
-  margin-top: calc(12 * var(--v));
+  /* Figma: summary box at y 268, 2px under the title frame; line height
+     "auto" (≈1.2), so the copy block ends at 325 and the iPad at 477. */
+  margin-top: calc(2 * var(--v));
   font-size: max(calc(16 * var(--v)), 14px);
   font-stretch: var(--stretch-body);
-  line-height: 1.4;
+  line-height: 1.2;
   color: var(--ink-2);
   text-wrap: pretty;
 }

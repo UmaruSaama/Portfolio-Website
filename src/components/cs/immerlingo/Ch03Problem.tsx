@@ -124,6 +124,7 @@ export function Ch03Problem() {
       <div className={styles.opener}>
         <Opener
           eyebrow="The problem"
+          titleWidth={950}
           title="Learners quit because their apps ignore the shows that made them start."
         />
       </div>
