@@ -215,81 +215,69 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
       stageClassName={styles.stage}
       glow
     >
-      <p className={styles.headline}>{fig.headline}</p>
+      <p className={styles.headline} inert={video}>
+        {fig.headline}
+      </p>
 
-      <div className={styles.deviceArea}>
-        {video ? (
-          <div key="video" className={styles.device}>
-            <div className={styles.videoSlot}>
-              <span className={styles.videoTag}>Video</span>
-              <p className={styles.videoTitle}>{title} walkthrough</p>
-              <p className={styles.videoSpec}>
-                Coming soon · 16:9, loops, no sound
-              </p>
+      <div className={styles.deviceArea} inert={video}>
+        <div key={variant} className={styles.device} data-variant={variant}>
+          {variant === "d" ? (
+            <div className={styles.macbook}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
+              <img
+                src={`${SCREENS}/${fig.slug}-d.webp`}
+                alt={`${title}, ${deviceLabel} screen`}
+                width={600}
+                height={445}
+                loading="lazy"
+                decoding="async"
+              />
+              {pinsOn && (
+                <div className={styles.annotations} aria-hidden="true">
+                  {fig.highlights.map((h, i) => (
+                    <span
+                      key={`h${i}`}
+                      className={styles.highlight}
+                      style={{
+                        left: `${h.left}%`,
+                        top: `${h.top}%`,
+                        width: `${h.width}%`,
+                        height: `${h.height}%`,
+                      }}
+                    />
+                  ))}
+                  {fig.pins.map((p, i) => (
+                    <span
+                      key={`p${i}`}
+                      className={styles.pin}
+                      style={{ left: `${p.left}%`, top: `${p.top}%` }}
+                    >
+                      {i + 1}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        ) : (
-          <div key={variant} className={styles.device} data-variant={variant}>
-            {variant === "d" ? (
-              <div className={styles.macbook}>
-                {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
-                <img
-                  src={`${SCREENS}/${fig.slug}-d.webp`}
-                  alt={`${title}, ${deviceLabel} screen`}
-                  width={600}
-                  height={445}
-                  loading="lazy"
-                  decoding="async"
-                />
-                {pinsOn && (
-                  <div className={styles.annotations} aria-hidden="true">
-                    {fig.highlights.map((h, i) => (
-                      <span
-                        key={`h${i}`}
-                        className={styles.highlight}
-                        style={{
-                          left: `${h.left}%`,
-                          top: `${h.top}%`,
-                          width: `${h.width}%`,
-                          height: `${h.height}%`,
-                        }}
-                      />
-                    ))}
-                    {fig.pins.map((p, i) => (
-                      <span
-                        key={`p${i}`}
-                        className={styles.pin}
-                        style={{ left: `${p.left}%`, top: `${p.top}%` }}
-                      >
-                        {i + 1}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div
-                className={styles.frame}
-                data-kind={view.device === "m" ? "phone" : "tablet"}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
-                <img
-                  src={`${SCREENS}/${fig.slug}-${variant}.webp`}
-                  alt={`${title}, ${deviceLabel} screen`}
-                  width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
-                  height={
-                    variant === "tl" ? 834 : variant === "tp" ? 1194 : 844
-                  }
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            )}
-          </div>
-        )}
+          ) : (
+            <div
+              className={styles.frame}
+              data-kind={view.device === "m" ? "phone" : "tablet"}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- static export, sized by CSS */}
+              <img
+                src={`${SCREENS}/${fig.slug}-${variant}.webp`}
+                alt={`${title}, ${deviceLabel} screen`}
+                width={variant === "tl" ? 1194 : variant === "tp" ? 834 : 390}
+                height={variant === "tl" ? 834 : variant === "tp" ? 1194 : 844}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className={styles.side}>
+      <div className={styles.side} inert={video}>
         <ol className={styles.steps}>
           {fig.steps.map((s, i) => (
             <li key={s.title} className={styles.step}>
@@ -317,6 +305,32 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
             <blockquote className={styles.personaQuote}>{fig.quote}</blockquote>
           </figure>
         )}
+      </div>
+
+      {/* Video mode: the whole card becomes a player, wiping in from the
+          right edge (next to the mode switch), like the home card's player. */}
+      <div
+        className={styles.player}
+        data-on={video ? "" : undefined}
+        aria-hidden={!video}
+        inert={!video}
+      >
+        <div className={styles.playerEmpty}>
+          <span className={styles.playDisc} aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
+            </svg>
+          </span>
+          <p className={styles.playerTitle}>{title} · walkthrough</p>
+          <p className={styles.playerBody}>
+            Video coming soon. Switch to Interactive to explore the screens.
+          </p>
+        </div>
+        <div className={styles.playerBar} aria-hidden="true">
+          <span className={styles.playerTime}>0:00</span>
+          <span className={styles.playerTrack} />
+          <span className={styles.playerTime}>0:00</span>
+        </div>
       </div>
     </Figure>
   );

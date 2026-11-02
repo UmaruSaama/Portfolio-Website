@@ -230,36 +230,67 @@
   background: none;
 }
 
-/* Video mode placeholder in the device box (same box, so nothing shifts). */
-.videoSlot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 1px dashed var(--cs-white-14);
-  border-radius: 14px;
-  background:
-    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.05), transparent 70%),
-    var(--cs-white-04);
+/* Video mode: a player covering the whole stage. Wipes in from the right
+   (same motion as the home card's player); the card stays laid out
+   underneath, so nothing shifts. */
+.player {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  background: #000;
+  color: #fff;
+  clip-path: inset(0 0 0 100%);
+  visibility: hidden;
+  transition:
+    clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    visibility 0s linear 0.7s;
+}
+
+.player[data-on] {
+  clip-path: inset(0 0 0 0);
+  visibility: visible;
+  transition:
+    clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    visibility 0s;
+}
+
+.playerEmpty {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 24px;
   text-align: center;
+  opacity: 0;
+  transform: translateX(24px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.videoTag {
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: var(--cs-white-08);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--cs-white-70);
+.player[data-on] .playerEmpty {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.3s;
 }
 
-.videoTitle {
+.playDisc {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.playDisc svg {
+  margin-left: 3px;
+}
+
+.playerTitle {
   margin: 0;
   font-size: 20px;
   font-weight: 500;
@@ -267,14 +298,44 @@
   color: var(--cs-text-primary);
 }
 
-.videoSpec {
+.playerBody {
   margin: 0;
+  max-width: 36ch;
   font-size: 14px;
   line-height: 1.5;
   color: var(--cs-text-tertiary);
 }
 
+/* Inert scrub bar: shows it's a player without pretending to play. */
+.playerBar {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.45;
+}
+
+.playerTrack {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.playerTime {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .player,
+  .player[data-on],
+  .playerEmpty,
+  .player[data-on] .playerEmpty,
   .fold,
   .fold[data-folded],
   .foldContent,
