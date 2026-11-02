@@ -31,6 +31,8 @@ type Actions = {
   cursorShow: (e: React.PointerEvent) => void;
   cursorHide: () => void;
   cursorPress: (down: boolean) => void;
+  tiltMove: (e: React.PointerEvent) => void;
+  tiltReset: () => void;
 };
 
 const noop = () => {};
@@ -51,6 +53,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
   const player = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const cursor = useRef<HTMLDivElement>(null);
+  const card = useRef<HTMLElement>(null);
 
   const actions = useRef<Actions>({
     goTo: noop,
@@ -61,6 +64,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
     cursorShow: noop,
     cursorHide: noop,
     cursorPress: noop,
+    tiltMove: noop,
+    tiltReset: noop,
   });
 
   useGSAP(
@@ -183,6 +188,63 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         });
       });
 
+      // ---------- card tilt ----------
+      // The card leans towards the pointer (max 3°, like a print under a
+      // light), and the render inside it drifts the other way by a few px so
+      // the device reads as sitting behind the card's surface. Smoothed with
+      // quickTo so it trails the pointer instead of snapping. Off for touch,
+      // reduced motion, and while the video is up (flat for watching).
+      const TILT = 3; // degrees at the card's edge
+      const DRIFT = 10; // px the render moves at the edge
+      const cardEl = card.current;
+      const tiltOn = !!cardEl && finePointer && !reduce;
+      if (cardEl) gsap.set(cardEl, { transformPerspective: 1800, transformOrigin: "50% 50%" });
+      const tiltX = tiltOn ? gsap.quickTo(cardEl, "rotationX", { duration: 0.7, ease: "power3.out" }) : null;
+      const tiltY = tiltOn ? gsap.quickTo(cardEl, "rotationY", { duration: 0.7, ease: "power3.out" }) : null;
+      // Drift targets: the render inside each slide's media box (not the box
+      // itself, which the slide and video timelines animate). One quickTo
+      // pair per element, reused on every pointermove.
+      const drift = tiltOn
+        ? slides.current
+            .map((sl) => sl?.querySelector("[data-anim='media'] > *"))
+            .filter((el): el is Element => !!el)
+            .map((el) => {
+              // 3% overscan, anchored at the top, so a ±DRIFT px shift never
+              // exposes the edge of the render's own background panel.
+              gsap.set(el, { scale: 1.03, transformOrigin: "50% 0%" });
+              return el;
+            })
+            .map((el) => ({
+              x: gsap.quickTo(el, "x", { duration: 0.9, ease: "power3.out" }),
+              y: gsap.quickTo(el, "y", { duration: 0.9, ease: "power3.out" }),
+            }))
+        : [];
+      let cardRect: DOMRect | null = null;
+
+      const tiltMove = safe((e: React.PointerEvent) => {
+        if (!tiltOn || !cardEl || videoOpenRef.current || e.pointerType !== "mouse") return;
+        cardRect ??= cardEl.getBoundingClientRect();
+        const nx = (e.clientX - cardRect.left) / cardRect.width - 0.5; // -0.5..0.5
+        const ny = (e.clientY - cardRect.top) / cardRect.height - 0.5;
+        tiltY?.(nx * 2 * TILT);
+        tiltX?.(-ny * 2 * TILT * 0.8);
+        for (const d of drift) {
+          d.x(-nx * 2 * DRIFT);
+          d.y(-ny * 2 * DRIFT * 0.6);
+        }
+      });
+
+      const tiltReset = safe(() => {
+        cardRect = null; // re-measure next time (resize, scroll)
+        if (!tiltOn) return;
+        tiltX?.(0);
+        tiltY?.(0);
+        for (const d of drift) {
+          d.x(0);
+          d.y(0);
+        }
+      });
+
       // ---------- slides ----------
       const goTo = safe((next: number) => {
         const current = activeRef.current;
@@ -289,6 +351,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         videoOpenRef.current = true;
         setVideoOpen(true);
         cursorHide();
+        tiltReset();
         afterClose = null;
 
         if (!videoTl) videoTl = buildVideoTl(slide);
@@ -328,6 +391,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         cursorShow,
         cursorHide,
         cursorPress,
+        tiltMove,
+        tiltReset,
       };
 
       // ---------- input: wheel, keys, swipe ----------
@@ -414,14 +479,21 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       </div>
 
       <section
+        ref={card}
         className={styles.card}
         data-video={videoOpen ? "open" : undefined}
         data-placeholder={current.placeholder ? "" : undefined}
         aria-roledescription="carousel"
         aria-label="Selected work"
         onPointerEnter={(e) => actions.current.cursorShow(e)}
-        onPointerMove={(e) => actions.current.cursorMove(e)}
-        onPointerLeave={() => actions.current.cursorHide()}
+        onPointerMove={(e) => {
+          actions.current.cursorMove(e);
+          actions.current.tiltMove(e);
+        }}
+        onPointerLeave={() => {
+          actions.current.cursorHide();
+          actions.current.tiltReset();
+        }}
         onPointerDown={() => actions.current.cursorPress(true)}
         onPointerUp={() => actions.current.cursorPress(false)}
       >

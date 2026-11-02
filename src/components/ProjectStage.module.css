@@ -103,7 +103,8 @@
   left: 50%;
   top: 0;
   width: calc(500 * var(--u));
-  height: 1px;
+  height: 2px; /* 1px aliases into dashes under the 3D tilt */
+  opacity: 0.75;
   translate: -50% 0;
   background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
   pointer-events: none;
@@ -213,7 +214,7 @@
   flex: 1 1 auto;
   min-height: 0;
   width: calc(1097 * var(--u));
-  overflow: hidden; /* crop the device at the card's bottom edge */
+  overflow: hidden; /* crops the device at the card edge and the tilt overscan */
   line-height: 0;
 }
 
@@ -242,6 +243,15 @@
   font-size: max(calc(16 * var(--u)), 14px);
   line-height: 1;
   color: var(--label-secondary);
+}
+
+/* Tilt: while hovered the card gets its own compositing layer, so the
+   browser rasterises it once and rotates the bitmap (smooth hairlines and
+   edges) instead of re-rasterising every frame. */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    will-change: transform;
+  }
 }
 
 /* ---------- whole-card link + custom cursor ---------- */
