@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Project } from "@/data/projects";
+import { chapterAnchor, type Project } from "@/data/projects";
 import { DeviceMock } from "./DeviceMock";
 import styles from "./CaseStudyHero.module.css";
 
@@ -15,7 +15,7 @@ import styles from "./CaseStudyHero.module.css";
  */
 export function CaseStudyHero({ project, back }: { project: Project; back: ReactNode }) {
   return (
-    <div className={styles.hero}>
+    <section className={styles.hero} id={chapterAnchor("intro")} aria-label="Intro">
       <span className={styles.glow} aria-hidden="true" data-glow />
       <div className={styles.bar} data-bar>
         {back}
@@ -36,6 +36,6 @@ export function CaseStudyHero({ project, back }: { project: Project; back: React
       <div className={styles.device}>
         <DeviceMock screen={project.screen} />
       </div>
-    </div>
+    </section>
   );
 }

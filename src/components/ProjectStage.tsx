@@ -9,7 +9,7 @@ import type { Project } from "@/data/projects";
 import { VideoToggle } from "./VideoToggle";
 import { ArrowIcon, ArrowLeftIcon, CloseIcon } from "./icons";
 import { DeviceMock } from "./DeviceMock";
-import { CaseStudyHero } from "./CaseStudyHero";
+import { CaseStudy } from "./CaseStudy";
 import action from "./Action.module.css";
 import styles from "./ProjectStage.module.css";
 
@@ -465,7 +465,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         const heroCopy = overlay.querySelector<HTMLElement>("[data-copy]")!;
         const heroDevice = overlay.querySelector<HTMLElement>("[data-device]")!;
         const heroGlow = overlay.querySelector<HTMLElement>("[data-glow]");
-        const heroBar = overlay.querySelector<HTMLElement>("[data-bar]");
+        // Pinned chrome (Work button, chapter rail) arrives after the morph.
+        const heroBar = overlay.querySelectorAll<HTMLElement>("[data-bar], [data-rail]");
         const cardGlowCopy = overlay.querySelector<HTMLElement>("[data-card-glow]");
         overlay.scrollTop = 0;
 
@@ -514,7 +515,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           onComplete: () => {
             overlay.style.clipPath = "none"; // let the hero scroll unclipped
             if (!urlPushed) pushUrl(slug);
-            heroBar?.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
+            overlay.querySelector<HTMLElement>("[data-bar] button")?.focus({ preventScroll: true });
           },
           onReverseComplete: finishClose,
         });
@@ -897,7 +898,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           {/* Stand-in for the card's own glow, faded out as the surface darkens. */}
           <span className={styles.caseCardGlow} aria-hidden="true" data-card-glow />
           <div data-hero className={styles.caseHero}>
-            <CaseStudyHero
+            <CaseStudy
               project={caseProject}
               back={
                 <button

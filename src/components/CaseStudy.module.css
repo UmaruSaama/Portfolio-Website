@@ -1,0 +1,55 @@
+.page {
+  --v: min(1px, calc(100vw / 1440));
+  background: var(--hero-bg, #0f0f0f);
+  color: #fff;
+}
+
+/* Figma "Content": 1020 wide, chapters 96 apart. */
+.content {
+  width: calc(1020 * var(--v));
+  margin: 0 auto;
+  padding-bottom: calc(160 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: calc(96 * var(--v));
+}
+
+.chapter {
+  scroll-margin-top: 96px; /* clear of the pinned Work button */
+}
+
+.num {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.heading {
+  margin: 0 0 24px;
+  font-size: max(calc(40 * var(--v)), 28px);
+  font-weight: var(--w-semibold);
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  height: calc(420 * var(--v));
+  min-height: 240px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  font-family: "Hanken Grotesk Variable", var(--font-ui);
+  font-stretch: 100%;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 767px) {
+  .content {
+    width: auto;
+    padding: 0 20px 96px;
+    gap: 64px;
+  }
+}

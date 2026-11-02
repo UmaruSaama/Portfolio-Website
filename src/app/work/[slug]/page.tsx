@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
-import { CaseStudyHero } from "@/components/CaseStudyHero";
+import { CaseStudy } from "@/components/CaseStudy";
 import { ArrowLeftIcon } from "@/components/icons";
 import action from "@/components/Action.module.css";
 
@@ -16,7 +16,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
   return (
     <main>
-      <CaseStudyHero
+      <CaseStudy
         project={project}
         back={
           <Link href="/" className={`${action.action} ${action.onDark}`}>

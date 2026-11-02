@@ -1,5 +1,8 @@
 // One entry per dot in the left rail. Order = dot order.
 
+/** DOM id of a case-study chapter (shared by the rail and the sections). */
+export const chapterAnchor = (id: string) => `chapter-${id}`;
+
 export type Project = {
   slug: string;
   tags: string[];
@@ -8,6 +11,8 @@ export type Project = {
   summary: string;
   /** What the iPad screen shows (card preview and case-study hero). */
   screen?: { kind: "placeholder"; label: string; spec: string; tag: string };
+  /** Case-study chapters, in order (Figma "Content" frames). Drives the left rail. */
+  chapters?: { id: string; label: string }[];
   /** Product video for the "Product video" button. */
   videoSrc?: string;
   placeholder?: boolean;
@@ -23,6 +28,20 @@ export const projects: Project[] = [
     },
     summary:
       "A Japanese learning app where learners look up words while watching anime or reading manga, save them as scene-linked flashcards for spaced review, and choose content rated by how much of it they’ll understand.",
+    chapters: [
+      { id: "intro", label: "Intro" },
+      { id: "snapshot", label: "Snapshot" },
+      { id: "problem", label: "The problem" },
+      { id: "learners", label: "Meet the learners" },
+      { id: "learned", label: "What I learned" },
+      { id: "principles", label: "From insight to principle" },
+      { id: "loop", label: "Shaping the loop" },
+      { id: "experience", label: "The experience" },
+      { id: "system", label: "The system underneath" },
+      { id: "next", label: "What’s next" },
+      { id: "reflection", label: "Reflection" },
+      { id: "close", label: "Close" },
+    ],
     screen: {
       kind: "placeholder",
       tag: "GIF",

@@ -1,0 +1,113 @@
+.rail {
+  position: fixed;
+  left: var(--page-x);
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.dots {
+  list-style: none;
+  margin: 0;
+  width: 24px;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* 24px pitch, same as the home rail */
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dots li {
+  display: flex;
+}
+
+.dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.4); /* 3.9:1 on the rail */
+  cursor: pointer;
+  transition:
+    height 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.25s ease;
+}
+
+/* 24px hit area without changing the drawn size */
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.dot[data-active] {
+  height: 20px;
+  margin: -6px 0;
+  background: #fff;
+}
+
+/* Chapter name: a small bubble in the site's own materials. */
+.tip {
+  position: absolute;
+  left: calc(100% + 18px);
+  top: 50%;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+  color: #fff;
+  opacity: 0;
+  transform: translate(-6px, -50%) scale(0.92);
+  transform-origin: left center;
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tipNum {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dot:hover .tip,
+.dot:focus-visible .tip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.count {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+.countTotal {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 1023px) {
+  .rail {
+    display: none; /* the content column needs the margin */
+  }
+}
