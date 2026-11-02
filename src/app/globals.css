@@ -1,3 +1,27 @@
+@import "@fontsource-variable/archivo/wdth.css";
+
+:root {
+  /* Tokens from Figma (Placement-Portfolio · Main Page) */
+  --label-primary: rgba(0, 0, 0, 0.85);
+  --label-secondary: rgba(0, 0, 0, 0.5);
+  --label-tertiary: rgba(0, 0, 0, 0.25);
+  --label-muted: #8e8e93;
+  --fill-tertiary: rgba(0, 0, 0, 0.05);
+  --fill-quaternary: rgba(0, 0, 0, 0.03);
+  --accent: #f5234b;
+  --accent-80: rgba(245, 35, 75, 0.8);
+  --claude: #de7356;
+  --radius-sm: 6px;
+  --radius-card: 20px;
+  --page-x: 80px;
+
+  /* SF Pro Condensed in the design; Archivo at 68% width (closest optical match) is the web stand-in. */
+  --font-ui: "Archivo Variable", system-ui, sans-serif;
+  --stretch: 68%;
+  --w-medium: 540;
+  --w-semibold: 650;
+}
+
 *,
 *::before,
 *::after {
@@ -8,19 +32,58 @@ html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 body {
-  font-family: system-ui, sans-serif;
-  background: #0e0e10;
-  color: #f2f2f2;
+  font-family: var(--font-ui);
+  font-stretch: var(--stretch);
+  font-weight: var(--w-medium);
+  background: #fff;
+  color: var(--label-primary);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.placeholder {
-  min-height: 100dvh;
-  display: grid;
-  place-content: center;
-  gap: 0.25rem;
-  text-align: center;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2 {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 1199px) {
+  :root {
+    --page-x: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-x: 20px;
+  }
 }

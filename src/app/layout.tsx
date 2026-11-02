@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "Umaru — Product Designer",
-  description: "Portfolio of Umaru, product and interaction designer.",
+  title: "Shivam — Product Designer",
+  description: "I design experiences that feel simple.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
