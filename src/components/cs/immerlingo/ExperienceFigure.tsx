@@ -113,10 +113,10 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
     view.annotations &&
     view.device === "d" &&
     fig.highlights.length > 0;
-  // Tablet landscape and phone annotations (Figma T/M); none for portrait.
+  // Tablet and phone annotations (Figma T/M; portrait derived from 03b).
   const figIndex = experienceFigures.findIndex((f) => f.slug === fig.slug);
   const touch =
-    variant === "tl" || variant === "m"
+    variant === "tl" || variant === "tp" || variant === "m"
       ? touchAnnotations(figIndex, variant)
       : undefined;
   const touchOn = !video && view.annotations;
@@ -327,27 +327,33 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
                 />
                 {touchOn && touch && (
                   <div className={styles.screenAnnotations} aria-hidden="true">
-                    {touch.hs.map(([l, t, w, h], i) => (
-                      <span
-                        key={`h${i}`}
-                        className={styles.highlight}
-                        style={{
-                          left: `${l}%`,
-                          top: `${t}%`,
-                          width: `${w}%`,
-                          height: `${h}%`,
-                        }}
-                      />
-                    ))}
-                    {touch.ps.map(([l, t], i) => (
-                      <span
-                        key={`p${i}`}
-                        className={styles.pin}
-                        style={{ left: `${l}%`, top: `${t}%` }}
-                      >
-                        {i + 1}
-                      </span>
-                    ))}
+                    {touch.hs.map(
+                      (b, i) =>
+                        b && (
+                          <span
+                            key={`h${i}`}
+                            className={styles.highlight}
+                            style={{
+                              left: `${b[0]}%`,
+                              top: `${b[1]}%`,
+                              width: `${b[2]}%`,
+                              height: `${b[3]}%`,
+                            }}
+                          />
+                        ),
+                    )}
+                    {touch.ps.map(
+                      (pt, i) =>
+                        pt && (
+                          <span
+                            key={`p${i}`}
+                            className={styles.pin}
+                            style={{ left: `${pt[0]}%`, top: `${pt[1]}%` }}
+                          >
+                            {i + 1}
+                          </span>
+                        ),
+                    )}
                   </div>
                 )}
               </div>

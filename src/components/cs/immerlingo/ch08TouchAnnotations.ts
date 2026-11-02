@@ -2,12 +2,17 @@
 // the Figma "ImmerLingo – Case study T" (371:32585) and "M" (371:38257)
 // stages. Values are % of the device SCREEN (not the bezel): highlights
 // [left, top, width, height], pins [left, top] (top-left corner of the 22px
-// pin, as on desktop). Same order as experienceFigures. Tablet portrait has
-// no annotations in Figma.
+// pin, as on desktop). Same order as experienceFigures.
+//
+// Tablet portrait isn't annotated in Figma: TP boxes were found in the 03b
+// portrait frames (Immerlingo-2023, 1150:3) by locating the same text the
+// landscape highlight covers, padded 10px, as % of the 834×1194 frame.
+// null = that element doesn't exist in portrait (no box, no pin). Pins sit
+// on the box's top-left corner, as in the Figma T/M frames.
 
 type Box = [number, number, number, number];
 type Pt = [number, number];
-export type TouchAnnot = { hs: Box[]; ps: Pt[] };
+export type TouchAnnot = { hs: (Box | null)[]; ps: (Pt | null)[] };
 
 const T: TouchAnnot[] = [
   {
@@ -471,10 +476,111 @@ const M: TouchAnnot[] = [
   },
 ];
 
-/** Annotations for a figure index on tablet landscape ("tl") or phone ("m"). */
+const TP: (Box | null)[][] = [
+  [
+    [3.6, 7.71, 92.81, 7.71],
+    [4.56, 42.21, 91.01, 5.95],
+    [6.47, 92.46, 65.95, 3.69],
+  ],
+  [
+    [3.6, 2.18, 28.06, 3.35],
+    [39.09, 47.36, 21.82, 7.54],
+    [16.43, 63.36, 66.49, 3.77],
+  ],
+  [
+    [1.2, 34.51, 55.04, 26.72],
+    [4.08, 7.2, 17.63, 3.02],
+    [54.32, 46.98, 42.57, 8.21],
+  ],
+  [
+    [9.71, 10.55, 80.58, 7.2],
+    [9.71, 25.8, 80.58, 11.06],
+    [12.59, 45.98, 19.66, 3.69],
+  ],
+  [null, [73.74, 55.03, 25.06, 3.02], [53.96, 32.66, 6.35, 3.69]],
+  [
+    [9.71, 10.55, 80.58, 17.42],
+    [13.55, 28.64, 75.06, 5.36],
+    [9.71, 34.67, 70.6, 7.12],
+  ],
+  [
+    [12.71, 14.91, 49.52, 4.02],
+    [47.24, 23.37, 41.37, 15.16],
+    [12.23, 59.63, 80.82, 14.07],
+  ],
+  [
+    [12.47, 42.88, 39.93, 9.05],
+    [10.31, 62.65, 84.65, 8.04],
+    [56.24, 42.88, 39.93, 13.4],
+  ],
+  [
+    [31.41, 21.48, 37.17, 27.55],
+    [63.07, 2.51, 33.69, 3.35],
+    [26.32, 76.42, 44.12, 3.77],
+  ],
+  [
+    [31.53, 34.51, 30.7, 5.7],
+    [36.39, 40.79, 27.22, 3.35],
+    [38.01, 2.51, 12.11, 3.35],
+  ],
+  [
+    // card creator: filled fields · audio + frame · review cap (picked by hand)
+    [11.03, 28.89, 76.5, 30.0],
+    [11.03, 59.71, 77.93, 16.09],
+    [40.29, 84.59, 48.68, 3.02],
+  ],
+  [
+    [4.08, 7.2, 17.63, 3.02],
+    [1.2, 63.15, 97.6, 17.42],
+    [1.2, 90.62, 97.6, 6.37],
+  ],
+  [
+    [2.76, 76.13, 94.48, 5.19],
+    [4.08, 7.2, 29.02, 3.02],
+    [2.76, 80.82, 17.27, 3.35],
+  ],
+  [
+    [1.68, 25.13, 96.64, 5.86],
+    [2.16, 94.72, 79.74, 3.35],
+    [80.7, 94.72, 17.15, 3.35],
+  ],
+  [
+    [8.75, 8.04, 82.49, 9.05],
+    [8.75, 59.97, 82.49, 10.55],
+    [8.75, 72.7, 82.49, 19.93],
+  ],
+  [
+    [11.63, 8.04, 21.82, 3.02],
+    [9.83, 22.53, 23.5, 3.35],
+    [8.75, 49.41, 82.49, 5.03],
+  ],
+  [
+    [4.08, 7.2, 33.81, 3.02],
+    [51.2, 32.08, 21.82, 3.02],
+    [5.52, 76.05, 91.85, 3.35],
+  ],
+  [
+    [9.71, 10.22, 80.34, 30.15],
+    [9.71, 52.26, 29.02, 3.69],
+    [14.81, 84.92, 69.72, 3.77],
+  ],
+  [null, [46.4, 45.81, 46.28, 16.83], [60.79, 2.26, 18.23, 3.77]],
+];
+
+/** Annotations for a figure index on tablet ("tl" | "tp") or phone ("m"). */
 export function touchAnnotations(
   index: number,
-  variant: "tl" | "m",
+  variant: "tl" | "tp" | "m",
 ): TouchAnnot | undefined {
+  if (variant === "tp") {
+    const hs = TP[index];
+    if (!hs) return undefined;
+    // Pin centred on the box's top-left corner: 11px of a ~388×556 screen
+    // (the same scale as the Figma T frames).
+    return {
+      hs,
+      ps: hs.map((h) => (h ? ([h[0] - 2.83, h[1] - 1.98] as Pt) : null)),
+    };
+  }
   return (variant === "tl" ? T : M)[index];
 }
