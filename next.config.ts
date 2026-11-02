@@ -8,6 +8,8 @@ const nextConfig: NextConfig = artifact
   ? {
       output: "export",
       images: { unoptimized: true },
+      // Pages other than "/" don't exist inside the artifact.
+      env: { NEXT_PUBLIC_ARTIFACT: "1" },
     }
   : {
       cacheComponents: true,

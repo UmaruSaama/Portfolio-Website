@@ -1,0 +1,32 @@
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--label-primary);
+  white-space: nowrap;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 100px;
+  background: var(--fill-tertiary);
+  color: #000;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.play {
+  margin-left: 3px;
+}
+
+.trigger:hover .icon {
+  transform: scale(1.08);
+  background: rgba(0, 0, 0, 0.08);
+}
