@@ -1,5 +1,5 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
-import "@fontsource/tiny5/400.css";
+import "./fonts.css";
 import "@fontsource/pixelify-sans/400.css";
 import "@fontsource/pixelify-sans/700.css";
 import s from "./Pixel.module.css";
@@ -61,7 +61,7 @@ export function Slot({
   );
 }
 
-/** Text in the display pixel face (Figma: Brick Pixel; here Tiny5). */
+/** Text in the display pixel face (Brick Pixel). */
 export function PixelText({
   as: Tag = "span",
   className,

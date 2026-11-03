@@ -32,6 +32,7 @@
 
   --cs-end-pad: 520; /* Figma: Close ends 520 above the frame's bottom */
   overflow-x: clip; /* the world layers are full-bleed */
+  font-weight: 400; /* Figma "Regular" (the site default is 540) */
 
   /* Shared tokens, remapped */
   --cs-page-bg: var(--al-night);
@@ -43,7 +44,8 @@
   --accent: var(--al-pink); /* hero title accent */
   --rail-bg: rgb(17 29 53 / 0.94); /* chapter rail backing over the pixel art */
 
-  /* Pixel faces (stand-ins: Tiny5 for Brick Pixel, Pixelify Sans for Game Tape) */
-  --font-pixel: "Tiny5", "Pixelify Sans", monospace;
-  --font-pixel-body: "Pixelify Sans", "Tiny5", monospace;
+  /* Pixel faces (Figma: Brick Pixel display, Game Tape body; Pixelify Sans
+     is also used in a few Figma labels) */
+  --font-pixel: "Brick Pixel", "Pixelify Sans", monospace;
+  --font-pixel-body: "Game Tape", "Pixelify Sans", monospace;
 }

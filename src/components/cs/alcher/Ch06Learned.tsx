@@ -87,7 +87,7 @@ const clusters = [
 
 export function Ch06Learned() {
   return (
-    <Chapter id="learned" label="What I learned">
+    <Chapter id="learned" label="What I learned" className={s.chapter}>
       <Opener
         eyebrow="Research"
         title="Attendees don’t want more information. They want the next hour, the way there, and a reason to come back."
@@ -111,7 +111,7 @@ export function Ch06Learned() {
 
         <div className={s.figures}>
           <figure className={s.figure}>
-            <Plate as="p" className={s.plate}>
+            <Plate as="p" className={`${s.plate} ${s.plateTable}`}>
               HOW THE OTHER FESTS HANDLE IT
             </Plate>
             <PixelBox tone="dark" className={s.tablePanel}>
@@ -143,15 +143,18 @@ export function Ch06Learned() {
           </figure>
 
           <figure className={s.figure} data-plain>
-            <ul className={s.findings}>
-              {findings.map((f) => (
-                <PixelBox key={f.head} tone="pink" as="li" className={s.finding}>
-                  <h4 className={f.big ? s.findingBig : s.findingHead}>{f.head}</h4>
-                  <p className={s.findingBody}>{f.body}</p>
-                  <p className={s.findingSource}>{f.source}</p>
-                </PixelBox>
-              ))}
-            </ul>
+            {/* Figma "Inline" (262 tall, clips): the cards' bottom 30px are cut off */}
+            <div className={s.inline}>
+              <ul className={s.findings}>
+                {findings.map((f) => (
+                  <PixelBox key={f.head} tone="pink" as="li" className={s.finding}>
+                    <h4 className={f.big ? s.findingBig : s.findingHead}>{f.head}</h4>
+                    <p className={s.findingBody}>{f.body}</p>
+                    <p className={s.findingSource}>{f.source}</p>
+                  </PixelBox>
+                ))}
+              </ul>
+            </div>
             <figcaption className={s.caption}>What the audit and the reviews added up to</figcaption>
           </figure>
         </div>
@@ -170,7 +173,7 @@ export function Ch06Learned() {
       />
 
       <figure className={s.figure}>
-        <Plate as="p" className={s.plate}>
+        <Plate as="p" className={`${s.plate} ${s.plateFindings}`}>
           INTERVIEW FINDINGS
         </Plate>
         <PixelBox tone="dark" className={s.clusterPanel}>

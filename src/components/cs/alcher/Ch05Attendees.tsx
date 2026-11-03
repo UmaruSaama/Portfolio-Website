@@ -115,6 +115,16 @@ function BookIcon() {
   );
 }
 
+/** "→" as Figma draws it (full Hanken Grotesk; the web subset lacks
+ *  U+2192 and the fallback arrow is narrower, which changes line breaks). */
+function Arrow() {
+  return (
+    <svg className={s.arrow} viewBox="0 0 15 21" aria-hidden="true">
+      <path d="M0.5 10.5H14M8 7l6 3.5-6 3.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  );
+}
+
 type Persona = {
   key: string;
   plate: string;
@@ -143,7 +153,7 @@ const personas: Persona[] = [
     quote: "“We came for Electric Heels. I don’t care about the lineup if I can’t find the stage.”",
     chips: [["Outstation", "Competing"], ["First time on campus"], ["Travels in a team"]],
     need: "Needs the venue and the clock before anything else.",
-    answer: "→ Activity split by day with the venue on every card, and walking directions in the Map tab.",
+    answer: "Activity split by day with the venue on every card, and walking directions in the Map tab.",
     goals: [
       "Reach her team’s competition venue on time, every round, on a campus she has never seen.",
       "Catch at least one pronite without missing a call time.",
@@ -165,7 +175,7 @@ const personas: Persona[] = [
     quote: "“I’m excited about everything and I have no idea what to go to first.”",
     chips: [["Lives on campus"], ["Here for the nights", "In a group"], ["Phone-first", "Buys merch"], ["Explores everything"]],
     need: "Needs a reason to open the app between events.",
-    answer: "→ A Home that gives her something to do before Day 1, and XP for showing up once it starts.",
+    answer: "A Home that gives her something to do before Day 1, and XP for showing up once it starts.",
     goals: [
       "Explore everything, with friends, and come out with something to show for it.",
       "Know where to start: eighty events is a list, not a plan.",
@@ -225,7 +235,9 @@ function PersonaFigure({ p }: { p: Persona }) {
             <div className={s.implication}>
               <h4 className={s.label}>Design implication</h4>
               <p className={s.need}>{p.need}</p>
-              <p className={s.answer}>{p.answer}</p>
+              <p className={s.answer}>
+                <Arrow /> {p.answer}
+              </p>
             </div>
           </PixelBox>
         </div>
@@ -255,7 +267,7 @@ function PersonaFigure({ p }: { p: Persona }) {
 
 export function Ch05Attendees() {
   return (
-    <Chapter id="attendees" label="Meet the attendees">
+    <Chapter id="attendees" label="Meet the attendees" className={s.chapter}>
       <Opener
         eyebrow="The attendees"
         title="Two attendees, one need: get through four days without missing the thing they came for."

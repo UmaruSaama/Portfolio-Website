@@ -40,7 +40,7 @@ export function StartFlag({ className }: { className?: string }) {
 export function CursorIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <g transform="translate(1.49 1.49)" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <g transform="translate(1.49 1.49)" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M7.17 11.84 4.51 4.51l7.33 2.67-3.33 1.33-1.34 3.33ZM8.51 8.51l3.33 3.33M3.3 0l.52 1.93M1.93 3.82 0 3.3M7.81 1.21 6.39 2.62M2.62 6.39 1.21 7.81" />
       </g>
     </svg>
@@ -110,9 +110,23 @@ const RECTS: R[] = [
   [139.5, 98.42, 59.84, 1.86, "#ffccaa"],
 ];
 
+/** Baselines from Figma's text boxes: Game Tape ascent 0.857 em, descent
+ *  0.191 em, centred in the Figma line height. */
 export function GoalPass({ className, textClassName }: { className?: string; textClassName?: string }) {
   return (
-    <svg className={className} viewBox="0 0 205 105" role="img" aria-label="Pronite pass, Night 1, 9 Mar, gates 7 PM, Riya Das, scan at gate">
+    <svg className={className} viewBox="0 0 204.6 104.2" role="img" aria-label="Pronite pass, Night 1, 9 Mar, gates 7 PM, Riya Das, scan at gate">
+      <defs>
+        {/* Figma: eight 1.86px black drop shadows = a square 1.86 outline */}
+        <filter id="goal-outline" x="-10%" y="-20%" width="120%" height="140%" colorInterpolationFilters="sRGB">
+          <feMorphology in="SourceAlpha" operator="dilate" radius="1.86" result="d" />
+          <feFlood floodColor="#000" />
+          <feComposite in2="d" operator="in" result="o" />
+          <feMerge>
+            <feMergeNode in="o" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
       <g shapeRendering="crispEdges">
         {RECTS.map(([x, y, w, h, f], i) => (
           <rect key={i} x={x} y={y} width={w} height={h} fill={f} />
@@ -120,30 +134,19 @@ export function GoalPass({ className, textClassName }: { className?: string; tex
         <path fill="#000" d={QR} />
       </g>
       <g className={textClassName}>
-        <text x="18.6" y="20.6" fontSize="8.2" fill="#1d2b53" textLength="44.6" lengthAdjust="spacingAndGlyphs">
+        <text x="18.6" y="21.07" fontSize="8.68" fill="#1d2b53">
           Pronite pass
         </text>
-        <text
-          x="11.16"
-          y="49.48"
-          fontSize="18"
-          fill="#fff1e8"
-          stroke="#000"
-          strokeWidth="3.72"
-          paintOrder="stroke"
-          strokeLinejoin="miter"
-          textLength="54"
-          lengthAdjust="spacingAndGlyphs"
-        >
+        <text x="11.16" y="49.8" fontSize="19.22" fill="#fff1e8" filter="url(#goal-outline)">
           Night 1
         </text>
-        <text x="11.16" y="67.06" fontSize="8.2" fill="#c2c3c7" textLength="70.7" lengthAdjust="spacingAndGlyphs">
+        <text x="11.16" y="67.53" fontSize="8.68" fill="#c2c3c7">
           9 Mar · Gates 7 PM
         </text>
-        <text x="11.16" y="88.64" fontSize="12.4" fill="#ffec27" textLength="45.9" lengthAdjust="spacingAndGlyphs">
+        <text x="11.16" y="88.41" fontSize="13.02" fill="#ffec27">
           Riya Das
         </text>
-        <text x="145.09" y="82.91" fontSize="8.2" fill="#1d2b53" textLength="47.9" lengthAdjust="spacingAndGlyphs">
+        <text x="169.26" y="83.38" fontSize="8.68" fill="#1d2b53" textAnchor="middle">
           Scan at gate
         </text>
       </g>

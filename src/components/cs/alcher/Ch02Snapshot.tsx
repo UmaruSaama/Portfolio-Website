@@ -37,7 +37,7 @@ function Bullets({ items }: { items: string[] }) {
 
 export function Ch02Snapshot() {
   return (
-    <Chapter id="snapshot" label="Snapshot">
+    <Chapter id="snapshot" label="Snapshot" className={s.chapter}>
       <dl className={s.overview}>
         <div className={s.role}>
           <dt className={s.label}>Role</dt>

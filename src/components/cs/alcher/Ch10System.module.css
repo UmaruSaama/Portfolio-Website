@@ -8,6 +8,11 @@
   border-top: 0;
 }
 
+/* Figma snaps the H1's text box to whole px (47 per line, not 47.2). */
+.bare h2 {
+  line-height: 47px;
+}
+
 /* ---------- figure: plate over a dark stage ---------- */
 .fig {
   position: relative;
@@ -21,10 +26,44 @@
   top: 0;
   left: calc(32 * var(--v));
   padding-inline: 36px;
+  justify-content: flex-start; /* Figma text box starts exactly at x36 */
+}
+
+/* Every Figma stage is 664 tall (incl. the 4px shadow); the footnote sits
+   at its bottom, so it's pushed down with margin-top: auto. */
+/* Figma "Title plate" boxes: 471 / 233 / 247 / 526 wide, text at x36;
+   the last plate's text line is 125% (25px). */
+.plateType {
+  width: 471px;
+}
+
+.platePalette {
+  width: 233px;
+}
+
+.fig > .platePalette {
+  padding-left: 37px; /* Figma text at x37 */
+}
+
+.plateKit {
+  width: 247px;
+}
+
+.platePass {
+  width: 526px;
+  line-height: 25px;
 }
 
 .stage {
-  padding: calc(72 * var(--v)) calc(42 * var(--v)) calc(27 * var(--v)) calc(40 * var(--v));
+  display: flex;
+  flex-direction: column;
+  min-height: calc(664 * var(--v));
+  padding: calc(72 * var(--v)) calc(40 * var(--v)) calc(27 * var(--v));
+}
+
+.stage > .foot:last-child {
+  margin-top: auto;
+  padding-top: 12px; /* keeps a gap when narrower viewports fill the stage */
 }
 
 :where(.stage) :where(p, h4, ul) {
@@ -32,6 +71,7 @@
 }
 
 .lead {
+  max-width: calc(938 * var(--v));
   font-size: 20px;
   font-weight: 500;
   line-height: 1.4;
@@ -41,13 +81,14 @@
 .label {
   font-size: 12px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 17px; /* Figma rounds each line to whole px (12 × 1.4) */
   color: rgb(255 255 255 / 0.6);
 }
 
 .foot {
   font-size: 12px;
-  line-height: 1.4;
+  font-weight: 400;
+  line-height: 17px; /* Figma rounds each line to whole px (12 × 1.4) */
   color: rgb(255 255 255 / 0.5);
 }
 
@@ -68,7 +109,7 @@
   margin-top: calc(7 * var(--v));
   font-family: var(--font-pixel);
   font-size: 56px;
-  line-height: 1.1;
+  line-height: 62px; /* Figma rounds each line to whole px (56 × 1.1) */
   color: var(--al-cream);
   font-weight: 400;
   -webkit-font-smoothing: none;
@@ -88,6 +129,7 @@
 .typeNote {
   margin-top: calc(20 * var(--v));
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.5;
   color: rgb(255 255 255 / 0.6);
 }
@@ -100,7 +142,7 @@
   margin-top: calc(7 * var(--v));
   font-family: var(--font-pixel-body);
   font-size: 28px;
-  line-height: 1.2;
+  line-height: 34px; /* Figma rounds each line to whole px (28 × 1.2) */
   color: var(--al-cream);
   font-weight: 400;
   -webkit-font-smoothing: none;
@@ -134,16 +176,22 @@
   margin-top: calc(23 * var(--v));
 }
 
-/* "Where it stays plain": blue panel 940 × 130 */
+/* "Where it stays plain": blue panel 940 × 130; text 400 wide at x20,
+   price at x480, "not this" at x720 */
 .plain {
   margin-top: calc(21 * var(--v));
   display: grid;
-  grid-template-columns: minmax(0, 460fr) minmax(0, 240fr) minmax(0, 220fr);
-  padding: calc(16 * var(--v)) calc(20 * var(--v)) calc(29 * var(--v));
+  grid-template-columns: minmax(0, 400fr) minmax(0, 60fr) minmax(0, 240fr) minmax(0, 200fr);
+  min-height: calc(130 * var(--v));
+  padding: 16px 20px 24px; /* inside the px bevel at every width */
 }
 
-.plainText {
-  padding-right: calc(60 * var(--v));
+.plainDo {
+  grid-column: 3;
+}
+
+.plainDont {
+  grid-column: 4;
 }
 
 .plainText .typeNote {
@@ -158,7 +206,7 @@
 .price,
 .priceBrick {
   font-size: 28px;
-  line-height: 1.2;
+  line-height: 34px; /* Figma rounds each line to whole px (28 × 1.2) */
   font-weight: 400;
   -webkit-font-smoothing: none;
 }
@@ -177,7 +225,7 @@
   margin-top: calc(10 * var(--v));
   font-family: var(--font-pixel-body);
   font-size: 21px;
-  line-height: 1.2;
+  line-height: 25px; /* Figma rounds each line to whole px (21 × 1.2) */
   color: rgb(255 241 232 / 0.85);
   font-weight: 400;
   -webkit-font-smoothing: none;
@@ -186,13 +234,11 @@
 .notThis {
   margin-top: calc(10 * var(--v));
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 17px; /* Figma rounds each line to whole px (12 × 1.4) */
+  font-weight: 400;
   color: rgb(255 255 255 / 0.55);
 }
 
-.typeFoot {
-  margin-top: calc(30 * var(--v));
-}
 
 /* ---------- sections (Colour, Components) ---------- */
 .section {
@@ -205,7 +251,7 @@
   display: grid;
   grid-template-columns: minmax(0, 500fr) minmax(0, 493fr);
   column-gap: calc(20 * var(--v));
-  max-width: calc(1018 * var(--v));
+  max-width: calc(1013 * var(--v));
 }
 
 .secTitle {
@@ -218,6 +264,7 @@
 
 .secBody {
   margin: 0;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
   color: var(--al-silver);
@@ -231,11 +278,16 @@
 
 .secHeadColour {
   grid-template-columns: minmax(0, 500fr) minmax(0, 498fr);
+  max-width: calc(1018 * var(--v));
 }
 
 /* ---------- palette ---------- */
 .colourStage {
   padding-bottom: calc(10 * var(--v));
+}
+
+.lead135 {
+  line-height: 1.35;
 }
 
 .palLabel {
@@ -273,14 +325,15 @@
   margin-top: 6px;
   font-size: 12px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 17px; /* Figma rounds each line to whole px (12 × 1.4) */
   color: rgb(255 255 255 / 0.8);
 }
 
 .tokHex {
   margin-top: -2px;
   font-size: 12px;
-  line-height: 1.4;
+  font-weight: 400;
+  line-height: 17px; /* Figma rounds each line to whole px (12 × 1.4) */
   color: rgb(255 255 255 / 0.5);
 }
 
@@ -305,21 +358,19 @@
 
 .extNote {
   margin-top: calc(16 * var(--v));
-  font-weight: inherit;
+  font-weight: 400;
 }
 
-.colourFoot {
-  margin-top: calc(59 * var(--v));
-}
 
 /* ---------- component kit ---------- */
+/* Figma: labels at stage y128; the three renders (transparent margins)
+   sit at x40 / 372 / 690, y134; captions at y572 (x40 / 372 / 704). */
 .kit {
   margin-top: calc(29 * var(--v));
   display: grid;
-  /* Figma columns at x40, 372, 704 (the controls crop starts at 690 to keep
-     a sparkle; its label and caption are inset 14). */
   grid-template-columns: minmax(0, 292fr) minmax(0, 40fr) minmax(0, 318fr) minmax(0, 294fr);
-  max-width: calc(944 * var(--v));
+  /* 944 wide: the controls render runs 4px into the stage's right padding */
+  width: calc(944 * var(--v));
 }
 
 .kitLabel {
@@ -343,28 +394,31 @@
 
 .kitCap {
   grid-row: 3;
-  margin-top: calc(4 * var(--v));
-  padding-right: calc(12 * var(--v));
+  position: relative;
+  margin-top: calc(-18 * var(--v));
 }
 
-.kitFoot {
-  margin-top: calc(12 * var(--v));
+.kitCapHud {
+  max-width: calc(300 * var(--v));
 }
 
 /* ---------- v1 → v3 ---------- */
+/* Figma: screens at x40 / 296 / 548 / 804 (212 · 101.2 · 212 · 212.8 wide,
+   460 tall), arrows at x262 / 770. The v3 Map runs to x1017, into the
+   stage's bevel, so the right padding is 3. */
 .passStage {
   padding-top: calc(64 * var(--v));
+  padding-right: calc(3 * var(--v));
   padding-bottom: calc(19 * var(--v));
 }
 
 .pass2 {
   margin-top: calc(10 * var(--v));
   display: grid;
-  /* screens 212 · arrow 44 · 101 · gap 114 · 212 · arrow 44 · 213 */
   grid-template-columns:
-    minmax(0, 212fr) minmax(0, 44fr) minmax(0, 101fr) minmax(0, 114fr)
+    minmax(0, 212fr) minmax(0, 44fr) minmax(0, 102fr) minmax(0, 150fr)
     minmax(0, 212fr) minmax(0, 44fr) minmax(0, 213fr);
-  max-width: calc(938 * var(--v));
+  max-width: calc(977 * var(--v));
 }
 
 .screen {
@@ -378,7 +432,7 @@
 .screenLabel {
   font-size: 13px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 18px; /* Figma rounds each line to whole px (13 × 1.4) */
   color: rgb(255 255 255 / 0.92);
   white-space: nowrap;
 }
@@ -387,24 +441,51 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
 }
 
+/* Arrow cell = the screen's box; the glyph's top sits 214/460 down it. */
 .arrow {
   grid-row: 1;
   align-self: end;
-  display: grid;
-  place-items: center;
+  position: relative;
   aspect-ratio: 44 / 460;
+}
+
+.arrowGlyph {
+  position: absolute;
+  top: calc(214 / 460 * 100%);
+  left: calc(10 / 44 * 100%);
   font-size: 20px;
+  font-weight: 400;
   line-height: 1.35;
   color: rgb(255 255 255 / 0.6);
 }
 
-.passFoot {
-  margin-top: calc(16 * var(--v));
-}
-
 .nowrap {
   white-space: nowrap;
+}
+
+/* Figma body copy is Hanken Regular; the page's base weight is 540. */
+.regular {
+  font-weight: 400;
+}
+
+/* Baseline match: for these sizes (Hanken 12/17, 13/18, 16/24, Brick 56/62)
+   Chrome sets the glyphs 1px higher in the line box than Figma does. */
+.label,
+.foot,
+.tokName,
+.tokHex,
+.screenLabel,
+.secBody,
+.regular,
+.brickHero {
+  position: relative;
+  top: 1px;
+}
+
+/* Figma "Chapter end": the bridge line is 20 × 135% = 27 tall (the shared
+   ChapterEnd uses 130%). */
+.root > p:last-child {
+  line-height: 27px;
 }

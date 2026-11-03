@@ -25,14 +25,14 @@ const cards = [
 
 export function Ch11Next() {
   return (
-    <Chapter id="next" label="What’s next">
+    <Chapter id="next" label="What’s next" className={s.root}>
       <div className={s.bare}>
         <Opener
           eyebrow="What’s next"
           title="How it ended, and what I’d hand on."
           introTitle="After Day 3"
           intro={
-            <p>
+            <p className={s.regular}>
               The app went live 20 days before Day 1. The next step is the one every team faces: make it easy for
               the ’26 team to keep what worked, and find out whether gamification changed behaviour.
             </p>

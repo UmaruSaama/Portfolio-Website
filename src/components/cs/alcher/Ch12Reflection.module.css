@@ -1,0 +1,29 @@
+/* 12 · Reflection (Figma 504:68856) */
+
+/* Figma: the divider line doesn't show in the render (0 tall); the
+   eyebrow sits 64 below the chapter top. */
+.wrap > header {
+  border-top: 0;
+}
+
+/* Figma: this chapter's eyebrow square is #ffffff (not cream). */
+.wrap > header p > span:first-child {
+  background: #fff;
+}
+
+/* Figma snaps the H1's text box to whole px (47 per line, not 47.2). */
+.wrap h2 {
+  line-height: 47px;
+}
+
+/* Figma body copy is Hanken Regular; the page's base weight is 540. */
+.regular {
+  font-weight: 400;
+}
+
+/* Baseline match: for Hanken 16/24 Chrome sets the glyphs 1px higher in
+   the line box than Figma does. */
+.regular {
+  position: relative;
+  top: 1px;
+}

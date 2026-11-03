@@ -506,6 +506,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           });
         }
 
+        const caseP = projects.find((p) => p.slug === slug);
+        const inks = caseP?.heroInk ?? ["rgba(255,255,255,0.88)", "rgba(255,255,255,0.64)", "rgba(255,255,255,1)"];
         const fadeOut = root.current?.querySelectorAll("[data-case-fade]") ?? [];
         const cta = slide.querySelector("[data-cta]");
 
@@ -530,7 +532,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           .fromTo(
             overlay,
             { clipPath: rectClip(cardRect, 20), backgroundColor: "#f2f2f2" },
-            { clipPath: FULL_CLIP, backgroundColor: projects.find((p) => p.slug === slug)?.bg ?? "#0f0f0f", duration: 0.95 },
+            { clipPath: FULL_CLIP, backgroundColor: caseP?.bg ?? "#0f0f0f", duration: 0.95 },
             0.16,
           )
           .fromTo(heroCopy, copyFrom, { x: 0, y: 0, scale: 1, duration: 0.95 }, 0.16)
@@ -542,9 +544,9 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               "--hero-ink-tags": "rgba(0,0,0,0.85)",
             },
             {
-              "--hero-ink": "rgba(255,255,255,0.88)",
-              "--hero-ink-2": "rgba(255,255,255,0.64)",
-              "--hero-ink-tags": "rgba(255,255,255,1)",
+              "--hero-ink": inks[0],
+              "--hero-ink-2": inks[1],
+              "--hero-ink-tags": inks[2],
               duration: 0.7,
               ease: "power2.inOut",
             },

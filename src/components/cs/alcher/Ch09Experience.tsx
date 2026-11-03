@@ -21,7 +21,7 @@ export function Ch09Experience() {
           title="Five moments, not five features: before the fest, the day, the way there, the night, and what you keep."
           introTitle="How to read this"
           intro={
-            <p>
+            <p className={s.introText}>
               Each step is one moment in an attendee’s fest, the screens that serve it, and the decision behind
               them.
             </p>
@@ -35,7 +35,9 @@ export function Ch09Experience() {
         <ExperienceStep key={st.n} step={st} />
       ))}
 
-      <ChapterEnd>Underneath the screens is a system built for pixels.</ChapterEnd>
+      <div className={s.end}>
+        <ChapterEnd>Underneath the screens is a system built for pixels.</ChapterEnd>
+      </div>
     </Chapter>
   );
 }
@@ -48,7 +50,15 @@ function Thumb({ node, ox = 0, oy = 0 }: { node: MapNode; ox?: number; oy?: numb
     <span className={s.node} style={style}>
       <span className={s.thumb}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={node.src} alt="" width={390} loading="lazy" decoding="async" />
+        <img
+          src={`${node.src}.png`}
+          srcSet={node.hd ? `${node.src}.png 1x, ${node.src}@2x.webp 2x` : undefined}
+          alt=""
+          width={104}
+          height={225}
+          loading="lazy"
+          decoding="async"
+        />
       </span>
       <span className={s.nodeLabel}>{node.label}</span>
     </span>

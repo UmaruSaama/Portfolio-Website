@@ -12,10 +12,21 @@ import s from "./Ch10System.module.css";
 const IMG = "/cs/alcheringa-25/img";
 
 /** Figma "Figure – …" (toolbar hidden): pink title plate over a dark stage. */
-function Stage({ plate, className, children }: { plate: string; className?: string; children: ReactNode }) {
+function Stage({
+  plate,
+  plateClass,
+  className,
+  children,
+}: {
+  plate: string;
+  /** Sets the Figma "Title plate" box (width, text line). */
+  plateClass: string;
+  className?: string;
+  children: ReactNode;
+}) {
   return (
     <figure className={s.fig}>
-      <Plate as="figcaption" className={s.plate}>
+      <Plate as="figcaption" className={`${s.plate} ${plateClass}`}>
         {plate}
       </Plate>
       <PixelBox tone="dark" className={`${s.stage} ${className ?? ""}`}>
@@ -116,22 +127,22 @@ function Swatch({ t }: { t: Token }) {
 /* ---------- v1 → v3 screens ---------- */
 
 const screens = [
-  { label: "v1 · Activity, dev-ready", src: "system-v1-activity.webp", w: 212, alt: "v1 Activity screen as handed to the developers: Events, Competitions and Stalls tabs over large Pronite cards." },
+  { label: "v1 · Activity, dev-ready", src: "system-v1-activity.png", w: 212, alt: "v1 Activity screen as handed to the developers: Events, Competitions and Stalls tabs over large Pronite cards." },
   { label: "v3 · Activity", src: "system-v3-activity.png", w: 102, alt: "v3 Activity screen: “What’s on” with day selector chips, Pronites, Proshows and Competitions today." },
-  { label: "v1 · Map, dev-ready", src: "system-v1-map.webp", w: 212, alt: "v1 Map screen: a plain street map with a search bar and a Library Shed location card." },
+  { label: "v1 · Map, dev-ready", src: "system-v1-map.png", w: 212, alt: "v1 Map screen: a plain street map with a search bar and a Library Shed location card." },
   { label: "v3 · Map", src: "system-v3-map.png", w: 213, alt: "v3 Map screen: pixel-art campus map with category filters, pins and an Athletic Field landmark card with Directions." },
 ];
 
 export function Ch10System() {
   return (
-    <Chapter id="system" label="The system underneath">
+    <Chapter id="system" label="The system underneath" className={s.root}>
       <div className={s.bare}>
         <Opener
           eyebrow="The system underneath"
           title="8-bit, but legible: two pixel typefaces, one job each."
           introTitle="Typography"
           intro={
-            <p>
+            <p className={s.regular}>
               ’24 set Futura PT across the app. ’25 uses two pixel typefaces: Brick Pixel for titles, levels and
               numbers; Game Tape for everything you read, because it’s the one pixel face that survives a paragraph.
             </p>
@@ -140,7 +151,7 @@ export function Ch10System() {
       </div>
 
       {/* Figure – Typography */}
-      <Stage plate="TYPOGRAPHY: BRICK PIXEL AND GAME TAPE">
+      <Stage plate="TYPOGRAPHY: BRICK PIXEL AND GAME TAPE" plateClass={s.plateType}>
         <p className={s.lead}>Brick Pixel for display, Game Tape for reading.</p>
         <div className={s.typeCols}>
           <div className={s.typeCol}>
@@ -185,7 +196,7 @@ export function Ch10System() {
             <p className={s.notThis}>not this</p>
           </div>
         </PixelBox>
-        <p className={`${s.foot} ${s.typeFoot}`}>
+        <p className={s.foot}>
           Type scale read off the v3 screens. Both faces are loaded in the app; Hanken Grotesk is only this case
           study’s voice.
         </p>
@@ -203,8 +214,9 @@ export function Ch10System() {
             yours. Merch stays in photographs: nobody buys a hoodie from a sprite.
           </p>
         </div>
-        <Stage plate="THE ’25 PALETTE" className={s.colourStage}>
-          <p className={s.lead}>
+        {/* Brick Pixel has no ’ glyph; Figma draws a straight tick there, so use ' */}
+        <Stage plate="THE '25 PALETTE" plateClass={s.platePalette} className={s.colourStage}>
+          <p className={`${s.lead} ${s.lead135}`}>
             PICO-8 underneath, extended where the fest needed it: 27 tokens in one Arcade collection.
           </p>
           <h4 className={`${s.label} ${s.palLabel}`}>Backgrounds, ink and text</h4>
@@ -226,7 +238,7 @@ export function Ch10System() {
           <p className={`${s.label} ${s.extNote}`}>
             + extended beyond the 16 PICO-8 colours: eight tokens, seven values. The rest are the console’s own.
           </p>
-          <p className={`${s.foot} ${s.colourFoot}`}>
+          <p className={s.foot}>
             Tokens read from the app file’s Arcade variable collection (Default mode). Four pairs share a value:
             bg/grid = bg/sunken, text/muted = text/secondary, cyan/300 = cyan/500, yellow/300 = yellow/500.
           </p>
@@ -245,8 +257,8 @@ export function Ch10System() {
             blur, and the ones that carry money or entry (payment, QR, prices) stay plain.
           </p>
         </div>
-        <Stage plate="CORE COMPONENTS">
-          <p className={s.lead}>One kit, one 8-bit grammar. Payment, QR and prices stay plain.</p>
+        <Stage plate="CORE COMPONENTS" plateClass={s.plateKit}>
+          <p className={`${s.lead} ${s.lead135}`}>One kit, one 8-bit grammar. Payment, QR and prices stay plain.</p>
           <div className={s.kit}>
             <h4 className={`${s.label} ${s.kitLabel}`} style={{ gridColumn: 1 }}>
               Cards
@@ -293,14 +305,14 @@ export function Ch10System() {
             <p className={`${s.foot} ${s.kitCap}`} style={{ gridColumn: 1 }}>
               Event card · Ticket pass · Title plate
             </p>
-            <p className={`${s.foot} ${s.kitCap}`} style={{ gridColumn: 3 }}>
+            <p className={`${s.foot} ${s.kitCap} ${s.kitCapHud}`} style={{ gridColumn: 3 }}>
               Level badge · Resource counter · Prize tag · Live · Countdown · Pixel’s speech bubble · Toast
             </p>
             <p className={`${s.foot} ${s.kitCap} ${s.kitInset}`} style={{ gridColumn: 4 }}>
               Buttons · Nav items · Mystery card · Tags · Filter chips · Achievement tiles
             </p>
           </div>
-          <p className={`${s.foot} ${s.kitFoot}`}>
+          <p className={s.foot}>
             Live instances of the v3 library. Each glyph is one vector per colour, so it scales without blur. 20 button
             variants, 3 mystery-card states, 4 tag tones.
           </p>
@@ -308,7 +320,7 @@ export function Ch10System() {
       </section>
 
       {/* Figure – v1 to v3 */}
-      <Stage plate="FROM DEV-READY TO FINAL: THE DETAILING PASS" className={s.passStage}>
+      <Stage plate="FROM DEV-READY TO FINAL: THE DETAILING PASS" plateClass={s.platePass} className={s.passStage}>
         <p className={s.lead}>
           v1 went to the developers first. The detailing pass gave Activity its days and Map its filters and landmark
           card, without moving anything attendees had already learned.
@@ -333,13 +345,13 @@ export function Ch10System() {
             );
           })}
           <span className={s.arrow} style={{ gridColumn: 2 }} aria-hidden="true">
-            →
+            <span className={s.arrowGlyph}>→</span>
           </span>
           <span className={s.arrow} style={{ gridColumn: 6 }} aria-hidden="true">
-            →
+            <span className={s.arrowGlyph}>→</span>
           </span>
         </div>
-        <p className={`${s.foot} ${s.passFoot}`}>
+        <p className={s.foot}>
           v1 is the build handed to the developers; v3 is the final. Both are &apos;25 team work.
         </p>
       </Stage>

@@ -9,6 +9,24 @@
   border-top: 0;
 }
 
+/* Figma's 40/118% H1 box is 141 for three lines (47px lines, not 47.2). */
+.opener h2 {
+  line-height: 47px;
+}
+
+/* Intro body: Hanken Regular, #c8c8ca (shared Opener uses 540 / silver). */
+.introText {
+  margin: 0;
+  font-weight: 400;
+  color: #c8c8ca;
+}
+
+/* Figma "Chapter end" bridge: 20/135% → a 27px line (shared ChapterEnd
+   uses 1.3 = 26). */
+.end > p {
+  line-height: 27px;
+}
+
 /* ---------- Figure – Overworld map (519:46288) ---------- */
 
 .map {
@@ -31,7 +49,8 @@
   margin: calc(13 * var(--v)) 0 0;
   max-width: calc(720 * var(--v));
   font-size: 18px;
-  line-height: 1.45;
+  font-weight: 400;
+  line-height: 26px; /* 145%, box 52 for two lines as in Figma */
   color: rgb(255 241 232 / 0.85);
 }
 
@@ -48,24 +67,24 @@
 .start {
   margin: 0;
   left: 0;
-  top: calc(33 * var(--v));
+  top: calc(32.5 * var(--v));
   font-family: var(--font-pixel);
   font-size: max(9px, calc(12 * var(--v)));
-  line-height: 1.1;
+  line-height: 13px;
   color: var(--al-yellow);
   -webkit-font-smoothing: none;
 }
 
 .flag {
   left: calc(20 * var(--v));
-  top: calc(61 * var(--v));
+  top: calc(60.5 * var(--v));
   width: calc(32 * var(--v));
   height: calc(88 * var(--v));
 }
 
 .player {
   left: calc(40 * var(--v));
-  top: calc(173 * var(--v));
+  top: calc(172.5 * var(--v));
   width: calc(48 * var(--v));
   height: calc(42 * var(--v));
 }
@@ -106,60 +125,50 @@
   filter: brightness(1.18);
 }
 
-/* "WORLD 1" + title row at 16/16 (title at x 96 in Figma: 27 after the number) */
+/* "WORLD 1" + title row at 16/16 (title at x 96 in Figma) */
 .worldHead {
   position: absolute;
   left: 16px;
   top: max(14px, calc(16 * var(--v)));
   display: flex;
   align-items: flex-start;
-  gap: calc(27 * var(--v));
   white-space: nowrap;
   -webkit-font-smoothing: none;
 }
 
+/* number box 80 wide → the title starts at x 96 in every world, as in Figma */
 .worldNum {
+  width: calc(80 * var(--v));
   font-family: var(--font-pixel-body);
   font-size: max(10px, calc(14 * var(--v)));
-  line-height: 1.07;
+  line-height: 15px;
   color: var(--al-yellow);
 }
 
 .worldTitle {
   font-family: var(--font-pixel);
   font-size: max(9px, calc(12 * var(--v)));
-  line-height: 1.08;
+  line-height: 13px;
   color: rgb(255 241 232 / 0.85);
 }
 
 /* Screen thumbnail (Figma "Node – …": 104 × 225, r 10, 2px cream @ 0.25
-   inside stroke) with its label 10 below. */
+   inside stroke, baked into the render) with its label 10 below. */
 .node {
   position: absolute;
   width: calc(104 * var(--v));
 }
 
+/* The image is the Figma node render (corners and stroke included). */
 .thumb {
-  position: relative;
   display: block;
   height: calc(225 * var(--v));
-  overflow: hidden;
-  border-radius: calc(10 * var(--v));
-  background: var(--al-night);
-}
-
-.thumb::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 2px rgb(255 241 232 / 0.25);
 }
 
 .thumb img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .nodeLabel {
@@ -167,6 +176,7 @@
   left: 0;
   top: calc(235 * var(--v));
   font-size: max(10px, calc(14 * var(--v)));
+  font-weight: 400;
   line-height: 1.5;
   white-space: nowrap;
   color: rgb(255 241 232 / 0.85);
@@ -183,19 +193,19 @@
 .goalLabel {
   margin: 0;
   left: calc(666 * var(--v));
-  top: calc(869 * var(--v));
+  top: calc(868.5 * var(--v));
   font-family: var(--font-pixel);
   font-size: max(9px, calc(12 * var(--v)));
-  line-height: 1.1;
+  line-height: 13px;
   color: var(--al-yellow);
   -webkit-font-smoothing: none;
 }
 
 .goal {
   left: calc(666 * var(--v));
-  top: calc(897 * var(--v));
-  width: calc(205 * var(--v));
-  height: calc(105 * var(--v));
+  top: calc(896.5 * var(--v));
+  width: calc(204.6 * var(--v));
+  height: calc(104.2 * var(--v));
 }
 
 .goalText {
@@ -205,8 +215,9 @@
 .goalCaption {
   margin: 0;
   left: calc(666 * var(--v));
-  top: calc(1013 * var(--v));
+  top: calc(1012.7 * var(--v));
   font-size: max(10px, calc(14 * var(--v)));
+  font-weight: 400;
   line-height: 1.5;
   white-space: nowrap;
   color: rgb(255 241 232 / 0.85);
@@ -244,10 +255,14 @@
   color: var(--al-cream);
 }
 
+/* Figma "Figure – …" (1020 × 696) has a hard 4/4 black drop shadow. */
 .figure {
   margin: 0;
   display: flex;
   flex-direction: column;
+  filter: drop-shadow(4px 4px 0 #000);
+  /* the step frame clips at the column's right edge; the shadow under it shows */
+  clip-path: inset(0 0 -4px 0);
 }
 
 /* Toolbar (1020 × 56): label left, controls right, centred at y 28 */
@@ -271,7 +286,7 @@
   flex: none;
   padding: 3px 8px;
   background: rgb(255 241 232 / 0.08);
-  font-family: var(--font-pixel-body);
+  font-family: "Pixelify Sans", var(--font-pixel-body); /* Figma: Pixelify Sans Bold */
   font-size: 12px;
   font-weight: 700;
   line-height: 15px;
@@ -286,6 +301,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.5;
   color: rgb(255 241 232 / 0.86);
 }
@@ -311,6 +327,7 @@
   flex: none;
   width: 16px;
   height: 16px;
+  color: rgb(255 241 232 / 0.92); /* Figma: icon stroke 2, cream @ 0.92 */
 }
 
 .ctrlDivider {
@@ -427,9 +444,10 @@
   place-items: center;
   width: 22px;
   height: 22px;
+  box-sizing: border-box;
+  border: 2px solid var(--al-night); /* Figma: 2px #111d35 inside stroke */
   border-radius: 50%;
   background: var(--al-pink);
-  box-shadow: inset 0 0 0 2px var(--al-night);
   font-size: 12px;
   font-weight: 500;
   line-height: 1;
@@ -438,6 +456,10 @@
 
 .storyText {
   min-width: 0;
+  /* Chrome measures some Figma lines a hair over 274 (e.g. step 4 #1 at
+     274.05) and wraps a word early; 0.5px of slack keeps Figma's breaks
+     (step 5 #2 at 274.88 must still wrap). */
+  margin-right: -0.5px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -445,12 +467,14 @@
 
 .storyTitle {
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--al-cream);
 }
 
 .storyBody {
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--al-silver);
 }
@@ -488,6 +512,7 @@
   flex: 1;
   min-width: 0;
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--al-navy);
 }
@@ -680,7 +705,7 @@
 
 .miniLabel {
   margin: 0;
-  font-family: var(--font-pixel-body);
+  font-family: "Pixelify Sans", var(--font-pixel-body); /* Figma: Pixelify Sans Bold */
   font-size: 12px;
   font-weight: 700;
   line-height: 15px;
@@ -715,6 +740,7 @@
 .rationale dd {
   margin: 0;
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--al-silver);
 }

@@ -221,7 +221,9 @@ export function Ch07Changed() {
         </div>
       </section>
 
-      <ChapterEnd>With the changes set, I had to make them fit the structure attendees already knew.</ChapterEnd>
+      <div className={s.end}>
+        <ChapterEnd>With the changes set, I had to make them fit the structure attendees already knew.</ChapterEnd>
+      </div>
     </Chapter>
   );
 }

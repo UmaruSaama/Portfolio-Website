@@ -68,6 +68,22 @@ const added = [
   "Front-row passes",
 ];
 
+/** ’ inside Brick Pixel text. Brick Pixel has no curly quotes; Figma draws
+ *  them with its fallback face (a slanted wedge, 0.175em advance). Draw that
+ *  wedge so the pixel digits/letters land where Figma puts them. */
+function Apos() {
+  return (
+    <>
+      <span className={s.apos} aria-hidden="true">
+        <svg viewBox="0 0 175 750" preserveAspectRatio="none">
+          <path fill="currentColor" d="M69 33H153L86 281H14Z" />
+        </svg>
+      </span>
+      <span className="visually-hidden">’</span>
+    </>
+  );
+}
+
 /** Red pixel flag on the ’25 card (28 × 36). */
 function Flag() {
   return (
@@ -99,7 +115,7 @@ function Inventory({ title, items, kind }: { title: string; items: string[]; kin
 
 export function Ch03Context() {
   return (
-    <Chapter id="context" label="Context">
+    <Chapter id="context" label="Context" className={s.chapter}>
       <Opener eyebrow="Context" title="A four-day festival, rebuilt as an app every year by a new team." />
 
       <PixelBox tone="blue" as="section" className={s.facts} aria-label="The festival, the app, the brief">
@@ -132,7 +148,8 @@ export function Ch03Context() {
                   <span className={s.node} aria-hidden="true" />
                   <div className={s.levelHead}>
                     <PixelText as="h4" className={s.year}>
-                      {l.year}
+                      <Apos />
+                      {l.year.slice(1)}
                     </PixelText>
                     {now ? (
                       <Flag />

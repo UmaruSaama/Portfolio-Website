@@ -1,0 +1,16 @@
+/* The Alcher display faces from the Figma (SIL Open Font License). */
+@font-face {
+  font-family: "Brick Pixel";
+  src: url("/fonts/Brick_Pixel.woff2") format("woff2"), url("/fonts/Brick_Pixel.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Game Tape";
+  src: url("/fonts/Game_Tape.woff2") format("woff2"), url("/fonts/Game_Tape.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

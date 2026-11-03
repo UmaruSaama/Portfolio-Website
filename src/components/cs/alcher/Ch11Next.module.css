@@ -6,6 +6,11 @@
   border-top: 0;
 }
 
+/* Figma snaps the H1's text box to whole px (47 per line, not 47.2). */
+.bare h2 {
+  line-height: 47px;
+}
+
 /* Three blue panels 329 × 276, 16 apart */
 .cards {
   margin: 0;
@@ -27,7 +32,7 @@
   margin: 0;
   font-size: 12px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 17px; /* Figma rounds each line to whole px (12 × 1.4) */
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--al-silver);
@@ -43,7 +48,28 @@
 
 .body {
   margin: 0;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
   color: var(--al-silver);
+}
+
+/* Figma body copy is Hanken Regular; the page's base weight is 540. */
+.regular {
+  font-weight: 400;
+}
+
+/* Baseline match: for Hanken 12/17 and 16/24 Chrome sets the glyphs 1px
+   higher in the line box than Figma does. */
+.label,
+.body,
+.regular {
+  position: relative;
+  top: 1px;
+}
+
+/* Figma "Chapter end": the bridge line is 20 × 135% = 27 tall (the shared
+   ChapterEnd uses 130%). */
+.root > p:last-child {
+  line-height: 27px;
 }

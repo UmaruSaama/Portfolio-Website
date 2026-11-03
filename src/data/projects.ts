@@ -25,6 +25,8 @@ export type Project = {
   videoSrc?: string;
   /** Case-study page surface (the card morphs into this colour). */
   bg?: string;
+  /** Hero text inks the morph lands on: [title, summary, tags]. */
+  heroInk?: [string, string, string];
   /** No case study page yet: no CTA, no "view" cursor, no route. */
   placeholder?: boolean;
 };
@@ -78,6 +80,7 @@ export const projects: Project[] = [
       alt: "Three phones showing the Alcheringa ’25 app: the activity log, the pixel-art home screen and the festival map.",
     },
     bg: "#111d35",
+    heroInk: ["#fff1e8", "rgba(255,241,232,0.85)", "rgba(255,241,232,0.85)"],
     chapters: [
       { id: "intro", label: "Intro" },
       { id: "snapshot", label: "Snapshot" },

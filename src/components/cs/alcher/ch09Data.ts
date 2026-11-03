@@ -334,7 +334,9 @@ export const steps: Step[] = [
 
 /* ---------- overworld map (Figma 519:46288, positions in Figma px) ---------- */
 
-export type MapNode = { label: string; src: string; x: number; y: number };
+/** src = thumbnail base path: `<src>.png` is the Figma node render at 1×,
+ *  `<src>@2x.webp` (when hd) the same crop from the full-size screen. */
+export type MapNode = { label: string; src: string; x: number; y: number; hd?: boolean };
 export type World = {
   n: number;
   title: string;
@@ -347,7 +349,9 @@ export type World = {
 
 /** Thumbnail frames (104 × 225, clipped top of the screen). y is from the
  *  top of the map canvas, which starts 124 below the figure's top. */
-export const onboardingNode: MapNode = { label: "Onboarding", src: img("onboarding"), x: 114, y: 44 };
+const thumb = (n: string) => `${IMG}/experience-thumb-${n}`;
+
+export const onboardingNode: MapNode = { label: "Onboarding", src: thumb("onboarding"), x: 114, y: 44, hd: true };
 
 export const worlds: World[] = [
   {
@@ -358,8 +362,8 @@ export const worlds: World[] = [
     y: 0,
     w: 288,
     nodes: [
-      { label: "Home", src: img("home"), x: 314, y: 44 },
-      { label: "Lineup reveal", src: img("reveal"), x: 458, y: 44 },
+      { label: "Home", src: thumb("home"), x: 314, y: 44, hd: true },
+      { label: "Lineup reveal", src: thumb("reveal"), x: 458, y: 44, hd: true },
     ],
   },
   {
@@ -370,8 +374,8 @@ export const worlds: World[] = [
     y: 0,
     w: 288,
     nodes: [
-      { label: "Activity", src: img("activity"), x: 658, y: 44 },
-      { label: "Event detail", src: img("event"), x: 802, y: 44 },
+      { label: "Activity", src: thumb("activity"), x: 658, y: 44, hd: true },
+      { label: "Event detail", src: thumb("event"), x: 802, y: 44, hd: true },
     ],
   },
   {
@@ -382,8 +386,8 @@ export const worlds: World[] = [
     y: 400,
     w: 288,
     nodes: [
-      { label: "Directions", src: img("directions"), x: 630, y: 444 },
-      { label: "Map", src: img("map"), x: 774, y: 444 },
+      { label: "Directions", src: thumb("directions"), x: 630, y: 444, hd: true },
+      { label: "Map", src: thumb("map"), x: 774, y: 444, hd: true },
     ],
   },
   {
@@ -394,9 +398,9 @@ export const worlds: World[] = [
     y: 400,
     w: 432,
     nodes: [
-      { label: "Level up", src: img("levelup"), x: 142, y: 444 },
-      { label: "Gate entry", src: img("gate"), x: 286, y: 444 },
-      { label: "My passes", src: img("passes"), x: 430, y: 444 },
+      { label: "Level up", src: thumb("levelup"), x: 142, y: 444 },
+      { label: "Gate entry", src: thumb("gate"), x: 286, y: 444, hd: true },
+      { label: "My passes", src: thumb("passes"), x: 430, y: 444, hd: true },
     ],
   },
   {
@@ -407,9 +411,9 @@ export const worlds: World[] = [
     y: 800,
     w: 432,
     nodes: [
-      { label: "Profile", src: img("profile"), x: 186, y: 844 },
-      { label: "Achievements", src: img("achievements"), x: 330, y: 844 },
-      { label: "Leaderboard", src: img("leaderboard"), x: 474, y: 844 },
+      { label: "Profile", src: thumb("profile"), x: 186, y: 844, hd: true },
+      { label: "Achievements", src: thumb("achievements"), x: 330, y: 844, hd: true },
+      { label: "Leaderboard", src: thumb("leaderboard"), x: 474, y: 844, hd: true },
     ],
   },
 ];

@@ -25,6 +25,22 @@ const findings = [
   },
 ];
 
+/** ’ inside Brick Pixel text. Brick Pixel has no curly quotes; Figma draws
+ *  them with its fallback face (a slanted wedge, 0.175em advance). Draw that
+ *  wedge so the pixel digits/letters land where Figma puts them. */
+function Apos() {
+  return (
+    <>
+      <span className={s.apos} aria-hidden="true">
+        <svg viewBox="0 0 175 750" preserveAspectRatio="none">
+          <path fill="currentColor" d="M69 33H153L86 281H14Z" />
+        </svg>
+      </span>
+      <span className="visually-hidden">’</span>
+    </>
+  );
+}
+
 /** Speech-bubble tail under the lead quote (24 × 20, Figma "tail"). */
 function Tail() {
   return (
@@ -37,7 +53,7 @@ function Tail() {
 
 export function Ch04Problem() {
   return (
-    <Chapter id="problem" label="The problem">
+    <Chapter id="problem" label="The problem" className={s.chapter}>
       <div className={s.opener}>
         <Opener
           eyebrow="The problem"
@@ -54,10 +70,11 @@ export function Ch04Problem() {
           <div className={s.left}>
             <figure className={s.quote}>
               <PixelBox tone="cream" className={s.bubble}>
-                {/* Opening quote mark, drawn (the pixel stand-in font's “ is tiny) */}
+                {/* “: Brick Pixel has no curly quotes; Figma renders its fallback
+                    face's wedges (box 21 × 73, strokes 14px tall at y13) */}
                 <span className={s.mark} aria-hidden="true">
-                  <svg width="18" height="14" viewBox="0 0 18 14">
-                    <path fill="#ff004d" d="M4 0h4L5 14H0zM14 0h4l-3 14h-5z" />
+                  <svg width="20" height="14" viewBox="0 0 20 14">
+                    <path fill="currentColor" d="M5.2 0H9L6.6 13.85H0.1ZM15.7 0H19.3L16.8 13.85H11.2Z" />
                   </svg>
                 </span>
                 <blockquote className={s.quoteText}>
@@ -70,7 +87,7 @@ export function Ch04Problem() {
 
             <PixelBox tone="pink" className={s.verdict}>
               <PixelText as="p" className={s.verdictTitle}>
-                Finding wasn’t the problem.
+                Finding wasn<Apos />t the problem.
               </PixelText>
               <p className={s.verdictSub}>Choosing was.</p>
             </PixelBox>

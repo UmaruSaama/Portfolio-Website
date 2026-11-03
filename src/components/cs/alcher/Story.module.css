@@ -97,7 +97,9 @@
   position: absolute;
   z-index: 0;
   top: var(--seg-top);
-  bottom: 0;
+  /* run through the 96 gap to the next act; that act's layer (later in
+     the DOM) paints over the overlap */
+  bottom: calc(-96 * var(--v));
   left: 50%;
   width: 100vw;
   translate: -50% 0;
@@ -153,6 +155,7 @@
 
 .actNum {
   margin: 0;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
   color: var(--al-yellow);
@@ -171,6 +174,7 @@
 
 .actLine {
   margin: calc(16 * var(--v)) 0 0;
+  font-weight: 400;
   font-size: 18px;
   line-height: 1.45;
   color: rgb(255 241 232 / 0.85);

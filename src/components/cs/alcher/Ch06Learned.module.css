@@ -1,5 +1,21 @@
 /* 06 · What I learned (Figma 504:67158) */
 
+/* Opener divider: Figma draws the 1px line at y -1 of the opener (it sits
+   in the gap above), so the eyebrow lands 64px below the line's y, not 65.
+   Shared Opener uses border-top (adds 1px) — corrected locally. */
+.chapter > header {
+  position: relative;
+  border-top: 0;
+}
+
+.chapter > header::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: var(--al-divider);
+}
+
 .srOnly {
   position: absolute;
   width: 1px;
@@ -58,7 +74,18 @@
 }
 
 .figure[data-plain] {
+  padding-top: 0;
+}
+
+/* Figma "Inline" frame clips the findings: cards start 8 down and lose
+   their bottom 30px (frame 262 = 8 + 284 − 30 at 1440) */
+.inline {
   padding-top: 8px;
+  overflow: hidden;
+}
+
+.inline > .findings {
+  margin-bottom: -30px;
 }
 
 .plate {
@@ -67,6 +94,20 @@
   left: 32px;
   z-index: 2;
   margin: 0;
+}
+
+/* Figma plates are fixed-width with the text centred (391 / 259); the
+   shared Plate hugs its text with 32 padding */
+.figure .plate {
+  padding-inline: 0;
+}
+
+.figure .plateTable {
+  width: 391px;
+}
+
+.figure .plateFindings {
+  width: 259px;
 }
 
 .caption {
@@ -127,6 +168,24 @@
     inset -3px 0 0 var(--al-blue);
 }
 
+/* Row 2 (Figma "Row – Anki"): its bottom blue edge falls outside the
+   clipped 82px row, so it has none; the right edge runs the full height */
+.table tbody tr:nth-child(2) :is(th, td) {
+  box-shadow: inset 0 3px 0 #000;
+}
+
+.table tbody tr:nth-child(2) :is(th, td):first-child {
+  box-shadow:
+    inset 0 3px 0 #000,
+    inset 3px 0 0 #000;
+}
+
+.table tbody tr:nth-child(2) :is(th, td):last-child {
+  box-shadow:
+    inset 0 3px 0 #000,
+    inset -3px 0 0 var(--al-blue);
+}
+
 /* Header row: 12px padding; navy bottom/right edge stops 2px above the
    row's end (Figma rects are 39 tall in the 41 row) */
 .table thead th {
@@ -134,7 +193,7 @@
   padding-bottom: 12px;
   font-size: 12px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 17px; /* 12/140%, Figma box 17 */
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--al-silver);
@@ -225,7 +284,7 @@
   margin: 0;
   font-size: 12px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 17px; /* 12/140%, Figma box 17 */
   color: #cdc0ca;
 }
 
@@ -277,7 +336,7 @@
   padding-top: 4px;
   font-size: 12px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 17px; /* 12/140%, Figma box 17 */
   color: var(--al-label);
 }
 
