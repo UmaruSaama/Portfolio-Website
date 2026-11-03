@@ -261,11 +261,13 @@
   }
 }
 
-/* Very narrow phones (≤ 359px): the figure controls may wrap onto their
-   own line instead of running past the figure edge. */
-@media (max-width: 359px) {
+/* Compact: figure controls may shrink to the toolbar width and wrap onto
+   a second line instead of running past the figure edge. */
+@media (max-width: 1023px) {
   .controls {
-    flex: 1 1 100%;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
     flex-wrap: wrap;
     gap: 8px 12px;
   }

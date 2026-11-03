@@ -161,9 +161,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
             <span className={styles.divider} aria-hidden="true" />
 
             {/* Device switch. Tablet expands in place into a nested orientation
-          switch (a box within the selected box) instead of a second toggle.
-          Hidden on phones, where the device is pinned to the phone screen. */}
-            {!view.phone && (
+          switch (a box within the selected box) instead of a second toggle. */}
             <div className={styles.segment} role="group" aria-label="Device">
               {DEVICES.map(({ id, label, Icon }) =>
                 id === "t" && view.device === "t" ? (
@@ -208,9 +206,8 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
                 ),
               )}
             </div>
-            )}
 
-            {!view.phone && <span className={styles.divider} aria-hidden="true" />}
+            <span className={styles.divider} aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -271,6 +268,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
       <div
         ref={areaRef}
         className={styles.deviceArea}
+        data-variant={variant}
         data-full={full ? "" : undefined}
         style={fit ?? undefined}
         inert={video}

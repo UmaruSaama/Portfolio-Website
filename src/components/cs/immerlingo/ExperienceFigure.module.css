@@ -628,6 +628,8 @@
   .controlsRow {
     flex-wrap: wrap;
     gap: 8px 0;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .foldContent {
@@ -657,15 +659,38 @@
     font-size: 17px;
   }
 
-  /* The device box is the phone's own proportion, centred in the column. */
+  /* The device box takes each screen's own proportion: desktop and
+     tablet landscape run the full column, tablet portrait and phone are
+     centred at a readable width. */
   .deviceArea {
-    width: min(100%, 250px);
+    width: 100%;
     margin: 0 auto;
+  }
+
+  .deviceArea[data-variant="tl"] {
+    aspect-ratio: 1194 / 834;
+  }
+
+  .deviceArea[data-variant="tp"] {
+    width: min(100%, 440px);
+    aspect-ratio: 834 / 1194;
+  }
+
+  .deviceArea[data-variant="m"] {
+    width: min(100%, 300px);
     aspect-ratio: 390 / 844;
   }
 
   .frame[data-kind="phone"] img {
     width: min(calc(100cqw - 14px), calc((100cqh - 14px) * 390 / 844));
+  }
+
+  .device[data-variant="tl"] .frame img {
+    width: min(calc(100cqw - 18px), calc((100cqh - 18px) * 1194 / 834));
+  }
+
+  .device[data-variant="tp"] .frame img {
+    width: min(calc(100cqw - 18px), calc((100cqh - 18px) * 834 / 1194));
   }
 
   /* Clean view: the notes leave the flow so the card shrinks to the
@@ -704,5 +729,13 @@
     left: 16px;
     right: 16px;
     bottom: 12px;
+  }
+}
+
+/* Narrow phones: the mode switch wraps to its own line, so the divider
+   that would separate it would hang at the end of the first row. */
+@media (max-width: 479px) {
+  .foldContent > .divider:last-child {
+    display: none;
   }
 }
