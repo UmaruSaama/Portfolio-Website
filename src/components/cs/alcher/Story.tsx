@@ -57,7 +57,10 @@ export function Opener({
  * on its act even when the chapters above run longer or shorter than in
  * Figma. `top` = where the segment starts relative to the act's top (Figma
  * px); `cells` = segment height in cells. Below a segment the group keeps
- * the segment's last band colour.
+ * the segment's last band colour. The scene is drawn once, 1440 wide and
+ * centred, as in Figma; past 1440 each side continues with a one-cell
+ * edge strip (<seg>-l/-r.png: the row's edge colour where it runs on, e.g.
+ * ground lines, else the row's band colour), never a repeat of the scene.
  */
 type Segment = { src: string; top: number; cells: number; after: string };
 
@@ -76,6 +79,8 @@ const segments: Record<number, Segment> = {
 export function worldStyle(seg: Segment) {
   return {
     "--seg": `url(${seg.src})`,
+    "--seg-l": `url(${seg.src.replace(".png", "-l.png")})`,
+    "--seg-r": `url(${seg.src.replace(".png", "-r.png")})`,
     "--seg-top": `calc(${seg.top} * var(--v))`,
     "--seg-h": `calc(${seg.cells * 4} * var(--v))`,
     "--seg-after": seg.after,

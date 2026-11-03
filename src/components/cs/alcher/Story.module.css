@@ -91,8 +91,8 @@
 }
 
 /* Full-bleed world layer: the segment image at the act's top, then its
-   last band colour down to the end of the group. Repeats sideways past
-   1440 so wide screens continue the scene. */
+   last band colour down to the end of the group. Past 1440 the sides
+   continue with the edge strips (see Story.tsx). */
 .world {
   position: absolute;
   z-index: 0;
@@ -103,8 +103,11 @@
   translate: -50% 0;
   pointer-events: none;
   image-rendering: pixelated;
+  --side: calc(50% - 720 * var(--v) + 4px); /* overlaps under the scene */
   background:
-    var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) repeat-x,
+    var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) no-repeat,
+    var(--seg-l) left top / var(--side) var(--seg-h) no-repeat,
+    var(--seg-r) right top / var(--side) var(--seg-h) no-repeat,
     linear-gradient(var(--seg-after), var(--seg-after)) left var(--seg-h) / 100% calc(100% - var(--seg-h)) no-repeat;
 }
 
@@ -114,7 +117,11 @@
   height: var(--seg-h);
   pointer-events: none;
   image-rendering: pixelated;
-  background: var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) repeat-x;
+  --side: calc(50% - 720 * var(--v) + 4px);
+  background:
+    var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) no-repeat,
+    var(--seg-l) left top / var(--side) var(--seg-h) no-repeat,
+    var(--seg-r) right top / var(--side) var(--seg-h) no-repeat;
 }
 
 .worldTail {
@@ -127,7 +134,11 @@
   translate: -50% 0;
   pointer-events: none;
   image-rendering: pixelated;
-  background: var(--seg) center bottom / calc(1440 * var(--v)) var(--seg-h) repeat-x;
+  --side: calc(50% - 720 * var(--v) + 4px);
+  background:
+    var(--seg) center bottom / calc(1440 * var(--v)) var(--seg-h) no-repeat,
+    var(--seg-l) left bottom / var(--side) var(--seg-h) no-repeat,
+    var(--seg-r) right bottom / var(--side) var(--seg-h) no-repeat;
 }
 
 /* Figma: 240 transition zone, "ACT 01" at 296, title 322, divider 404, line 440 */
