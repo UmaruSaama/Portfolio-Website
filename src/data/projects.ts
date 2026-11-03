@@ -97,14 +97,36 @@ export const projects: Project[] = [
       { id: "close", label: "Close" },
     ],
   },
-  ...[3, 4].map(
-    (n): Project => ({
-      slug: `project-0${n}`,
-      name: `Project 0${n}`,
-      tags: ["Case study"],
-      title: { accent: `Project 0${n}`, rest: "coming soon" },
-      summary: "Placeholder. Replace with the case study’s one-line summary.",
-      placeholder: true,
-    }),
-  ),
+  {
+    slug: "ccd-placements",
+    name: "CCD Placements",
+    tags: ["Product Design", "Design Systems", "Live product"],
+    title: {
+      lead: "IIT Guwahati’s placement portals and app, redesigned as",
+      accent: "one system",
+    },
+    summary:
+      "Web portals for students, companies and coordinators, and a mobile app for students, for the Centre for Career Development. Live and in use, built by two developers from a fully tokenised handoff.",
+    image: {
+      src: "/work/ccd/hero.webp",
+      width: 1185,
+      height: 880,
+      alt: "The CCD student placement portal in a browser window, with the CCD app’s Home on a phone in front of it.",
+    },
+    // Case study not written yet: card only.
+    placeholder: true,
+  },
+  {
+    slug: "stag-fencing",
+    name: "Stag Fencing",
+    tags: ["Web Design", "E-commerce", "Client work"],
+    title: {
+      lead: "A Perth fencing contractor’s broken WordPress site, rebuilt",
+      accent: "from the ground up",
+    },
+    summary:
+      "Stag Fencing’s new website: services, a fence calculator, a shop with cart and checkout, a gallery and an admin. I led the design and handed it to a developer partner.",
+    // Live-homepage screenshot to come; until then the empty device outline.
+    placeholder: true,
+  },
 ];
