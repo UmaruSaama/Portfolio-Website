@@ -41,6 +41,7 @@
   --cs-white-08: var(--al-divider);
   --cs-pink: var(--al-pink);
   --accent: var(--al-pink); /* hero title accent */
+  --rail-bg: rgb(17 29 53 / 0.94); /* chapter rail backing over the pixel art */
 
   /* Pixel faces (stand-ins: Tiny5 for Brick Pixel, Pixelify Sans for Game Tape) */
   --font-pixel: "Tiny5", "Pixelify Sans", monospace;
