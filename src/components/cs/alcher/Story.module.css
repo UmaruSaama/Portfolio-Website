@@ -188,3 +188,67 @@
   font-size: 15px;
   color: var(--al-label);
 }
+
+/* ---------- phones: --v is 0.5px, so the world draws at 2px cells
+   (720 wide, centred, the sides cropped) and the act rhythm halves ---------- */
+@media (max-width: 1023px) {
+  .opener {
+    gap: 20px;
+    padding-top: 32px;
+  }
+
+  .openerHead {
+    gap: 16px;
+  }
+
+  .h1 {
+    max-width: none;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .introTitle {
+    padding-right: 0;
+    font-size: 18px;
+  }
+
+  .introBody {
+    font-size: 15px;
+  }
+
+  .group {
+    gap: 56px;
+  }
+
+  .act {
+    height: auto;
+    min-height: calc(520 * var(--v));
+    padding-top: calc(296 * var(--v));
+    padding-bottom: 8px;
+  }
+
+  .actTitle {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .actDivider {
+    width: 160px;
+    margin-top: 14px;
+  }
+
+  .actLine {
+    margin-top: 12px;
+    padding: 0 12px;
+    font-size: 15px;
+  }
+
+  .pending {
+    height: 200px;
+  }
+}

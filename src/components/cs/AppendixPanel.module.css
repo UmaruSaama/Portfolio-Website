@@ -161,3 +161,22 @@
     transition: none;
   }
 }
+
+@media (max-width: 1023px) {
+  .panel {
+    --gutter: 20px;
+    width: 100vw;
+    border-left: 0;
+  }
+
+  .header {
+    gap: 12px;
+    padding-top: 14px;
+    padding-bottom: 12px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}

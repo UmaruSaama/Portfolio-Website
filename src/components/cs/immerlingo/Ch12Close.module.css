@@ -77,3 +77,33 @@
   text-align: center;
   text-wrap: wrap; /* Figma breaks this line greedily */
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .close {
+    min-height: 0;
+    padding: 32px 20px;
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        320px 180px at 50% -10px,
+        rgba(0, 218, 195, 0.085),
+        rgba(0, 218, 195, 0.03) 60%,
+        transparent
+      ),
+      var(--cs-surface-10);
+  }
+
+  .divider {
+    width: min(280px, 80%);
+  }
+
+  .content {
+    max-width: none;
+    gap: 16px;
+  }
+
+  .statement {
+    font-size: 20px;
+  }
+}

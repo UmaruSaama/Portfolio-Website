@@ -464,3 +464,188 @@
   line-height: 1.4;
   color: var(--cs-text-secondary);
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .jtbd {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .jtbdCards {
+    gap: 12px;
+  }
+
+  .jtbdCard {
+    flex-direction: column;
+    gap: 10px;
+    padding: 19px;
+  }
+
+  .jtbdLabel {
+    flex: none;
+    padding-right: 0;
+    font-weight: 500;
+    color: var(--cs-text-primary);
+  }
+
+  .jtbdList {
+    flex: none;
+    font-size: 15px;
+  }
+
+  .challenge {
+    gap: 20px;
+    padding: 32px 20px;
+  }
+
+  .challengeLine {
+    max-width: 70%;
+  }
+
+  .challengeGlow {
+    inset: 0;
+    width: auto;
+    height: auto;
+    transform: none;
+    border-radius: 0;
+    background: radial-gradient(
+      ellipse 90% 60% at 50% 0%,
+      rgba(255, 214, 0, 0.075),
+      rgba(255, 214, 0, 0.035) 45%,
+      rgba(255, 214, 0, 0) 100%
+    );
+  }
+
+  .principles {
+    gap: 28px;
+  }
+
+  .principlesHead {
+    gap: 16px;
+  }
+
+  .filterRow {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .filterBody {
+    flex: none;
+    width: 100%;
+    gap: 20px;
+  }
+
+  .filterLead {
+    max-width: none;
+  }
+
+  /* evidence / decision chains: each row becomes a card,
+     evidence ↓ principle ↓ feature */
+  .chainPanel {
+    padding: 4px 16px;
+  }
+
+  .evidencePanel {
+    min-height: 0;
+  }
+
+  .chain,
+  .chain tbody,
+  .chain tr,
+  .chain td {
+    display: block;
+    width: auto;
+  }
+
+  .chain colgroup,
+  .chain thead {
+    display: none;
+  }
+
+  .chain tbody tr {
+    padding: 20px 0;
+  }
+
+  .evidence tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .chain td {
+    padding: 0;
+  }
+
+  .chain .arrowCell {
+    padding: 6px 0;
+    text-align: left;
+  }
+
+  .arrow {
+    display: inline-block;
+    transform: rotate(90deg);
+    color: var(--cs-text-tertiary);
+  }
+
+  .chain td::before {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cs-text-tertiary);
+  }
+
+  .chain td:nth-child(1)::before {
+    content: "Evidence" / "";
+  }
+
+  .chain td:nth-child(3)::before {
+    content: "Principle" / "";
+  }
+
+  .evidence td:nth-child(5)::before {
+    content: "In ImmerLingo" / "";
+  }
+
+  .decisions td:nth-child(5)::before {
+    content: "v1 decision" / "";
+  }
+
+  .pillFixed {
+    width: auto;
+  }
+
+  .pill {
+    white-space: normal;
+  }
+
+  .evFinding,
+  .evFeature {
+    font-size: 15px;
+  }
+
+  .decFinding,
+  .decTitle {
+    font-size: 15px;
+  }
+
+  .decTitle {
+    padding-right: 0;
+  }
+
+  .notInV1 {
+    margin-top: 20px;
+    padding: 16px;
+  }
+
+  .notCols {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .notCols dd {
+    font-size: 14px;
+  }
+}

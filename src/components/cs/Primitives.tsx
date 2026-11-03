@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import styles from "./Primitives.module.css";
 import cs from "./cs.module.css";
 
@@ -68,7 +68,7 @@ export function Opener({
           {introTitle && (
             <h3
               className={`${cs.h3} ${styles.introTitle}`}
-              style={introTitleWidth ? { flexBasis: `${introTitleWidth + 4}px` } : undefined}
+              style={introTitleWidth ? ({ "--intro-w": `${introTitleWidth + 4}px` } as CSSProperties) : undefined}
             >
               {introTitle}
             </h3>

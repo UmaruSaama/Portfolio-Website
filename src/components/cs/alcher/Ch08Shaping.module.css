@@ -414,3 +414,170 @@
 .end > p {
   line-height: 1.35;
 }
+
+/* ---------- phones: the IA tree becomes an indented list; the
+   wireframes stack ---------- */
+@media (max-width: 1023px) {
+  .ia {
+    width: auto;
+    container: none;
+  }
+
+  .top + .spine {
+    margin-top: 16px;
+  }
+
+  /* one level = card, then its leaves indented under it */
+  .level {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+    min-height: 0;
+  }
+
+  .level + .level {
+    margin-top: 20px;
+  }
+
+  .level:not(:last-child) > .branch,
+  .cardsRow {
+    margin-bottom: 0;
+  }
+
+  .node {
+    justify-content: flex-start;
+  }
+
+  /* spine, dots, connectors and branch lines are decoration: hidden */
+  .spine > .level::before,
+  .top > .level::after,
+  .spine::before,
+  .leaf::before,
+  .leaf::after,
+  .arrow {
+    display: none;
+  }
+
+  .card {
+    width: auto;
+    height: auto;
+    min-height: 44px;
+    padding: 12px 16px 12px 14px;
+    white-space: normal;
+  }
+
+  .cardsRow {
+    margin-top: 0;
+    padding-left: 16px;
+    border-left: 2px solid rgb(255 241 232 / 0.25);
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cardsRow > li {
+    gap: 0;
+  }
+
+  .branch {
+    margin: 0;
+    padding: 2px 0 0 16px;
+    border-left: 2px solid rgb(255 241 232 / 0.25);
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .leaf {
+    flex: none;
+    min-width: 0;
+    padding: 0;
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .leaf .num {
+    width: 28px;
+    margin-right: 6px;
+  }
+
+  .label {
+    margin-right: 0;
+  }
+
+  .leaf .num3 {
+    width: 40px;
+    margin-right: 6px;
+  }
+
+  .sub {
+    margin-top: 6px;
+    padding-left: 16px;
+    border-left: 2px solid rgb(255 241 232 / 0.15);
+    gap: 6px;
+  }
+
+  /* wireframes */
+  .wire {
+    gap: 24px;
+  }
+
+  .wireHead {
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+  }
+
+  .wireTitle {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  .wireLead {
+    font-size: 15px;
+  }
+
+  .figure {
+    padding-top: 28px;
+  }
+
+  .figure > .plate {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    padding-inline: 20px;
+    justify-content: center;
+  }
+
+  .stage {
+    padding: 56px 16px 24px;
+  }
+
+  .stageTitle {
+    font-size: 18px;
+  }
+
+  /* A/B/C is a comparison: a snap strip, cs.strip's 20px gutters swapped
+     for the stage's 16px ring */
+  .stage .frames {
+    display: flex;
+    margin: 20px -16px 0;
+    padding: 0 16px;
+    scroll-padding: 0 16px;
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+
+  .stage .frame {
+    flex: 0 0 min(100vw - 112px, 280px);
+  }
+
+  .frameImg {
+    width: 100%;
+  }
+
+  .stripHint {
+    margin-top: 6px;
+    color: rgb(255 241 232 / 0.55);
+  }
+
+  .frameBody {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}

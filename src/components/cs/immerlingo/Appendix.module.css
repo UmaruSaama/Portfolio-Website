@@ -475,3 +475,204 @@
     row-gap: 8px;
   }
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .appendix {
+    gap: 72px;
+  }
+
+  .section {
+    gap: 40px;
+  }
+
+  /* Opener's inline flex-basis (introTitleWidth) would become a height in
+     the stacked intro row; neutralise it here until Primitives handles it. */
+  .section header > div > h3 {
+    flex-basis: auto !important;
+  }
+
+  .block {
+    gap: 20px;
+  }
+
+  .panel {
+    border-radius: 16px;
+  }
+
+  .rowCard {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+    padding: 17px 19px;
+    border-radius: 16px;
+  }
+
+  .rowCard dt {
+    padding-right: 0;
+    color: var(--cs-text-primary);
+  }
+
+  .rowCard dt,
+  .rowLines p,
+  .iconItem p,
+  .swotCard p,
+  .cite p,
+  .citeBy,
+  .splitBody p {
+    font-size: 15px;
+  }
+
+  .fiveW,
+  .jtbdPanel,
+  .citePanel,
+  .swotPanel,
+  .timelinePanel,
+  .journeyPanel {
+    padding: 12px;
+  }
+
+  .jtbdPanel .rows {
+    gap: 12px;
+  }
+
+  .split {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .splitTitle,
+  .splitBody,
+  .splitHalf {
+    flex: none;
+    width: 100%;
+  }
+
+  .splitTitle {
+    font-size: 22px;
+  }
+
+  .splitBody {
+    gap: 20px;
+  }
+
+  /* The two friction columns become one list. */
+  .splitHalf + .splitHalf {
+    margin-top: -8px;
+  }
+
+  .iconItem {
+    gap: 10px;
+    padding: 16px 18px;
+  }
+
+  /* Timeline: phases stack; the week grid goes, the week range shows inline. */
+  .timeline {
+    min-height: 0;
+  }
+
+  .weeks {
+    display: none;
+  }
+
+  .phases {
+    padding-top: 0;
+    gap: 8px;
+  }
+
+  .phase {
+    margin-left: 0;
+    width: auto;
+    min-height: 0;
+    padding: 14px 18px;
+    border-radius: 16px;
+  }
+
+  .phase::after {
+    display: none;
+  }
+
+  .phase .srOnly {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .swotPanel {
+    gap: 20px;
+  }
+
+  .logos img {
+    width: 100%;
+  }
+
+  .swot {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .swotCard {
+    padding: 17px 19px;
+    border-radius: 16px;
+  }
+
+  .swotCard h4 {
+    font-size: 18px;
+  }
+
+  .citeRow {
+    grid-template-columns: 1fr;
+  }
+
+  .citeCard {
+    min-height: 0;
+    gap: 14px;
+    padding: 17px 19px;
+    border-radius: 16px;
+  }
+
+  /* Journey: each stage is its pill over its actions, as a list. */
+  .journey {
+    gap: 20px;
+  }
+
+  .stage {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+
+  .stageCol {
+    align-items: flex-start;
+    padding-top: 0;
+  }
+
+  .arrow,
+  .laneLine,
+  .dot {
+    display: none;
+  }
+
+  .pill {
+    min-height: 0;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .lane {
+    padding-top: 0;
+  }
+
+  .actions {
+    padding: 0 0 0 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .action {
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}

@@ -135,3 +135,56 @@
   max-width: 952px;
   text-wrap: wrap;
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .overview {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .facts,
+  .summary {
+    flex: none;
+    width: 100%;
+  }
+
+  .facts {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px 24px;
+  }
+
+  .facts > * {
+    flex: 1 1 140px;
+  }
+
+  .frame {
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+
+  .col {
+    padding: 0;
+  }
+
+  .col + .col {
+    border-left: 0;
+    border-top: 1px solid var(--cs-white-08);
+    padding-top: 20px;
+  }
+
+  .list {
+    font-size: 15px;
+  }
+
+  .why {
+    gap: 20px;
+    padding: 32px 20px;
+  }
+
+  .whyDivider {
+    width: 70%;
+  }
+}

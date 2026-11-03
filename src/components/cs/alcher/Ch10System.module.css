@@ -489,3 +489,271 @@
 .root > p:last-child {
   line-height: 27px;
 }
+
+/* Kit grid columns (Figma x40 / 372 / 690); classes so the phone rule can
+   re-place them. */
+.col1 {
+  grid-column: 1;
+}
+
+.col3 {
+  grid-column: 3;
+}
+
+.col4 {
+  grid-column: 4;
+}
+
+/* v1 → v3 pair wrapper: invisible on desktop (its children keep their
+   grid columns); on phones it is one strip item. */
+.pair {
+  display: contents;
+}
+
+/* ---------- phones (--v = 0.5px) ---------- */
+@media (max-width: 1023px) {
+  .bare h2 {
+    line-height: 1.2;
+  }
+
+  /* Plate: in flow, so it can wrap to two lines and still overlap the stage */
+  .fig {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+  }
+
+  .fig > .plate {
+    position: relative;
+    top: auto;
+    left: auto;
+    align-self: flex-start;
+    width: auto;
+    max-width: calc(100% - 32px);
+    margin: 0 0 -28px 16px;
+    padding: 15px 20px 15px;
+    line-height: 1.3;
+  }
+
+  .fig > .platePalette {
+    padding-left: 20px;
+  }
+
+  .stage {
+    min-height: 0;
+    padding: 60px 20px 20px;
+  }
+
+  .lead {
+    max-width: none;
+    font-size: 17px;
+  }
+
+  .typeNote,
+  .secBody {
+    font-size: 15px;
+  }
+
+  /* typography specimen: one column */
+  .typeCols {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+  }
+
+  .brickHero {
+    font-size: 40px;
+    line-height: 44px;
+  }
+
+  .tapeHero {
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  .plain {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 16px;
+    column-gap: 12px;
+    padding: 20px 20px 24px;
+  }
+
+  .plainText {
+    grid-column: 1 / -1;
+  }
+
+  .plainDo {
+    grid-column: 1;
+  }
+
+  .plainDont {
+    grid-column: 2;
+  }
+
+  .price,
+  .priceBrick {
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  .pass {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  /* section heads: title over body */
+  .section {
+    gap: 24px;
+  }
+
+  .secHead,
+  .secHeadColour {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    max-width: none;
+  }
+
+  .secTitle {
+    font-size: 22px;
+  }
+
+  .secHeadColour .secBody {
+    margin-bottom: 0;
+  }
+
+  /* palette: 3-up swatch grids */
+  .baseRow,
+  .ramps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 10px;
+    row-gap: 12px;
+    max-width: none;
+  }
+
+  /* ramps: one row per ramp, chips a third wide */
+  .ramps {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
+  }
+
+  .ramp {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .ramp > .swatch {
+    flex: 0 0 calc((100% - 20px) / 3);
+  }
+
+  .chip {
+    height: 36px;
+  }
+
+  .tokName,
+  .tokHex {
+    overflow-wrap: anywhere;
+  }
+
+  /* component kit: label → image → caption, three times */
+  .kit {
+    grid-template-columns: 1fr;
+    width: 100%;
+    row-gap: 0;
+  }
+
+  .kit > .col1,
+  .kit > .col3,
+  .kit > .col4 {
+    grid-column: 1;
+  }
+
+  .kit > .kitLabel.col1 { grid-row: 1; }
+  .kit > .kitImg.col1 { grid-row: 2; }
+  .kit > .kitCap.col1 { grid-row: 3; }
+  .kit > .kitLabel.col3 { grid-row: 4; }
+  .kit > .kitImg.col3 { grid-row: 5; }
+  .kit > .kitCap.col3 { grid-row: 6; }
+  .kit > .kitLabel.col4 { grid-row: 7; }
+  .kit > .kitImg.col4 { grid-row: 8; }
+  .kit > .kitCap.col4 { grid-row: 9; }
+
+  .kit > .kitLabel.col3,
+  .kit > .kitLabel.col4 {
+    margin-top: 24px;
+  }
+
+  .kitInset {
+    padding-left: 0;
+  }
+
+  .kitImg {
+    width: auto;
+    max-width: 100%;
+    margin-top: -6px;
+    justify-self: start;
+  }
+
+  .kitCap {
+    margin-top: -8px;
+  }
+
+  .kitCapHud {
+    max-width: none;
+  }
+
+  /* v1 → v3: one before/after pair per strip item */
+  .passStage {
+    padding: 60px 20px 20px;
+  }
+
+  .pass2 {
+    display: flex; /* .strip (shared) sets the scroll-snap row */
+    align-items: flex-start; /* the Map pair is shorter: keep it at the top */
+    max-width: none;
+    margin: 0 -16px;
+    padding: 0 16px;
+    scroll-padding: 0 16px;
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+
+  .pass2 > .pair {
+    display: flex;
+    flex: 0 0 100%;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  /* DOM order is v1, v3, arrow (desktop grid places them); put the arrow between */
+  .pair > .screen + .screen {
+    order: 2;
+  }
+
+  .pair > .arrow {
+    order: 1;
+  }
+
+  .screen {
+    flex: var(--w) 1 0;
+    gap: 6px;
+  }
+
+  .screenLabel {
+    font-size: 12px;
+    line-height: 16px;
+    white-space: normal;
+    min-height: 32px; /* two lines: keeps both screens' tops level */
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .arrow {
+    flex: 0 0 20px;
+    align-self: center;
+    aspect-ratio: auto;
+    text-align: center;
+  }
+
+  .arrowGlyph {
+    position: static;
+    font-size: 18px;
+  }
+}

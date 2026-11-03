@@ -76,10 +76,26 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-@media (max-width: 767px) {
+/*
+  Compact layout (phones, tablets, narrow windows: < 1024px).
+  The chapters reflow to one column; they no longer shrink the desktop.
+  --cs-col is the reading column: viewport minus a fluid gutter, capped at
+  720px so tablets keep a comfortable measure. --v (one Figma px) follows
+  the column, 0.5px on a 390px phone and up to ~1px on a tablet, so every
+  size the chapters express in --v grows with the screen instead of being
+  frozen at phone size. Bottom padding keeps the last chapter clear of the
+  chapter pill.
+*/
+@media (max-width: 1023px) {
+  .page {
+    --gutter: clamp(20px, 5vw, 48px);
+    --cs-col: min(100vw - 2 * var(--gutter), 720px);
+    --v: calc(var(--cs-col) / 700);
+  }
+
   .content {
-    width: auto;
-    padding: 0 20px 96px;
-    gap: 64px;
+    width: var(--cs-col);
+    padding: 0 0 calc(96px + env(safe-area-inset-bottom));
+    gap: clamp(56px, calc(112 * var(--v)), 96px);
   }
 }

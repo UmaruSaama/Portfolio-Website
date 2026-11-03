@@ -323,3 +323,100 @@
   line-height: 1.5;
   color: var(--al-silver);
 }
+
+/* ---------- phones: the character-select panel stacks (portrait · name +
+   quote · traits · goals · pain points); plates wrap to the column ---------- */
+@media (max-width: 1023px) {
+  .figure {
+    padding: 32px 0 16px;
+  }
+
+  .figure[data-persona] .plate {
+    left: 16px;
+    width: auto;
+    max-width: calc(100% - 32px);
+    padding-inline: 16px;
+  }
+
+  .figure[data-persona] .panel {
+    gap: 16px;
+    padding: 44px 16px 20px;
+  }
+
+  .top {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+    margin-right: 0;
+  }
+
+  .bottom {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  .figure[data-persona="a"] .stack {
+    height: auto;
+    margin-bottom: 0;
+  }
+
+  .stack {
+    padding: 12px 12px 16px;
+  }
+
+  /* the portrait's height is set inline (Figma's 362 / 491); on phones
+     every portrait is the same short stage */
+  .figure[data-persona] .portrait {
+    height: 240px !important;
+  }
+
+  .sprite {
+    width: 144px;
+  }
+
+  .who {
+    gap: 16px;
+  }
+
+  .nameCard {
+    padding: 20px;
+  }
+
+  .role,
+  .facts,
+  .list {
+    font-size: 15px;
+  }
+
+  .quote {
+    padding: 20px;
+    font-size: 15px;
+  }
+
+  .figure[data-persona="b"] .quote {
+    padding-left: 20px;
+  }
+
+  .traits {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  /* chips wrap by width, not by Figma's line breaks */
+  .break {
+    display: none;
+  }
+
+  .need,
+  .answer {
+    font-size: 15px;
+  }
+
+  .listCard,
+  .figure[data-persona="a"] .listCard:first-child {
+    padding: 20px 20px 16px;
+  }
+
+  .cardTitle {
+    font-size: 18px;
+  }
+}

@@ -337,3 +337,128 @@
   line-height: normal;
   color: var(--cs-text-tertiary);
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .block {
+    gap: 20px;
+  }
+
+  .splitHead {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .splitTitle {
+    font-size: 22px;
+  }
+
+  .splitBody {
+    font-size: 15px;
+  }
+
+  .iaStage {
+    gap: 32px;
+    min-height: 0;
+    padding: 24px 16px 28px;
+  }
+
+  .sketchStage,
+  .wireStage {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .sketches,
+  .wireframes {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  /* The tree becomes an indented list: one section after another, no
+     stem/rail/drop connectors. */
+  .tree {
+    align-items: stretch;
+  }
+
+  .root {
+    align-self: flex-start;
+  }
+
+  .connectors {
+    height: 14px;
+  }
+
+  .rail,
+  .drop {
+    display: none;
+  }
+
+  .stem {
+    left: 20px;
+    height: 14px;
+  }
+
+  .sections {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .section {
+    align-items: flex-start;
+  }
+
+  .sectionNode {
+    padding: 10px 14px;
+  }
+
+  .items {
+    margin-top: 8px;
+    padding-top: 0;
+    gap: 6px;
+  }
+
+  .item {
+    padding-left: 24px;
+  }
+
+  .sub {
+    padding-left: 44px;
+  }
+
+  .hubItem {
+    padding-left: 20px;
+  }
+
+  .itemLabel {
+    font-size: 13px;
+  }
+
+  .hubNote {
+    padding-top: 20px;
+    align-items: flex-start;
+    text-align: left;
+    font-size: 13px;
+  }
+
+  .hubDot {
+    margin-top: 5px;
+  }
+
+  .caption {
+    font-size: 12px;
+  }
+
+  .deviceRow {
+    align-items: flex-start;
+    gap: 6px 8px;
+  }
+
+  .deviceLabel {
+    width: 100%;
+  }
+
+  .devices {
+    gap: 16px;
+  }
+}

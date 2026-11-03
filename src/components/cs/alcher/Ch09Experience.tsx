@@ -10,6 +10,8 @@ import s from "./Ch09Experience.module.css";
 /** Figma px → layout length (scales with the 1020 column). */
 const v = (n: number) => `calc(${n} * var(--v))`;
 
+type Vars = CSSProperties & Record<`--${string}`, string | number>;
+
 /** 09 · The experience (Figma 504:67642). */
 export function Ch09Experience() {
   return (
@@ -45,7 +47,8 @@ export function Ch09Experience() {
 /* ---------- Figure – Overworld map (519:46288, 1020 × 1260) ---------- */
 
 function Thumb({ node, ox = 0, oy = 0 }: { node: MapNode; ox?: number; oy?: number }) {
-  const style = { left: v(node.x - ox), top: v(node.y - oy) } as CSSProperties;
+  // Figma offsets as custom properties: the CSS places them (and ignores them on phones).
+  const style = { "--x": v(node.x - ox), "--y": v(node.y - oy) } as Vars;
   return (
     <span className={s.node} style={style}>
       <span className={s.thumb}>
@@ -86,7 +89,7 @@ function OverworldMap() {
 
         <ol className={s.worlds}>
           {worlds.map((w) => (
-            <li key={w.n} className={s.worldItem} style={{ left: v(w.x), top: v(w.y), width: v(w.w) }}>
+            <li key={w.n} className={s.worldItem} style={{ "--x": v(w.x), "--y": v(w.y), "--w": v(w.w) } as Vars}>
               <a
                 href={`#exp-step-${w.step}`}
                 className={s.world}

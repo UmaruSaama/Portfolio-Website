@@ -264,7 +264,13 @@ function Journey() {
                 <span className="visually-hidden">Thinking: </span>
                 {s.thinking}
               </p>
-              <p className="visually-hidden">Feeling: {s.feeling}</p>
+              <p className={styles.feelLine}>
+                <span className={styles.feelFace} aria-hidden="true">
+                  {s.face}
+                </span>
+                <span className="visually-hidden">Feeling: </span>
+                <span className={styles.feelWord}>{s.feeling}</span>
+              </p>
               {s.help ? (
                 <div className={styles.help}>
                   <p className={styles.helpText}>

@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Chapter, ChapterEnd } from "../Primitives";
+import cs from "../cs.module.css";
 import { PixelBox, Plate } from "./Pixel";
 import { Opener } from "./Story";
 import s from "./Ch08Shaping.module.css";
@@ -401,9 +402,9 @@ export function Ch08Shaping() {
             <p className={s.stageTitle}>
               Two Homes at grey-box: map-first and card-first. Card-first won; the map became a tab.
             </p>
-            <ul className={s.frames}>
+            <ul className={`${s.frames} ${cs.strip}`}>
               {wireframes.map((w) => (
-                <li key={w.key} className={s.frame}>
+                <li key={w.key} className={`${s.frame} ${cs.stripItem}`}>
                   <h4 className={s.frameHead}>
                     <span className={`${s.badge} ${w.shipped ? s.badgeOn : ""}`} aria-hidden="true">
                       {w.badge}
@@ -425,6 +426,9 @@ export function Ch08Shaping() {
                 </li>
               ))}
             </ul>
+            <p className={`${cs.stripHint} ${s.stripHint}`} aria-hidden="true">
+              Swipe →
+            </p>
             <p className={s.source}>Three of the grey-box screens. B shipped; A became the Map tab.</p>
           </PixelBox>
         </figure>

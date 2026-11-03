@@ -30,7 +30,7 @@
 
 .h1 {
   margin: 0;
-  font-size: clamp(30px, 2.78vw, 40px);
+  font-size: clamp(28px, 2.78vw, 40px);
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.005em; /* CS/H1: -0.5% */
@@ -97,4 +97,49 @@
 .cardSmall {
   border-radius: 16px;
   background: var(--cs-surface-10);
+}
+
+/* ---------- phone-only: horizontal strip ----------
+   Wrap anything that must keep its width (a table, a board of cards, a
+   row of screens) in .strip; on phones it scrolls sideways with snap
+   points and faded edges instead of squashing into one column. Children
+   get `.stripItem` for snap alignment. Desktop: no effect. */
+@media (max-width: 1023px) {
+  .strip {
+    display: flex;
+    gap: 12px;
+    margin: 0 calc(-1 * var(--gutter, 20px));
+    padding: 0 var(--gutter, 20px);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--gutter, 20px);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+  }
+
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stripItem {
+    flex: 0 0 min(82vw, 320px);
+    scroll-snap-align: start;
+  }
+
+  .stripHint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--cs-text-tertiary);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stripHint {
+    display: none;
+  }
 }

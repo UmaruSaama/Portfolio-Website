@@ -56,3 +56,37 @@
 .rationale dd {
   margin: 0;
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .chapter {
+    gap: 40px;
+  }
+
+  .partTitle {
+    font-size: 22px;
+  }
+
+  .decision {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .decisionTitle {
+    flex: none;
+    gap: 8px;
+  }
+
+  .decisionTitle h4 {
+    font-size: 18px;
+  }
+
+  .rationale {
+    gap: 16px;
+  }
+
+  .rationale dd {
+    font-size: 15px;
+  }
+}

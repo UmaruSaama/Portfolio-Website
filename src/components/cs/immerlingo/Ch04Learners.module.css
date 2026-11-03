@@ -498,3 +498,188 @@
 .card :is(p, li) {
   text-wrap: wrap;
 }
+
+/* Feeling, written out: hidden on desktop (the curve shows it), a line in
+   each stage card on phones. */
+.feelLine {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .persona {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .top,
+  .bottom {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  /* the portraits are 289px wide exports: show them at natural size, centred */
+  .photo img,
+  .photoTall img {
+    width: 100%;
+    max-width: 289px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .id,
+  .quote,
+  .list {
+    padding: 20px;
+  }
+
+  .traits {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .chips {
+    max-width: none;
+  }
+
+  .need,
+  .answer {
+    font-size: 15px;
+  }
+
+  .blockHead {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .blockHead h3,
+  .blockHead p {
+    flex: none;
+  }
+
+  /* journey: one card per stage */
+  .journey {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .lane,
+  .feeling {
+    display: none;
+  }
+
+  .stages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--cs-surface-14);
+    border-radius: 16px;
+    background: var(--cs-surface-06);
+  }
+
+  .stageHead {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .stageNo {
+    font-size: 12px;
+  }
+
+  .doing {
+    min-height: 0;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .thinking {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .feelLine {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .feelFace {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+    background: #121212;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .stage:has(.help) .feelFace {
+    border-color: rgba(255, 56, 94, 0.8);
+  }
+
+  .stage:has(.help) .feelWord {
+    color: #ff385e;
+  }
+
+  .help {
+    min-height: 0;
+    padding: 12px;
+  }
+
+  .help::before,
+  .noHelp::before {
+    content: "ImmerLingo" / "";
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cs-text-tertiary);
+  }
+
+  .helpText {
+    font-size: 14px;
+  }
+
+  .helpWhere,
+  .noHelp {
+    font-size: 12px;
+  }
+
+  .noHelp {
+    margin: 0;
+  }
+
+  .end {
+    gap: 24px;
+  }
+}

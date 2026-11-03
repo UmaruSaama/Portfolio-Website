@@ -27,3 +27,10 @@
   position: relative;
   top: 1px;
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .wrap h2 {
+    line-height: 1.2;
+  }
+}

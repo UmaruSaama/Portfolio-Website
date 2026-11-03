@@ -126,7 +126,13 @@ export const projects: Project[] = [
     },
     summary:
       "Stag Fencing’s new website: services, a fence calculator, a shop with cart and checkout, a gallery and an admin. I led the design and handed it to a developer partner.",
-    // Live-homepage screenshot to come; until then the empty device outline.
+    image: {
+      src: "/work/stag-fencing/hero.webp",
+      width: 1185,
+      height: 880,
+      alt: "The Stag Fencing homepage in a browser window: hero photo of a fenced garden, headline and the free-quote form.",
+    },
+    // Case study not written yet: card only.
     placeholder: true,
   },
 ];

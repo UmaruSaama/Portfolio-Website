@@ -105,21 +105,90 @@
   }
 }
 
+/* ---------- phone: Menu action + bottom sheet ---------- */
+
+.menuButton {
+  display: none;
+  justify-self: end;
+}
+
+.sheetNav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0 12px;
+}
+
+.sheetLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 0 20px;
+  font-size: 20px;
+  color: var(--label-secondary);
+}
+
+.sheetLink:active {
+  background: var(--fill-quaternary);
+}
+
+.sheetLink.navActive {
+  color: #000;
+}
+
+.sheetLink.navActive::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
 @media (max-width: 899px) {
   .header {
-    grid-template-columns: 1fr;
-    height: auto;
+    grid-template-columns: 1fr auto;
+    height: 76px;
     padding-top: 16px;
-    padding-bottom: 8px;
-    gap: 8px;
+    padding-bottom: 16px;
+    gap: 12px;
   }
 
   .nav {
-    justify-self: stretch;
-    overflow-x: auto;
-    padding: 0;
-    gap: 16px;
-    font-size: 16px;
-    scrollbar-width: none;
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .introText {
+    font-size: 15px;
+  }
+
+  .tagline {
+    font-size: 14px;
+  }
+}
+
+/* Narrow phones: the tagline may wrap to a second line and the Menu
+   action keeps only its disc (the button still announces "Menu"), so the
+   two never overlap. */
+@media (max-width: 479px) {
+  .introText {
+    white-space: normal;
+  }
+
+  .tagline {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .menuLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 }

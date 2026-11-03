@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { ChapterEnd, Chapter } from "../Primitives";
 import { Opener } from "./Story";
 import { PixelBox, Plate } from "./Pixel";
+import cs from "../cs.module.css";
 import s from "./Ch10System.module.css";
 
 /**
@@ -260,19 +261,18 @@ export function Ch10System() {
         <Stage plate="CORE COMPONENTS" plateClass={s.plateKit}>
           <p className={`${s.lead} ${s.lead135}`}>One kit, one 8-bit grammar. Payment, QR and prices stay plain.</p>
           <div className={s.kit}>
-            <h4 className={`${s.label} ${s.kitLabel}`} style={{ gridColumn: 1 }}>
+            <h4 className={`${s.label} ${s.kitLabel} ${s.col1}`}>
               Cards
             </h4>
-            <h4 className={`${s.label} ${s.kitLabel}`} style={{ gridColumn: 3 }}>
+            <h4 className={`${s.label} ${s.kitLabel} ${s.col3}`}>
               HUD and overlays
             </h4>
-            <h4 className={`${s.label} ${s.kitLabel} ${s.kitInset}`} style={{ gridColumn: 4 }}>
+            <h4 className={`${s.label} ${s.kitLabel} ${s.kitInset} ${s.col4}`}>
               Controls and game
             </h4>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className={s.kitImg}
-              style={{ gridColumn: 1 }}
+              className={`${s.kitImg} ${s.col1}`}
               src={`${IMG}/system-kit-cards.png`}
               alt="Cards from the v3 kit: an event card for 3-on-3 Basketball, a Night 1 ticket pass with a QR code, and a “Crazy Eyes Hoodie” title plate with a star rating."
               width={292}
@@ -282,8 +282,7 @@ export function Ch10System() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className={s.kitImg}
-              style={{ gridColumn: 3 }}
+              className={`${s.kitImg} ${s.col3}`}
               src={`${IMG}/system-kit-hud.png`}
               alt="HUD and overlays: level 3 badge, 1,250 XP counter, ₹ 5,000 prize tag, Live now indicator, a 12:08:45:09 countdown, Pixel’s speech bubble “Wield: Powerful merch!” and an “Added to cart!” toast."
               width={318}
@@ -293,8 +292,7 @@ export function Ch10System() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className={s.kitImg}
-              style={{ gridColumn: 4 }}
+              className={`${s.kitImg} ${s.col4}`}
               src={`${IMG}/system-kit-controls.png`}
               alt="Controls and game: green and blue “Play now” buttons, Home nav items, a locked mystery card, Day 1 tags in four tones, Music filter chips and two Night owl achievement tiles."
               width={294}
@@ -302,13 +300,13 @@ export function Ch10System() {
               loading="lazy"
               decoding="async"
             />
-            <p className={`${s.foot} ${s.kitCap}`} style={{ gridColumn: 1 }}>
+            <p className={`${s.foot} ${s.kitCap} ${s.col1}`}>
               Event card · Ticket pass · Title plate
             </p>
-            <p className={`${s.foot} ${s.kitCap} ${s.kitCapHud}`} style={{ gridColumn: 3 }}>
+            <p className={`${s.foot} ${s.kitCap} ${s.kitCapHud} ${s.col3}`}>
               Level badge · Resource counter · Prize tag · Live · Countdown · Pixel’s speech bubble · Toast
             </p>
-            <p className={`${s.foot} ${s.kitCap} ${s.kitInset}`} style={{ gridColumn: 4 }}>
+            <p className={`${s.foot} ${s.kitCap} ${s.kitInset} ${s.col4}`}>
               Buttons · Nav items · Mystery card · Tags · Filter chips · Achievement tiles
             </p>
           </div>
@@ -325,32 +323,39 @@ export function Ch10System() {
           v1 went to the developers first. The detailing pass gave Activity its days and Map its filters and landmark
           card, without moving anything attendees had already learned.
         </p>
-        <div className={s.pass2}>
-          {screens.map((sc, i) => {
-            const col = i * 2 + 1;
-            return (
-              <div key={sc.src} className={s.screen} style={{ gridColumn: col }}>
-                <p className={s.screenLabel}>{sc.label}</p>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  className={s.screenImg}
-                  src={`${IMG}/${sc.src}`}
-                  alt={sc.alt}
-                  width={sc.w}
-                  height={460}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            );
-          })}
-          <span className={s.arrow} style={{ gridColumn: 2 }} aria-hidden="true">
-            <span className={s.arrowGlyph}>→</span>
-          </span>
-          <span className={s.arrow} style={{ gridColumn: 6 }} aria-hidden="true">
-            <span className={s.arrowGlyph}>→</span>
-          </span>
+        <div className={`${s.pass2} ${cs.strip}`}>
+          {[screens.slice(0, 2), screens.slice(2)].map((pair, pi) => (
+            /* desktop: display: contents, so the children keep their grid
+               columns (1·2·3 and 5·6·7); phone: one strip item per pair */
+            <div key={pair[0].src} className={`${s.pair} ${cs.stripItem}`}>
+              {pair.map((sc, i) => (
+                <div
+                  key={sc.src}
+                  className={s.screen}
+                  style={{ gridColumn: pi * 4 + i * 2 + 1, "--w": sc.w } as CSSProperties}
+                >
+                  <p className={s.screenLabel}>{sc.label}</p>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className={s.screenImg}
+                    src={`${IMG}/${sc.src}`}
+                    alt={sc.alt}
+                    width={sc.w}
+                    height={460}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+              <span className={s.arrow} style={{ gridColumn: pi * 4 + 2 }} aria-hidden="true">
+                <span className={s.arrowGlyph}>→</span>
+              </span>
+            </div>
+          ))}
         </div>
+        <p className={cs.stripHint} aria-hidden="true">
+          Swipe for the Map pair →
+        </p>
         <p className={s.foot}>
           v1 is the build handed to the developers; v3 is the final. Both are &apos;25 team work.
         </p>

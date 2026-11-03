@@ -132,8 +132,8 @@ export function Ch06Learned() {
                   {apps.map((r) => (
                     <tr key={r.app}>
                       <th scope="row">{r.app}</th>
-                      <td>{r.well}</td>
-                      <td>{r.change}</td>
+                      <td data-label="What it does well">{r.well}</td>
+                      <td data-label="What ’25 changes">{r.change}</td>
                     </tr>
                   ))}
                 </tbody>

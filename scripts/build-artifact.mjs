@@ -92,12 +92,23 @@ if (existsSync(imageDir)) {
   }
 }
 
-// 5. Case-study media stays as separate files of the multi-file artifact
-//    (too heavy to inline). Root-relative "/cs/..." becomes "cs/..." so it
-//    resolves next to index.html wherever the artifact is served.
-html = html.replace(/(["'`(])\/cs\//g, "$1cs/");
-rmSync(join(DEST, "cs"), { recursive: true, force: true });
-if (existsSync(join(OUT, "cs"))) cpSync(join(OUT, "cs"), join(DEST, "cs"), { recursive: true });
+// 5. Self-hosted fonts (public/fonts): woff2 inlined; the .ttf fallback
+//    source is dropped (the artifact can't serve it, and woff2 is enough).
+html = html
+  .replace(/,\s*url\((["']?)\/fonts\/[^)"']+\.ttf\1\)\s*format\((["']?)truetype\2\)/g, "")
+  .replace(/url\((["']?)(\/fonts\/[^)"']+\.woff2)\1\)/g, (_, _q, path) => `url(${dataUri(path)})`);
+
+// 6. Case-study media and card images stay as separate files of the
+//    multi-file artifact (too heavy to inline). Root-relative "/cs/..." and
+//    "/work/..." become relative so they resolve next to index.html.
+for (const dir of ["cs", "work"]) {
+  html = html.replace(new RegExp(`(["'\`(])\\/${dir}\\/`, "g"), `$1${dir}/`);
+  rmSync(join(DEST, dir), { recursive: true, force: true });
+  if (existsSync(join(OUT, dir))) {
+    mkdirSync(DEST, { recursive: true });
+    cpSync(join(OUT, dir), join(DEST, dir), { recursive: true, filter: (src) => !/\.(html|txt)$/.test(src) });
+  }
+}
 
 mkdirSync(DEST, { recursive: true });
 writeFileSync(join(DEST, "index.html"), html);

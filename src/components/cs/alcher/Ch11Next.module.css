@@ -73,3 +73,28 @@
 .root > p:last-child {
   line-height: 27px;
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .bare h2 {
+    line-height: 1.2;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  .card {
+    gap: 10px;
+    padding: 24px 20px 28px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .body {
+    font-size: 15px;
+  }
+}

@@ -241,3 +241,87 @@
   outline-offset: 3px;
   border-radius: 2px;
 }
+
+/* ---------- phones ----------
+   The sea becomes a two-column wall of (decorative, aria-hidden) comments
+   clipped by the stage; the highlighted quote leaves the picture and
+   becomes a readable card. */
+@media (max-width: 1023px) {
+  .stage {
+    min-height: 0;
+    padding: 72px 16px;
+  }
+
+  .sea {
+    --v: 0.62px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .sea .comment {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    height: auto !important;
+    flex: 0 0 calc(50% - 4px);
+    width: auto;
+  }
+
+  .sea .mid {
+    --s: 1.1;
+    box-shadow: none;
+  }
+
+  .highlight {
+    --u: 1px;
+    position: relative;
+    left: auto;
+    top: auto;
+    z-index: 1;
+    transform: none;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    gap: 14px;
+    padding: 20px 18px;
+    border-width: 1px;
+    border-radius: 16px;
+    box-shadow:
+      0 0 40px rgba(255, 55, 95, 0.22),
+      0 16px 40px rgba(0, 0, 0, 0.7);
+  }
+
+  .hiWho {
+    gap: 8px;
+  }
+
+  .hiAvatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hiAuthor {
+    font-size: 15px;
+  }
+
+  .hiText {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .hiActions .actions {
+    --u: 1.6px;
+  }
+
+  .vignette {
+    z-index: 0;
+  }
+
+  .end {
+    gap: 24px;
+  }
+}

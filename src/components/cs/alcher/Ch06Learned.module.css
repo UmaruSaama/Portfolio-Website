@@ -360,3 +360,154 @@
   line-height: 1.5;
   color: var(--al-silver);
 }
+
+/* ---------- phones: heads stack; the competitor table restacks as one
+   well per app with the column headers as labels; findings and clusters
+   stack ---------- */
+@media (max-width: 1023px) {
+  .blockHead {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+  }
+
+  .h2 {
+    padding-right: 0;
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .blockLead {
+    padding-right: 0;
+    font-size: 15px;
+  }
+
+  .figures {
+    gap: 40px;
+  }
+
+  .figure .plateTable,
+  .figure .plateFindings {
+    left: 16px;
+    width: auto;
+    max-width: calc(100% - 32px);
+    padding-inline: 16px;
+  }
+
+  .caption {
+    font-size: 13px;
+  }
+
+  /* table → stacked cards */
+  .tablePanel {
+    padding: 40px 16px 20px;
+  }
+
+  .table,
+  .table tbody,
+  .table tbody tr,
+  .table tbody th,
+  .table tbody td {
+    display: block;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .table tbody tr {
+    padding: 16px 16px 18px;
+    background: var(--al-night);
+    box-shadow:
+      inset 3px 3px 0 #000,
+      inset -3px -3px 0 var(--al-blue);
+  }
+
+  .table tbody tr + tr {
+    margin-top: 12px;
+  }
+
+  .table tbody :is(th, td),
+  .table tbody :is(th, td):not(:first-child),
+  .table tbody :is(th, td):first-child,
+  .table tbody :is(th, td):last-child,
+  .table tbody tr:nth-child(2) :is(th, td),
+  .table tbody tr:nth-child(2) :is(th, td):first-child,
+  .table tbody tr:nth-child(2) :is(th, td):last-child {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .table tbody th {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--al-cream);
+  }
+
+  .table tbody td {
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 17px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--al-silver);
+  }
+
+  /* findings: full width, stacked, unclipped */
+  .inline {
+    padding-top: 0;
+    overflow: visible;
+  }
+
+  .inline > .findings {
+    margin-bottom: 0;
+  }
+
+  .findings {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .finding {
+    padding: 24px 20px;
+    gap: 10px;
+  }
+
+  .findingBig {
+    font-size: 32px;
+  }
+
+  .findingHead {
+    font-size: 22px;
+  }
+
+  .findingBody {
+    font-size: 15px;
+  }
+
+  .clusterPanel {
+    padding: 40px 16px 24px;
+  }
+
+  .clusters {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+  }
+
+  .note {
+    font-size: 15px;
+  }
+}

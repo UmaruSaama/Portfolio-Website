@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+// cs.module.css before ./Pixel: keeps the CSS order (cs → Pixel → chapter)
+// the same as everywhere else, so Pixel's rules never land after the chapter's.
+import cs from "../cs.module.css";
 import { PixelBox } from "./Pixel";
 import { CursorIcon, Mascot } from "./ch09Art";
 import { screens, type Screen, type Step } from "./ch09Data";
@@ -57,11 +60,14 @@ export function ExperienceStep({ step }: { step: Step }) {
         <PixelBox tone="dark" className={s.stage}>
           <p className={s.headline}>{step.headline}</p>
           <div className={s.stageRow}>
-            <div className={s.phones}>
+            <div className={`${s.phones} ${cs.strip}`}>
               {step.screens.map((id) => (
                 <Phone key={id} screen={screens[id]} on={on} />
               ))}
             </div>
+            <p className={`${cs.stripHint} ${s.stripHint}`} aria-hidden="true">
+              Swipe →
+            </p>
             <div className={s.story}>
               <ol className={s.storyList}>
                 {step.story.map((it, i) => (

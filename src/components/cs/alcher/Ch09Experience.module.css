@@ -98,6 +98,9 @@
 
 .worldItem {
   position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
   height: calc(321 * var(--v));
 }
 
@@ -156,6 +159,8 @@
    inside stroke, baked into the render) with its label 10 below. */
 .node {
   position: absolute;
+  left: var(--x);
+  top: var(--y);
   width: calc(104 * var(--v));
 }
 
@@ -760,5 +765,309 @@
   .ann,
   .pin {
     transition: none;
+  }
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .opener h2 {
+    line-height: 1.2;
+  }
+
+  .end > p {
+    line-height: 1.35;
+  }
+
+  /* --- overworld map: the five worlds stack, path hidden --- */
+  .map {
+    gap: 20px;
+  }
+
+  .mapCaption {
+    margin-top: 10px;
+    max-width: none;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* START, flag and the player share one row; everything else is full width */
+  .canvas {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .canvas > * {
+    position: static;
+  }
+
+  .path {
+    display: none;
+  }
+
+  .start {
+    order: 0;
+    font-size: 12px;
+    line-height: 13px;
+  }
+
+  .flag {
+    order: 1;
+    width: 20px;
+    height: 55px;
+  }
+
+  .player {
+    order: 2;
+    margin-left: 8px;
+    width: 48px;
+    height: 42px;
+  }
+
+  /* the onboarding thumb comes before the worlds (DOM has it after) */
+  .canvas > div {
+    order: 3;
+    flex: 0 0 100%;
+  }
+
+  .canvas > div .node {
+    display: block;
+    width: 104px;
+  }
+
+  .worlds {
+    order: 4;
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .worldItem {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+  }
+
+  .world {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 24px 20px 28px;
+    outline-offset: 0;
+  }
+
+  /* in flow, but above the absolute worldBox behind them */
+  .worldHead {
+    position: relative;
+    z-index: 1;
+    left: auto;
+    top: auto;
+    flex: 0 0 100%;
+    gap: 10px;
+    white-space: normal;
+  }
+
+  .worldNum {
+    width: auto;
+    font-size: 14px;
+  }
+
+  .worldTitle {
+    font-size: 12px;
+  }
+
+  .node {
+    position: relative;
+    z-index: 1;
+    left: auto;
+    top: auto;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 104px;
+  }
+
+  .thumb {
+    height: auto;
+    aspect-ratio: 104 / 225;
+  }
+
+  .nodeLabel {
+    position: static;
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .goalLabel {
+    order: 5;
+    flex: 0 0 100%;
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 13px;
+  }
+
+  .goal {
+    order: 6;
+    flex: 0 0 180px;
+    width: 180px;
+    height: 92px;
+  }
+
+  .goalCaption {
+    order: 7;
+    flex: 0 0 100%;
+    font-size: 14px;
+    white-space: normal;
+  }
+
+  /* --- step --- */
+  .step {
+    gap: 20px;
+    scroll-margin-top: 72px;
+  }
+
+  .stepLabel {
+    font-size: 12px;
+  }
+
+  .stepTitle {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  /* toolbar wraps: label row, then the controls (≥ 44px tall) */
+  .toolbar {
+    height: auto;
+    min-height: 56px;
+    padding: 10px 16px 12px;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+  }
+
+  .figLabel {
+    flex: 1 1 100%;
+  }
+
+  .figTitle {
+    white-space: normal;
+    font-size: 13px;
+  }
+
+  .controls {
+    flex: 1 1 100%;
+    gap: 12px;
+  }
+
+  .hintText {
+    display: block;
+  }
+
+  .toggle {
+    min-height: 44px;
+    margin-left: auto;
+    padding: 0 4px;
+  }
+
+  /* stage: headline, the phones as a strip, then the story */
+  .stage {
+    min-height: 0;
+    padding: 24px 16px 20px;
+  }
+
+  .headline {
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .stageRow {
+    margin-top: 16px;
+    flex-direction: column;
+  }
+
+  /* cs.strip's gutters are the page's 20px; here the stage ring is 16px */
+  .stage .phones {
+    flex: none;
+    align-self: stretch;
+    width: auto;
+    margin: 0 -16px;
+    padding: 4px 16px 8px;
+    gap: 12px;
+    scroll-padding: 0 16px;
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+
+  .stripHint {
+    margin-top: 4px;
+    color: rgb(255 241 232 / 0.55);
+  }
+
+  .story {
+    flex: none;
+    width: 100%;
+    margin: 20px 0 0;
+  }
+
+  .storyList {
+    gap: 16px;
+  }
+
+  .storyText {
+    margin-right: 0;
+  }
+
+  .storyTitle {
+    font-size: 15px;
+  }
+
+  .persona {
+    width: 100%;
+    margin-top: 20px;
+    padding: 28px 12px 14px;
+  }
+
+  /* the device scales to the strip item: --v becomes 1/255 of its width */
+  .phone {
+    --v: calc(min(100vw - 112px, 280px) / 255);
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: calc(255 * var(--v));
+    height: calc(525.6 * var(--v));
+  }
+
+  .pin {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* design decision: head over the rationale */
+  .decision {
+    margin-top: 16px;
+    padding: 24px 20px 28px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .decisionHead {
+    width: auto;
+    gap: 8px;
+  }
+
+  .decisionTitle {
+    font-size: 18px;
+  }
+
+  .rationale {
+    gap: 16px;
+  }
+
+  .rationale dd {
+    font-size: 15px;
   }
 }

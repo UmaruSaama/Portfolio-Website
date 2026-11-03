@@ -147,3 +147,14 @@
   display: block;
   shape-rendering: crispEdges;
 }
+
+@media (max-width: 1023px) {
+  .plate {
+    height: auto;
+    min-height: 56px;
+    padding: 10px 20px 14px;
+    font-size: 16px;
+    white-space: normal;
+    text-align: center;
+  }
+}

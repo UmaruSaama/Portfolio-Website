@@ -178,40 +178,87 @@
   margin: calc(68 * var(--v)) 0 0 calc(50% - 594 * var(--v));
 }
 
-@media (max-width: 767px) {
-  .heroImage {
-    height: auto;
-    padding-bottom: 48px;
-  }
-
-  .still {
-    width: calc(100% - 32px);
-    margin-top: 40px;
-  }
-}
-
-@media (max-width: 767px) {
+/*
+  Compact (< 1024px): the hero reflows instead of scaling the 1440 frame.
+  Type and spacing are fluid between a 360px phone and a 1023px tablet;
+  the hero is as tall as its content (no empty 100dvh band under the
+  device on tall phones).
+*/
+@media (max-width: 1023px) {
   .hero {
-    --v: calc(100vw / 760);
+    --v: min(1px, calc(100vw / 760));
+    --hero-gutter: clamp(20px, 5vw, 48px);
+    min-height: 0;
     padding-top: 76px; /* clears the pinned Work button */
+    padding-bottom: clamp(48px, 9vw, 96px);
   }
 
   .copy {
     width: auto;
-    padding: 24px 20px 0;
+    max-width: 680px;
+    padding: clamp(16px, 4vw, 40px) var(--hero-gutter) 0;
   }
 
   .title {
-    font-size: 30px;
+    font-size: clamp(30px, calc(3.4vw + 17px), 48px);
+    line-height: 1.04;
   }
 
   .summary {
     width: auto;
-    font-size: 15px;
+    max-width: 580px;
+    margin-top: 12px;
+    font-size: clamp(15px, calc(0.4vw + 13.5px), 17px);
+    line-height: 1.4;
   }
 
   .device {
-    width: calc(100% - 64px);
-    margin-top: 48px;
+    width: min(100% - 2 * var(--hero-gutter) - 24px, 720px);
+    margin-top: clamp(40px, 8vw, 72px);
+  }
+
+  .heroImage {
+    height: auto;
+    padding-bottom: clamp(40px, 6vw, 72px);
+  }
+
+  .heroImage .copy {
+    width: auto;
+  }
+
+  .heroImage .title {
+    font-size: clamp(32px, calc(3.6vw + 18px), 52px);
+    line-height: 1.08;
+  }
+
+  .heroImage .summary {
+    width: auto;
+    max-width: 600px;
+    font-size: clamp(15px, calc(0.5vw + 13px), 18px);
+    line-height: 1.45;
+  }
+
+  .still {
+    /* The trio is wider than a phone: scale it up and let the outer
+       phones run off the edges (the hero clips) so the centre phone stays
+       readable. The overscale eases off as the screen widens. */
+    --still-w: min(calc(150% - (100vw - 390px) * 0.3), 1185px);
+    width: var(--still-w);
+    max-width: none;
+    margin: clamp(28px, 5vw, 56px) 0 0 calc((100% - var(--still-w)) / 2);
+  }
+
+  /* Pinned back action: disc only (the label would sit over the chapter
+     text while reading; the name stays for assistive tech). */
+  .bar {
+    top: 16px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .glow {
+    width: 200vw; /* the blurred ellipse must not widen the page */
+    height: 120vw;
+    top: -60vw;
   }
 }

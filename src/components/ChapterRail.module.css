@@ -149,3 +149,124 @@
     display: none;
   }
 }
+
+/* ---------- phone: chapter pill + sheet ---------- */
+
+.pillWrap {
+  display: none;
+  position: fixed;
+  z-index: 70;
+  left: 0;
+  right: 0;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pill {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 40px);
+  height: 44px;
+  padding: 0 16px 0 14px;
+  border: 0;
+  border-radius: 100px;
+  overflow: hidden;
+  background: var(--rail-bg, rgb(15 15 15 / 0.92));
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: "Hanken Grotesk Variable", system-ui, sans-serif;
+  font-stretch: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pillNum {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.pillLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pillChevron {
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pillBar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.pillFill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 0;
+  transition: transform 0.15s linear;
+}
+
+.sheetList {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0 12px;
+}
+
+.sheetItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-family: "Hanken Grotesk Variable", system-ui, sans-serif;
+  font-stretch: 100%;
+  font-size: 17px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+.sheetItem:active {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sheetNum {
+  width: 22px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.sheetItem[data-active] {
+  color: #fff;
+}
+
+.sheetItem[data-active] .sheetNum {
+  color: var(--accent);
+}
+
+@media (max-width: 1023px) {
+  .pillWrap {
+    display: flex;
+  }
+}

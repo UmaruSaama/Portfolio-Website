@@ -75,3 +75,58 @@
   flex-direction: column;
   gap: 8px;
 }
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .nowrap {
+    white-space: normal;
+  }
+
+  .steps {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .step {
+    min-height: 0;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .step h4 {
+    font-size: 18px;
+  }
+
+  .step p:last-child {
+    font-size: 15px;
+  }
+
+  .assumptions {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .assumptionsTitle {
+    flex: none;
+    font-size: 22px;
+  }
+
+  .assumptionList {
+    flex: none;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .assumption {
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .assumptionText h4 {
+    font-size: 18px;
+  }
+
+  .assumptionText p {
+    font-size: 15px;
+  }
+}

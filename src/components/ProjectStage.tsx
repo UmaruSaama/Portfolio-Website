@@ -630,6 +630,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       let acc = 0;
       let lockedUntil = 0;
       let touchY: number | null = null;
+      let touchX: number | null = null;
 
       const onWheel = (e: WheelEvent) => {
         if (caseOpenRef.current) return; // the case study scrolls normally
@@ -670,14 +671,20 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         }
       };
 
+      // Swipe in either axis: vertical mirrors the wheel; horizontal is the
+      // phone carousel gesture (the dots are a row there). Whichever axis
+      // moved more wins, so a diagonal flick doesn't skip two cards.
       const onTouchStart = (e: TouchEvent) => {
         touchY = e.touches[0]?.clientY ?? null;
+        touchX = e.touches[0]?.clientX ?? null;
       };
       const onTouchEnd = (e: TouchEvent) => {
-        if (touchY === null || videoOpenRef.current || caseOpenRef.current) return;
+        if (touchY === null || touchX === null || videoOpenRef.current || caseOpenRef.current) return;
         const dy = touchY - (e.changedTouches[0]?.clientY ?? touchY);
-        if (Math.abs(dy) > SWIPE_THRESHOLD) goTo(activeRef.current + Math.sign(dy));
-        touchY = null;
+        const dx = touchX - (e.changedTouches[0]?.clientX ?? touchX);
+        const d = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+        if (Math.abs(d) > SWIPE_THRESHOLD) goTo(activeRef.current + Math.sign(d));
+        touchY = touchX = null;
       };
 
       window.addEventListener("wheel", onWheel, { passive: false });

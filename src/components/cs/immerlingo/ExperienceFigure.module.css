@@ -622,3 +622,87 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- phones: toolbar (wrapping) → phone screen full-width → steps ---------- */
+@media (max-width: 1023px) {
+  .controlsRow {
+    flex-wrap: wrap;
+    gap: 8px 0;
+  }
+
+  .foldContent {
+    gap: 10px;
+    padding-right: 10px;
+  }
+
+  /* ≥ 44px hit areas */
+  .switchRow {
+    min-height: 44px;
+  }
+
+  .segBtn,
+  .innerBtn {
+    min-height: 38px;
+  }
+
+  .stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    row-gap: 20px;
+    min-height: 0;
+    padding: 20px 16px 24px;
+  }
+
+  .headline {
+    font-size: 17px;
+  }
+
+  /* The device box is the phone's own proportion, centred in the column. */
+  .deviceArea {
+    width: min(100%, 250px);
+    margin: 0 auto;
+    aspect-ratio: 390 / 844;
+  }
+
+  .frame[data-kind="phone"] img {
+    width: min(calc(100cqw - 14px), calc((100cqh - 14px) * 390 / 844));
+  }
+
+  /* Clean view: the notes leave the flow so the card shrinks to the
+     screen (the measured transform then resolves to ~identity). */
+  .headline[data-hidden],
+  .side[data-hidden] {
+    display: none;
+  }
+
+  .side {
+    padding-top: 0;
+    gap: 20px;
+  }
+
+  .steps {
+    gap: 16px;
+  }
+
+  .step > :last-child {
+    margin-right: 0;
+  }
+
+  .stepTitle {
+    font-size: 15px;
+  }
+
+  .playerEmpty {
+    padding: 16px;
+  }
+
+  .playerTitle {
+    font-size: 16px;
+  }
+
+  .playerBar {
+    left: 16px;
+    right: 16px;
+    bottom: 12px;
+  }
+}

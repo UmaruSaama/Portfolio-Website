@@ -70,13 +70,15 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
     const stage = area?.parentElement;
     if (!area || !stage) return;
     const measure = () => {
-      const k = stage.clientWidth / 1020; // Figma px
-      const pad = 40 * k;
+      // Stage padding (40 Figma px on desktop, 16px on phones).
+      const cs = getComputedStyle(stage);
+      const padX = parseFloat(cs.paddingLeft) || 0;
+      const padY = parseFloat(cs.paddingTop) || 0;
       const w = area.offsetWidth;
       const h = area.offsetHeight;
       const sc = Math.min(
-        (stage.clientHeight - 2 * pad) / h,
-        (stage.clientWidth - 2 * pad) / w,
+        (stage.clientHeight - 2 * padY) / h,
+        (stage.clientWidth - 2 * padX) / w,
       );
       const x = (stage.clientWidth - w * sc) / 2 - area.offsetLeft;
       const y = (stage.clientHeight - h * sc) / 2 - area.offsetTop;
@@ -159,7 +161,9 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
             <span className={styles.divider} aria-hidden="true" />
 
             {/* Device switch. Tablet expands in place into a nested orientation
-          switch (a box within the selected box) instead of a second toggle. */}
+          switch (a box within the selected box) instead of a second toggle.
+          Hidden on phones, where the device is pinned to the phone screen. */}
+            {!view.phone && (
             <div className={styles.segment} role="group" aria-label="Device">
               {DEVICES.map(({ id, label, Icon }) =>
                 id === "t" && view.device === "t" ? (
@@ -204,8 +208,9 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
                 ),
               )}
             </div>
+            )}
 
-            <span className={styles.divider} aria-hidden="true" />
+            {!view.phone && <span className={styles.divider} aria-hidden="true" />}
           </div>
         </div>
       </div>

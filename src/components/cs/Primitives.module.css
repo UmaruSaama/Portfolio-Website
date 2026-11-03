@@ -52,7 +52,7 @@
 }
 
 .introTitle {
-  flex: 0 1 292px;
+  flex: 0 1 var(--intro-w, 292px);
 }
 
 .introBody {
@@ -207,4 +207,66 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 1023px) {
+  .chapter {
+    gap: 40px;
+    scroll-margin-top: 72px;
+  }
+
+  .opener {
+    gap: 16px;
+    padding-top: 32px;
+  }
+
+  .openerTitle {
+    max-width: none;
+  }
+
+  .introRow {
+    max-width: none;
+    margin-top: 8px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .introTitle,
+  .introBody {
+    flex: none;
+  }
+
+  .figure {
+    border-radius: 16px;
+  }
+
+  .toolbar {
+    flex-wrap: wrap;
+    min-height: 48px;
+    padding: 10px 14px;
+  }
+
+  .figTitle {
+    white-space: normal;
+  }
+
+  .chapterEnd {
+    font-size: 17px;
+    align-items: flex-start;
+  }
+
+  .chapterEndBar {
+    margin-top: 10px;
+  }
+}
+
+/* Very narrow phones (≤ 359px): the figure controls may wrap onto their
+   own line instead of running past the figure edge. */
+@media (max-width: 359px) {
+  .controls {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
 }

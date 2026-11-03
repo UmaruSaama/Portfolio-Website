@@ -274,6 +274,32 @@ function AnatomySpecs() {
   );
 }
 
+/** Phones: the same specs as a list under the card (the drawn overlay
+    needs the 1020 grid). Hidden on desktop. */
+function AnatomySpecsList() {
+  return (
+    <div className={s.specsList}>
+      <p className={s.specsListCaption}>420 × hug · r 20 · padding 20 · gaps 12</p>
+      <dl className={s.specsParts}>
+        {parts.map((p) => (
+          <div key={p.part} className={s.specsPart}>
+            <dt className={s.partName}>{p.part}</dt>
+            <dd className={s.partPurpose}>{p.purpose}</dd>
+          </div>
+        ))}
+      </dl>
+      <ul className={s.specsTokens}>
+        {tokens.map((t) => (
+          <li key={t.name} className={s.token}>
+            <span className={`${s.tokenSwatch} ${t.sw}`} />
+            {t.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 /* ---------- player settings panel (Figma 406:6841) ---------- */
 
 function SettingsPanel() {
@@ -446,6 +472,7 @@ export function Ch09System() {
           >
             <WordCard k={1.1} className={s.anatomyCard} />
             <AnatomySpecs />
+            <AnatomySpecsList />
           </Figure>
         </div>
       </section>
