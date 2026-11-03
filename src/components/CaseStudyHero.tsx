@@ -28,7 +28,9 @@ export function CaseStudyHero({ project, back }: { project: Project; back: React
           ))}
         </ul>
         <h1 className={styles.title}>
-          <span className={styles.accent}>{project.title.accent}</span> {project.title.rest}
+          {project.title.lead && <>{project.title.lead} </>}
+          <span className={styles.accent}>{project.title.accent}</span>
+          {project.title.rest && <> {project.title.rest}</>}
         </h1>
         <p className={styles.summary}>{project.summary}</p>
       </header>

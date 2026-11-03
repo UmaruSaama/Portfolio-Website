@@ -233,6 +233,15 @@
   margin: calc(39 * var(--u)) auto 0;
 }
 
+/* Still render (phone trio): same footprint and edge crop as the iPad. */
+.mediaImage {
+  display: block;
+  width: calc(960 * var(--u));
+  height: auto;
+  margin: calc(2 * var(--u)) auto 0; /* centre phone's top meets the iPad's top line */
+  user-select: none;
+}
+
 /* Placeholder slides: the outline of the device the render will sit in,
    so the card keeps its shape without pretending to show work. */
 .mediaEmpty {
@@ -574,6 +583,11 @@
   .mediaEmpty {
     width: 100%;
     height: 200px;
+  }
+
+  .mediaImage {
+    width: 92%;
+    margin-top: 16px;
   }
 
   .mediaDevice {

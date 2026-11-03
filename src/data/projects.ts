@@ -5,12 +5,16 @@ export const chapterAnchor = (id: string) => `chapter-${id}`;
 
 export type Project = {
   slug: string;
+  /** Plain project name, used in labels (dots, player, live region). */
+  name: string;
   tags: string[];
-  /** Title split so the accent phrase can be coloured. */
-  title: { accent: string; rest: string };
+  /** Title split so the accent phrase can be coloured; `lead` comes before it. */
+  title: { lead?: string; accent: string; rest?: string };
   summary: string;
   /** What the iPad screen shows (card preview and case-study hero). */
   screen?: { kind: "placeholder"; label: string; spec: string; tag: string };
+  /** Card media as a still render instead of the iPad (e.g. a phone trio). */
+  image?: { src: string; width: number; height: number; alt: string };
   /**
    * Case-study chapters, in order. `label` = the Figma chapter frame name
    * ("NN · Label"); `short` is shown in the rail where the full name would
@@ -19,12 +23,14 @@ export type Project = {
   chapters?: { id: string; label: string; short?: string }[];
   /** Product video for the "Product video" button. */
   videoSrc?: string;
+  /** No case study page yet: no CTA, no "view" cursor, no route. */
   placeholder?: boolean;
 };
 
 export const projects: Project[] = [
   {
     slug: "immerlingo",
+    name: "ImmerLingo",
     tags: ["Product Designer", "UX Research", "Design Systems"],
     title: {
       accent: "Immersive Japanese learning",
@@ -53,9 +59,29 @@ export const projects: Project[] = [
       spec: "883 × 662 · 4:3 landscape · loops, no sound",
     },
   },
-  ...[2, 3, 4].map(
+  {
+    slug: "alcheringa-25",
+    name: "Alcheringa ’25",
+    tags: ["Product Design", "Gamification", "Visual System"],
+    title: {
+      lead: "The Alcheringa app, rebuilt as an 8‑bit game you play by",
+      accent: "showing up",
+    },
+    summary:
+      "The official app of IIT Guwahati’s cultural festival. The ’24 revamp made events findable; ’25 keeps all of it and wraps it in a pixel-art world where showing up earns XP.",
+    image: {
+      src: "/work/alcheringa-25/hero-phones.webp",
+      width: 1185,
+      height: 880,
+      alt: "Three phones showing the Alcheringa ’25 app: the activity log, the pixel-art home screen and the festival map.",
+    },
+    // Case study is next; until it lands the card shows the work without a CTA.
+    placeholder: true,
+  },
+  ...[3, 4].map(
     (n): Project => ({
       slug: `project-0${n}`,
+      name: `Project 0${n}`,
       tags: ["Case study"],
       title: { accent: `Project 0${n}`, rest: "coming soon" },
       summary: "Placeholder. Replace with the case study’s one-line summary.",

@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import type { Project } from "@/data/projects";
 import { VideoToggle } from "./VideoToggle";
 import { ArrowIcon, ArrowLeftIcon, CloseIcon } from "./icons";
+import Image from "next/image";
 import { DeviceMock } from "./DeviceMock";
 import { CaseStudy } from "./CaseStudy";
 import action from "./Action.module.css";
@@ -705,7 +706,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               <button
                 type="button"
                 className={`${styles.dot} ${i === active ? styles.dotActive : ""}`}
-                aria-label={`${i + 1}. ${p.title.accent}`}
+                aria-label={`${i + 1}. ${p.name}`}
                 aria-current={i === active ? "true" : undefined}
                 onClick={() => actions.current.goTo(i)}
               />
@@ -774,7 +775,9 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                   ))}
                 </ul>
                 <h2 className={styles.title} data-anim="text">
-                  <span className={styles.accent}>{p.title.accent}</span> {p.title.rest}
+                  {p.title.lead && <>{p.title.lead} </>}
+                  <span className={styles.accent}>{p.title.accent}</span>
+                  {p.title.rest && <> {p.title.rest}</>}
                 </h2>
                 <p className={styles.summary} data-anim="text">
                   {p.summary}
@@ -806,6 +809,16 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                 <div className={styles.mediaDevice}>
                   <DeviceMock screen={p.screen} />
                 </div>
+              ) : p.image ? (
+                <Image
+                  className={styles.mediaImage}
+                  src={p.image.src}
+                  width={p.image.width}
+                  height={p.image.height}
+                  alt={p.image.alt}
+                  sizes="(max-width: 900px) 92vw, 960px"
+                  draggable={false}
+                />
               ) : (
                 <div className={styles.mediaEmpty}>
                   <span className={styles.mediaEmptyScreen}>Case study in progress</span>
@@ -820,7 +833,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           ref={player}
           className={styles.player}
           role="region"
-          aria-label={`${current.title.accent} product video`}
+          aria-label={`${current.name} product video`}
           aria-hidden={!videoOpen}
           inert={!videoOpen}
         >
@@ -898,7 +911,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           className={styles.caseOverlay}
           role="dialog"
           aria-modal="true"
-          aria-label={`${caseProject.title.accent}: case study`}
+          aria-label={`${caseProject.name}: case study`}
         >
           {/* Stand-in for the card's own glow, faded out as the surface darkens. */}
           <span className={styles.caseCardGlow} aria-hidden="true" data-card-glow />
@@ -936,8 +949,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
 
       <p className="visually-hidden" aria-live="polite">
         {videoOpen
-          ? `Playing ${current.title.accent} product video`
-          : `Project ${active + 1} of ${projects.length}: ${current.title.accent}`}
+          ? `Playing ${current.name} product video`
+          : `Project ${active + 1} of ${projects.length}: ${current.name}`}
       </p>
     </div>
   );
