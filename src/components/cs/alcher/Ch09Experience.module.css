@@ -1,0 +1,738 @@
+/*
+  09 · The experience (Figma 504:67642). Layout lengths are Figma px ×
+  --v; type and pixel bevels are real px.
+*/
+
+/* Figma hides this chapter's opener divider: the head starts at the top. */
+.opener > header {
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* ---------- Figure – Overworld map (519:46288) ---------- */
+
+.map {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(44 * var(--v));
+}
+
+.mapTitle {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  line-height: 15px;
+  color: var(--al-yellow);
+  -webkit-font-smoothing: none;
+}
+
+.mapCaption {
+  margin: calc(13 * var(--v)) 0 0;
+  max-width: calc(720 * var(--v));
+  font-size: 18px;
+  line-height: 1.45;
+  color: rgb(255 241 232 / 0.85);
+}
+
+/* Canvas = the map below its head (Figma y 124 → 1260). */
+.canvas {
+  position: relative;
+  height: calc(1136 * var(--v));
+}
+
+.canvas > * {
+  position: absolute;
+}
+
+.start {
+  margin: 0;
+  left: 0;
+  top: calc(33 * var(--v));
+  font-family: var(--font-pixel);
+  font-size: max(9px, calc(12 * var(--v)));
+  line-height: 1.1;
+  color: var(--al-yellow);
+  -webkit-font-smoothing: none;
+}
+
+.flag {
+  left: calc(20 * var(--v));
+  top: calc(61 * var(--v));
+  width: calc(32 * var(--v));
+  height: calc(88 * var(--v));
+}
+
+.player {
+  left: calc(40 * var(--v));
+  top: calc(173 * var(--v));
+  width: calc(48 * var(--v));
+  height: calc(42 * var(--v));
+}
+
+.worlds {
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.worldItem {
+  position: absolute;
+  height: calc(321 * var(--v));
+}
+
+.world {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  outline-offset: 4px;
+}
+
+.world:focus-visible {
+  outline: 3px solid var(--al-yellow);
+}
+
+.worldBox {
+  position: absolute;
+  inset: 0;
+  transition: filter 0.15s ease-out;
+}
+
+.world:hover .worldBox {
+  filter: brightness(1.18);
+}
+
+/* "WORLD 1" + title row at 16/16 (title at x 96 in Figma: 27 after the number) */
+.worldHead {
+  position: absolute;
+  left: 16px;
+  top: max(14px, calc(16 * var(--v)));
+  display: flex;
+  align-items: flex-start;
+  gap: calc(27 * var(--v));
+  white-space: nowrap;
+  -webkit-font-smoothing: none;
+}
+
+.worldNum {
+  font-family: var(--font-pixel-body);
+  font-size: max(10px, calc(14 * var(--v)));
+  line-height: 1.07;
+  color: var(--al-yellow);
+}
+
+.worldTitle {
+  font-family: var(--font-pixel);
+  font-size: max(9px, calc(12 * var(--v)));
+  line-height: 1.08;
+  color: rgb(255 241 232 / 0.85);
+}
+
+/* Screen thumbnail (Figma "Node – …": 104 × 225, r 10, 2px cream @ 0.25
+   inside stroke) with its label 10 below. */
+.node {
+  position: absolute;
+  width: calc(104 * var(--v));
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  height: calc(225 * var(--v));
+  overflow: hidden;
+  border-radius: calc(10 * var(--v));
+  background: var(--al-night);
+}
+
+.thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px rgb(255 241 232 / 0.25);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.nodeLabel {
+  position: absolute;
+  left: 0;
+  top: calc(235 * var(--v));
+  font-size: max(10px, calc(14 * var(--v)));
+  line-height: 1.5;
+  white-space: nowrap;
+  color: rgb(255 241 232 / 0.85);
+}
+
+.path {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: rgb(255 241 232 / 0.55);
+  pointer-events: none;
+}
+
+.goalLabel {
+  margin: 0;
+  left: calc(666 * var(--v));
+  top: calc(869 * var(--v));
+  font-family: var(--font-pixel);
+  font-size: max(9px, calc(12 * var(--v)));
+  line-height: 1.1;
+  color: var(--al-yellow);
+  -webkit-font-smoothing: none;
+}
+
+.goal {
+  left: calc(666 * var(--v));
+  top: calc(897 * var(--v));
+  width: calc(205 * var(--v));
+  height: calc(105 * var(--v));
+}
+
+.goalText {
+  font-family: var(--font-pixel-body);
+}
+
+.goalCaption {
+  margin: 0;
+  left: calc(666 * var(--v));
+  top: calc(1013 * var(--v));
+  font-size: max(10px, calc(14 * var(--v)));
+  line-height: 1.5;
+  white-space: nowrap;
+  color: rgb(255 241 232 / 0.85);
+}
+
+/* ---------- Step (Figma "Step – …") ---------- */
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: calc(32 * var(--v));
+  scroll-margin-top: 96px;
+}
+
+.stepHead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepLabel {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--al-cream);
+}
+
+.figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Toolbar (1020 × 56): label left, controls right, centred at y 28 */
+.toolbar {
+  height: 56px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.figLabel {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.typeTag {
+  flex: none;
+  padding: 3px 8px;
+  background: rgb(255 241 232 / 0.08);
+  font-family: var(--font-pixel-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(255 241 232 / 0.7);
+}
+
+.figTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgb(255 241 232 / 0.86);
+}
+
+.controls {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: rgb(255 241 232 / 0.6);
+}
+
+.hintIcon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.ctrlDivider {
+  width: 1px;
+  height: 20px;
+  background: rgb(255 241 232 / 0.1);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgb(255 241 232 / 0.8);
+  cursor: pointer;
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--al-yellow);
+  outline-offset: 3px;
+}
+
+/* Pixel switch: square 32 × 18 track, 14px knob */
+.switch {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 18px;
+  background: rgb(255 241 232 / 0.2);
+  transition: background-color 0.15s ease-out;
+}
+
+.switch[data-on] {
+  background: var(--al-pink);
+}
+
+.knob {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  background: rgb(255 241 232 / 0.8);
+  transition:
+    transform 0.15s ease-out,
+    background-color 0.15s ease-out;
+}
+
+.switch[data-on] .knob {
+  transform: translateX(14px);
+  background: var(--al-cream);
+}
+
+.toggleLabel {
+  white-space: nowrap;
+}
+
+/* Stage (1020 × 640): headline at 40/56, phones at y 96, story at 670/128 */
+.stage {
+  min-height: calc(640 * var(--v));
+  padding: calc(56 * var(--v)) calc(40 * var(--v)) calc(18.4 * var(--v));
+}
+
+.headline {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--al-cream);
+}
+
+.stageRow {
+  margin-top: calc(14 * var(--v));
+  display: flex;
+  align-items: flex-start;
+}
+
+.phones {
+  flex: none;
+  display: flex;
+  gap: calc(24 * var(--v));
+}
+
+.story {
+  flex: 1;
+  min-width: 0;
+  margin: calc(32 * var(--v)) 0 0 calc(96 * var(--v));
+}
+
+.storyList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.storyItem {
+  display: flex;
+  gap: 14px;
+}
+
+.storyPin {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--al-pink);
+  box-shadow: inset 0 0 0 2px var(--al-night);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: #000;
+}
+
+.storyText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.storyTitle {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--al-cream);
+}
+
+.storyBody {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--al-silver);
+}
+
+/* Persona moment: small cream bubble, 24 wider than the story column */
+.persona {
+  width: calc(100% + 24 * var(--v));
+  margin: 24px 0 0;
+  padding: 32px 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.avatar {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.8);
+}
+
+.avatarArt {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 32px;
+  height: 28px;
+}
+
+.personaText {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--al-navy);
+}
+
+/* ---------- Device – iPhone (255 × 525.6) ---------- */
+
+.phone {
+  position: relative;
+  flex: none;
+  width: calc(255 * var(--v));
+  height: calc(525.6 * var(--v));
+}
+
+/* Titanium frame: 2.4 outside stroke (light → dark → light, top to bottom) */
+.frame {
+  position: absolute;
+  left: 0;
+  top: calc(-2.4 * var(--v));
+  width: 100%;
+  height: calc(530.4 * var(--v));
+  border: calc(2.4 * var(--v)) solid transparent;
+  border-radius: calc(40.8 * var(--v));
+  background:
+    linear-gradient(#050506, #050506) padding-box,
+    linear-gradient(180deg, #a39f98, #5e5b56 50%, #8c8882) border-box;
+}
+
+.side {
+  position: absolute;
+  left: 0;
+  width: calc(2.4 * var(--v));
+  border-radius: calc(1.2 * var(--v));
+  background: linear-gradient(180deg, #8e8b84, #5e5c57);
+}
+
+.sideAction {
+  top: calc(90 * var(--v));
+  height: calc(20.4 * var(--v));
+}
+
+.sideVolUp {
+  top: calc(127.2 * var(--v));
+  height: calc(37.2 * var(--v));
+}
+
+.sideVolDown {
+  top: calc(174 * var(--v));
+  height: calc(37.2 * var(--v));
+}
+
+.sidePower {
+  left: calc(252.6 * var(--v));
+  top: calc(144 * var(--v));
+  height: calc(60 * var(--v));
+}
+
+.screen {
+  position: absolute;
+  left: calc(9.6 * var(--v));
+  top: calc(7.2 * var(--v));
+  width: calc(235.8 * var(--v));
+  height: calc(511.2 * var(--v));
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: calc(32.4 * var(--v));
+  background: #141416;
+}
+
+.viewport {
+  position: absolute;
+  left: calc(0.9 * var(--v));
+  top: 0;
+  width: calc(234 * var(--v));
+  height: calc(505.8 * var(--v));
+  overflow: hidden;
+  background: var(--al-navy);
+}
+
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller:focus-visible {
+  outline: 2px solid var(--al-yellow);
+  outline-offset: -2px;
+}
+
+.content {
+  position: relative;
+}
+
+.shot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Fixed chrome over the scrolling screen */
+.fixed {
+  position: absolute;
+  display: block;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Annotations (pins + highlights) inside the screen */
+.ann {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.ann[data-on] {
+  opacity: 1;
+}
+
+.hl {
+  position: absolute;
+  border: 1px solid #ff375f;
+  border-radius: calc(5 * var(--v));
+}
+
+.pin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: max(18px, calc(22 * var(--v)));
+  height: max(18px, calc(22 * var(--v)));
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #ff375f;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: #000;
+  transition: scale 0.2s ease-out;
+  scale: 0.6;
+}
+
+.ann[data-on] .pin {
+  scale: 1;
+}
+
+.island {
+  position: absolute;
+  left: calc(90.9 * var(--v));
+  top: calc(13.8 * var(--v));
+  width: calc(73.2 * var(--v));
+  height: calc(21.6 * var(--v));
+  border-radius: calc(10.8 * var(--v));
+  background: #000;
+}
+
+.indicator {
+  position: absolute;
+  left: calc(87.6 * var(--v));
+  top: calc(510.6 * var(--v));
+  width: calc(80.4 * var(--v));
+  height: 3px;
+  border-radius: 1.8px;
+  background: rgb(255 255 255 / 0.85);
+}
+
+/* ---------- Design decision (pink panel) ---------- */
+
+.decision {
+  margin-top: calc(32 * var(--v)); /* 64 below the figure */
+  padding: calc(40 * var(--v));
+  display: flex;
+  gap: calc(40 * var(--v));
+}
+
+.decisionHead {
+  flex: none;
+  width: calc(260 * var(--v));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.miniLabel {
+  margin: 0;
+  font-family: var(--font-pixel-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--al-silver);
+}
+
+.decisionTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--al-cream);
+}
+
+.rationale {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rationale > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rationale dd {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--al-silver);
+}
+
+/* ---------- narrower columns ---------- */
+
+@media (max-width: 1100px) {
+  .hintText {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .worldBox,
+  .switch,
+  .knob,
+  .ann,
+  .pin {
+    transition: none;
+  }
+}

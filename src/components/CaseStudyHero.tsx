@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { chapterAnchor, type Project } from "@/data/projects";
 import { DeviceMock } from "./DeviceMock";
 import styles from "./CaseStudyHero.module.css";
@@ -13,10 +13,24 @@ import styles from "./CaseStudyHero.module.css";
  * the overlay). data-copy / data-device / data-glow are the hooks the
  * morph animates.
  */
-export function CaseStudyHero({ project, back }: { project: Project; back: ReactNode }) {
+export function CaseStudyHero({
+  project,
+  back,
+  Backdrop,
+}: {
+  project: Project;
+  back: ReactNode;
+  /** Project backdrop in place of the pink glow (must carry data-glow). */
+  Backdrop?: ComponentType;
+}) {
+  const img = project.image;
   return (
-    <section className={styles.hero} id={chapterAnchor("intro")} aria-label="Intro">
-      <span className={styles.glow} aria-hidden="true" data-glow />
+    <section
+      className={`${styles.hero} ${img ? styles.heroImage : ""}`}
+      id={chapterAnchor("intro")}
+      aria-label="Intro"
+    >
+      {Backdrop ? <Backdrop /> : <span className={styles.glow} aria-hidden="true" data-glow />}
       <div className={styles.bar} data-bar>
         {back}
       </div>
@@ -35,9 +49,23 @@ export function CaseStudyHero({ project, back }: { project: Project; back: React
         <p className={styles.summary}>{project.summary}</p>
       </header>
 
-      <div className={styles.device}>
-        <DeviceMock screen={project.screen} />
-      </div>
+      {img ? (
+        // Still render (e.g. the Alcheringa phone trio) in place of the iPad.
+        // eslint-disable-next-line @next/next/no-img-element -- same file as the card's next/image; the morph measures this box
+        <img
+          className={styles.still}
+          src={img.src}
+          width={img.width}
+          height={img.height}
+          alt={img.alt}
+          data-device
+          decoding="async"
+        />
+      ) : (
+        <div className={styles.device}>
+          <DeviceMock screen={project.screen} />
+        </div>
+      )}
     </section>
   );
 }

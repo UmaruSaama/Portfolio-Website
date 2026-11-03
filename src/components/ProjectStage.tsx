@@ -530,7 +530,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           .fromTo(
             overlay,
             { clipPath: rectClip(cardRect, 20), backgroundColor: "#f2f2f2" },
-            { clipPath: FULL_CLIP, backgroundColor: "#0f0f0f", duration: 0.95 },
+            { clipPath: FULL_CLIP, backgroundColor: projects.find((p) => p.slug === slug)?.bg ?? "#0f0f0f", duration: 0.95 },
             0.16,
           )
           .fromTo(heroCopy, copyFrom, { x: 0, y: 0, scale: 1, duration: 0.95 }, 0.16)
@@ -818,6 +818,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                   alt={p.image.alt}
                   sizes="(max-width: 900px) 92vw, 960px"
                   draggable={false}
+                  data-device
                 />
               ) : (
                 <div className={styles.mediaEmpty}>

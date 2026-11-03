@@ -1,0 +1,49 @@
+/* 11 · What's next (Figma 504:68826) */
+
+/* Figma hides this chapter's divider: the opener starts at the act. */
+.bare > header {
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Three blue panels 329 × 276, 16 apart */
+.cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: calc(16 * var(--v));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px;
+}
+
+.label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--al-silver);
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--al-cream);
+}
+
+.body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--al-silver);
+}

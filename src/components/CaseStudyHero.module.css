@@ -12,7 +12,7 @@
   position: relative;
   min-height: 100dvh;
   padding-bottom: calc(152 * var(--v));
-  background: var(--hero-bg, #0f0f0f);
+  background: var(--hero-bg, var(--cs-page-bg, #0f0f0f));
   color: var(--ink);
   /* The case-study page sets Hanken for chapters; the hero keeps the
      card's condensed UI face (Figma: SF Pro Condensed) so the morph
@@ -120,6 +120,57 @@
   position: relative;
   width: calc(883 * var(--v));
   margin: calc(152 * var(--v)) auto 0;
+}
+
+/* ---------- still-image hero (Alcheringa '25, Figma 504:66680) ----------
+   Copy frame at y 128 (900 wide: tags 32 · 20 · title 128 · 20 · summary
+   52), phone trio crop at (127, 449) 1185 × 880, content from y 1346. */
+.heroImage {
+  min-height: 0;
+  height: calc(1346 * var(--v));
+  padding-bottom: 0;
+}
+
+.heroImage .copy {
+  width: calc(900 * var(--v));
+}
+
+.heroImage .tags {
+  font-size: max(calc(14 * var(--v)), 11px);
+  letter-spacing: 0.1em;
+}
+
+.heroImage .title {
+  margin-top: calc(20 * var(--v));
+  font-size: calc(56 * var(--v));
+  line-height: 1.08;
+}
+
+.heroImage .summary {
+  width: calc(760 * var(--v));
+  margin-top: calc(20 * var(--v));
+  font-size: max(calc(18 * var(--v)), 15px);
+  line-height: 1.45;
+}
+
+.still {
+  position: relative;
+  display: block;
+  width: calc(1185 * var(--v));
+  height: auto;
+  margin: calc(69 * var(--v)) auto 0;
+}
+
+@media (max-width: 767px) {
+  .heroImage {
+    height: auto;
+    padding-bottom: 48px;
+  }
+
+  .still {
+    width: calc(100% - 32px);
+    margin-top: 40px;
+  }
 }
 
 @media (max-width: 767px) {

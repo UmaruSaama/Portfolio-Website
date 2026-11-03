@@ -1,0 +1,193 @@
+/* 02 · Snapshot (Figma 504:66848, 1020 × 1080) */
+
+/* ---------- Section – Overview: Role/Timeline at x0, Overview at x520 ---------- */
+.overview {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 500fr) minmax(0, 500fr);
+  grid-template-rows: auto auto;
+  column-gap: calc(20 * var(--v));
+  row-gap: calc(32 * var(--v));
+  align-items: start;
+}
+
+.overview > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.role {
+  grid-area: 1 / 1;
+}
+
+.timeline {
+  grid-area: 2 / 1;
+}
+
+.summary {
+  grid-area: 1 / 2 / 3 / 3;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--al-label);
+}
+
+.value {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--al-cream);
+}
+
+.body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--al-silver);
+}
+
+/* ---------- Briefing panel (blue, 1020 × 350): columns at x36 / 352 / 668,
+   rules at x340 / 648 ---------- */
+.brief {
+  display: grid;
+  grid-template-columns: minmax(0, 304fr) 4px minmax(0, 304fr) 4px minmax(0, 332fr);
+  padding: 30px 36px 48px;
+}
+
+.col {
+  min-width: 0;
+  padding-right: calc(28 * var(--v));
+}
+
+.col2 {
+  padding-left: calc(8 * var(--v));
+  padding-right: calc(16 * var(--v));
+}
+
+.col3 {
+  padding-left: calc(16 * var(--v));
+  padding-right: 0;
+}
+
+/* 2px black @0.6 + 2px blue @0.25, from y28 to y300 (content ends y302) */
+.rule {
+  align-self: stretch;
+  margin: -2px 0 2px;
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.6) 2px, rgb(41 173 255 / 0.25) 2px);
+}
+
+.colTitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--al-yellow);
+}
+
+.bullets {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgb(255 241 232 / 0.9);
+}
+
+/* 6px blue square at x0 y7 */
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  background: var(--al-blue);
+}
+
+/* PROCESS: four slots 316 × 52, 12 apart */
+.steps {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step {
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  padding: 4px 8px 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--al-cream);
+}
+
+.stepNum {
+  min-width: 16px;
+  color: var(--al-blue);
+}
+
+.stepTick {
+  flex: none;
+}
+
+/* ---------- Card – Why redesign (pink dialogue, 1020 × 236) ---------- */
+.why {
+  padding: 32px 52px 86px 108px;
+}
+
+.whyIcon {
+  position: absolute;
+  left: 36px;
+  top: 36px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--al-yellow);
+}
+
+.whyTitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--al-peach);
+}
+
+.whyBody {
+  margin: 10px 0 0;
+  max-width: 860px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--al-cream);
+}
+
+.whyMore {
+  position: absolute;
+  right: 49px;
+  bottom: 23px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgb(255 204 170 / 0.8);
+}

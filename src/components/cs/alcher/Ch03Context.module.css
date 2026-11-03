@@ -1,0 +1,226 @@
+/* 03 · Context (Figma 504:66888, 1020 × 1622) */
+
+/* ---------- Section – The festival, the app, the brief (blue, 1020 × 292) ---------- */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 28px 8px;
+}
+
+.factCol {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 24px;
+}
+
+.factTitle {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--al-silver);
+}
+
+.factList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--al-silver);
+}
+
+/* ---------- Figure – Four editions, four teams (812: 32 pad + 16 + stage 764) ---------- */
+.figure {
+  margin: 0;
+  padding-top: calc(48 * var(--v));
+}
+
+.stage {
+  padding: 56px 36px 19px;
+}
+
+/* Title plate 520 × 64 at x32, y −32 of the stage */
+.plateWrap {
+  position: absolute;
+  top: -32px;
+  left: 32px;
+  width: min(520px, calc(100% - 64px));
+}
+
+.plateWrap > * {
+  margin: 0;
+}
+
+.caption {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(255 241 232 / 0.8);
+}
+
+/* Level cards 228 × 232 at y116, 12 apart; the dotted timeline runs
+   above them at y92 (8px dots every 16px, x52 → 972). */
+.levels {
+  position: relative;
+  margin: 36px 0 0; /* fixed: the timeline above sits at a px offset */
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.levels::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: 16px;
+  right: 4px;
+  height: 8px;
+  background: linear-gradient(90deg, rgb(255 241 232 / 0.4) 8px, transparent 8px) left top / 16px 8px repeat-x;
+}
+
+.level {
+  min-width: 0;
+  min-height: calc(232 * var(--v));
+  padding: 24px 24px 28px;
+  color: var(--al-cream);
+}
+
+/* 16 × 16 node on the timeline, centred over the card */
+.node {
+  position: absolute;
+  top: -28px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 16px;
+  background: var(--al-cream);
+}
+
+.now .node {
+  background: var(--al-yellow);
+}
+
+.levelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.year {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.done {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+.doneTick {
+  position: absolute;
+  left: 2px;
+  top: 4px;
+}
+
+.flag {
+  flex: none;
+  margin-top: -4px;
+  shape-rendering: crispEdges;
+}
+
+.levelTitle {
+  margin: 9px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.levelBody {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgb(255 241 232 / 0.75);
+}
+
+.now {
+  color: var(--al-navy);
+}
+
+.now .levelBody {
+  color: rgb(29 43 83 / 0.85);
+}
+
+/* ---------- Inventory panels (460 wide, 28 apart, at y376) ---------- */
+.inventories {
+  margin-top: calc(28 * var(--v));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(28 * var(--v));
+  align-items: start;
+}
+
+.inventory {
+  min-width: 0;
+  padding: 22px 24px 30px 28px;
+}
+
+.invTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--al-silver);
+}
+
+.added .invTitle {
+  color: var(--al-yellow);
+}
+
+.invList {
+  margin: 7px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.invSlot {
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 2px 12px 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgb(255 241 232 / 0.8);
+}
+
+.added .invSlot {
+  color: var(--al-cream);
+}
+
+.added .invSlot.invEmpty,
+.invEmpty {
+  justify-content: center;
+  color: rgb(194 195 199 / 0.75);
+}
+
+.source {
+  margin: calc(72 * var(--v)) 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgb(255 241 232 / 0.5);
+}

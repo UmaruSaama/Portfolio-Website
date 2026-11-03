@@ -23,6 +23,8 @@ export type Project = {
   chapters?: { id: string; label: string; short?: string }[];
   /** Product video for the "Product video" button. */
   videoSrc?: string;
+  /** Case-study page surface (the card morphs into this colour). */
+  bg?: string;
   /** No case study page yet: no CTA, no "view" cursor, no route. */
   placeholder?: boolean;
 };
@@ -75,8 +77,22 @@ export const projects: Project[] = [
       height: 880,
       alt: "Three phones showing the Alcheringa ’25 app: the activity log, the pixel-art home screen and the festival map.",
     },
-    // Case study is next; until it lands the card shows the work without a CTA.
-    placeholder: true,
+    bg: "#111d35",
+    chapters: [
+      { id: "intro", label: "Intro" },
+      { id: "snapshot", label: "Snapshot" },
+      { id: "context", label: "Context" },
+      { id: "problem", label: "The problem" },
+      { id: "attendees", label: "Meet the attendees", short: "Attendees" },
+      { id: "learned", label: "What I learned" },
+      { id: "changed", label: "What changed and why", short: "What changed" },
+      { id: "shaping", label: "Shaping the app" },
+      { id: "experience", label: "The experience" },
+      { id: "system", label: "The system underneath", short: "The system" },
+      { id: "next", label: "What’s next" },
+      { id: "reflection", label: "Reflection" },
+      { id: "close", label: "Close" },
+    ],
   },
   ...[3, 4].map(
     (n): Project => ({

@@ -1,0 +1,175 @@
+/* ---------- opener (Figma "The context": divider · 64 · head · 48 · intro) ---------- */
+
+.opener {
+  display: flex;
+  flex-direction: column;
+  gap: calc(48 * var(--v));
+  padding-top: calc(64 * var(--v));
+  border-top: 1px solid var(--al-divider);
+}
+
+.openerHead {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.eyebrow {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--al-silver);
+}
+
+/* 10px cream square centred in a 20px slot */
+.eyebrowMark {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  background: var(--al-cream);
+}
+
+.h1 {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(30px, 2.78vw, 40px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--al-cream);
+  text-wrap: wrap;
+}
+
+/* Intro row inside the 950 box: title at 0, body at 520 (430 wide) */
+.intro {
+  max-width: calc(950 * var(--v));
+  display: grid;
+  grid-template-columns: minmax(0, 520fr) minmax(0, 430fr);
+}
+
+.introTitle {
+  margin: 0;
+  padding-right: 32px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--al-cream);
+}
+
+.introBody {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--al-silver);
+}
+
+.introBody p {
+  margin: 0;
+}
+
+/* ---------- acts ---------- */
+
+/* An act and its chapters; chapters keep the 96 rhythm. Children sit
+   above the world layer (z 1) without making the group a stacking
+   context, so the next group's layer can't cover this group's text. */
+.group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(96 * var(--v));
+}
+
+.group > :not(.world, .worldTail) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Full-bleed world layer: the segment image at the act's top, then its
+   last band colour down to the end of the group. Repeats sideways past
+   1440 so wide screens continue the scene. */
+.world {
+  position: absolute;
+  z-index: 0;
+  top: var(--seg-top);
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+  background:
+    var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) repeat-x,
+    linear-gradient(var(--seg-after), var(--seg-after)) left var(--seg-h) / 100% calc(100% - var(--seg-h)) no-repeat;
+}
+
+.sky {
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--seg-h);
+  pointer-events: none;
+  image-rendering: pixelated;
+  background: var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) repeat-x;
+}
+
+.worldTail {
+  position: absolute;
+  z-index: 0;
+  bottom: calc(-456 * var(--v));
+  height: var(--seg-h);
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+  background: var(--seg) center bottom / calc(1440 * var(--v)) var(--seg-h) repeat-x;
+}
+
+/* Figma: 240 transition zone, "ACT 01" at 296, title 322, divider 404, line 440 */
+.act {
+  height: calc(520 * var(--v));
+  padding-top: calc(296 * var(--v));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.actNum {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--al-yellow);
+}
+
+.actTitle {
+  margin: calc(2 * var(--v)) 0 0;
+  font-size: 56px;
+  line-height: 59px;
+  color: var(--al-cream);
+}
+
+.actDivider {
+  margin-top: calc(23 * var(--v));
+}
+
+.actLine {
+  margin: calc(16 * var(--v)) 0 0;
+  font-size: 18px;
+  line-height: 1.45;
+  color: rgb(255 241 232 / 0.85);
+}
+
+.pending {
+  display: grid;
+  place-items: center;
+  height: calc(420 * var(--v));
+  border: 1px dashed var(--al-divider);
+  font-size: 15px;
+  color: var(--al-label);
+}

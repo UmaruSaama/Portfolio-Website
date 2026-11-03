@@ -28,7 +28,7 @@
   --cs-yellow: #ffd600;
   --cs-yellow-28: rgba(255, 214, 0, 0.28);
 
-  background: var(--hero-bg, #0f0f0f);
+  background: var(--hero-bg, var(--cs-page-bg, #0f0f0f));
   color: var(--cs-text-primary);
   font-family: "Hanken Grotesk Variable", system-ui, sans-serif;
   font-stretch: 100%;
@@ -38,7 +38,7 @@
 .content {
   width: calc(1020 * var(--v));
   margin: 0 auto;
-  padding-bottom: calc(160 * var(--v));
+  padding-bottom: calc(var(--cs-end-pad, 160) * var(--v));
   display: flex;
   flex-direction: column;
   gap: calc(96 * var(--v));
