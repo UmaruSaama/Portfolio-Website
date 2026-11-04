@@ -1,6 +1,7 @@
 import type { ComponentType, CSSProperties, ReactNode } from "react";
 import { PixelDivider, PixelText } from "./Pixel";
 import st from "./Story.module.css";
+import { worldData } from "./worldData";
 
 /**
  * Narrative pieces of the Alcheringa '25 case study: chapter opener, the
@@ -51,39 +52,58 @@ export function Opener({
 /* ---------- world ---------- */
 
 /**
- * The pixel world (Figma "World", 4px cells) is exported at one pixel per
- * cell and scaled ×4 with nearest-neighbour sampling. It is cut into
- * segments that each hang from the act that starts them, so the art stays
- * on its act even when the chapters above run longer or shorter than in
- * Figma. `top` = where the segment starts relative to the act's top (Figma
- * px); `cells` = segment height in cells. Below a segment the group keeps
- * the segment's last band colour. The scene is drawn once, 1440 wide and
- * centred, as in Figma; past 1440 each side continues with a one-cell
- * edge strip (<seg>-l/-r.png: the row's edge colour where it runs on, e.g.
- * ground lines, else the row's band colour), never a repeat of the scene.
+ * The pixel world (Figma "World" 521:53391, the v3 kit: skyline, festoon,
+ * crowd, stage band, mascot) is cut into segments that each hang from the
+ * act that starts them, so the art stays on its act even when the chapters
+ * above run longer or shorter than in Figma (and on the compact layout).
+ * `top` = where the segment starts relative to the act's top (Figma px).
+ * Each segment paints its colour bands as one hard-stop gradient (the last
+ * band runs on to the end of the group) and its art rows as images at one
+ * pixel per 2px cell, scaled with nearest-neighbour sampling. The scene is
+ * drawn once, 1440 wide and centred, as in Figma; past 1440 each side
+ * continues with a one-cell edge strip (<piece>-l/-r.png: the row's edge
+ * colour where it runs on, e.g. ground lines, else the row's band colour),
+ * never a repeat of the scene. Data: worldData.ts (generated).
  */
-type Segment = { src: string; top: number; cells: number; after: string };
+type Segment = { key: keyof typeof worldData; top: number };
 
-const W = "/cs/alcheringa-25/world";
-export const worldSky: Segment = { src: `${W}/sky.png`, top: 0, cells: 336, after: "#1d2b53" };
-export const worldDawn: Segment = { src: `${W}/dawn.png`, top: 0, cells: 351, after: "#000000" };
+const W = "/cs/alcheringa-25/world3";
+export const worldSky: Segment = { key: "sky", top: 0 };
+/** Hangs from the end of the last act: Figma frame bottom = Close + 520. */
+export const worldDawn: Segment = { key: "dawn", top: 0 };
 const segments: Record<number, Segment> = {
-  1: { src: `${W}/a1.png`, top: -2, cells: 878, after: "#111d35" },
-  2: { src: `${W}/a2.png`, top: 0, cells: 1749, after: "#1d2b53" },
-  3: { src: `${W}/a3.png`, top: -72, cells: 1597, after: "#111d35" },
-  4: { src: `${W}/a4.png`, top: -2, cells: 2226, after: "#111d35" },
-  5: { src: `${W}/a5.png`, top: -182, cells: 1489, after: "#111d35" },
+  1: { key: "a1", top: -178 },
+  2: { key: "a2", top: 0 },
+  3: { key: "a3", top: -100 },
+  4: { key: "a4", top: -100 },
+  5: { key: "a5", top: -28 },
+  6: { key: "a6", top: -28 },
 };
+
+const px = (n: number) => `calc(${n} * var(--v))`;
 
 /** Inline style that paints a segment on a full-bleed layer. */
 export function worldStyle(seg: Segment) {
+  const d = worldData[seg.key];
+  const layers: string[] = [];
+  for (const p of d.pieces) {
+    const at = `${px(p.y)} / `;
+    const size = `${px(p.h)} no-repeat`;
+    layers.push(`url(${W}/${p.src}.png) center ${at}${px(1440)} ${size}`);
+    layers.push(`url(${W}/${p.src}-l.png) left ${at}var(--side) ${size}`);
+    layers.push(`url(${W}/${p.src}-r.png) right ${at}var(--side) ${size}`);
+  }
+  const stops = d.stops
+    .map(([y, c], i) => {
+      const next = d.stops[i + 1];
+      return next ? `${c} ${px(y)} ${px(next[0])}` : `${c} ${px(y)}`;
+    })
+    .join(", ");
+  layers.push(d.stops.length > 1 ? `linear-gradient(${stops})` : `linear-gradient(${d.stops[0][1]}, ${d.stops[0][1]})`);
   return {
-    "--seg": `url(${seg.src})`,
-    "--seg-l": `url(${seg.src.replace(".png", "-l.png")})`,
-    "--seg-r": `url(${seg.src.replace(".png", "-r.png")})`,
-    "--seg-top": `calc(${seg.top} * var(--v))`,
-    "--seg-h": `calc(${seg.cells * 4} * var(--v))`,
-    "--seg-after": seg.after,
+    background: layers.join(", "),
+    "--seg-top": px(seg.top),
+    "--seg-h": px(d.h),
   } as CSSProperties;
 }
 
@@ -129,7 +149,7 @@ export function ActGroup({
     <div className={st.group}>
       {seg && <span className={st.world} style={worldStyle(seg)} aria-hidden="true" />}
       {/* The last act ends on the dawn, hung from the page's end (Figma:
-          dawn art bottom 64 above the frame bottom, 520 below Close). */}
+          the dawn ends at the frame bottom, 520 below Close). */}
       {act.n === 6 && <span className={st.worldTail} style={worldStyle(worldDawn)} aria-hidden="true" />}
       <ActHead act={act} />
       {chapters.map(({ id, Component }) =>

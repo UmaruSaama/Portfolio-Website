@@ -90,15 +90,16 @@
   z-index: 1;
 }
 
-/* Full-bleed world layer: the segment image at the act's top, then its
-   last band colour down to the end of the group. Past 1440 the sides
-   continue with the edge strips (see Story.tsx). */
+/* Full-bleed world layer (background set inline by worldStyle: art pieces
+   centred at 1440 wide, edge strips past it, colour bands under both).
+   It starts at the segment's top and runs through the 96 gap to the next
+   act; that act's layer (later in the DOM) paints over the overlap. The
+   layers sit under everything (z −1 in the page's isolated stacking
+   context), so the hero's phones stay above act 01's opening rows. */
 .world {
   position: absolute;
-  z-index: 0;
+  z-index: -1;
   top: var(--seg-top);
-  /* run through the 96 gap to the next act; that act's layer (later in
-     the DOM) paints over the overlap */
   bottom: calc(-96 * var(--v));
   left: 50%;
   width: 100vw;
@@ -106,11 +107,6 @@
   pointer-events: none;
   image-rendering: pixelated;
   --side: calc(50% - 720 * var(--v) + 4px); /* overlaps under the scene */
-  background:
-    var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) no-repeat,
-    var(--seg-l) left top / var(--side) var(--seg-h) no-repeat,
-    var(--seg-r) right top / var(--side) var(--seg-h) no-repeat,
-    linear-gradient(var(--seg-after), var(--seg-after)) left var(--seg-h) / 100% calc(100% - var(--seg-h)) no-repeat;
 }
 
 .sky {
@@ -120,16 +116,14 @@
   pointer-events: none;
   image-rendering: pixelated;
   --side: calc(50% - 720 * var(--v) + 4px);
-  background:
-    var(--seg) center top / calc(1440 * var(--v)) var(--seg-h) no-repeat,
-    var(--seg-l) left top / var(--side) var(--seg-h) no-repeat,
-    var(--seg-r) right top / var(--side) var(--seg-h) no-repeat;
 }
 
+/* The dawn hangs from the end of the last act: Figma's frame ends 520
+   below Close, and so does the dawn. */
 .worldTail {
   position: absolute;
-  z-index: 0;
-  bottom: calc(-456 * var(--v));
+  z-index: -1;
+  bottom: calc(-520 * var(--v));
   height: var(--seg-h);
   left: 50%;
   width: 100vw;
@@ -137,10 +131,6 @@
   pointer-events: none;
   image-rendering: pixelated;
   --side: calc(50% - 720 * var(--v) + 4px);
-  background:
-    var(--seg) center bottom / calc(1440 * var(--v)) var(--seg-h) no-repeat,
-    var(--seg-l) left bottom / var(--side) var(--seg-h) no-repeat,
-    var(--seg-r) right bottom / var(--side) var(--seg-h) no-repeat;
 }
 
 /* Figma: 240 transition zone, "ACT 01" at 296, title 322, divider 404, line 440 */
