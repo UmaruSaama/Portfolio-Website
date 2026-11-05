@@ -5,7 +5,7 @@ import type { ComponentType, CSSProperties } from "react";
 import Link from "next/link";
 export function Ch_overview() {
   return (
-<section id="chapter-overview" aria-label="Overview" className="cs-ch bg-white content-stretch flex flex-col gap-[64px] items-start overflow-clip px-[210px] py-[120px] relative shrink-0 w-[1440px]">
+<section id="chapter-overview" aria-label="Overview" className="cs-ch bg-white content-stretch flex flex-col gap-[64px] items-start overflow-clip px-[210px] py-[120px] relative shrink-0 w-[1440px]"><h2 className="cs-sr">Overview</h2>
         <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
           <div className="content-stretch flex flex-col font-['SF_Pro:Medium'] font-[510] gap-[28px] items-start relative shrink-0 w-[500px]">
             <div className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0">
@@ -214,9 +214,9 @@ export function Ch_overview() {
           <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#6e6e73] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
             The goal
           </p>
-          <h3 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#1d1d1f] text-[30px] text-center tracking-[-0.18px] w-[860px]">
+          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#1d1d1f] text-[30px] text-center tracking-[-0.18px] w-[860px]">
             Let a small CCD team run every job in parallel, and let every student see where they stand without asking a coordinator.
-          </h3>
+          </p>
         </div>
         <div className="content-stretch flex gap-[12px] items-center relative shrink-0">
           <div className="bg-[#2e42b8] h-[1.5px] relative shrink-0 w-[24px]" />
@@ -267,9 +267,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 01
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Season and system audit
-            </p>
+            </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               Read every screen of all three portals as objects, states and rules, and marked each place where work leaves the portal.
             </p>
@@ -286,9 +286,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 02
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Coordinator workflows
-            </p>
+            </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               JAF approval, the five-step job pipeline, CV verification, Day 1 slots and the master sheet.
             </p>
@@ -305,9 +305,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 03
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Recruiter job form
-            </p>
+            </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               The six-section JAF, saved per section, and the email confirmation that gates the online assessment.
             </p>
@@ -324,9 +324,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 04
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Student app, 0 to 1
-            </p>
+            </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               Fifteen screens at 390pt, built on one stage per application and eligibility shown, not filtered.
             </p>
@@ -343,9 +343,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 05
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Design system
-            </p>
+            </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               Tokens, 13 text styles and components for the app; Radix foundations for the web portals.
             </p>
@@ -362,9 +362,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 06
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Design QA and iteration
-            </p>
+            </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               Thirty Dev Mode annotations, formatting rules, a coded prototype, and triage of requests all season.
             </p>
@@ -1399,9 +1399,9 @@ export function Ch_problem() {
             <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#6e6e73] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
               The design challenge
             </p>
-            <h3 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#1d1d1f] text-[28px] text-center tracking-[-0.14px] w-[760px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#1d1d1f] text-[28px] text-center tracking-[-0.14px] w-[760px]">
               How might one job carry one status from a recruiter’s form to a student’s result, so nobody has to ask a coordinator where things stand?
-            </h3>
+            </p>
           </div>
         </div>
         <div className="content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -1523,9 +1523,9 @@ export function Ch_decisions() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Decision 01
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
               Steps, not labels
-            </p>
+            </h3>
             <div className="flex-[1_0_0] h-[2px] min-w-px relative" />
             <div className="bg-[#eef0fa] content-stretch flex items-start overflow-clip px-[8px] py-[3px] relative rounded-[999px] shrink-0">
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[11px] whitespace-nowrap">
@@ -1654,9 +1654,9 @@ export function Ch_decisions() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Decision 02
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
               A grammar, not a vocabulary
-            </p>
+            </h3>
             <div className="flex-[1_0_0] h-[2px] min-w-px relative" />
             <div className="bg-[#f0f0f2] content-stretch flex items-start overflow-clip px-[8px] py-[3px] relative rounded-[999px] shrink-0">
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#6e6e73] text-[11px] whitespace-nowrap">
@@ -1814,9 +1814,9 @@ export function Ch_decisions() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Decision 03
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
               Explain instead of filter
-            </p>
+            </h3>
             <div className="flex-[1_0_0] h-[2px] min-w-px relative" />
             <div className="bg-[#f0f0f2] content-stretch flex items-start overflow-clip px-[8px] py-[3px] relative rounded-[999px] shrink-0">
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#6e6e73] text-[11px] whitespace-nowrap">
@@ -1948,9 +1948,9 @@ export function Ch_decisions() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Decision 04
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] whitespace-nowrap">
               Verification where it bites
-            </p>
+            </h3>
             <div className="flex-[1_0_0] h-[2px] min-w-px relative" />
             <div className="bg-[#f0f0f2] content-stretch flex items-start overflow-clip px-[8px] py-[3px] relative rounded-[999px] shrink-0">
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#6e6e73] text-[11px] whitespace-nowrap">
@@ -2417,9 +2417,9 @@ export function Ch_iterate() {
               <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
                 Small and reversible
               </p>
-              <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.2] relative shrink-0 text-[#1d1d1f] text-[24px] tracking-[-0.144px] whitespace-nowrap">
+              <h3 className="font-['SF_Pro:Semibold'] font-[590] leading-[1.2] relative shrink-0 text-[#1d1d1f] text-[24px] tracking-[-0.144px] whitespace-nowrap">
                 Most days, in season
-              </p>
+              </h3>
               <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[#6e6e73] text-[15px] w-[min-content]">
                 Wording and labels, a missing empty or error state, a rule shown in the wrong place, a date in the wrong format. Shipped as soon as the developer could, often the same day a drive needed it.
               </p>
@@ -2428,9 +2428,9 @@ export function Ch_iterate() {
               <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
                 Structural
               </p>
-              <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.2] relative shrink-0 text-[#1d1d1f] text-[24px] tracking-[-0.144px] whitespace-nowrap">
+              <h3 className="font-['SF_Pro:Semibold'] font-[590] leading-[1.2] relative shrink-0 text-[#1d1d1f] text-[24px] tracking-[-0.144px] whitespace-nowrap">
                 Between phases
-              </p>
+              </h3>
               <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[#6e6e73] text-[15px] w-[min-content]">
                 A new model or a new surface: the restyle of the web portals, the student app. These waited for a quieter stretch, so coordinators weren’t relearning a screen in the middle of a drive.
               </p>
@@ -2489,9 +2489,9 @@ export function Ch_devs() {
             </p>
           </div>
           <div className="bg-white content-stretch flex flex-col gap-[10px] items-start overflow-clip p-[28px] relative rounded-[24px] shadow-[0px_12px_40px_0px_rgba(0,0,0,0.06),0px_1px_3px_0px_rgba(0,0,0,0.05)] shrink-0 w-[500px]">
-            <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#2e42b8] text-[34px] tracking-[-0.34px] whitespace-nowrap">
+            <h3 className="font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#2e42b8] text-[34px] tracking-[-0.34px] whitespace-nowrap">
               12-hour
-            </p>
+            </h3>
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.25] relative shrink-0 text-[#1d1d1f] text-[20px] whitespace-nowrap">
               Formatting rules
             </p>
@@ -2916,9 +2916,9 @@ export function Ch_learnings() {
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhSparkle.png" />
                 </div>
               </div>
-              <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[28px] tracking-[-0.168px] whitespace-nowrap">
+              <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[28px] tracking-[-0.168px] whitespace-nowrap">
                 Keep
-              </h3>
+              </p>
             </div>
             <div className="bg-[rgba(255,255,255,0)] h-[16px] relative shrink-0 w-[10px]" />
             <div className="content-stretch flex gap-[14px] items-start py-[18px] relative shrink-0 w-[428px]">
@@ -3047,13 +3047,13 @@ export function Ch_learnings() {
 export function Ch_close() {
   return (
 <section id="chapter-close" aria-label="Close" className="cs-ch bg-white content-stretch flex flex-col gap-[28px] items-center overflow-clip pb-[80px] pt-[140px] px-[210px] relative shrink-0 w-[1440px]">
-        <div className="absolute left-[560px] size-[360px] top-[260px]">
+        <div style={{ "--fx": 560 } as CSSProperties} className="absolute left-[560px] size-[360px] top-[260px] cs-fx">
           <span className="cs-field" style={{ background: "#923ef5", opacity: 0.35, filter: "blur(calc(54 * var(--v)))" }} />
         </div>
-        <div className="absolute left-[-180px] size-[560px] top-[60px]">
+        <div style={{ "--fx": -180 } as CSSProperties} className="absolute left-[-180px] size-[560px] top-[60px] cs-fx">
           <span className="cs-field" style={{ background: "#8e8cf2", opacity: 0.45, filter: "blur(calc(84 * var(--v)))" }} />
         </div>
-        <div className="absolute left-[820px] size-[620px] top-[-160px]">
+        <div style={{ "--fx": 820 } as CSSProperties} className="absolute left-[820px] size-[620px] top-[-160px] cs-fx">
           <span className="cs-field" style={{ background: "#2e42b8", opacity: 0.25, filter: "blur(calc(93 * var(--v)))" }} />
         </div>
         <div className="content-stretch flex gap-[12px] items-center relative shrink-0">

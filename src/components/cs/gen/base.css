@@ -31,6 +31,16 @@
   letter-spacing: inherit;
 }
 
+/* Outline-only headings (chapters without a visible title). */
+.cs-gen .cs-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .cs-gen img {
   display: block;
   max-width: 100%;
@@ -191,7 +201,7 @@
     padding-bottom: clamp(56px, 12vw, 96px);
   }
 
-  .cs-gen .cs-ch [class*="w-["]:not(:is(.cs-scale, .cs-wide) *) {
+  .cs-gen .cs-ch [class*="w-["]:not(:is(.cs-scale, .cs-wide) *):not(.cs-fx) {
     max-width: 100%;
   }
 

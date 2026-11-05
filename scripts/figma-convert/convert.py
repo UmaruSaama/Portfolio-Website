@@ -335,11 +335,38 @@ for ch in chapters:
     # root div -> section with anchor
     body = re.sub(r'^<div className="', f'<section id="chapter-{cid}" aria-label="{cfg["labels"][cid]}" className="cs-ch ', body, count=1)
     body = body[: body.rfind("</div>")] + "</section>"
-    # headings: 48px statements -> h2, 28px block heads -> h3
-    body = re.sub(r'<p className="([^"]*text-\[(?:48|56|64|72|80)px\][^"]*)"([^>]*)>(.*?)</p>', r'<h2 className="\1 cs-h"\2>\3</h2>', body, flags=re.S)
-    body = re.sub(r'<p className="([^"]*text-\[(?:28|30)px\][^"]*)"([^>]*)>(.*?)</p>', r'<h3 className="\1"\2>\3</h3>', body, flags=re.S)
+    # Headings by role, not size alone: the chapter's first big real title is
+    # its h2; shorter 24-39px titles are h3. Marks, numbers and stats
+    # ("“", "None", "~3,200") stay paragraphs.
+    P = re.compile(r'<p className="([^"]*)"([^>]*)>(.*?)</p>', re.S)
+    def info(m):
+        sz = re.search(r"(?:^| )text-\[(\d+(?:\.\d+)?)px\]", m.group(1))
+        txt = re.sub(r"<[^>]+>", "", m.group(3)).strip()
+        real = len(txt) > 6 and len(re.findall(r"[A-Za-z]", txt)) >= 4
+        return (float(sz.group(1)) if sz else 0.0), txt, real
+    ps = [(m, *info(m)) for m in P.finditer(body)]
+    cands = [x for x in ps if x[3] and x[1] >= 32]
+    h2_at = None
+    if cands:  # the first big real title in the chapter (its opener)
+        h2_at = cands[0][0].start()
+    def tag_for(m, size, txt, real):
+        if m.start() == h2_at: return "h2"
+        if real and 24 <= size < 40 and len(txt) <= 90: return "h3"
+        return None
+    out, last = [], 0
+    for m, size, txt, real in ps:
+        t = tag_for(m, size, txt, real)
+        if not t: continue
+        extra = " cs-h" if t == "h2" else ""
+        out.append(body[last:m.start()])
+        out.append(f'<{t} className="{m.group(1)}{extra}"{m.group(2)}>{m.group(3)}</{t}>')
+        last = m.end()
+    out.append(body[last:])
+    body = "".join(out)
     for m in re.finditer(r'className="([^"]*)"', body):
         alltok.update(m.group(1).split())
+    if h2_at is None:  # no visible title (overview bands): give the outline one
+        body = re.sub(r'^(<section [^>]*>)', lambda m: m.group(1) + f'<h2 className="cs-sr">{cfg["labels"][cid]}</h2>', body, count=1)
     for old, new in REPLACE:
         body = body.replace(old, new)
     name = "Ch_" + re.sub(r"\W", "_", cid)
@@ -365,6 +392,10 @@ for t in sorted(alltok):
 # compact (< 1024px): readable type floors, except inside scaled figures
 comp = []
 for t in sorted(alltok):
+    m = re.fullmatch(r"w-\[(\d+(?:\.\d+)?)px\]", t)
+    if m and float(m.group(1)) >= 240:
+        # wide fixed boxes fill the column once their row is stacked
+        comp.append(f".{ROOT} :is(.flex-col, .cs-stack, :not(.flex)) > .{esc(t)}:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){{width:100%}}")
     m = re.fullmatch(r"text-\[(\d+(?:\.\d+)?)px\]", t)
     if m:
         n = float(m.group(1))

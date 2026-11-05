@@ -5,7 +5,7 @@ import type { ComponentType, CSSProperties } from "react";
 import Link from "next/link";
 export function Ch_overview() {
   return (
-<section id="chapter-overview" aria-label="Overview" className="cs-ch bg-white content-stretch flex flex-col gap-[64px] items-start overflow-clip px-[210px] py-[120px] relative shrink-0 w-[1440px]">
+<section id="chapter-overview" aria-label="Overview" className="cs-ch bg-white content-stretch flex flex-col gap-[64px] items-start overflow-clip px-[210px] py-[120px] relative shrink-0 w-[1440px]"><h2 className="cs-sr">Overview</h2>
         <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
           <div className="content-stretch flex flex-col font-['SF_Pro:Medium'] font-[510] gap-[28px] items-start leading-[normal] relative shrink-0 w-[500px] whitespace-nowrap">
             <div className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0">
@@ -92,9 +92,9 @@ export function Ch_overview() {
           <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#6e6e73] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
             The goal
           </p>
-          <h3 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#1d1d1f] text-[30px] text-center tracking-[-0.18px] w-[860px]">
+          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#1d1d1f] text-[30px] text-center tracking-[-0.18px] w-[860px]">
             Help homeowners understand their options, trust the team and request a quote, without needing to pick up the phone first.
-          </h3>
+          </p>
         </div>
         <div className="content-stretch flex gap-[12px] items-center relative shrink-0">
           <div className="bg-[#b83a31] h-[1.5px] relative shrink-0 w-[24px]" />
@@ -146,9 +146,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#b83a31] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 01
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Research and discovery
-            </p>
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[16px] w-[254px]">
               Mapped the homeowner buying journey and reviewed how local fencing sites present services, pricing and trust.
             </p>
@@ -162,9 +162,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#b83a31] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 02
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Information architecture
-            </p>
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[16px] w-[254px]">
               Organised a large, uneven service range into a structure people can browse, with reusable page templates.
             </p>
@@ -178,9 +178,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#b83a31] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 03
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               UX and interaction design
-            </p>
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[16px] w-[254px]">
               Designed the key journeys: exploring services, estimating a project online and requesting a quote.
             </p>
@@ -194,9 +194,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#b83a31] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 04
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Visual and responsive UI
-            </p>
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[16px] w-[254px]">
               Designed every page for desktop and mobile in a calm, confident visual language.
             </p>
@@ -210,9 +210,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#b83a31] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 05
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               Design system
-            </p>
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[16px] w-[254px]">
               Built tokens, styles and an atomic component library so new pages stay consistent.
             </p>
@@ -226,9 +226,9 @@ export function Ch_role() {
             <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#b83a31] text-[12px] tracking-[0.24px] whitespace-nowrap">
               Responsibility 06
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
+            <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.15] relative shrink-0 text-[#1d1d1f] text-[26px] tracking-[-0.208px] w-[254px]">
               QA and developer handoff
-            </p>
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[16px] w-[254px]">
               Reviewed the file the way a developer would, closed the gaps and prepared it for the build.
             </p>
@@ -1140,9 +1140,9 @@ export function Ch_learnings() {
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/stag/a/imgPhSparkle.png" />
                 </div>
               </div>
-              <h3 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[28px] tracking-[-0.168px] whitespace-nowrap">
+              <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[28px] tracking-[-0.168px] whitespace-nowrap">
                 Design
-              </h3>
+              </p>
             </div>
             <div className="bg-[rgba(255,255,255,0)] h-[16px] relative shrink-0 w-[10px]" />
             <div className="content-stretch flex gap-[14px] items-start py-[18px] relative shrink-0 w-[428px]">
@@ -1271,13 +1271,13 @@ export function Ch_learnings() {
 export function Ch_close() {
   return (
 <section id="chapter-close" aria-label="Close" className="cs-ch bg-[#fbfbfd] content-stretch flex flex-col gap-[28px] items-center overflow-clip pb-[80px] pt-[140px] px-[210px] relative shrink-0 w-[1440px]">
-        <div className="absolute left-[560px] size-[360px] top-[260px]">
+        <div style={{ "--fx": 560 } as CSSProperties} className="absolute left-[560px] size-[360px] top-[260px] cs-fx">
           <span className="cs-field" style={{ background: "#f5c542", opacity: 0.35, filter: "blur(calc(54 * var(--v)))" }} />
         </div>
-        <div className="absolute left-[-180px] size-[560px] top-[60px]">
+        <div style={{ "--fx": -180 } as CSSProperties} className="absolute left-[-180px] size-[560px] top-[60px] cs-fx">
           <span className="cs-field" style={{ background: "#f2a68e", opacity: 0.45, filter: "blur(calc(84 * var(--v)))" }} />
         </div>
-        <div className="absolute left-[820px] size-[620px] top-[-160px]">
+        <div style={{ "--fx": 820 } as CSSProperties} className="absolute left-[820px] size-[620px] top-[-160px] cs-fx">
           <span className="cs-field" style={{ background: "#b83a31", opacity: 0.25, filter: "blur(calc(93 * var(--v)))" }} />
         </div>
         <div className="content-stretch flex gap-[12px] items-center relative shrink-0">

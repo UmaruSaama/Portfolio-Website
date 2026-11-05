@@ -204,7 +204,7 @@ export function Ch_act_1() {
 
 export function Ch_snapshot() {
   return (
-<section id="chapter-snapshot" aria-label="Snapshot" className="cs-ch content-stretch flex flex-col gap-[56px] items-start overflow-clip px-[200px] py-[144px] relative shrink-0 w-[1440px]">
+<section id="chapter-snapshot" aria-label="Snapshot" className="cs-ch content-stretch flex flex-col gap-[56px] items-start overflow-clip px-[200px] py-[144px] relative shrink-0 w-[1440px]"><h2 className="cs-sr">Snapshot</h2>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <div className="content-stretch flex flex-col gap-[10px] items-start overflow-clip relative shrink-0 w-[320px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#5c5966] text-[13px] tracking-[1.3px] uppercase whitespace-nowrap">
@@ -231,9 +231,9 @@ export function Ch_snapshot() {
             </p>
           </div>
         </div>
-        <h3 className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.4] relative shrink-0 text-[#141318] text-[28px] tracking-[-0.14px] w-[900px]">
+        <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.4] relative shrink-0 text-[#141318] text-[28px] tracking-[-0.14px] w-[900px]">
           Every year a new student team rebuilds the Alcheringa app. In ’25 I kept everything ’24 shipped and gave the app a game’s logic and an 8-bit skin, so showing up became playing.
-        </h3>
+        </p>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <div className="border-[rgba(20,19,24,0.9)] border-solid border-t content-stretch flex flex-col gap-[14px] items-start overflow-clip pt-[20px] relative shrink-0 w-[320px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[13px] tracking-[1.3px] uppercase whitespace-nowrap">
@@ -303,9 +303,9 @@ export function Ch_context() {
               Context
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px] cs-h">
             A four-day festival, rebuilt as an app every year by a new team.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <div className="border-[rgba(20,19,24,0.9)] border-solid border-t content-stretch flex flex-col gap-[14px] items-start overflow-clip pt-[20px] relative shrink-0 w-[320px]">
@@ -700,18 +700,18 @@ export function Ch_problem() {
               The problem
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px] cs-h">
             ’24 fixed finding things: search, filters, liked events, directions. People still opened the app only when they needed something, then closed it.
-          </p>
+          </h2>
         </div>
         <div className="content-stretch flex gap-[64px] items-start overflow-clip relative shrink-0 cs-stack">
           <div className="content-stretch flex flex-col gap-[20px] items-start overflow-clip relative shrink-0 w-[400px]">
-            <h2 className="[word-break:break-word] font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[72px] whitespace-nowrap cs-h">
+            <p className="[word-break:break-word] font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[72px] whitespace-nowrap">
               “
-            </h2>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.25] relative shrink-0 text-[#141318] text-[34px] tracking-[-0.34px] w-[400px]">
-              I was so confused about what event to attend.
             </p>
+            <h3 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.25] relative shrink-0 text-[#141318] text-[34px] tracking-[-0.34px] w-[400px]">
+              I was so confused about what event to attend.
+            </h3>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[normal] relative shrink-0 text-[#5c5966] text-[14px] whitespace-nowrap">
               Attendee · ’24 interviews
             </p>
@@ -801,9 +801,9 @@ export function Ch_attendees() {
               The attendees
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px] cs-h">
             Two attendees, one need: get through four days without missing the thing they came for.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -853,9 +853,9 @@ export function Ch_attendees() {
             </div>
           </div>
           <div className="[word-break:break-word] content-stretch flex flex-col gap-[28px] items-start overflow-clip relative shrink-0 w-[632px]">
-            <p className="font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#141318] text-[26px] tracking-[-0.13px] w-[632px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#141318] text-[26px] tracking-[-0.13px] w-[632px]">
               “I didn’t know the event got delayed, so I missed it.”
-            </p>
+            </h3>
             <div className="content-stretch flex gap-[32px] items-start overflow-clip relative shrink-0 cs-stack">
               <div className="border-[rgba(20,19,24,0.9)] border-solid border-t content-stretch flex flex-col gap-[12px] items-start overflow-clip pt-[16px] relative shrink-0 w-[300px]">
                 <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[13px] tracking-[1.3px] uppercase whitespace-nowrap">
@@ -938,9 +938,9 @@ export function Ch_attendees() {
             </div>
           </div>
           <div className="[word-break:break-word] content-stretch flex flex-col gap-[28px] items-start overflow-clip relative shrink-0 w-[632px]">
-            <p className="font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#141318] text-[26px] tracking-[-0.13px] w-[632px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#141318] text-[26px] tracking-[-0.13px] w-[632px]">
               “I am so excited but do not know about all the events happening.”
-            </p>
+            </h3>
             <div className="content-stretch flex gap-[32px] items-start overflow-clip relative shrink-0 cs-stack">
               <div className="border-[rgba(20,19,24,0.9)] border-solid border-t content-stretch flex flex-col gap-[12px] items-start overflow-clip pt-[16px] relative shrink-0 w-[300px]">
                 <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[13px] tracking-[1.3px] uppercase whitespace-nowrap">
@@ -1000,9 +1000,9 @@ export function Ch_learned() {
               Research
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px] cs-h">
             Attendees don’t want more information. They want the next hour, the way there, and a reason to come back.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -1078,9 +1078,9 @@ export function Ch_learned() {
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[16px] items-start overflow-clip relative shrink-0 cs-stack">
           <div className="bg-[#141318] content-stretch flex flex-col gap-[12px] items-start overflow-clip px-[28px] py-[32px] relative shrink-0 w-[336px]">
-            <h2 className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[48px] whitespace-nowrap cs-h">
+            <p className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[48px] whitespace-nowrap">
               None
-            </h2>
+            </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.55] relative shrink-0 text-[15px] text-[rgba(244,241,234,0.85)] w-[280px]">
               of the previous editions gave attendees a reason to open the app between events.
             </p>
@@ -1118,9 +1118,9 @@ export function Ch_learned() {
               Insights
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.2] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[760px]">
+          <h3 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.2] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[760px]">
             Three insights, and one gamification system that answers all of them.
-          </p>
+          </h3>
           <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[18px] text-[rgba(20,19,24,0.8)] w-[760px]">
             I clustered findings from the ’23 and ’24 interviews and the ’24 reviews by what they would change. Three clusters held almost everything.
           </p>
@@ -1447,9 +1447,9 @@ export function Ch_changed() {
               What changed and why
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px] cs-h">
             The fest as a game: showing up is the score.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -1584,9 +1584,9 @@ export function Ch_changed() {
               What changed in ’25
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.2] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[760px]">
+          <h3 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.2] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[760px]">
             Three changes, one rule. The 8-bit system carries all of them.
-          </p>
+          </h3>
           <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip pb-[8px] relative shrink-0 cs-stack">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
               The rule
@@ -1596,9 +1596,9 @@ export function Ch_changed() {
             </p>
           </div>
           <div className="[word-break:break-word] border-[#dcd7cc] border-solid border-t content-stretch flex gap-[32px] items-start overflow-clip py-[28px] relative shrink-0 w-[1040px] cs-stack">
-            <h3 className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[28px] w-[56px]">
+            <p className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[28px] w-[56px]">
               01
-            </h3>
+            </p>
             <div className="content-stretch flex flex-col gap-[10px] items-start overflow-clip relative shrink-0 w-[640px]">
               <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[22px] w-[640px]">
                 Activity by day, not a list
@@ -1617,9 +1617,9 @@ export function Ch_changed() {
             </div>
           </div>
           <div className="[word-break:break-word] border-[#dcd7cc] border-solid border-t content-stretch flex gap-[32px] items-start overflow-clip py-[28px] relative shrink-0 w-[1040px] cs-stack">
-            <h3 className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[28px] w-[56px]">
+            <p className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[28px] w-[56px]">
               02
-            </h3>
+            </p>
             <div className="content-stretch flex flex-col gap-[10px] items-start overflow-clip relative shrink-0 w-[640px]">
               <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[22px] w-[640px]">
                 A map you can read, directions you can follow
@@ -1638,9 +1638,9 @@ export function Ch_changed() {
             </div>
           </div>
           <div className="[word-break:break-word] border-[#dcd7cc] border-solid border-t content-stretch flex gap-[32px] items-start overflow-clip py-[28px] relative shrink-0 w-[1040px] cs-stack">
-            <h3 className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[28px] w-[56px]">
+            <p className="font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[28px] w-[56px]">
               03
-            </h3>
+            </p>
             <div className="content-stretch flex flex-col gap-[10px] items-start overflow-clip relative shrink-0 w-[640px]">
               <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[22px] w-[640px]">
                 XP for showing up
@@ -1681,9 +1681,9 @@ export function Ch_shaping() {
               Shaping the app
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[820px] cs-h">
             Same structure as ’24 underneath, so nobody had to relearn the app.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -2091,9 +2091,9 @@ export function Ch_experience() {
               The experience
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px] cs-h">
             Five moments, not five features: before the fest, the day, the way there, the night, and what you keep.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -2117,9 +2117,9 @@ export function Ch_experience() {
             <p className="font-['Pixelify_Sans:SemiBold'] font-semibold relative shrink-0 text-[#ff375f] text-[14px] tracking-[1.4px] whitespace-nowrap">
               STEP 1 OF 5
             </p>
-            <p className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
               Have a reason to open it before Day 1
-            </p>
+            </h3>
           </div>
           <div className="bg-[#141318] h-[640px] overflow-clip relative shrink-0 w-[1040px]">
             <div style={{ "--cs-w": 1020 } as CSSProperties} className="absolute bg-[#141318] h-[640px] left-[10px] overflow-clip rounded-[16px] top-0 w-[1020px] cs-scale">
@@ -2304,9 +2304,9 @@ export function Ch_experience() {
             <p className="font-['Pixelify_Sans:SemiBold'] font-semibold relative shrink-0 text-[#ff375f] text-[14px] tracking-[1.4px] whitespace-nowrap">
               STEP 2 OF 5
             </p>
-            <p className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
               Choose the day, then the event
-            </p>
+            </h3>
           </div>
           <div className="bg-[#141318] h-[640px] overflow-clip relative shrink-0 w-[1040px]">
             <div style={{ "--cs-w": 1020 } as CSSProperties} className="absolute bg-[#141318] h-[640px] left-[10px] overflow-clip rounded-[16px] top-0 w-[1020px] cs-scale">
@@ -2490,9 +2490,9 @@ export function Ch_experience() {
             <p className="font-['Pixelify_Sans:SemiBold'] font-semibold relative shrink-0 text-[#ff375f] text-[14px] tracking-[1.4px] whitespace-nowrap">
               STEP 3 OF 5
             </p>
-            <p className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
               Get to the venue
-            </p>
+            </h3>
           </div>
           <div className="bg-[#141318] h-[640px] overflow-clip relative shrink-0 w-[1040px]">
             <div style={{ "--cs-w": 1020 } as CSSProperties} className="absolute bg-[#141318] h-[640px] left-[10px] overflow-clip rounded-[16px] top-0 w-[1020px] cs-scale">
@@ -2675,9 +2675,9 @@ export function Ch_experience() {
             <p className="font-['Pixelify_Sans:SemiBold'] font-semibold relative shrink-0 text-[#ff375f] text-[14px] tracking-[1.4px] whitespace-nowrap">
               STEP 4 OF 5
             </p>
-            <p className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
               The night: pass, gate, level up
-            </p>
+            </h3>
           </div>
           <div className="bg-[#141318] h-[640px] overflow-clip relative shrink-0 w-[1040px]">
             <div style={{ "--cs-w": 1020 } as CSSProperties} className="absolute bg-[#141318] h-[640px] left-[10px] overflow-clip rounded-[16px] top-0 w-[1020px] cs-scale">
@@ -2852,9 +2852,9 @@ export function Ch_experience() {
             <p className="font-['Pixelify_Sans:SemiBold'] font-semibold relative shrink-0 text-[#ff375f] text-[14px] tracking-[1.4px] whitespace-nowrap">
               STEP 5 OF 5
             </p>
-            <p className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
+            <h3 className="font-['SF_Pro:Medium'] font-[510] relative shrink-0 text-[#141318] text-[36px] tracking-[-0.36px] w-[900px]">
               What you keep
-            </p>
+            </h3>
           </div>
           <div className="bg-[#141318] h-[640px] overflow-clip relative shrink-0 w-[1040px]">
             <div style={{ "--cs-w": 1020 } as CSSProperties} className="absolute bg-[#141318] h-[640px] left-[10px] overflow-clip rounded-[16px] top-0 w-[1020px] cs-scale">
@@ -3261,9 +3261,9 @@ export function Ch_system() {
               The system underneath
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px] cs-h">
             8-bit, but legible: two pixel typefaces, one job each.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -3290,9 +3290,9 @@ export function Ch_system() {
                 <p className="font-['Pixelify_Sans:Regular'] font-normal leading-[normal] relative shrink-0 text-[#ff375f] text-[12px] tracking-[1.2px] w-full">
                   BRICK PIXEL · DISPLAY
                 </p>
-                <h2 className="font-['Brick_Pixel:Regular'] leading-[normal] not-italic relative shrink-0 text-[#f4f1ea] text-[56px] w-full cs-h">
+                <p className="font-['Brick_Pixel:Regular'] leading-[normal] not-italic relative shrink-0 text-[#f4f1ea] text-[56px] w-full">
                   LEVEL UP
-                </h2>
+                </p>
                 <div className="font-['Brick_Pixel:Regular'] leading-[0] not-italic relative shrink-0 text-[20px] text-[rgba(244,241,234,0.85)] w-full">
                   <p className="leading-[1.4] mb-0">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
                   <p className="leading-[1.4]">LVL 7 · 09 MAR · 2026</p>
@@ -3807,9 +3807,9 @@ export function Ch_next() {
               What’s next
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px] cs-h">
             How it ended, and what I’d hand on.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -3874,9 +3874,9 @@ export function Ch_reflection() {
               Reflection
             </p>
           </div>
-          <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px]">
+          <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.16] relative shrink-0 text-[#141318] text-[44px] tracking-[-0.66px] w-[860px] cs-h">
             Skinning a utility as a game is the easy part. Making the game serve the utility is the work.
-          </p>
+          </h2>
         </div>
         <div className="[word-break:break-word] content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0 cs-stack">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#141318] text-[18px] w-[240px]">
@@ -3897,9 +3897,9 @@ export function Ch_close() {
         <p className="[word-break:break-word] font-['Pixelify_Sans:SemiBold'] font-semibold leading-[normal] relative shrink-0 text-[#ff375f] text-[16px] tracking-[2.56px] whitespace-nowrap">
           THANKS FOR PLAYING
         </p>
-        <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#f4f1ea] text-[32px] text-center tracking-[-0.16px] w-[860px]">
+        <h2 className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.35] relative shrink-0 text-[#f4f1ea] text-[32px] text-center tracking-[-0.16px] w-[860px] cs-h">
           Thanks for playing through to the end. The full research, the appendix and the handover notes for the ’26 team are one link away.
-        </p>
+        </h2>
         <div style={{ "--fx": 0 } as CSSProperties} className="absolute h-[8px] left-0 overflow-clip top-[644px] w-[1440px] cs-fx">
           <div className="absolute bg-[rgba(255,55,95,0.9)] left-0 size-[4px] top-0" />
           <div className="absolute bg-[rgba(255,55,95,0.9)] left-[8px] size-[4px] top-[4px]" />

@@ -299,4 +299,30 @@
 .cs-gen :is(.cs-scale, .cs-wide) .text-\[48px\]{font-size:calc(48 * var(--v))}
 .cs-gen .text-\[56px\]{font-size:max(calc(56 * var(--v)), 31.8px)}
 .cs-gen :is(.cs-scale, .cs-wide) .text-\[56px\]{font-size:calc(56 * var(--v))}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[1020px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[1440px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[252px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[254px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[260px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[276px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[288px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[296px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[300px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[310px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[316px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[340px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[394px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[408px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[428px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[430px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[436px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[460px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[500px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[760px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[780px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[816px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[860px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[900px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[940px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[956px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
 }
