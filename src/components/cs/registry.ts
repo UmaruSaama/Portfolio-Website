@@ -2,6 +2,10 @@ import type { ComponentType } from "react";
 import type { AppendixSection } from "./appendix";
 import { immerlingoChapters } from "./immerlingo";
 import { alcherChapters } from "./alcher";
+import { ccdChapters } from "./ccd";
+import { CcdBody } from "./ccd/Body";
+import { CcdBackdrop } from "./ccd/Backdrop";
+import ccdTheme from "./ccd/theme.module.css";
 import { AlcherBody } from "./alcher/Body";
 import { AlcherSky } from "./alcher/Story";
 import alcherTheme from "./alcher/theme.module.css";
@@ -11,6 +15,7 @@ import { ImmerlingoAppendix, immerlingoAppendixSections } from "./immerlingo/App
 export const chapterComponents: Record<string, Record<string, ComponentType>> = {
   immerlingo: immerlingoChapters,
   "alcheringa-25": alcherChapters,
+  "ccd-placements": ccdChapters,
 };
 
 /**
@@ -24,9 +29,12 @@ export const caseLayouts: Record<
     Body?: ComponentType<{ chapters: Record<string, ComponentType> }>;
     /** Replaces the hero's pink glow (keeps the data-glow morph hook). */
     Backdrop?: ComponentType;
+    /** Extra class on the hero section (restyles it per project). */
+    heroClass?: string;
   }
 > = {
   "alcheringa-25": { theme: alcherTheme.theme, Body: AlcherBody, Backdrop: AlcherSky },
+  "ccd-placements": { theme: ccdTheme.theme, Body: CcdBody, Backdrop: CcdBackdrop, heroClass: ccdTheme.hero },
 };
 
 /** Appendix (opened from "→ Appendix X" pointers) per project slug. */

@@ -17,16 +17,19 @@ export function CaseStudyHero({
   project,
   back,
   Backdrop,
+  className,
 }: {
   project: Project;
   back: ReactNode;
   /** Project backdrop in place of the pink glow (must carry data-glow). */
   Backdrop?: ComponentType;
+  /** Project hero restyle (theme module class). */
+  className?: string;
 }) {
   const img = project.image;
   return (
     <section
-      className={`${styles.hero} ${img ? styles.heroImage : ""}`}
+      className={`${styles.hero} ${img ? styles.heroImage : ""} ${className ?? ""}`}
       id={chapterAnchor("intro")}
       aria-label="Intro"
     >

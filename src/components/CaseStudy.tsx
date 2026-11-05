@@ -32,7 +32,7 @@ export function CaseStudy({
 
   return (
     <div className={`${styles.page} ${layout?.theme ?? ""}`}>
-      <CaseStudyHero project={project} back={back} Backdrop={layout?.Backdrop} />
+      <CaseStudyHero project={project} back={back} Backdrop={layout?.Backdrop} className={layout?.heroClass} />
 
       <div className={styles.content}>
         {Body ? (

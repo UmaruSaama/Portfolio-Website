@@ -1,0 +1,128 @@
+{
+ "raster": "^(Browser card|Phone · \\d.*)$",
+ "assetDir": "/cs/ccd/a",
+ "rasterDir": "/cs/ccd/r",
+ "svgAssets": [
+  "imgRecruiter",
+  "imgCoordinator",
+  "imgStudent"
+ ],
+ "fields": {
+  "imgColourField3": [
+   "#2e42b8",
+   0.35,
+   120,
+   520
+  ],
+  "imgColourField4": [
+   "#8e8cf2",
+   0.5,
+   120,
+   460
+  ],
+  "imgColourField5": [
+   "#923ef5",
+   0.35,
+   120,
+   320
+  ],
+  "imgColourField6": [
+   "#923ef5",
+   0.35,
+   108,
+   360
+  ],
+  "imgColourField7": [
+   "#8e8cf2",
+   0.45,
+   168,
+   560
+  ],
+  "imgColourField8": [
+   "#2e42b8",
+   0.25,
+   186,
+   620
+  ]
+ },
+ "lines": {
+  "imgLine": "repeating-linear-gradient(90deg, rgba(46,66,184,.6) 0 calc(6 * var(--v)), transparent 0 calc(12 * var(--v)))",
+  "imgLine1": "#d2d2d7",
+  "imgLine2": "#2e42b8",
+  "imgLine3": "#1d1d1f",
+  "imgLine4": "repeating-linear-gradient(90deg, #86868b 0 calc(4 * var(--v)), transparent 0 calc(8 * var(--v)))"
+ },
+ "chapters": {
+  "834:33856": "overview",
+  "834:33898": "role",
+  "834:36738": "season",
+  "834:36739": "job",
+  "834:33951": "problem",
+  "834:36740": "decisions",
+  "834:34101": "screens",
+  "834:36741": "iterate",
+  "834:36742": "devs",
+  "834:36595": "challenges",
+  "834:36743": "evidence",
+  "834:36656": "learnings",
+  "834:36720": "close"
+ },
+ "labels": {
+  "overview": "Overview",
+  "role": "My role in the loop",
+  "season": "How a season runs",
+  "job": "The life of one job",
+  "problem": "Problem and principles",
+  "decisions": "Key decisions",
+  "screens": "Student-side screens",
+  "iterate": "Ship and iterate",
+  "devs": "Working with developers and CCD",
+  "challenges": "Challenges",
+  "evidence": "Impact and evidence",
+  "learnings": "Learnings",
+  "close": "Close"
+ },
+ "drop": [
+  "841:34036",
+  "841:34014",
+  "841:34018"
+ ],
+ "addClass": {
+  "834:33909": "cs-shelf",
+  "834:33946": "cs-shelf-ctl",
+  "835:33875": "cs-wide",
+  "837:33885": "cs-wide",
+  "837:33957": "cs-wide",
+  "839:33889": "cs-wide",
+  "839:34046": "cs-wide",
+  "841:33892": "cs-wide",
+  "841:33976": "cs-wide",
+  "834:36606": "cs-wide",
+  "834:35078": "cs-wide",
+  "834:35366": "cs-wide"
+ },
+ "tagAs": {
+  "834:33947": [
+   "button",
+   "type=\"button\" aria-label=\"Previous responsibilities\" data-shelf=\"prev\""
+  ],
+  "834:33949": [
+   "button",
+   "type=\"button\" aria-label=\"Next responsibilities\" data-shelf=\"next\""
+  ]
+ },
+ "replace": [
+  [
+   ", one scale figure, and quotes from people who used it.",
+   " and one scale figure."
+  ],
+  [
+   "<p className=\"relative shrink-0 text-[#2e42b8]\">\n            Next project: Stag Fencing ›\n          </p>",
+   "<Link href=\"/\" className=\"relative shrink-0 text-[#2e42b8] cs-link\">\n            All projects ›\n          </Link>"
+  ],
+  [
+   "<p className=\"relative shrink-0 text-[#6e6e73]\">\n            Back to top ↑\n          </p>",
+   "<a href=\"#chapter-intro\" className=\"relative shrink-0 text-[#6e6e73] cs-link\">\n            Back to top ↑\n          </a>"
+  ]
+ ]
+}

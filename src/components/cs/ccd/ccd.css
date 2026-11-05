@@ -1,0 +1,213 @@
+/*
+  CCD case study: base for the generated chapters (Chapters.tsx + tokens.css).
+  Scoped to .cs-ccd. The generated classes are Figma's Tailwind names
+  compiled to plain CSS; this file is the "preflight" they assume, the
+  full-bleed bands, the asset helpers and the compact (< 1024px) reflow.
+*/
+.cs-ccd {
+  --v: min(1px, calc(100vw / 1440));
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  font-family: var(--cs-sans);
+  font-stretch: 100%;
+  font-weight: 400;
+  color: #1d1d1f;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cs-ccd *,
+.cs-ccd *::before,
+.cs-ccd *::after {
+  box-sizing: border-box;
+  border: 0 solid;
+  margin: 0;
+}
+
+.cs-ccd p,
+.cs-ccd h2,
+.cs-ccd h3 {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.cs-ccd img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Chapter bands: full-bleed, content column centred at any width. */
+.cs-ccd .cs-ch.cs-ch {
+  width: 100%;
+  padding-left: max(calc(210 * var(--v)), calc(50% - 510 * var(--v)));
+  padding-right: max(calc(210 * var(--v)), calc(50% - 510 * var(--v)));
+  scroll-margin-top: 0;
+}
+
+.cs-ccd .cs-field {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cs-ccd .cs-line {
+  position: absolute;
+  inset: 0;
+}
+
+/* Screens were exported without their drop shadows (the export grain). */
+.cs-ccd .cs-raster {
+  height: auto;
+  max-width: none;
+}
+
+.cs-ccd .cs-raster-browser {
+  border-radius: calc(24 * var(--v));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 24px 80px rgba(0, 0, 0, 0.08);
+}
+
+.cs-ccd .cs-raster-phone {
+  border-radius: calc(34 * var(--v));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 18px 48px rgba(13, 18, 51, 0.14);
+}
+
+/* "Shelf · bleeds right": scrolls, and runs to the viewport's right edge. */
+.cs-ccd .cs-shelf {
+  --bleed: max(calc(210 * var(--v)), calc(50vw - 510 * var(--v)));
+  width: calc(100% + var(--bleed));
+  margin-right: calc(-1 * var(--bleed));
+  padding-right: var(--bleed);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.cs-ccd .cs-shelf::-webkit-scrollbar {
+  display: none;
+}
+
+.cs-ccd .cs-shelf > * {
+  scroll-snap-align: start;
+}
+
+.cs-ccd .cs-shelf-ctl button {
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.cs-ccd .cs-shelf-ctl button:hover:not(:disabled) {
+  background-color: #dcdce2;
+}
+
+.cs-ccd .cs-shelf-ctl button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.cs-ccd .cs-shelf-ctl button:focus-visible,
+.cs-ccd .cs-link:focus-visible {
+  outline: 2px solid #2e42b8;
+  outline-offset: 3px;
+}
+
+.cs-ccd .cs-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cs-ccd .cs-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/*
+  Compact (< 1024px): wide rows stack, fixed widths cap at the column,
+  absolute-positioned figures (.cs-scale) shrink as one piece.
+*/
+@media (max-width: 1023px) {
+  .cs-ccd {
+    --v: min(1px, calc(100vw / 760));
+    --gutter: clamp(20px, 5vw, 48px);
+  }
+
+  .cs-ccd .cs-ch.cs-ch {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+    padding-top: clamp(56px, 12vw, 96px);
+    padding-bottom: clamp(56px, 12vw, 96px);
+  }
+
+  .cs-ccd .cs-ch [class*="w-["]:not(:is(.cs-scale, .cs-wide) *) {
+    max-width: 100%;
+  }
+
+  .cs-ccd .cs-ch :is(p, h2, h3)[class*="w-["]:not(:is(.cs-scale, .cs-wide) *) {
+    width: auto;
+  }
+
+  .cs-ccd .cs-ch .whitespace-nowrap:not(:is(.cs-scale, .cs-wide) *) {
+    white-space: normal;
+  }
+
+  .cs-ccd .cs-stack.cs-stack:not(.cs-wide *) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cs-ccd .cs-stack:not(.cs-wide *) > * {
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .cs-ccd .cs-scale.cs-scale {
+    --v: min(1px, calc((100vw - 2 * var(--gutter)) / var(--cs-w)));
+  }
+
+  /* Tables and diagrams keep their desktop layout at 0.8 scale and
+     scroll sideways inside the column's full bleed. */
+  .cs-ccd .cs-ch .cs-wide.cs-wide {
+    --v: 0.8px;
+    width: calc(100% + 2 * var(--gutter));
+    max-width: none;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+  }
+
+  .cs-ccd .cs-ch .cs-wide.cs-wide > * {
+    width: calc(1020 * var(--v));
+    max-width: none;
+    flex: none;
+  }
+
+  /* Text shrinks and wraps inside rows instead of running past them. */
+  .cs-ccd .cs-ch :is(p, h2, h3):not(:is(.cs-scale, .cs-wide) *) {
+    flex-shrink: 1;
+    min-width: min-content; /* wrap at spaces, never inside a word */
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* On phones the shelf is a plain stack: no scroller, no arrows. */
+  .cs-ccd .cs-shelf.cs-shelf {
+    width: 100%;
+    margin-right: 0;
+    padding-right: 0;
+    overflow: visible;
+  }
+
+  .cs-ccd .cs-shelf.cs-shelf > * {
+    height: auto;
+  }
+
+  .cs-ccd .cs-shelf-ctl {
+    display: none;
+  }
+}

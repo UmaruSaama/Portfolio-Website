@@ -1,0 +1,127 @@
+/*
+  CCD Placements case-study theme (Figma 834:33508, light). Applied to the
+  case-study .page; remaps the shared tokens and restyles the hero to the
+  Figma "01 · Hero" (copy at y 120, 72px title, showcase 1020 wide).
+*/
+.theme.theme {
+  --cs-page-bg: #fbfbfd;
+  --cs-text-primary: #1d1d1f;
+  --cs-text-secondary: #6e6e73;
+  --cs-text-tertiary: #86868b;
+  --accent: #2e42b8;
+  --cs-end-pad: 0;
+  --cs-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter Variable", system-ui, sans-serif;
+  overflow-x: clip; /* chapter bands are full-bleed */
+  color: #1d1d1f;
+}
+
+/* The pinned back action sits on a light page here. */
+.theme.theme [data-bar] > * {
+  color: #1d1d1f;
+}
+
+.theme.theme [data-bar] > * > span {
+  background: rgba(29, 29, 31, 0.06);
+  color: #1d1d1f;
+  backdrop-filter: blur(12px);
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.field {
+  position: absolute;
+  left: calc(50% + (var(--x) - 720) * var(--v));
+  top: calc(var(--y) * var(--v));
+  width: calc(var(--s) * var(--v));
+  height: calc(var(--s) * var(--v));
+  border-radius: 50%;
+  background: var(--c);
+  opacity: var(--o);
+  filter: blur(calc(var(--b) * var(--v)));
+}
+
+/* Hero (the class is applied to CaseStudyHero's section) */
+.hero.hero {
+  /* Figma inks (the morph tweens --hero-ink* to the same values) */
+  --ink: var(--hero-ink, #1d1d1f);
+  --ink-2: var(--hero-ink-2, #6e6e73);
+  --ink-tags: var(--hero-ink-tags, #6e6e73);
+  height: auto;
+  min-height: 0;
+  padding-bottom: calc(120 * var(--v));
+}
+
+.hero.hero [data-copy] {
+  width: calc(1020 * var(--v));
+  padding-top: calc(120 * var(--v));
+  font-family: var(--cs-sans);
+  font-stretch: 100%;
+}
+
+.hero.hero [data-copy] ul {
+  font-size: max(calc(13 * var(--v)), 10px);
+  font-weight: 510;
+  letter-spacing: 0.12em;
+}
+
+.hero.hero [data-copy] ul li {
+  height: auto;
+  padding: 0 calc(12 * var(--v));
+}
+
+.hero.hero [data-copy] h1 {
+  margin-top: calc(28 * var(--v));
+  padding: 0;
+  font-size: calc(72 * var(--v));
+  font-weight: 590;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+.hero.hero [data-copy] p {
+  width: calc(860 * var(--v));
+  margin-top: calc(24 * var(--v));
+  font-size: max(calc(20 * var(--v)), 15px);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* showcase.webp: 1164 × 912, browser card at (40, 28) inside it */
+.hero.hero [data-device] {
+  width: calc(1164 * var(--v));
+  max-width: none;
+  margin: calc(36 * var(--v)) 0 0 calc(50% - 550 * var(--v));
+}
+
+@media (max-width: 1023px) {
+  .hero.hero {
+    padding-bottom: clamp(40px, 6vw, 72px);
+  }
+
+  .hero.hero [data-copy] {
+    width: auto;
+    padding-top: clamp(16px, 4vw, 40px);
+  }
+
+  .hero.hero [data-copy] h1 {
+    font-size: clamp(32px, calc(3.6vw + 18px), 52px);
+  }
+
+  .hero.hero [data-copy] p {
+    width: auto;
+    max-width: 600px;
+    font-size: clamp(15px, calc(0.5vw + 13px), 18px);
+    line-height: 1.45;
+  }
+
+  .hero.hero [data-device] {
+    --w: calc((100vw - 2 * var(--hero-gutter)) * 1.141);
+    width: var(--w);
+    margin: clamp(24px, 5vw, 48px) 0 0 calc(var(--hero-gutter) - var(--w) * 0.0344);
+  }
+}
