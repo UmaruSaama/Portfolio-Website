@@ -520,7 +520,7 @@ export function Ch09System() {
         </div>
       </Figure>
 
-      <ChapterEnd>None of this has met a real learner yet. Here&apos;s how it would.</ChapterEnd>
+      <ChapterEnd>Then I put it in front of twelve people.</ChapterEnd>
     </Chapter>
   );
 }

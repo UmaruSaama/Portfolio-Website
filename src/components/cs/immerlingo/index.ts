@@ -7,6 +7,7 @@ import { Ch06Principles } from "./Ch06Principles";
 import { Ch07Loop } from "./Ch07Loop";
 import { Ch08Experience } from "./Ch08Experience";
 import { Ch09System } from "./Ch09System";
+import { Ch10Testing } from "./Ch10Testing";
 import { Ch10Next } from "./Ch10Next";
 import { Ch11Reflection } from "./Ch11Reflection";
 import { Ch12Close } from "./Ch12Close";
@@ -24,6 +25,7 @@ export const immerlingoChapters: Record<string, ComponentType> = {
   loop: Ch07Loop,
   experience: Ch08Experience,
   system: Ch09System,
+  testing: Ch10Testing,
   next: Ch10Next,
   reflection: Ch11Reflection,
   close: Ch12Close,

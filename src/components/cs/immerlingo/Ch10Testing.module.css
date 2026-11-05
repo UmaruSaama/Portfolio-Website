@@ -1,0 +1,264 @@
+/* 10 · Putting it in front of people (Figma dev ready 856:36228) */
+
+.stats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  gap: calc(16 * var(--v));
+}
+
+.stat {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: calc(32 * var(--v) - 1px);
+}
+
+.statValue {
+  margin: 0;
+  font-size: clamp(30px, 2.8vw, 40px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: var(--cs-text-primary);
+}
+
+/* H2 left (500), content right (501), 19 apart: same split as What's next */
+.split {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(19 * var(--v));
+}
+
+.splitTitle {
+  flex: 0 1 calc(500 * var(--v));
+  min-width: 0;
+}
+
+.splitBody {
+  flex: 0 1 calc(501 * var(--v));
+  min-width: 0;
+}
+
+.groups {
+  flex: 0 1 calc(501 * var(--v));
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--v));
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: calc(32 * var(--v) - 1px);
+}
+
+.groupLabel {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-text-secondary);
+}
+
+/* ---------- findings table ---------- */
+.tableStage {
+  padding: calc(24 * var(--v)) calc(32 * var(--v));
+  background: #0a0a0a;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 8px 0 14px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-text-secondary);
+  vertical-align: bottom;
+}
+
+.table th + th,
+.table td + td {
+  padding-left: calc(16 * var(--v));
+}
+
+.colN {
+  width: calc(40 * var(--v));
+}
+
+.table th.colResponse {
+  width: 48.5%;
+  color: var(--cs-pink);
+}
+
+.table td {
+  padding: 20px 0;
+  border-top: 1px solid var(--cs-white-08);
+  vertical-align: top;
+}
+
+.n {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--cs-pink);
+}
+
+.findingTitle {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-text-primary);
+}
+
+.findingBody {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--cs-text-secondary);
+}
+
+.status {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.status[data-status="Changed"] {
+  background: rgb(119 199 175 / 0.12);
+  color: #77c7af;
+}
+.status[data-status="Recommended"] {
+  background: rgb(255 55 95 / 0.12);
+  color: #ff6f8a;
+}
+.status[data-status="Held"] {
+  background: var(--cs-white-08);
+  color: rgb(255 255 255 / 0.8);
+}
+.status[data-status="Open"] {
+  background: rgb(224 191 112 / 0.12);
+  color: #e0bf70;
+}
+.status[data-status="Limit"] {
+  background: rgb(255 156 156 / 0.12);
+  color: #ff9c9c;
+}
+
+.response {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--cs-white-86);
+}
+
+.figureImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.limits {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: calc(32 * var(--v) - 1px);
+}
+
+.limitsText {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--cs-text-primary);
+  text-wrap: pretty;
+}
+
+/* ---------- compact ---------- */
+@media (max-width: 1023px) {
+  .stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .stat,
+  .group,
+  .limits {
+    padding: 20px;
+  }
+  .split {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .splitTitle,
+  .splitBody,
+  .groups {
+    flex: none;
+    width: 100%;
+  }
+  .splitTitle {
+    font-size: 22px;
+  }
+  .groups {
+    gap: 12px;
+  }
+  .tableStage {
+    padding: 8px 16px;
+  }
+  .table thead {
+    display: none;
+  }
+  .table tr {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    column-gap: 8px;
+    padding: 16px 0;
+    border-top: 1px solid var(--cs-white-08);
+  }
+  .table tr:first-child {
+    border-top: 0;
+  }
+  .table td {
+    padding: 0;
+    border: 0;
+  }
+  .table td + td {
+    padding-left: 0;
+  }
+  .table td:nth-child(3) {
+    grid-column: 2;
+    margin-top: 12px;
+  }
+  .findingTitle {
+    font-size: 16px;
+  }
+  .findingBody,
+  .response {
+    font-size: 14px;
+  }
+  .limitsText {
+    font-size: 17px;
+  }
+}

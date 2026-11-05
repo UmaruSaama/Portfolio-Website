@@ -42,7 +42,12 @@ export function CaseStudyHero({
           ))}
         </ul>
         <h1 className={styles.title}>
-          {project.title.lead && <>{project.title.lead} </>}
+          {project.title.lead && (
+                    <>
+                      {project.title.lead}
+                      {project.title.breakAfterLead ? <br /> : " "}
+                    </>
+                  )}
           <span className={styles.accent}>{project.title.accent}</span>
           {project.title.rest && <> {project.title.rest}</>}
         </h1>
@@ -63,7 +68,7 @@ export function CaseStudyHero({
         />
       ) : (
         <div className={styles.device}>
-          <DeviceMock screen={project.screen} />
+          <DeviceMock screen={project.screen} play />
         </div>
       )}
     </section>

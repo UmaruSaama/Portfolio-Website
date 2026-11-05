@@ -16,8 +16,8 @@ const steps = [
   },
   {
     label: "Usability test",
-    title: "First round",
-    body: "Five moderated sessions with survey respondents. Tasks: find a show at the right level, mine three words without leaving playback, and finish a review session.",
+    title: "Next round",
+    body: "Five or six recorded sessions with learners from the Japanese course, on fast real scenes. Tasks: find a show at the right level, mine three words without leaving playback, and finish a review session.",
   },
 ];
 
@@ -67,8 +67,8 @@ export function Ch10Next() {
         introTitle={<span className={s.nowrap}>What would decide whether this ships.</span>}
         intro={
           <p className={cs.body}>
-            ImmerLingo hasn&apos;t been tested with learners yet. Here is the biggest risk, what
-            I&apos;d measure and the first test I&apos;d run.
+            Twelve people have used the prototype, but nobody has learned with it over weeks yet.
+            Here is the biggest risk, what I&apos;d measure and the next test I&apos;d run.
           </p>
         }
       />

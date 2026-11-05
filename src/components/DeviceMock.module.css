@@ -16,6 +16,20 @@
   overflow: hidden;
 }
 
+/* Video or its poster fills the 4:3 screen exactly. */
+.media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+video.media {
+  cursor: pointer;
+}
+
 .dropZone {
   position: absolute;
   inset: calc(32 / 883 * 100cqw);

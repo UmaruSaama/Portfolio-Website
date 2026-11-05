@@ -2,7 +2,7 @@
 
 import { flushSync } from "react-dom";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import type { Project } from "@/data/projects";
@@ -727,6 +727,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       <section
         ref={card}
         className={styles.card}
+        style={current.accent ? ({ "--accent": current.accent } as CSSProperties) : undefined}
         data-video={videoOpen ? "open" : undefined}
         data-placeholder={current.placeholder ? "" : undefined}
         aria-roledescription="carousel"
@@ -753,6 +754,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               slides.current[i] = el;
             }}
             className={styles.slide}
+            style={p.accent ? ({ "--accent": p.accent } as CSSProperties) : undefined}
             aria-hidden={i !== active || videoOpen}
             inert={i !== active || videoOpen}
             aria-roledescription="slide"
@@ -784,7 +786,12 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                   ))}
                 </ul>
                 <h2 className={styles.title} data-anim="text">
-                  {p.title.lead && <>{p.title.lead} </>}
+                  {p.title.lead && (
+                    <>
+                      {p.title.lead}
+                      {p.title.breakAfterLead ? <br /> : " "}
+                    </>
+                  )}
                   <span className={styles.accent}>{p.title.accent}</span>
                   {p.title.rest && <> {p.title.rest}</>}
                 </h2>
@@ -919,6 +926,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         <div
           ref={caseOverlay}
           className={styles.caseOverlay}
+          style={caseProject.accent ? ({ "--accent": caseProject.accent } as CSSProperties) : undefined}
           role="dialog"
           aria-modal="true"
           aria-label={`${caseProject.name}: case study`}

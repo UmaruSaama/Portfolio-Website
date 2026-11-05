@@ -9,10 +9,13 @@ export type Project = {
   name: string;
   tags: string[];
   /** Title split so the accent phrase can be coloured; `lead` comes before it. */
-  title: { lead?: string; accent: string; rest?: string };
+  title: { lead?: string; accent: string; rest?: string; /** Line break after the lead (Figma has one). */ breakAfterLead?: boolean };
   summary: string;
   /** What the iPad screen shows (card preview and case-study hero). */
-  screen?: { kind: "placeholder"; label: string; spec: string; tag: string };
+  screen?:
+    | { kind: "placeholder"; label: string; spec: string; tag: string }
+    /** Looping walkthrough: the card shows the poster (paused first frame), the hero plays it. */
+    | { kind: "video"; src: string; poster: string; label: string };
   /** Card media as a still render instead of the iPad (e.g. a phone trio). */
   image?: { src: string; width: number; height: number; alt: string };
   /**
@@ -27,6 +30,8 @@ export type Project = {
   bg?: string;
   /** Hero text inks the morph lands on: [title, summary, tags]. */
   heroInk?: [string, string, string];
+  /** Project accent (title phrase, tag dots, card glow). Default: site pink. */
+  accent?: string;
   /** No case study page yet: no CTA, no "view" cursor, no route. */
   placeholder?: boolean;
 };
@@ -52,15 +57,17 @@ export const projects: Project[] = [
       { id: "loop", label: "Shaping the loop" },
       { id: "experience", label: "The experience" },
       { id: "system", label: "The system underneath", short: "The system" },
+      { id: "testing", label: "Putting it in front of people", short: "User testing" },
       { id: "next", label: "What’s next" },
       { id: "reflection", label: "Reflection" },
       { id: "close", label: "Close" },
     ],
     screen: {
-      kind: "placeholder",
-      tag: "GIF",
-      label: "Hero walkthrough",
-      spec: "883 × 662 · 4:3 landscape · loops, no sound",
+      kind: "video",
+      src: "/work/immerlingo/hero-walkthrough.mp4",
+      poster: "/work/immerlingo/hero-walkthrough-poster.jpg",
+      label:
+        "ImmerLingo on an iPad: tonight’s plan, a warm-up word, tapping a word in a scene and saving it, the episode summary, then reviewing the card.",
     },
   },
   {
@@ -100,39 +107,42 @@ export const projects: Project[] = [
   {
     slug: "ccd-placements",
     name: "CCD Placements",
-    tags: ["Product Design", "Design Systems", "Live product"],
+    tags: ["Product Design", "Service Design", "Live Product"],
     title: {
-      lead: "IIT Guwahati’s placement portals and app, redesigned as",
-      accent: "one system",
+      lead: "CCD Placements.",
+      accent: "Every job, from form to result.",
+      breakAfterLead: true,
     },
     summary:
-      "Web portals for students, companies and coordinators, and a mobile app for students, for the Centre for Career Development. Live and in use, built by two developers from a fully tokenised handoff.",
+      "IIT Guwahati’s placement and internship system: portals for coordinators, recruiters and students, plus a new student app. Designed around the life of one job, so a small CCD team can run a whole season and every student can see where they stand.",
     image: {
-      src: "/work/ccd/hero.webp",
-      width: 1185,
-      height: 880,
-      alt: "The CCD student placement portal in a browser window, with the CCD app’s Home on a phone in front of it.",
+      src: "/work/ccd/showcase.webp",
+      width: 1164,
+      height: 912,
+      alt: "The CCD internship portal in a browser window, with the CCD app’s Home on a phone in front of it: next online assessment, applications left and application updates.",
     },
-    // Case study not written yet: card only.
+    accent: "#2e42b8",
+    // Case study not built on the site yet: card only.
     placeholder: true,
   },
   {
     slug: "stag-fencing",
     name: "Stag Fencing",
-    tags: ["Web Design", "E-commerce", "Client work"],
+    tags: ["UX Research", "UX/UI Design", "Developer Handoff"],
     title: {
-      lead: "A Perth fencing contractor’s broken WordPress site, rebuilt",
-      accent: "from the ground up",
+      lead: "Stag Fencing.",
+      accent: "A website that earns trust before the phone rings.",
     },
     summary:
-      "Stag Fencing’s new website: services, a fence calculator, a shop with cart and checkout, a gallery and an admin. I led the design and handed it to a developer partner.",
+      "A new website for a Perth fencing contractor, designed so homeowners can understand their options, feel confident in the team and ask for a quote with less effort.",
     image: {
-      src: "/work/stag-fencing/hero.webp",
-      width: 1185,
-      height: 880,
-      alt: "The Stag Fencing homepage in a browser window: hero photo of a fenced garden, headline and the free-quote form.",
+      src: "/work/stag-fencing/showcase.webp",
+      width: 1100,
+      height: 677,
+      alt: "The Stag Fencing homepage in a browser window: a fenced garden, the headline, rating and project counts, and the free-quote form.",
     },
-    // Case study not written yet: card only.
+    accent: "#b83a31",
+    // Case study not built on the site yet: card only.
     placeholder: true,
   },
 ];

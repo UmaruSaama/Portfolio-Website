@@ -42,3 +42,7 @@ next-env.d.ts
 
 # artifact build
 /artifact
+
+# large hero GIF lives in Figma only; the site uses the MP4
+public/work/immerlingo/*.gif
+.tmp-xfer/
