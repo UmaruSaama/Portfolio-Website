@@ -1,0 +1,148 @@
+/*
+  Alcheringa '25 v3 ("paper + ink", Figma 783:80928). Paper page, ink act
+  bands, PICO-8 accents. The chrome is an ink pixel panel: square corners,
+  cream text, pink active state, so it reads on paper and on the bands.
+*/
+.theme.theme {
+  --cs-page-bg: #f2efe8;
+  --cs-text-primary: #1c1b20;
+  --cs-text-secondary: #5f5b66;
+  --cs-text-tertiary: #86828c;
+  --accent: #ff375f;
+  --cs-end-pad: 0;
+  --cs-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter Variable", system-ui, sans-serif;
+  overflow-x: clip;
+  color: #1c1b20;
+
+  --chrome-bg: rgb(20 19 24 / 0.94);
+  --chrome-border: #3a3742;
+  --chrome-shadow: 4px 4px 0 rgba(20, 19, 24, 0.25);
+  --chrome-ink: #f4f1ea;
+  --chrome-ink-2: rgba(244, 241, 234, 0.62);
+  --chrome-ink-3: rgba(244, 241, 234, 0.5);
+  --chrome-hover: #f4f1ea;
+  --chrome-dot: rgba(244, 241, 234, 0.35);
+  --chrome-dot-hover: rgba(244, 241, 234, 0.7);
+  --chrome-dot-active: #ff375f;
+  --chrome-track: rgba(244, 241, 234, 0.06);
+  --chrome-line: #3a3742;
+  --chrome-sheet: #141318;
+  --chrome-press: rgba(255, 55, 95, 0.12);
+  --chrome-font: var(--cs-sans);
+  --chrome-radius: 0;
+  --chrome-action-radius: 0;
+  --chrome-action-bg: rgb(20 19 24 / 0.9);
+  --chrome-action-bg-hover: #141318;
+  --chrome-action-ink: #f4f1ea;
+  --chrome-action-font: var(--cs-sans);
+  --chrome-action-stretch: 100%;
+}
+
+/* Hero (Figma 01 · Hero: ink band, copy from y 120, phones end the band) */
+.hero.hero {
+  --ink: var(--hero-ink, #f4f1ea);
+  --ink-2: var(--hero-ink-2, rgba(244, 241, 234, 0.72));
+  --ink-tags: var(--hero-ink-tags, rgba(244, 241, 234, 0.72));
+  height: auto;
+  min-height: 0;
+  padding-bottom: 0;
+  background: #141318;
+  overflow: hidden;
+}
+
+.hero.hero [data-copy] {
+  width: calc(1020 * var(--v));
+  padding-top: calc(120 * var(--v));
+  font-family: var(--cs-sans);
+  font-stretch: 100%;
+}
+
+.hero.hero [data-copy] ul {
+  font-size: max(calc(13 * var(--v)), 10px);
+  font-weight: 510;
+  letter-spacing: 0.12em;
+}
+
+.hero.hero [data-copy] ul li {
+  height: auto;
+  padding: 0 calc(12 * var(--v));
+}
+
+.hero.hero [data-copy] h1 {
+  width: calc(980 * var(--v));
+  margin-top: calc(28 * var(--v));
+  padding: 0;
+  font-size: calc(72 * var(--v));
+  font-weight: 590;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.hero.hero [data-copy] > p:last-child {
+  width: calc(860 * var(--v));
+  margin-top: calc(24 * var(--v));
+  font-size: max(calc(20 * var(--v)), 15px);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* hero-phones-v3.webp: the Figma "Phones" frame, 1040 × 640 */
+.hero.hero [data-device] {
+  width: calc(1040 * var(--v));
+  max-width: none;
+  margin: 0 auto;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.festoon,
+.mascot {
+  position: absolute;
+  display: block;
+  max-width: none;
+  image-rendering: pixelated;
+}
+
+.festoon {
+  top: 0;
+  left: calc(50% - 720 * var(--v));
+  width: calc(1440 * var(--v));
+}
+
+.mascot {
+  top: calc(892 * var(--v));
+  left: calc(50% + 488 * var(--v));
+  width: calc(192 * var(--v));
+}
+
+@media (max-width: 1023px) {
+  .hero.hero [data-copy] {
+    width: auto;
+    padding-top: clamp(48px, 10vw, 96px);
+  }
+
+  .hero.hero [data-copy] h1 {
+    width: auto;
+    font-size: clamp(32px, calc(3.6vw + 18px), 52px);
+  }
+
+  .hero.hero [data-copy] > p:last-child {
+    width: auto;
+    max-width: 600px;
+    font-size: clamp(15px, calc(0.5vw + 13px), 18px);
+    line-height: 1.45;
+  }
+
+  .hero.hero [data-device] {
+    width: min(calc(150% - (100vw - 390px) * 0.3), 1040px);
+    margin: clamp(24px, 5vw, 48px) 0 0 calc((100% - min(calc(150% - (100vw - 390px) * 0.3), 1040px)) / 2);
+  }
+
+  .mascot {
+    display: none;
+  }
+}

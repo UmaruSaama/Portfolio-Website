@@ -83,13 +83,13 @@ export const projects: Project[] = [
     summary:
       "The official app of IIT Guwahati’s cultural festival. The ’24 revamp made events findable; ’25 keeps all of it and wraps it in a pixel-art world where showing up earns XP.",
     image: {
-      src: "/work/alcheringa-25/hero-phones.webp",
-      width: 1185,
-      height: 880,
+      src: "/work/alcheringa-25/hero-phones-v3.webp",
+      width: 2080,
+      height: 1280,
       alt: "Three phones showing the Alcheringa ’25 app: the activity log, the pixel-art home screen and the festival map.",
     },
-    bg: "#111d35",
-    heroInk: ["#fff1e8", "rgba(255,241,232,0.85)", "rgba(255,241,232,0.85)"],
+    bg: "#141318",
+    heroInk: ["#f4f1ea", "rgba(244,241,234,0.72)", "rgba(244,241,234,0.72)"],
     chapters: [
       { id: "intro", label: "Intro" },
       { id: "snapshot", label: "Snapshot" },
@@ -151,6 +151,7 @@ export const projects: Project[] = [
     title: {
       lead: "Stag Fencing.",
       accent: "A website that earns trust before the phone rings.",
+      breakAfterLead: true,
     },
     summary:
       "A new website for a Perth fencing contractor, designed so homeowners can understand their options, feel confident in the team and ask for a quote with less effort.",
@@ -161,7 +162,18 @@ export const projects: Project[] = [
       alt: "The Stag Fencing homepage in a browser window: a fenced garden, the headline, rating and project counts, and the free-quote form.",
     },
     accent: "#b83a31",
-    // Case study not built on the site yet: card only.
-    placeholder: true,
+    badge: "Under NDA · Confidential",
+    bg: "#fbfbfd",
+    heroInk: ["#1d1d1f", "#6e6e73", "#6e6e73"],
+    chapters: [
+      { id: "intro", label: "Intro" },
+      { id: "overview", label: "Overview" },
+      { id: "role", label: "Role and responsibilities", short: "My role" },
+      { id: "approach", label: "Design approach", short: "Approach" },
+      { id: "skills", label: "Skills used", short: "Skills" },
+      { id: "challenges", label: "Challenges faced", short: "Challenges" },
+      { id: "learnings", label: "Learnings" },
+      { id: "close", label: "Close" },
+    ],
   },
 ];

@@ -118,7 +118,7 @@
   ],
   [
    "<p className=\"relative shrink-0 text-[#2e42b8]\">\n            Next project: Stag Fencing ›\n          </p>",
-   "<Link href=\"/\" className=\"relative shrink-0 text-[#2e42b8] cs-link\">\n            All projects ›\n          </Link>"
+   "<Link href=\"/work/stag-fencing\" className=\"relative shrink-0 text-[#2e42b8] cs-link\">\n            Next project: Stag Fencing ›\n          </Link>"
   ],
   [
    "<p className=\"relative shrink-0 text-[#6e6e73]\">\n            Back to top ↑\n          </p>",

@@ -1,0 +1,263 @@
+/*
+  CCD case study: base for the generated chapters (Chapters.tsx + tokens.css).
+  Scoped to .cs-gen. The generated classes are Figma's Tailwind names
+  compiled to plain CSS; this file is the "preflight" they assume, the
+  full-bleed bands, the asset helpers and the compact (< 1024px) reflow.
+*/
+.cs-gen {
+  --v: min(1px, calc(100vw / 1440));
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  font-family: var(--cs-sans);
+  font-stretch: 100%;
+  font-weight: 400;
+  color: #1d1d1f;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cs-gen *,
+.cs-gen *::before,
+.cs-gen *::after {
+  box-sizing: border-box;
+  border: 0 solid;
+  margin: 0;
+}
+
+.cs-gen p,
+.cs-gen h2,
+.cs-gen h3 {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.cs-gen img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Chapter bands: full-bleed, content column centred at any width. */
+.cs-gen .cs-ch.cs-ch {
+  width: 100%;
+  padding-left: max(calc(210 * var(--v)), calc(50% - 510 * var(--v)));
+  padding-right: max(calc(210 * var(--v)), calc(50% - 510 * var(--v)));
+  scroll-margin-top: 0;
+}
+
+.cs-gen .cs-field {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cs-gen .cs-line {
+  position: absolute;
+  inset: 0;
+}
+
+/* Chapter-level absolutes (sprites, world art, colour fields) are placed in
+   the centred 1440 frame, not from the band's left edge. */
+.cs-gen .cs-ch > .cs-fx {
+  left: calc(50% + (var(--fx) - 720) * var(--v));
+}
+
+/* Pixel art renders (Alcheringa): keep the pixels square when scaled. */
+.cs-gen .cs-raster-art {
+  image-rendering: pixelated;
+}
+
+/* Annotation switch on the Alcheringa step stages. */
+.cs-gen .cs-annot {
+  transition: opacity 0.2s ease;
+}
+
+.cs-gen [data-annot-off] .cs-annot {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.cs-gen .cs-annot-toggle {
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+.cs-gen .cs-annot-toggle > div > div {
+  transition: background-color 0.2s ease;
+}
+
+.cs-gen .cs-annot-toggle > div > div > div {
+  transition: left 0.2s ease;
+}
+
+.cs-gen .cs-annot-toggle[aria-pressed="false"] > div > div {
+  background-color: #3a3742;
+}
+
+.cs-gen .cs-annot-toggle[aria-pressed="false"] > div > div > div {
+  left: calc(2 * var(--v));
+}
+
+.cs-gen .cs-annot-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Screens were exported without their drop shadows (the export grain). */
+.cs-gen .cs-raster {
+  height: auto;
+  max-width: none;
+}
+
+.cs-gen .cs-raster-browser {
+  border-radius: calc(24 * var(--v));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 24px 80px rgba(0, 0, 0, 0.08);
+}
+
+.cs-gen .cs-raster-phone {
+  border-radius: calc(34 * var(--v));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 18px 48px rgba(13, 18, 51, 0.14);
+}
+
+/* "Shelf · bleeds right": scrolls, and runs to the viewport's right edge. */
+.cs-gen .cs-shelf {
+  --bleed: max(calc(210 * var(--v)), calc(50vw - 510 * var(--v)));
+  width: calc(100% + var(--bleed));
+  margin-right: calc(-1 * var(--bleed));
+  padding-right: var(--bleed);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.cs-gen .cs-shelf::-webkit-scrollbar {
+  display: none;
+}
+
+.cs-gen .cs-shelf > * {
+  scroll-snap-align: start;
+}
+
+.cs-gen .cs-shelf-ctl button {
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.cs-gen .cs-shelf-ctl button:hover:not(:disabled) {
+  background-color: #dcdce2;
+}
+
+.cs-gen .cs-shelf-ctl button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.cs-gen .cs-shelf-ctl button:focus-visible,
+.cs-gen .cs-link:focus-visible {
+  outline: 2px solid #2e42b8;
+  outline-offset: 3px;
+}
+
+.cs-gen .cs-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cs-gen .cs-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/*
+  Compact (< 1024px): wide rows stack, fixed widths cap at the column,
+  absolute-positioned figures (.cs-scale) shrink as one piece.
+*/
+@media (max-width: 1023px) {
+  .cs-gen {
+    --v: min(1px, calc(100vw / 760));
+    --gutter: clamp(20px, 5vw, 48px);
+  }
+
+  .cs-gen .cs-ch.cs-ch {
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+    padding-top: clamp(56px, 12vw, 96px);
+    padding-bottom: clamp(56px, 12vw, 96px);
+  }
+
+  .cs-gen .cs-ch [class*="w-["]:not(:is(.cs-scale, .cs-wide) *) {
+    max-width: 100%;
+  }
+
+  .cs-gen .cs-ch :is(p, h2, h3)[class*="w-["]:not(:is(.cs-scale, .cs-wide) *) {
+    width: auto;
+  }
+
+  .cs-gen .cs-ch .whitespace-nowrap:not(:is(.cs-scale, .cs-wide) *) {
+    white-space: normal;
+  }
+
+  .cs-gen .cs-stack.cs-stack:not(.cs-wide *) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cs-gen .cs-stack:not(.cs-wide *) > * {
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .cs-gen .cs-scale.cs-scale {
+    --v: min(1px, calc((100vw - 2 * var(--gutter)) / var(--cs-w)));
+  }
+
+  /* Tables and diagrams keep their desktop layout at 0.8 scale and
+     scroll sideways inside the column's full bleed. */
+  .cs-gen .cs-ch .cs-wide.cs-wide {
+    --v: 0.8px;
+    width: calc(100% + 2 * var(--gutter));
+    max-width: none;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+  }
+
+  .cs-gen .cs-ch .cs-wide.cs-wide > * {
+    width: calc(1020 * var(--v));
+    max-width: none;
+    flex: none;
+  }
+
+  /* Text shrinks and wraps inside rows instead of running past them. */
+  .cs-gen .cs-ch :is(p, h2, h3):not(:is(.cs-scale, .cs-wide) *) {
+    flex-shrink: 1;
+    min-width: min-content; /* wrap at spaces, never inside a word */
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* On phones the shelf is a plain stack: no scroller, no arrows. */
+  .cs-gen .cs-shelf.cs-shelf {
+    width: 100%;
+    margin-right: 0;
+    padding-right: 0;
+    overflow: visible;
+  }
+
+  .cs-gen .cs-shelf.cs-shelf > * {
+    height: auto;
+  }
+
+  .cs-gen .cs-shelf-ctl {
+    display: none;
+  }
+}

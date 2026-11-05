@@ -62,17 +62,24 @@
 }
 
 /* On the dark player. */
+/* Glass + onDark = the case-study back action; the page's chrome tokens
+   (CaseStudy.module.css) restyle it per project. */
 .glass {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: var(--chrome-action-bg, rgba(255, 255, 255, 0.12));
+  color: var(--chrome-action-ink, #fff);
+  box-shadow: inset 0 0 0 1px var(--chrome-border, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .glass:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--chrome-action-bg-hover, rgba(255, 255, 255, 0.2));
 }
 
 .onDark {
-  color: #fff;
+  color: var(--chrome-action-ink, #fff);
+  font-family: var(--chrome-action-font, inherit);
+  font-stretch: var(--chrome-action-stretch, inherit);
 }
 
 /* Inside the card the action scales with the card like the rest of it. */

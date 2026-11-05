@@ -1,0 +1,5 @@
+/* Stag Fencing: light theme (gen/light.module.css) + Stag red. */
+.theme.theme {
+  --accent: #b83a31;
+  --still-w: 1100; /* public/work/stag-fencing/showcase.webp */
+}

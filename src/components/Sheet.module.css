@@ -21,12 +21,15 @@
   justify-content: center;
 }
 
+/* "dark" = the case-study sheet: it takes the page's chrome tokens. */
 .sheet[data-dark] {
-  --surface: #161616;
-  --ink: rgba(255, 255, 255, 0.92);
-  --ink-2: rgba(255, 255, 255, 0.55);
-  --line: rgba(255, 255, 255, 0.1);
-  --handle: rgba(255, 255, 255, 0.24);
+  --surface: var(--chrome-sheet, #161616);
+  --ink: var(--chrome-ink, rgba(255, 255, 255, 0.92));
+  --ink-2: var(--chrome-ink-2, rgba(255, 255, 255, 0.55));
+  --line: var(--chrome-line, rgba(255, 255, 255, 0.1));
+  --handle: var(--chrome-dot, rgba(255, 255, 255, 0.24));
+  font-family: var(--chrome-font, inherit);
+  font-stretch: 100%;
 }
 
 .sheet[open] {

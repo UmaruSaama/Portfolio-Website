@@ -1,14 +1,14 @@
 import type { ComponentType } from "react";
 import type { AppendixSection } from "./appendix";
 import { immerlingoChapters } from "./immerlingo";
-import { alcherChapters } from "./alcher";
-import { ccdChapters } from "./ccd";
-import { CcdBody } from "./ccd/Body";
-import { CcdBackdrop } from "./ccd/Backdrop";
+import { alcherChapters, AlcherBackdrop } from "./alcher3";
+import alcherTheme from "./alcher3/theme.module.css";
+import { GenBody } from "./gen/Body";
+import light from "./gen/light.module.css";
+import { ccdChapters, CcdBackdrop } from "./ccd";
 import ccdTheme from "./ccd/theme.module.css";
-import { AlcherBody } from "./alcher/Body";
-import { AlcherSky } from "./alcher/Story";
-import alcherTheme from "./alcher/theme.module.css";
+import { stagChapters, StagBackdrop } from "./stag";
+import stagTheme from "./stag/theme.module.css";
 import { ImmerlingoAppendix, immerlingoAppendixSections } from "./immerlingo/Appendix";
 
 /** Built chapter components per project slug, keyed by chapter id. */
@@ -16,6 +16,7 @@ export const chapterComponents: Record<string, Record<string, ComponentType>> = 
   immerlingo: immerlingoChapters,
   "alcheringa-25": alcherChapters,
   "ccd-placements": ccdChapters,
+  "stag-fencing": stagChapters,
 };
 
 /**
@@ -33,8 +34,9 @@ export const caseLayouts: Record<
     heroClass?: string;
   }
 > = {
-  "alcheringa-25": { theme: alcherTheme.theme, Body: AlcherBody, Backdrop: AlcherSky },
-  "ccd-placements": { theme: ccdTheme.theme, Body: CcdBody, Backdrop: CcdBackdrop, heroClass: ccdTheme.hero },
+  "alcheringa-25": { theme: alcherTheme.theme, Body: GenBody, Backdrop: AlcherBackdrop, heroClass: alcherTheme.hero },
+  "ccd-placements": { theme: `${light.theme} ${ccdTheme.theme}`, Body: GenBody, Backdrop: CcdBackdrop, heroClass: light.hero },
+  "stag-fencing": { theme: `${light.theme} ${stagTheme.theme}`, Body: GenBody, Backdrop: StagBackdrop, heroClass: light.hero },
 };
 
 /** Appendix (opened from "→ Appendix X" pointers) per project slug. */

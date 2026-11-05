@@ -12,11 +12,18 @@ from parse import parse
 raw, slug, outdir, idmap_path = sys.argv[1:5]
 cfg = json.load(open(idmap_path))
 code = open(raw).read()
-ROOT = f"cs-{slug}"
+ROOT = "cs-gen"  # shared scope for every generated case study
 consts = dict(re.findall(r'^const (\w+) = "([^"]+)";', code, re.M))
+_m = re.search(r"^export default function \w+\(\) \{\n  return \(", code, re.M)
+if _m:  # helper components precede the main one: parse from its JSX only
+    code = " " * _m.end() + code[_m.end():]
 order = parse(code)
 
 RASTER = re.compile(cfg["raster"])
+RASTER_IDS = set(cfg.get("rasterIds", []))
+RASTER_ALT = cfg.get("rasterAlt", {})
+def is_raster(n):
+    return n["id"] in RASTER_IDS or bool(n["name"] and RASTER.match(n["name"]))
 ASSET_DIR = cfg["assetDir"]
 RASTER_DIR = cfg["rasterDir"]
 FIELDS = cfg.get("fields", {})        # imgName -> [hex, opacity, blur, size]
@@ -50,6 +57,9 @@ FONTS = {
     "Noto Sans": '"Noto Sans", var(--cs-sans)',
     "Noto Sans JP": '"Noto Sans JP", var(--cs-sans)',
     "Inter": "var(--cs-sans)",
+    "Game Tape": '"Game Tape", "Pixelify Sans", monospace',
+    "Brick Pixel": '"Brick Pixel", "Pixelify Sans", monospace',
+    "Pixelify Sans": '"Pixelify Sans", monospace',
 }
 SPACING = lambda n: f"calc({float(n) * 4:g} * var(--v))" if float(n) else "0"
 ALIGN = {"start": "flex-start", "center": "center", "end": "flex-end", "baseline": "baseline", "stretch": "stretch"}
@@ -172,7 +182,7 @@ def esc(t):
 def in_raster(n):
     p = n["parent"]
     while p:
-        if RASTER.match(p["name"]): return True
+        if is_raster(p): return True
         p = p["parent"]
     return False
 
@@ -209,12 +219,26 @@ for n in order:
         edits.append((close_at, close_at + 6, f"</{tag}>"))
     elif n["id"] in ADD_CLASS:
         extra_cls[n["start"]] = extra_cls.get(n["start"], "") + " " + ADD_CLASS[n["id"]]
-    if n["name"] and RASTER.match(n["name"]) and not in_raster(n):
-        nid = n["id"].replace(":", "-")
-        alt = n["name"].split(" · ", 1)[-1] if " · " in n["name"] else n["name"]
-        kind = "phone" if n["name"].startswith("Phone") else "browser"
+    if is_raster(n) and not in_raster(n):
+        rid = n["id"]
+        if not rid:  # component instance without its own id: use the nearest named ancestor's
+            p = n["parent"]
+            while p and not p["id"]: p = p["parent"]
+            rid = p["id"]
+        nid = rid.replace(":", "-")
+        if rid in RASTER_ALT: alt = RASTER_ALT[rid]
+        elif n["name"].startswith(("Phone", "Browser", "Device")):
+            alt = (n["name"].split(" · ", 1)[-1] if n["name"].startswith("Phone") else n["name"].split(" – ", 1)[-1]) + " screen"
+        else: alt = ""
+        kind = ("phone" if n["name"].startswith("Phone") else "browser" if n["name"].startswith("Browser")
+                else "device" if n["name"].startswith("Device") else "art")
+        fx = ""
+        if n["parent"] and n["parent"]["parent"] is order[0] and "absolute" in cls_of(n).split():
+            m = re.search(r"(?:^| )left-(?:\[(-?[\d.]+)px\]|(0))(?: |$)", cls_of(n))
+            if m: fx = f' style={{{{ "--fx": {m.group(1) or 0} }} as CSSProperties}}'
+        extra = " cs-fx" if fx else ""
         edits.append((n["start"], n["end"],
-            f'<img src="{RASTER_DIR}/{nid}.webp" alt="{alt} screen" className="{cls_of(n)} cs-raster cs-raster-{kind}" loading="lazy" decoding="async" />'))
+            f'<img src="{RASTER_DIR}/{nid}.webp" alt="{alt}"{fx} className="{cls_of(n)} cs-raster cs-raster-{kind}{extra}" loading="lazy" decoding="async" />'))
         continue
     if in_raster(n):
         continue
@@ -235,6 +259,11 @@ for n in order:
             new = re.sub(r"src=\{\w+\}", f'src="{ASSET_DIR}/{name}.{ext}"', code[n["start"]:n["tagend"]])
             edits.append((n["start"], n["tagend"], new))
         continue
+    if n["parent"] is not None and n["parent"]["parent"] is order[0] and "absolute" in c.split():
+        m = re.search(r"(?:^| )left-(?:\[(-?[\d.]+)px\]|(0))(?: |$)", c)
+        if m:
+            extra_cls[n["start"]] = extra_cls.get(n["start"], "") + " cs-fx"
+            extra_style[n["start"]] = (extra_style.get(n["start"], "") + (", " if n["start"] in extra_style else "")) + f'"--fx": {m.group(1) or 0}'
     if n["tag"] == "div" and "flex" in c.split() and "flex-col" not in c.split():
         ks = [k for k in kids(n) if "absolute" not in cls_of(k).split()]
         tot = sum((width_of(k) or 0) for k in ks)
@@ -245,7 +274,7 @@ for n in order:
     w = width_of(n)
     if abs_kids and w and 360 <= w <= 1100 and len(abs_kids) >= 3:
         extra_cls[n["start"]] = extra_cls.get(n["start"], "") + " cs-scale"
-        extra_style[n["start"]] = f'"--cs-w": {w:g}'
+        extra_style[n["start"]] = (extra_style.get(n["start"], "") + (", " if n["start"] in extra_style else "")) + f'"--cs-w": {w:g}'
     if "bg-gradient-to-r" in c.split() or "bg-gradient-to-b" in c.split():
         stops = re.findall(r"(from|via|to)-\[([^\]]+)\]", c)
         d = "to right" if "bg-gradient-to-r" in c else "to bottom"
@@ -295,14 +324,14 @@ for ch in chapters:
                 if p_c := extra_cls.get(pos):
                     head = re.sub(r'className="([^"]*)"', lambda m: f'className="{m.group(1)}{p_c}"', head, count=1)
                 if p_s := extra_style.get(pos):
-                    head = head.replace(" className=", f" style={{{{ {p_s} }}}} className=", 1)
+                    cast = " as CSSProperties" if '"--' in p_s else ""
+                    head = head.replace(" className=", f" style={{{{ {p_s} }}{cast}}} className=", 1)
                 res = res[:rel] + head + res[tag_end:]
         return res
     body = apply(pieces, s)
     body = re.sub(r' data-node-id="[^"]*"', "", body)
     body = re.sub(r' data-name="[^"]*"', "", body)
     body = re.sub(r" style=\{\{ fontVariationSettings: '\"wdth\" 100' \}\}", "", body)
-    body = re.sub(r"style=\{\{ (\"--cs-w\": [\d.]+) \}\}", lambda m: f"style={{{{ {m.group(1)} }} as CSSProperties}}", body)
     # root div -> section with anchor
     body = re.sub(r'^<div className="', f'<section id="chapter-{cid}" aria-label="{cfg["labels"][cid]}" className="cs-ch ', body, count=1)
     body = body[: body.rfind("</div>")] + "</section>"

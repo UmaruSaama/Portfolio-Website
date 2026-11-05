@@ -1,0 +1,129 @@
+{
+ "raster": "^(Browser card|Phone · \\d.*)$",
+ "assetDir": "/cs/stag/a",
+ "rasterDir": "/cs/stag/r",
+ "svgAssets": [
+  "imgDot",
+  "imgGlowDot",
+  "imgNode",
+  "imgNode1",
+  "imgNode2",
+  "imgCurve",
+  "imgPoint"
+ ],
+ "fields": {
+  "imgColourField3": [
+   "#b83a31",
+   0.18,
+   120,
+   420
+  ],
+  "imgColourField4": [
+   "#f2a68e",
+   0.35,
+   120,
+   380
+  ],
+  "imgColourField5": [
+   "#b83a31",
+   0.35,
+   120,
+   520
+  ],
+  "imgColourField6": [
+   "#f2a68e",
+   0.5,
+   120,
+   460
+  ],
+  "imgColourField7": [
+   "#f5c542",
+   0.35,
+   120,
+   320
+  ],
+  "imgColourField8": [
+   "#f5c542",
+   0.45,
+   114,
+   380
+  ],
+  "imgColourField9": [
+   "#f2a68e",
+   0.55,
+   168,
+   560
+  ],
+  "imgColourField10": [
+   "#b83a31",
+   0.32,
+   180,
+   600
+  ],
+  "imgColourField11": [
+   "#f5c542",
+   0.35,
+   108,
+   360
+  ],
+  "imgColourField12": [
+   "#f2a68e",
+   0.45,
+   168,
+   560
+  ],
+  "imgColourField13": [
+   "#b83a31",
+   0.25,
+   186,
+   620
+  ]
+ },
+ "lines": {},
+ "chapters": {
+  "807:33123": "overview",
+  "808:33070": "role",
+  "808:33155": "approach",
+  "809:33082": "skills",
+  "809:33232": "challenges",
+  "809:33299": "learnings",
+  "809:33373": "close"
+ },
+ "labels": {
+  "overview": "Overview",
+  "role": "Role and responsibilities",
+  "approach": "Design approach",
+  "skills": "Skills used",
+  "challenges": "Challenges faced",
+  "learnings": "Learnings",
+  "close": "Close"
+ },
+ "drop": [],
+ "addClass": {
+  "808:33081": "cs-shelf",
+  "808:33148": "cs-shelf-ctl",
+  "808:33166": "cs-wide",
+  "808:33225": "cs-wide",
+  "809:33243": "cs-wide"
+ },
+ "tagAs": {
+  "808:33149": [
+   "button",
+   "type=\"button\" aria-label=\"Previous responsibilities\" data-shelf=\"prev\""
+  ],
+  "808:33152": [
+   "button",
+   "type=\"button\" aria-label=\"Next responsibilities\" data-shelf=\"next\""
+  ]
+ },
+ "replace": [
+  [
+   "<p className=\"relative shrink-0 text-[#b83a31]\">\n            Next project: ImmerLingo ›\n          </p>",
+   "<Link href=\"/work/immerlingo\" className=\"relative shrink-0 text-[#b83a31] cs-link\">\n            Next project: ImmerLingo ›\n          </Link>"
+  ],
+  [
+   "<p className=\"relative shrink-0 text-[#6e6e73]\">\n            Back to top ↑\n          </p>",
+   "<a href=\"#chapter-intro\" className=\"relative shrink-0 text-[#6e6e73] cs-link\">\n            Back to top ↑\n          </a>"
+  ]
+ ]
+}

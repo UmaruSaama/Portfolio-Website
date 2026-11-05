@@ -3078,8 +3078,8 @@ export function Ch_close() {
           </p>
         </div>
         <div className="[word-break:break-word] content-stretch flex font-['SF_Pro:Regular'] font-normal gap-[32px] items-center leading-[normal] relative shrink-0 text-[19px] whitespace-nowrap">
-          <Link href="/" className="relative shrink-0 text-[#2e42b8] cs-link">
-            All projects ›
+          <Link href="/work/stag-fencing" className="relative shrink-0 text-[#2e42b8] cs-link">
+            Next project: Stag Fencing ›
           </Link>
           <a href="#chapter-intro" className="relative shrink-0 text-[#6e6e73] cs-link">
             Back to top ↑
