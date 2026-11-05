@@ -83,7 +83,7 @@
   letter-spacing: -0.015em;
 }
 
-.hero.hero [data-copy] p {
+.hero.hero [data-copy] > p:last-child {
   width: calc(860 * var(--v));
   margin-top: calc(24 * var(--v));
   font-size: max(calc(20 * var(--v)), 15px);
@@ -112,7 +112,7 @@
     font-size: clamp(32px, calc(3.6vw + 18px), 52px);
   }
 
-  .hero.hero [data-copy] p {
+  .hero.hero [data-copy] > p:last-child {
     width: auto;
     max-width: 600px;
     font-size: clamp(15px, calc(0.5vw + 13px), 18px);

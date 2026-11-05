@@ -177,6 +177,36 @@
   background: var(--accent);
 }
 
+/* Status pill (e.g. NDA): sits in the copy's top padding so the card keeps
+   the same anatomy as the others; the hero has the same pill in flow. */
+.badge {
+  position: absolute;
+  bottom: calc(100% + 4 * var(--u));
+  left: 50%;
+  translate: -50% 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: calc(5 * var(--u));
+  padding: calc(4 * var(--u)) calc(11 * var(--u));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, white);
+  color: var(--accent);
+  font-size: max(calc(10 * var(--u)), 9px);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: calc(5 * var(--u));
+  height: calc(5 * var(--u));
+  min-width: 4px;
+  min-height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 .title {
   margin-top: calc(4 * var(--u));
   width: calc(697 * var(--u));
@@ -225,6 +255,7 @@
 
 
 .copyText {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;

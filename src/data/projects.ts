@@ -32,6 +32,8 @@ export type Project = {
   heroInk?: [string, string, string];
   /** Project accent (title phrase, tag dots, card glow). Default: site pink. */
   accent?: string;
+  /** Status pill above the tags, on the card and the hero (e.g. NDA). */
+  badge?: string;
   /** No case study page yet: no CTA, no "view" cursor, no route. */
   placeholder?: boolean;
 };
@@ -122,6 +124,7 @@ export const projects: Project[] = [
       alt: "The CCD internship portal in a browser window, with the CCD app’s Home on a phone in front of it: next online assessment, applications left and application updates.",
     },
     accent: "#2e42b8",
+    badge: "Under NDA · Confidential",
     bg: "#fbfbfd",
     heroInk: ["#1d1d1f", "#6e6e73", "#6e6e73"],
     chapters: [

@@ -39,6 +39,12 @@ export function CaseStudyHero({
       </div>
 
       <header className={styles.copy} data-copy>
+        {project.badge && (
+          <p className={styles.badge}>
+            <span className={styles.badgeDot} aria-hidden="true" />
+            {project.badge}
+          </p>
+        )}
         <ul className={styles.tags}>
           {project.tags.map((tag) => (
             <li key={tag}>{tag}</li>

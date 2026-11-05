@@ -88,6 +88,31 @@
   background: var(--accent);
 }
 
+/* Status pill (e.g. NDA), above the tags as on the home card. */
+.badge {
+  margin: 0 0 calc(18 * var(--v));
+  display: flex;
+  align-items: center;
+  gap: calc(7 * var(--v));
+  padding: calc(6 * var(--v)) calc(15 * var(--v));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, white);
+  color: var(--accent);
+  font-size: max(calc(14 * var(--v)), 11px);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: calc(6 * var(--v));
+  height: calc(6 * var(--v));
+  min-width: 5px;
+  min-height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 .title {
   margin-top: calc(2 * var(--v));
   width: 100%;

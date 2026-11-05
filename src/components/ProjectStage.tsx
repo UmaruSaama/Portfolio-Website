@@ -780,6 +780,12 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
 
             <div className={styles.copy}>
               <div className={styles.copyText} data-copy>
+                {p.badge && (
+                  <p className={styles.badge} data-anim="text">
+                    <span className={styles.badgeDot} aria-hidden="true" />
+                    {p.badge}
+                  </p>
+                )}
                 <ul className={styles.tags} data-anim="text">
                   {p.tags.map((tag) => (
                     <li key={tag}>{tag}</li>
