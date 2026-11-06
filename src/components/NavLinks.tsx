@@ -27,6 +27,14 @@ export function NavLinks() {
       const opensNewTab = item.external && item.href.startsWith("http");
       const className = `${inSheet ? styles.sheetLink : styles.navLink} ${active ? styles.navActive : ""}`;
 
+      if (item.soon)
+        return (
+          <span key={item.label} className={`${className} ${styles.navSoon}`} aria-disabled="true">
+            {item.label}
+            <span className={styles.soonTag}>Soon</span>
+          </span>
+        );
+
       return item.external ? (
         <a
           key={item.label}

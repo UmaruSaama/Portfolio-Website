@@ -12,12 +12,13 @@ export type NavItem = {
   label: string;
   href: string;
   external?: boolean;
+  /** Not built yet: shown with a "Soon" tag, not a link. */
+  soon?: boolean;
 };
 
 export const nav: NavItem[] = [
   { label: "Work", href: "/" },
-  { label: "Motion", href: "/motion" },
-  { label: "Archive", href: "/archive" },
+  { label: "Motion", href: "/motion", soon: true },
   { label: "About", href: "/about" },
   { label: "LinkedIn", href: site.linkedin, external: true },
   { label: "Contact", href: site.contact, external: true },
