@@ -7,6 +7,10 @@
 .cs-gen {
   --v: min(1px, calc(100vw / 1440));
   position: relative;
+  /* Paint the page surface here: in the home-page overlay the case-study
+     page is transparent (the morph animates the overlay to the card's bg),
+     and Alcheringa's chapters sit on paper while its hero is ink. */
+  background: var(--cs-page-bg);
   width: 100vw;
   margin-left: calc(50% - 50vw);
   font-family: var(--cs-sans);
