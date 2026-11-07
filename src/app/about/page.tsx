@@ -20,8 +20,8 @@ export default function AboutPage() {
       <section className={styles.bio} aria-label="About Shivam">
         <div className={styles.portrait}>
           <Image
-            src="/images/about-portrait.webp"
-            alt="Portrait of Shivam"
+            src="/images/about-portrait-day.webp"
+            alt="Shivam outdoors on a sunny day, squinting at the camera"
             width={640}
             height={800}
             sizes="(max-width: 700px) 60vw, 300px"
