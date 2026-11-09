@@ -581,6 +581,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           const from = liveCam(mt.m, v?.currentTime ?? 0, mt.id);
           const q = { p: 0 };
           const tl = gsap.timeline({ onComplete: endMatch });
+          // Backstop: GSAP runs on animation frames, which a hidden tab pauses;
+          // the film must stop on close regardless.
+          window.setTimeout(() => {
+            if (match === mt) endMatch();
+          }, 1000);
           tl.to(player.current, { autoAlpha: 0, duration: 0.45, ease: "power2.inOut" }, 0);
           tl.to(mt.chrome, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
           if (mt.plate) tl.to(mt.plate, { autoAlpha: 0, duration: 0.45, ease: "power2.inOut" }, 0);
@@ -626,6 +631,10 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           return;
         }
         videoTl.timeScale(1.2).reverse();
+        // Same backstop for the dissolve: never leave the film playing after close.
+        window.setTimeout(() => {
+          if (!videoOpenRef.current) video.current?.pause();
+        }, 1000);
       });
 
       // End of the film. Match mode: the hand-back already happened; finish
