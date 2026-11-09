@@ -92,16 +92,17 @@
 .cs-gen .h-\[125\.04px\]{height:calc(125.04 * var(--v))}
 .cs-gen .h-\[14px\]{height:calc(14 * var(--v))}
 .cs-gen .h-\[16px\]{height:calc(16 * var(--v))}
+.cs-gen .h-\[184px\]{height:calc(184 * var(--v))}
 .cs-gen .h-\[18px\]{height:calc(18 * var(--v))}
-.cs-gen .h-\[214px\]{height:calc(214 * var(--v))}
 .cs-gen .h-\[270px\]{height:calc(270 * var(--v))}
 .cs-gen .h-\[2px\]{height:calc(2 * var(--v))}
 .cs-gen .h-\[312px\]{height:calc(312 * var(--v))}
-.cs-gen .h-\[330px\]{height:calc(330 * var(--v))}
+.cs-gen .h-\[365px\]{height:calc(365 * var(--v))}
 .cs-gen .h-\[377px\]{height:calc(377 * var(--v))}
 .cs-gen .h-\[380px\]{height:calc(380 * var(--v))}
-.cs-gen .h-\[385px\]{height:calc(385 * var(--v))}
+.cs-gen .h-\[40px\]{height:calc(40 * var(--v))}
 .cs-gen .h-\[420px\]{height:calc(420 * var(--v))}
+.cs-gen .h-\[432px\]{height:calc(432 * var(--v))}
 .cs-gen .h-\[476\.103px\]{height:calc(476.103 * var(--v))}
 .cs-gen .h-\[484\.759px\]{height:calc(484.759 * var(--v))}
 .cs-gen .h-\[4px\]{height:calc(4 * var(--v))}
@@ -124,6 +125,7 @@
 .cs-gen .items-start{align-items:flex-start}
 .cs-gen .justify-between{justify-content:space-between}
 .cs-gen .justify-end{justify-content:flex-end}
+.cs-gen .leading-\[0\.6\]{line-height:0.6}
 .cs-gen .leading-\[0\]{line-height:0}
 .cs-gen .leading-\[1\.05\]{line-height:1.05}
 .cs-gen .leading-\[1\.08\]{line-height:1.08}
@@ -182,6 +184,7 @@
 .cs-gen .pb-\[18px\]{padding-bottom:calc(18 * var(--v))}
 .cs-gen .pb-\[24px\]{padding-bottom:calc(24 * var(--v))}
 .cs-gen .pb-\[28px\]{padding-bottom:calc(28 * var(--v))}
+.cs-gen .pb-\[56px\]{padding-bottom:calc(56 * var(--v))}
 .cs-gen .pb-\[80px\]{padding-bottom:calc(80 * var(--v))}
 .cs-gen .pt-\[140px\]{padding-top:calc(140 * var(--v))}
 .cs-gen .pt-\[20px\]{padding-top:calc(20 * var(--v))}
@@ -215,11 +218,11 @@
 .cs-gen .py-\[3px\]{padding-block:calc(3 * var(--v))}
 .cs-gen .py-\[44px\]{padding-block:calc(44 * var(--v))}
 .cs-gen .py-\[4px\]{padding-block:calc(4 * var(--v))}
-.cs-gen .py-\[56px\]{padding-block:calc(56 * var(--v))}
 .cs-gen .py-\[6px\]{padding-block:calc(6 * var(--v))}
 .cs-gen .py-\[7px\]{padding-block:calc(7 * var(--v))}
 .cs-gen .py-\[8px\]{padding-block:calc(8 * var(--v))}
 .cs-gen .relative{position:relative}
+.cs-gen .right-\[27px\]{right:calc(27 * var(--v))}
 .cs-gen .rounded-\[10px\]{border-radius:calc(10 * var(--v))}
 .cs-gen .rounded-\[12px\]{border-radius:calc(12 * var(--v))}
 .cs-gen .rounded-\[14px\]{border-radius:calc(14 * var(--v))}
@@ -271,6 +274,7 @@
 .cs-gen .text-\[15px\]{font-size:calc(15 * var(--v))}
 .cs-gen .text-\[16px\]{font-size:calc(16 * var(--v))}
 .cs-gen .text-\[17px\]{font-size:calc(17 * var(--v))}
+.cs-gen .text-\[18px\]{font-size:calc(18 * var(--v))}
 .cs-gen .text-\[19px\]{font-size:calc(19 * var(--v))}
 .cs-gen .text-\[20px\]{font-size:calc(20 * var(--v))}
 .cs-gen .text-\[22px\]{font-size:calc(22 * var(--v))}
@@ -306,6 +310,7 @@
 .cs-gen .top-\[33px\]{top:calc(33 * var(--v))}
 .cs-gen .top-\[347px\]{top:calc(347 * var(--v))}
 .cs-gen .top-\[35\.5px\]{top:calc(35.5 * var(--v))}
+.cs-gen .top-\[39px\]{top:calc(39 * var(--v))}
 .cs-gen .top-\[423px\]{top:calc(423 * var(--v))}
 .cs-gen .top-\[59px\]{top:calc(59 * var(--v))}
 .cs-gen .top-\[60px\]{top:calc(60 * var(--v))}
@@ -358,6 +363,7 @@
 .cs-gen .w-\[288px\]{width:calc(288 * var(--v))}
 .cs-gen .w-\[296px\]{width:calc(296 * var(--v))}
 .cs-gen .w-\[300px\]{width:calc(300 * var(--v))}
+.cs-gen .w-\[308px\]{width:calc(308 * var(--v))}
 .cs-gen .w-\[310px\]{width:calc(310 * var(--v))}
 .cs-gen .w-\[312px\]{width:calc(312 * var(--v))}
 .cs-gen .w-\[316px\]{width:calc(316 * var(--v))}
@@ -409,6 +415,8 @@
 .cs-gen :is(.cs-scale, .cs-wide) .text-\[16px\]{font-size:calc(16 * var(--v))}
 .cs-gen .text-\[17px\]{font-size:max(calc(17 * var(--v)), 14.2px)}
 .cs-gen :is(.cs-scale, .cs-wide) .text-\[17px\]{font-size:calc(17 * var(--v))}
+.cs-gen .text-\[18px\]{font-size:max(calc(18 * var(--v)), 14.7px)}
+.cs-gen :is(.cs-scale, .cs-wide) .text-\[18px\]{font-size:calc(18 * var(--v))}
 .cs-gen .text-\[19px\]{font-size:max(calc(19 * var(--v)), 15.2px)}
 .cs-gen :is(.cs-scale, .cs-wide) .text-\[19px\]{font-size:calc(19 * var(--v))}
 .cs-gen .text-\[20px\]{font-size:max(calc(20 * var(--v)), 15.6px)}
@@ -441,6 +449,7 @@
 .cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[288px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
 .cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[296px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
 .cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[300px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
+.cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[308px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
 .cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[310px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
 .cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[312px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}
 .cs-gen :is(.flex-col, .cs-stack, :not(.flex)) > .w-\[316px\]:not(:is(.cs-scale, .cs-wide) *):not(.absolute):not(.cs-raster){width:100%}

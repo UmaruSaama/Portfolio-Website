@@ -29,7 +29,7 @@ export function Ch_overview() {
                 Platform
               </p>
               <p className="leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[22px] w-[420px]">
-                Web portals for three roles and a mobile app (390pt)
+                Placement and internship portals for three roles, and a student app
               </p>
             </div>
           </div>
@@ -38,7 +38,7 @@ export function Ch_overview() {
               Overview
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
-              CCD runs IIT Guwahati’s placement and internship season through two portals, each with a coordinator, recruiter and student side. Every student state depended on a coordinator’s step, a spreadsheet or a WhatsApp group. I modelled the life of one job across all three roles, designed the portals and a new student app on that model, and kept shipping changes through a season used by ~3,200 people.
+              CCD runs IIT Guwahati’s placement and internship season through two portals, each with a coordinator, recruiter and student side. Every student state depended on a coordinator’s step, a spreadsheet or a WhatsApp group. I modelled the life of one job across all three roles, redesigned the portals, built a student app from scratch on that model and kept shipping changes through a season used by ~3,200 people.
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@ export function Ch_overview() {
               One job’s life: form, approval, pipeline, result
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.45] relative shrink-0 text-[15px] text-[rgba(29,29,31,0.85)] w-[276px]">
-              Web portals and a mobile app
+              Web portals and a student app
             </p>
           </div>
           <div className="border-[rgba(210,210,215,0.7)] border-l border-solid content-stretch flex flex-col gap-[12px] items-start px-[32px] relative self-stretch shrink-0 w-[340px]">
@@ -182,7 +182,7 @@ export function Ch_overview() {
               Coordinator, company and student flows
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.45] relative shrink-0 text-[15px] text-[rgba(29,29,31,0.85)] w-[276px]">
-              Portals, a student app, a design system
+              Redesigned portals, a new student app, a design system
             </p>
           </div>
           <div className="border-[rgba(210,210,215,0.7)] border-l border-solid content-stretch flex flex-col gap-[12px] items-start px-[32px] relative self-stretch shrink-0 w-[340px]">
@@ -204,7 +204,7 @@ export function Ch_overview() {
             Coordinator and company screens are confidential to CCD. They appear here as diagrams and redrawn grey wireframes with fictional data. I’m happy to walk through the real screens in an interview.
           </p>
         </div>
-        <div className="bg-[#f5f5f7] content-stretch flex flex-col gap-[16px] items-center px-[80px] py-[56px] relative rounded-[24px] shrink-0 w-[1020px]">
+        <div className="bg-[#f5f5f7] content-stretch flex flex-col gap-[16px] items-center pb-[56px] px-[80px] relative rounded-[24px] shrink-0 w-[1020px]">
           <div style={{ backgroundImage: "linear-gradient(to right, rgba(46,66,184,0), rgba(46,66,184,0), rgba(46,66,184,0.8))" }} className="bg-gradient-to-r from-[rgba(46,66,184,0)] h-px relative shrink-0 to-[rgba(46,66,184,0)] via-1/2 via-[rgba(46,66,184,0.8)] w-[500px]" />
           <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
             <div className="relative shrink-0 size-[24px]">
@@ -244,8 +244,9 @@ export function Ch_role() {
                 My role in the loop
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              My role. Designer for three portals and an app, through a live season.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`My role. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">Designer for both portals and the student app, through a live season.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -258,7 +259,7 @@ export function Ch_role() {
           </div>
         </div>
         <div className="content-stretch flex gap-[20px] items-start pb-[24px] pt-[8px] relative shrink-0 cs-shelf cs-stack">
-          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[385px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
+          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[432px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhMagnifyingGlass.png" />
@@ -271,13 +272,13 @@ export function Ch_role() {
               Season and system audit
             </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
-              Read every screen of all three portals as objects, states and rules, and marked each place where work leaves the portal.
+              Read every screen of both portals, for all three roles, as objects, states and rules, and marked each place where work leaves the portal.
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] h-[40px] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
               With CCD coordinators
             </p>
           </div>
-          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[385px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
+          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[432px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCards.png" />
@@ -290,13 +291,13 @@ export function Ch_role() {
               Coordinator workflows
             </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
-              JAF approval, the five-step job pipeline, CV verification, Day 1 slots and the master sheet.
+              The five-step pipeline, where each step sends its own messages; job-form approval, CV queues, Day 1 slots and the master sheet.
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] h-[40px] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
               With the CCD team and the web developer
             </p>
           </div>
-          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[385px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
+          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[432px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgIconHeroiconsOutlineCursorClick.png" />
@@ -309,13 +310,13 @@ export function Ch_role() {
               Recruiter job form
             </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
-              The six-section JAF, saved per section, and the email confirmation that gates the online assessment.
+              The six-section job form, saved per section, and the email confirmation that gates the online assessment (OA).
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] h-[40px] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
               With the CCD team and the web developer
             </p>
           </div>
-          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[385px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
+          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[432px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgIconHeroiconsOutlineDesktopComputer.png" />
@@ -328,13 +329,13 @@ export function Ch_role() {
               Student app, 0 to 1
             </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
-              Fifteen screens at 390pt, built on one stage per application and eligibility shown, not filtered.
+              Fifteen screens, built on one stage per application, with eligibility shown, not filtered.
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] h-[40px] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
               With the app developer
             </p>
           </div>
-          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[385px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
+          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[432px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhSlidersHorizontal.png" />
@@ -349,11 +350,11 @@ export function Ch_role() {
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
               Tokens, 13 text styles and components for the app; Radix foundations for the web portals.
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] h-[40px] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
               With both developers
             </p>
           </div>
-          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[385px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
+          <div className="bg-white content-stretch drop-shadow-[0px_12px_20px_rgba(0,0,0,0.08),0px_1px_1.5px_rgba(0,0,0,0.04)] flex flex-col gap-[16px] h-[432px] items-start px-[28px] py-[32px] relative rounded-[24px] shrink-0 w-[310px]">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgIconHeroiconsOutlineShieldCheck.png" />
@@ -366,9 +367,9 @@ export function Ch_role() {
               Design QA and iteration
             </h3>
             <p className="[word-break:break-word] flex-[1_0_0] font-['SF_Pro:Regular'] font-normal leading-[1.5] min-h-px relative text-[#6e6e73] text-[16px] w-[254px]">
-              Thirty Dev Mode annotations, formatting rules, a coded prototype, and triage of requests all season.
+              Thirty Dev Mode annotations, formatting rules, a coded prototype and triage of requests all season.
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
+            <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] h-[40px] leading-[1.4] relative shrink-0 text-[#2e42b8] text-[14px] w-[254px]">
               With both developers and the CCD team
             </p>
           </div>
@@ -405,8 +406,9 @@ export function Ch_season() {
                 How a season runs
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              A season. Four phases, four lanes, one line of visibility.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`A season. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">Four phases, four lanes, one line of visibility.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -442,7 +444,7 @@ export function Ch_season() {
               </div>
               <div className="content-stretch flex flex-col gap-[4px] items-start overflow-clip relative shrink-0">
                 <p className="font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.72px] uppercase w-[193px]">
-                  03 · December
+                  03 · Dec
                 </p>
                 <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[16px] w-[193px]">
                   Day 1 and interviews
@@ -450,7 +452,7 @@ export function Ch_season() {
               </div>
               <div className="content-stretch flex flex-col gap-[4px] items-start overflow-clip relative shrink-0">
                 <p className="font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#2e42b8] text-[12px] tracking-[0.72px] uppercase w-[193px]">
-                  04 · to 31 March
+                  04 · to 31 Mar
                 </p>
                 <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[16px] w-[193px]">
                   Results and offer letters
@@ -739,8 +741,9 @@ export function Ch_job() {
                 The life of one job
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              One job. Nine states, from a recruiter’s form to a student’s result.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`One job. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">Nine states, from a recruiter’s form to a student’s result.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -936,7 +939,7 @@ export function Ch_job() {
               </div>
               <div className="content-stretch flex flex-col items-start overflow-clip px-[12px] py-[10px] relative rounded-[12px] self-stretch shrink-0 w-[198px]">
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.45] relative shrink-0 text-[#1d1d1f] text-[13px] w-[174px]">
-                  CV not verified yet, deadline passed, not eligible, or no applications left.
+                  CV not verified yet, deadline passed, not eligible or no applications left.
                 </p>
               </div>
             </div>
@@ -1364,11 +1367,12 @@ export function Ch_problem() {
                 </div>
               </div>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#6e6e73] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
-                The core problem
+                Problem and principles
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              The problem. Status lived in people, not in the system.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`The problem. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">Status lived in people, not in the system.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -1380,7 +1384,7 @@ export function Ch_problem() {
             </p>
           </div>
         </div>
-        <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] h-[330px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale">
+        <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] h-[365px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale">
           <div className="absolute left-[640px] size-[520px] top-[-160px]">
             <span className="cs-field" style={{ background: "#2e42b8", opacity: 0.35, filter: "blur(calc(60 * var(--v)))" }} />
           </div>
@@ -1505,8 +1509,9 @@ export function Ch_decisions() {
                 Key decisions
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              Four decisions. Each one traded something away.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`Four decisions. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">Each one traded something away.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -1569,7 +1574,7 @@ export function Ch_decisions() {
                   Trade-off
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[480px]">
-                  Odd processes don’t fit. A pre-placement talk has no step, and a test shared by two job forms needed a “ghost OA” on top.
+                  Odd processes don’t fit. A pre-placement talk has no step, and a test shared by two job forms needed a “ghost OA” on top. That was the price of automation.
                 </p>
               </div>
               <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0">
@@ -1577,7 +1582,7 @@ export function Ch_decisions() {
                   Result
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[480px]">
-                  Every job reads the same way in the coordinator portal, and each finalisation can write the student’s stage.
+                  Every job reads the same way, so each step can send its own messages and move the student’s stage: one action, whether the OA has 50 students or 600.
                 </p>
               </div>
             </div>
@@ -1700,7 +1705,7 @@ export function Ch_decisions() {
                   Trade-off
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[480px]">
-                  The web portals kept their five columns: a restyle can’t change a model, and the web shipped first. The app carries the new model.
+                  The redesigned web kept its five columns: it shipped first, on the existing data. The app, built from scratch, carries the new model.
                 </p>
               </div>
               <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0">
@@ -2088,8 +2093,9 @@ export function Ch_screens() {
                 Student-side screens
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              The frontstage. What a student sees of the job.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`The frontstage. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">What a student sees of the job.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -2104,10 +2110,10 @@ export function Ch_screens() {
         <div className="content-stretch flex flex-col gap-[32px] items-start relative shrink-0 w-[1020px]">
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
             <h3 className="font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[28px] tracking-[-0.112px] w-[500px]">
-              The web portals, restyled
+              The web portals, redesigned
             </h3>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
-              Every label, count and rule stayed; only the system around them changed. The structure stayed, on purpose.
+              Redesigned for clearer flows and restyled on the new design system. The labels and rules students already knew stayed.
             </p>
           </div>
           <div className="content-stretch flex flex-col gap-[20px] items-start relative shrink-0 w-[1020px]">
@@ -2127,7 +2133,7 @@ export function Ch_screens() {
               Same question, two answers
             </h3>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
-              Restyling can’t change a model, so the web kept its five status columns. The app is where that changed.
+              The redesigned web kept its five status columns. The new app replaced them with one stage.
             </p>
           </div>
           <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-[1020px] cs-wide">
@@ -2138,12 +2144,12 @@ export function Ch_screens() {
                     <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgDot.png" />
                   </div>
                   <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[13px] whitespace-nowrap">
-                    Web · restyled
+                    Web · redesigned
                   </p>
                 </div>
                 <img src="/cs/ccd/r/834-35084.webp" alt="Browser card screen" className="bg-white border border-[rgba(0,0,0,0.06)] border-solid h-[377px] overflow-clip relative rounded-[24px] shadow-[0px_12px_40px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)] shrink-0 w-[620px] cs-raster cs-raster-browser" loading="lazy" decoding="async" />
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[normal] relative shrink-0 text-[#6e6e73] text-[14px] w-[620px]">
-                  Five status columns, kept exactly as they were.
+                  The status table kept its five columns.
                 </p>
               </div>
               <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0">
@@ -2152,7 +2158,7 @@ export function Ch_screens() {
                     <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgDot.png" />
                   </div>
                   <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[13px] whitespace-nowrap">
-                    App · redesigned
+                    App · 0 to 1
                   </p>
                 </div>
                 <img src="/cs/ccd/r/834-35256.webp" alt="3.2 Application tracker screen" className="bg-[#f6f6f7] border-[0.574px] border-[rgba(29,29,31,0.08)] border-solid h-[484.759px] overflow-clip relative rounded-[25.272px] shadow-[0px_6.892px_22.974px_0px_rgba(0,0,0,0.08),0px_0.574px_1.723px_0px_rgba(0,0,0,0.04)] shrink-0 w-[224px] cs-raster cs-raster-phone" loading="lazy" decoding="async" />
@@ -2172,7 +2178,7 @@ export function Ch_screens() {
               The student app
             </h3>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
-              Built at 390pt around a student’s season: what’s next, what’s left, what’s open and what changed.
+              Built around a student’s season: what’s next, what’s left, what’s open and what changed.
             </p>
           </div>
           <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-[1020px] cs-wide">
@@ -2293,8 +2299,9 @@ export function Ch_iterate() {
                 Ship and iterate
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              Live all season. Small fixes most days, bigger releases when the season allowed.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`Live all season. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">Small fixes most days, bigger releases when the season allowed.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -2432,7 +2439,7 @@ export function Ch_iterate() {
                 Between phases
               </h3>
               <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] min-w-full relative shrink-0 text-[#6e6e73] text-[15px] w-[min-content]">
-                A new model or a new surface: the restyle of the web portals, the student app. These waited for a quieter stretch, so coordinators weren’t relearning a screen in the middle of a drive.
+                A new flow or a new surface: the web portal redesign, the student app. These waited for a quieter stretch, so coordinators weren’t relearning a screen in the middle of a drive.
               </p>
             </div>
           </div>
@@ -2463,8 +2470,9 @@ export function Ch_devs() {
                 Working with developers and CCD
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              Handoff. A file two developers could build from without asking.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`Handoff. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">A file two developers could build from without asking.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -2476,10 +2484,10 @@ export function Ch_devs() {
             </p>
           </div>
         </div>
-        <div className="[word-break:break-word] content-start flex flex-wrap gap-[20px] items-start overflow-clip relative shrink-0 w-full cs-stack">
+        <div className="[word-break:break-word] content-start flex flex-wrap gap-[20px] items-start relative shrink-0 w-full cs-stack">
           <div className="bg-white content-stretch flex flex-col gap-[10px] items-start overflow-clip p-[28px] relative rounded-[24px] shadow-[0px_12px_40px_0px_rgba(0,0,0,0.06),0px_1px_3px_0px_rgba(0,0,0,0.05)] shrink-0 w-[500px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#2e42b8] text-[34px] tracking-[-0.34px] whitespace-nowrap">
-              30
+              300+
             </p>
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.25] relative shrink-0 text-[#1d1d1f] text-[20px] whitespace-nowrap">
               Dev Mode annotations
@@ -2496,7 +2504,7 @@ export function Ch_devs() {
               Formatting rules
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[444px]">
-              IST, never seconds; “Today, 8:00 PM” within 48 hours; company names wrap to two lines, then ellipsis.
+              IST, never seconds; “Today, 8:00 PM” within 48 h; company names wrap to two lines, then ellipsis.
             </p>
           </div>
           <div className="bg-white content-stretch flex flex-col gap-[10px] items-start overflow-clip p-[28px] relative rounded-[24px] shadow-[0px_12px_40px_0px_rgba(0,0,0,0.06),0px_1px_3px_0px_rgba(0,0,0,0.05)] shrink-0 w-[500px]">
@@ -2546,13 +2554,13 @@ export function Ch_devs() {
               </div>
               <div className="border-[rgba(210,210,215,0.6)] border-solid border-t content-stretch flex gap-[10px] items-start leading-[1.45] overflow-clip py-[18px] relative shrink-0 w-full cs-stack">
                 <p className="font-['SF_Pro:Semibold'] font-[590] relative shrink-0 text-[#1d1d1f] text-[16px] w-[300px]">
-                  Restyle the web without restructuring it
+                  Change the status model in the app, not the web
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal relative shrink-0 text-[#6e6e73] text-[15px] w-[320px]">
-                  Every problem the audit found stays visible and measurable in the restyled screens.
+                  The web shipped first on the existing data; the app started from scratch.
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal relative shrink-0 text-[#6e6e73] text-[15px] w-[312px]">
-                  The web still shows five status columns and “Yet to apply” on closed rounds.
+                  Students see two status views until the web adopts the stage.
                 </p>
               </div>
               <div className="border-[rgba(210,210,215,0.6)] border-solid border-t content-stretch flex gap-[10px] items-start leading-[1.45] overflow-clip py-[18px] relative shrink-0 w-full cs-stack">
@@ -2617,7 +2625,7 @@ export function Ch_challenges() {
                 </div>
               </div>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#6e6e73] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
-                Challenges faced
+                Challenges
               </p>
             </div>
             <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
@@ -2630,7 +2638,7 @@ export function Ch_challenges() {
               Six problems worth solving
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
-              None of these were visual problems. Each came from running one process for three roles at peak load.
+              None of these were visual problems. Each came from running one process for about 3,200 students, their recruiters and a small CCD team, at peak load.
             </p>
           </div>
         </div>
@@ -2646,8 +2654,8 @@ export function Ch_challenges() {
               <p className="relative shrink-0 text-[#86868b] w-[296px]">
                 Why it was hard
               </p>
-              <p className="relative shrink-0 text-[#2e42b8] w-[316px]">
-                How I handled it
+              <p className="relative shrink-0 text-[#2e42b8] w-[308px]">
+                Response
               </p>
             </div>
             <div className="border-[rgba(210,210,215,0.6)] border-solid border-t content-stretch flex gap-[16px] items-start py-[22px] relative shrink-0 w-[956px] cs-stack">
@@ -2655,17 +2663,17 @@ export function Ch_challenges() {
                 01
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[260px]">
-                The peak day
+                Messages at every step
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[296px]">
-                Fifty-four open jobs, an OA tonight, and calendar days that overflow to “+7 more”.
+                An OA has 50 to 600 students. Each allocation, shortlist and result meant mails and groups written by hand, on the busiest days.
               </p>
               <div className="content-stretch flex gap-[10px] items-start relative shrink-0 w-[316px]">
                 <div className="relative shrink-0 size-[18px]">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCheck.png" />
                 </div>
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[288px]">
-                  Three dots a day with no counts, stacked job alerts, and the OA room first on Home.
+                  Each step became one action that sends its own messages: allocations at Step 3, a WhatsApp group at Step 4, results at Step 5.
                 </p>
               </div>
             </div>
@@ -2674,17 +2682,17 @@ export function Ch_challenges() {
                 02
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[260px]">
-                Three roles, three views
+                Chasing recruiters
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[296px]">
-                Recruiters saw a count, coordinators saw “Registered”, students saw five columns.
+                Terms acceptance and job-form confirmation relied on coordinators following up.
               </p>
               <div className="content-stretch flex gap-[10px] items-start relative shrink-0 w-[316px]">
                 <div className="relative shrink-0 size-[18px]">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCheck.png" />
                 </div>
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[288px]">
-                  I mapped every student event to the coordinator step that causes it.
+                  Submission emails a confirmation link, and the OA round stays held until it’s clicked. The system does the chasing.
                 </p>
               </div>
             </div>
@@ -2693,17 +2701,17 @@ export function Ch_challenges() {
                 03
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[260px]">
-                Data at scale
+                One test, several roles
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[296px]">
-                A 117-page master sheet, 60-plus programme rows, company names that run to two lines.
+                Companies ran one OA for several job forms, and attendance was entered once per form.
               </p>
               <div className="content-stretch flex gap-[10px] items-start relative shrink-0 w-[316px]">
                 <div className="relative shrink-0 size-[18px]">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCheck.png" />
                 </div>
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[288px]">
-                  Designed against real listings: wrap then ellipsis, 20 per page, search with totals.
+                  A shared “ghost” OA: one event, with attendance sent to every job form in one step.
                 </p>
               </div>
             </div>
@@ -2712,17 +2720,17 @@ export function Ch_challenges() {
                 04
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[260px]">
-                Work that leaves the portal
+                Verifying every CV
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[296px]">
-                The fee on Epay, CVs on Drive, shortlists on WhatsApp, and statuses that lag behind.
+                About 3,200 students, up to three CVs each, and around 60 verifiers.
               </p>
               <div className="content-stretch flex gap-[10px] items-start relative shrink-0 w-[316px]">
                 <div className="relative shrink-0 size-[18px]">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCheck.png" />
                 </div>
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[288px]">
-                  I marked each leak in the blueprint and explained the lag where students see it.
+                  Round-robin queues by programme, flag reasons, an export of flagged CVs, and verification shown in the apply sheet.
                 </p>
               </div>
             </div>
@@ -2731,17 +2739,17 @@ export function Ch_challenges() {
                 05
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[260px]">
-                One word, three meanings
+                Lists from outside the system
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[296px]">
-                “Slot” named a Day 1 priority, an internship round and a mock-interview seat.
+                Recruiters send shortlists in their own formats.
               </p>
               <div className="content-stretch flex gap-[10px] items-start relative shrink-0 w-[316px]">
                 <div className="relative shrink-0 size-[18px]">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCheck.png" />
                 </div>
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[288px]">
-                  I logged the collision, and the student app avoids the word entirely.
+                  Roll number or institute email are the only keys, so uploaded lists match students automatically.
                 </p>
               </div>
             </div>
@@ -2750,23 +2758,23 @@ export function Ch_challenges() {
                 06
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[260px]">
-                Changing a live system
+                A record that holds up
               </p>
               <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[296px]">
-                Changes shipped almost daily while the season ran.
+                Results get disputed, and changes shipped almost daily.
               </p>
               <div className="content-stretch flex gap-[10px] items-start relative shrink-0 w-[316px]">
                 <div className="relative shrink-0 size-[18px]">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgPhCheck.png" />
                 </div>
                 <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#1d1d1f] text-[15px] w-[288px]">
-                  Fixed steps and formatting rules, so small changes couldn’t drift the model.
+                  Steps finalise in order with timestamps, and nothing skips a step.
                 </p>
               </div>
             </div>
           </div>
           <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#86868b] text-[12px] whitespace-nowrap">
-            Six challenges, why each was hard, and the response
+            Six challenges, why each was hard and my response
           </p>
         </div>
       </section>
@@ -2789,8 +2797,9 @@ export function Ch_evidence() {
                 Impact and evidence
               </p>
             </div>
-            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.1] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
-              Evidence. What I can show, and what didn’t move.
+            <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[48px] tracking-[-0.576px] w-[860px] cs-h">
+              <span className="leading-[1.1]">{`Evidence. `}</span>
+              <span className="leading-[1.1] text-[#6e6e73]">What I can show, and what didn’t move.</span>
             </h2>
           </div>
           <div className="[word-break:break-word] content-stretch flex gap-[20px] items-start relative shrink-0 w-[1020px] cs-stack">
@@ -2798,22 +2807,20 @@ export function Ch_evidence() {
               How I measured it
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
-              Using the portals is mandatory, so usage alone proves little. These are counts anyone can check against the files and one scale figure. Business figures are CCD’s and aren’t published.
+              Using the portals is mandatory, so usage alone proves little. These are counts anyone can check against the files, one scale figure and quotes from people who used it. Business figures are CCD’s and aren’t published.
             </p>
           </div>
         </div>
         <div className="content-start flex flex-wrap gap-[20px] items-start overflow-clip relative shrink-0 w-full cs-stack">
-          <div className="bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[214px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
-            
-            <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.05] relative shrink-0 text-[#1d1d1f] text-[44px] tracking-[-0.66px] whitespace-nowrap">
+          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[184px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
+            <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.05] relative shrink-0 text-[#1d1d1f] text-[44px] tracking-[-0.66px] whitespace-nowrap">
               ~3,200
             </p>
-            <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[270px]">
-              people used the system in a season
+            <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[270px]">
+              students across a season, their CVs split between about 60 verifiers
             </p>
-            
           </div>
-          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[214px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
+          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[184px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.05] relative shrink-0 text-[#1d1d1f] text-[44px] tracking-[-0.66px] whitespace-nowrap">
               22 → 1
             </p>
@@ -2821,15 +2828,15 @@ export function Ch_evidence() {
               status words became one status tag with five tones
             </p>
           </div>
-          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[214px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
+          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[184px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.05] relative shrink-0 text-[#1d1d1f] text-[44px] tracking-[-0.66px] whitespace-nowrap">
-              5 → 1
+              1
             </p>
             <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[270px]">
-              status columns became one stage with a dated history
+              action per pipeline step, whether an OA has 50 students or 600
             </p>
           </div>
-          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[214px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
+          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[184px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.05] relative shrink-0 text-[#1d1d1f] text-[44px] tracking-[-0.66px] whitespace-nowrap">
               9
             </p>
@@ -2837,7 +2844,7 @@ export function Ch_evidence() {
               states for every job, each with an owner and the step that moves it
             </p>
           </div>
-          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[214px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
+          <div className="[word-break:break-word] bg-white border border-[rgba(210,210,215,0.7)] border-solid content-stretch flex flex-col gap-[10px] h-[184px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
             <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.05] relative shrink-0 text-[#1d1d1f] text-[44px] tracking-[-0.66px] whitespace-nowrap">
               4
             </p>
@@ -2845,8 +2852,8 @@ export function Ch_evidence() {
               reasons Apply can be unavailable, each named in the bar instead of a silent padlock
             </p>
           </div>
-          <div className="bg-[#fff7e6] border border-[rgba(217,166,58,0.7)] border-dashed content-stretch flex flex-col gap-[10px] h-[214px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
-            <div className="bg-[#ffe9bf] content-stretch flex items-start overflow-clip px-[9px] py-[4px] relative rounded-[999px] shrink-0">
+          <div className="bg-[#fff7e6] border border-[rgba(217,166,58,0.7)] border-dashed content-stretch flex flex-col gap-[10px] h-[184px] items-start overflow-clip p-[28px] relative rounded-[24px] shrink-0 w-[326px]">
+            <div className="absolute bg-[#ffe9bf] content-stretch flex items-start overflow-clip px-[9px] py-[4px] right-[27px] rounded-[999px] top-[39px]">
               <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#9a6a00] text-[11px] tracking-[0.44px] uppercase whitespace-nowrap">
                 Still open
               </p>
@@ -2855,11 +2862,55 @@ export function Ch_evidence() {
               3
             </p>
             <p className="[word-break:break-word] font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[270px]">
-              places a job still leaves the portal: the fee, CV links and interview shortlists
+              leaks students still run into: the fee on Epay, CV proofs on Drive and shortlists on WhatsApp
             </p>
           </div>
         </div>
-        
+        <div className="[word-break:break-word] content-stretch flex flex-col gap-[32px] items-start overflow-clip relative shrink-0 w-full">
+          <div className="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full cs-stack">
+            <h3 className="font-['SF_Pro:Semibold'] font-[590] leading-[1.2] relative shrink-0 text-[#1d1d1f] text-[28px] tracking-[-0.28px] w-[500px]">
+              In their words
+            </h3>
+            <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[17px] w-[500px]">
+              From two Lead Student Coordinators (LSCs) at CCD and a final-year student, quoted with permission.
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full">
+            <div className="bg-[#f5f5f7] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip p-[28px] relative rounded-[24px] self-stretch">
+              <p className="font-['SF_Pro:Semibold'] font-[590] leading-[0.6] relative shrink-0 text-[#2e42b8] text-[44px] whitespace-nowrap">
+                “
+              </p>
+              <p className="font-['SF_Pro:Medium'] font-[510] leading-[1.45] min-w-full relative shrink-0 text-[#1d1d1f] text-[18px] w-[min-content]">
+                During a drive, half my messages used to be “is my CV verified?”. Now they see it before they hit Apply.
+              </p>
+              <p className="font-['SF_Pro:Medium'] font-[510] leading-[normal] min-w-full relative shrink-0 text-[#86868b] text-[14px] w-[min-content]">
+                — Avinash Gupta, Technical LSC, CCD · built the web portals
+              </p>
+            </div>
+            <div className="bg-[#f5f5f7] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip p-[28px] relative rounded-[24px] self-stretch">
+              <p className="font-['SF_Pro:Semibold'] font-[590] leading-[0.6] relative shrink-0 text-[#2e42b8] text-[44px] whitespace-nowrap">
+                “
+              </p>
+              <p className="font-['SF_Pro:Medium'] font-[510] leading-[1.45] min-w-full relative shrink-0 text-[#1d1d1f] text-[18px] w-[min-content]">
+                I stopped refreshing the portal before OAs. The room is right there on Home.
+              </p>
+              <p className="font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#86868b] text-[14px] whitespace-nowrap">
+                — Akshit Garg, Final-year student
+              </p>
+            </div>
+            <div className="bg-[#f5f5f7] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip p-[28px] relative rounded-[24px] self-stretch">
+              <p className="font-['SF_Pro:Semibold'] font-[590] leading-[0.6] relative shrink-0 text-[#2e42b8] text-[44px] whitespace-nowrap">
+                “
+              </p>
+              <p className="font-['SF_Pro:Medium'] font-[510] leading-[1.45] min-w-full relative shrink-0 text-[#1d1d1f] text-[18px] w-[min-content]">
+                Every job reads the same way now, so I can pick up a drive someone else started.
+              </p>
+              <p className="font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#86868b] text-[14px] whitespace-nowrap">
+                — Krupakar, LSC, CCD
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="[word-break:break-word] bg-[#fff7e6] border border-[rgba(217,166,58,0.7)] border-dashed content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[32px] py-[28px] relative rounded-[24px] shrink-0 w-full">
           <p className="font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#9a6a00] text-[12px] tracking-[0.72px] whitespace-nowrap">
             WHAT DIDN’T MOVE
@@ -2992,10 +3043,10 @@ export function Ch_learnings() {
               </div>
               <div className="[word-break:break-word] content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-[394px]">
                 <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[394px]">
-                  Design both sides of the tracker
+                  Show coordinators the student’s stage
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[394px]">
-                  The student tracker has no coordinator-facing twin yet. I’d design the two together, so the steps are built to write the stage.
+                  Coordinators still can’t see where a student stands. I’d design that view next to the tracker, so both read from the same steps.
                 </p>
               </div>
             </div>
@@ -3021,7 +3072,7 @@ export function Ch_learnings() {
                   Design the end state
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[394px]">
-                  There’s no offer and no “out of the process” state. The season’s last step deserves a screen.
+                  There’s no offer state, and students never see that they’ve left the process. The season’s last step deserves a screen.
                 </p>
               </div>
             </div>
@@ -3031,10 +3082,10 @@ export function Ch_learnings() {
               </div>
               <div className="[word-break:break-word] content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-[394px]">
                 <p className="font-['SF_Pro:Semibold'] font-[590] leading-[1.3] relative shrink-0 text-[#1d1d1f] text-[17px] w-[394px]">
-                  Restyle is not redesign
+                  Say what a redesign didn’t reach
                 </p>
                 <p className="font-['SF_Pro:Regular'] font-normal leading-[1.5] relative shrink-0 text-[#6e6e73] text-[15px] w-[394px]">
-                  A cleaner screen can hide a broken model. Say plainly what the restyle couldn’t fix.
+                  The web got better flows and a new look but kept its five columns. A better screen can still sit on an old model.
                 </p>
               </div>
             </div>
@@ -3063,11 +3114,12 @@ export function Ch_close() {
             </div>
           </div>
           <p className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[normal] relative shrink-0 text-[#6e6e73] text-[12px] tracking-[0.72px] uppercase whitespace-nowrap">
-            Thanks for reading
+            Close
           </p>
         </div>
-        <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[1.08] relative shrink-0 text-[#1d1d1f] text-[56px] text-center tracking-[-0.672px] w-[860px] cs-h">
-          Thanks for reading. Every job, from form to result, in one status.
+        <h2 className="[word-break:break-word] font-['SF_Pro:Semibold'] font-[590] leading-[0] relative shrink-0 text-[#1d1d1f] text-[56px] text-center tracking-[-0.672px] w-[860px] cs-h">
+          <span className="leading-[1.08]">{`Thanks for reading. `}</span>
+          <span className="leading-[1.08] text-[#6e6e73]">Every job, from form to result, in one status.</span>
         </h2>
         <div className="backdrop-blur-[15px] bg-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex gap-[6px] items-center px-[12px] py-[6px] relative rounded-[999px] shrink-0">
           <div className="relative shrink-0 size-[6px]">

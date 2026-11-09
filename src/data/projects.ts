@@ -116,7 +116,7 @@ export const projects: Project[] = [
       breakAfterLead: true,
     },
     summary:
-      "IIT Guwahati’s placement and internship system: portals for coordinators, recruiters and students, plus a new student app. Designed around the life of one job, so a small CCD team can run a whole season and every student can see where they stand.",
+      "IIT Guwahati’s placement and internship system: redesigned portals for coordinators, recruiters and students, and a new student app. Built around the life of one job, so a small CCD team can run a season and every student sees where they stand.",
     image: {
       src: "/work/ccd/showcase.webp",
       width: 1164,

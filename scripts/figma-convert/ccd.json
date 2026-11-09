@@ -82,11 +82,7 @@
   "learnings": "Learnings",
   "close": "Close"
  },
- "drop": [
-  "841:34036",
-  "841:34014",
-  "841:34018"
- ],
+ "drop": [],
  "addClass": {
   "834:33909": "cs-shelf",
   "834:33946": "cs-shelf-ctl",
@@ -112,10 +108,6 @@
   ]
  },
  "replace": [
-  [
-   ", one scale figure, and quotes from people who used it.",
-   " and one scale figure."
-  ],
   [
    "<p className=\"relative shrink-0 text-[#2e42b8]\">\n            Next project: Stag Fencing ›\n          </p>",
    "<Link href=\"/work/stag-fencing\" className=\"relative shrink-0 text-[#2e42b8] cs-link\">\n            Next project: Stag Fencing ›\n          </Link>"
