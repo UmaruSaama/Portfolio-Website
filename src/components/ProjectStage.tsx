@@ -355,8 +355,27 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         phase: "open" | "tail" | "closing";
         raf: number;
         moved: boolean;
+        /** Smoothed film clock: last value and when it was read (performance.now). */
+        clock: { t: number; at: number } | null;
       };
       let match: Match | null = null;
+
+      // The live card moves at the display's refresh rate, not in film-frame
+      // steps: video.currentTime can advance in coarse jumps, so extrapolate
+      // from the last reading and ease toward the media clock. Re-anchor on a
+      // seek, a stall or a pause.
+      const filmClock = (mt: Match, v: HTMLVideoElement) => {
+        const raw = v.currentTime;
+        const now = performance.now();
+        const c = mt.clock;
+        let t = raw;
+        if (c && !v.paused && !v.seeking && v.readyState >= 3) {
+          const pred = c.t + ((now - c.at) / 1000) * v.playbackRate;
+          if (Math.abs(pred - raw) < 0.12) t = Math.max(c.t, pred + (raw - pred) * 0.12);
+        }
+        mt.clock = { t, at: now };
+        return t;
+      };
 
       const setLive = (mt: Match, c: Cam | null) => {
         if (!c) {
@@ -386,6 +405,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         if (!mt) return;
         cancelAnimationFrame(mt.raf);
         setLive(mt, null);
+        mt.slide.removeAttribute("data-film-live");
         gsap.set(mt.chrome, { clearProps: "opacity" });
         if (mt.plate) gsap.set(mt.plate, { autoAlpha: 0 });
         gsap.set(player.current, { autoAlpha: 0 });
@@ -405,9 +425,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         const mt = match;
         const v = video.current;
         if (!mt || !v) return;
-        // On the film's frame grid: the picture shows frame ⌊t·fps⌋, so the
-        // live card must too, or the two drift apart mid-move during a dissolve.
-        const t = Math.floor(v.currentTime * mt.m.fps + 1e-4) / mt.m.fps;
+        const t = filmClock(mt, v);
         if (mt.phase !== "closing") {
           setLive(mt, liveCam(mt.m, t, mt.id));
           gsap.set(player.current, { autoAlpha: playerAlpha(mt.m, t) });
@@ -471,7 +489,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           phase: "open",
           raf: 0,
           moved: false,
+          clock: null,
         };
+        // The whole iPad, not just the part inside the card: the push goes
+        // past the card's bottom edge (the film shows the same).
+        slide.setAttribute("data-film-live", "");
         gsap.set(player.current, { clipPath: CLIP_OPEN, autoAlpha: 0 });
         match.raf = requestAnimationFrame(tickMatch);
         return true;

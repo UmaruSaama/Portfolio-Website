@@ -17,7 +17,7 @@
 export type Cam = { L: number; T: number; W: number };
 
 export type FilmMatch = {
-  /** Frame rate of the film (the live card moves on the same frame grid). */
+  /** Frame rate of the film. */
   fps: number;
   /** The iPad screen (the poster's box) in film space. */
   screen: { x: number; y: number; w: number };
@@ -33,7 +33,8 @@ export type FilmMatch = {
     from: number;
     to: number;
     land: Cam;
-    /** Player dissolves in over this window (frame is all screen by then). */
+    /** Player dissolves in over this window: the frame is all screen and the
+     *  camera is nearly still, so live card and film agree to the pixel. */
     reveal: [number, number];
   };
   end: {
@@ -43,7 +44,8 @@ export type FilmMatch = {
     scale: number;
     cx: number;
     cy: number;
-    /** Player dissolves out over this window; the live card finishes the move. */
+    /** Player dissolves out over this window (the film holds still on the
+     *  iPad before `from`); the live card then makes the whole pull. */
     release: [number, number];
   };
 };
@@ -61,6 +63,8 @@ const zexp = (a: number, b: number, p: number) => a * Math.pow(b / a, p);
 const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
 const lerpK = (a: Cam, b: Cam, p: number): Cam => ({ L: lerp(a.L, b.L, p), T: lerp(a.T, b.T, p), W: zexp(a.W, b.W, p) });
 const camAround = (s: number, cx: number, cy: number): Cam => ({ L: cx - FW / 2 / s, T: cy - FH / 2 / s, W: FW / s });
+/** The live card takes the film's end framing from here (a hair before the release). */
+const endStart = (m: FilmMatch) => Math.min(m.end.from, m.end.release[0]) - 0.05;
 
 /** Card aspect the film was framed for; other shapes (compact cards) get a plain dissolve. */
 export const fitsFilm = (cardW: number, cardH: number) => Math.abs(cardH / cardW - FH / FW) < 0.012;
@@ -89,7 +93,7 @@ export function liveCam(m: FilmMatch, t: number, id: Cam): Cam | null {
     const filmCam = lerpK(K0, open.land, p);
     return lerpK(fromLive, filmCam, smooth(clamp01((t - open.from - 1.0) / (open.reveal[0] - open.from - 1.0))));
   }
-  if (t < end.from - 0.05) return null;
+  if (t < endStart(m)) return null;
   const k = seg(t, end.from, end.to);
   const filmCam = camAround(zexp(end.scale, 1, k), lerp(end.cx, FW / 2, k), lerp(end.cy, FH / 2, k));
   const toLive = lerpK(camAround(end.scale, end.cx, end.cy), id, k);
@@ -111,13 +115,13 @@ export function playerAlpha(m: FilmMatch, t: number) {
  */
 export function plateAlpha(m: FilmMatch, t: number) {
   if (t < m.open.reveal[1]) return seg(t, m.plate.fade[0], m.plate.fade[1]);
-  if (t < m.end.from - 0.05) return 0;
+  if (t < endStart(m)) return 0;
   return 1 - seg(t, m.end.to - 0.7, m.end.to);
 }
 
 /** Card chrome outside the slide (glow, top line) leaves with the push and comes back with the pull. */
 export function chromeAlpha(m: FilmMatch, t: number) {
-  if (t < m.end.from) return 1 - clamp01((t - m.open.from) / 0.8);
+  if (t < endStart(m)) return 1 - clamp01((t - m.open.from) / 0.8);
   return clamp01((t - (m.end.to - 0.6)) / 0.6);
 }
 

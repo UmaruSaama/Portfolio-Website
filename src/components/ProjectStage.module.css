@@ -253,6 +253,12 @@
   line-height: 0;
 }
 
+/* Film hand-off: the camera pushes past the card's bottom edge, so the iPad
+   is drawn whole (the card itself still clips at its own edge). */
+.slide[data-film-live] .media {
+  overflow: visible;
+}
+
 
 .copyText {
   position: relative;

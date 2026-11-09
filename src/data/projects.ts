@@ -87,11 +87,11 @@ export const projects: Project[] = [
     // From the film source (film4.js): screen = the card iPad's poster box, land = K2c,
     // end = S10A. Re-derive if the film's opening or closing shot changes.
     film: {
-      fps: 30,
+      fps: 60,
       screen: { x: 235.853, y: 660.06, w: 1450.265 },
       plate: { src: "/work/immerlingo/film-plate.jpg", w: 1194, h: 834, pad: 31, posterW: 1194, fade: [1.2, 2.2] },
-      open: { from: 0.4, to: 3.3, land: { L: 241.487, T: 744.359, W: 979.868 }, reveal: [2.3, 2.6] },
-      end: { from: 64.8, to: 66.25, scale: 2.2, cx: 960.985, cy: 888.636, release: [64.95, 65.25] },
+      open: { from: 0.4, to: 3.3, land: { L: 241.487, T: 724.925, W: 979.868 }, reveal: [2.9, 3.2] },
+      end: { from: 65.1, to: 66.55, scale: 2.2, cx: 960.985, cy: 888.636, release: [64.8, 65.1] },
     },
   },
   {
