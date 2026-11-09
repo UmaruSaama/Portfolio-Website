@@ -919,7 +919,12 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         />
       </div>
 
-      <div ref={cursor} className={styles.cursor} aria-hidden="true">
+      <div
+        ref={cursor}
+        className={styles.cursor}
+        style={current.accent ? ({ "--accent": current.accent } as CSSProperties) : undefined}
+        aria-hidden="true"
+      >
         <span className={styles.cursorDisc} data-cursor-disc />
         <span className={styles.cursorLabel}>
           View

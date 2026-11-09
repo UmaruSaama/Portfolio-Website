@@ -44,16 +44,16 @@
   transform: scale(1.08);
 }
 
-/* Primary: the accent disc, with the card's pink glow as its halo. */
+/* Primary: the accent disc, with a halo in the same (per-project) accent. */
 .accent {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 0 0 0 rgba(245, 35, 75, 0);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
 }
 
 .action:hover .accent,
 .action:focus-visible .accent {
-  box-shadow: 0 0 0 6px rgba(245, 35, 75, 0.14);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .action:hover .accent svg,
