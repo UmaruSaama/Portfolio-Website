@@ -430,7 +430,58 @@
   position: absolute;
   top: 16px;
   right: 16px;
+  z-index: 3;
   cursor: pointer;
+  transition: opacity 0.35s ease, translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.video {
+  cursor: pointer;
+}
+
+/* Sharp screen laid over the live iPad during the film's opening push. */
+.filmPlate {
+  position: absolute;
+  z-index: 1;
+  max-width: none;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.filmChrome {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.filmChrome > * {
+  pointer-events: auto;
+}
+
+/* Playing and the pointer is still: the chrome steps aside for the film. */
+.player[data-idle] {
+  cursor: none;
+}
+
+.player[data-idle] .video {
+  cursor: none;
+}
+
+.player[data-idle] .playerClose,
+.player[data-idle] [data-film-controls] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.player[data-idle] .playerClose {
+  translate: 0 -8px;
+}
+
+.player[data-idle] [data-film-controls] {
+  translate: 0 8px;
 }
 
 /* ---------- card -> case study overlay ---------- */

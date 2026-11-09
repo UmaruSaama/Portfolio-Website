@@ -2,11 +2,13 @@
 
 import { flushSync } from "react-dom";
 import Link from "next/link";
-import { useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import type { Project } from "@/data/projects";
 import { VideoToggle } from "./VideoToggle";
+import { chromeAlpha, fitsFilm, liveCam, liveIdentity, liveMatrix, plateAlpha, playerAlpha, type Cam, type FilmMatch } from "./filmMatch";
+import { FilmControls } from "./FilmControls";
 import { ArrowIcon, ArrowLeftIcon, CloseIcon } from "./icons";
 import Image from "next/image";
 import { DeviceMock } from "./DeviceMock";
@@ -52,6 +54,20 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
   const [caseSlug, setCaseSlug] = useState<string | null>(null);
+  // Film chrome (controls, close) rests out of the way while the film plays
+  // and the pointer is still; any movement, tap or focus brings it back.
+  const [filmIdle, setFilmIdle] = useState(false);
+  const idleTimer = useRef<number | undefined>(undefined);
+  const wakeFilm = useCallback(() => {
+    setFilmIdle(false);
+    window.clearTimeout(idleTimer.current);
+    idleTimer.current = window.setTimeout(() => {
+      const v = video.current;
+      if (v && !v.paused && videoOpenRef.current) setFilmIdle(true);
+    }, 2400);
+  }, []);
+  useEffect(() => () => window.clearTimeout(idleTimer.current), []);
+  const getVideo = useCallback(() => video.current, []);
 
   const activeRef = useRef(0);
   const videoOpenRef = useRef(false);
@@ -311,14 +327,158 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       // ---------- card ⇄ video player ----------
       // One timeline per opening, played forward to open and reversed to
       // close, so toggling mid-transition turns around smoothly from wherever
-      // it is instead of jumping. The player wipes in from the right edge
-      // while the card content drifts left and fades: one continuous push.
+      // it is instead of jumping.
+      //
+      // Two openings:
+      // - A film: its first and last frames ARE this card (it opens on the
+      //   card and ends by pulling back to it), so the player simply
+      //   dissolves over the card: a match cut, nothing moves. When the film
+      //   ends it dissolves back the same way, landing on the identical frame.
+      // - No film yet (empty state): the player wipes in from the right edge
+      //   while the card content drifts left: one continuous push.
       let videoTl: gsap.core.Timeline | null = null;
       let afterClose: (() => void) | null = null;
+      let fadeAudio: gsap.core.Tween | null = null;
+
+      // Match mode (film + desktop card shape + motion allowed): the film's
+      // clock drives the live card, the player's opacity and the hand-offs.
+      type Match = {
+        m: FilmMatch;
+        slide: HTMLElement;
+        plate: HTMLElement | null;
+        /** Plate's own top-left in card px (its transform origin). */
+        plateAt: { x: number; y: number };
+        chrome: HTMLElement[];
+        scr: { x: number; y: number; w: number };
+        cardW: number;
+        id: Cam;
+        phase: "open" | "tail" | "closing";
+        raf: number;
+        moved: boolean;
+      };
+      let match: Match | null = null;
+
+      const setLive = (mt: Match, c: Cam | null) => {
+        if (!c) {
+          if (mt.moved) {
+            gsap.set(mt.slide, { clearProps: "transform,transformOrigin" });
+            if (mt.plate) gsap.set(mt.plate, { clearProps: "transform,transformOrigin" });
+            mt.moved = false;
+          }
+          return;
+        }
+        const { a, bx, by } = liveMatrix(mt.m, c, mt.scr, mt.cardW);
+        const tf = `matrix(${a},0,0,${a},${bx},${by})`;
+        mt.slide.style.transformOrigin = "0 0";
+        mt.slide.style.transform = tf;
+        if (mt.plate) {
+          // Same camera, but the plate's transform origin is its own corner:
+          // p' = a·p + b in card px  ⇒  for a box at o, translate by b + (a − 1)·o.
+          const o = mt.plateAt;
+          mt.plate.style.transformOrigin = "0 0";
+          mt.plate.style.transform = `matrix(${a},0,0,${a},${bx + (a - 1) * o.x},${by + (a - 1) * o.y})`;
+        }
+        mt.moved = true;
+      };
+
+      const endMatch = () => {
+        const mt = match;
+        if (!mt) return;
+        cancelAnimationFrame(mt.raf);
+        setLive(mt, null);
+        gsap.set(mt.chrome, { clearProps: "opacity" });
+        if (mt.plate) gsap.set(mt.plate, { autoAlpha: 0 });
+        gsap.set(player.current, { autoAlpha: 0 });
+        match = null;
+        const v = video.current;
+        if (v) {
+          v.pause();
+          v.currentTime = 0;
+          v.volume = 1;
+        }
+        const then = afterClose;
+        afterClose = null;
+        then?.();
+      };
+
+      const tickMatch = () => {
+        const mt = match;
+        const v = video.current;
+        if (!mt || !v) return;
+        // On the film's frame grid: the picture shows frame ⌊t·fps⌋, so the
+        // live card must too, or the two drift apart mid-move during a dissolve.
+        const t = Math.floor(v.currentTime * mt.m.fps + 1e-4) / mt.m.fps;
+        if (mt.phase !== "closing") {
+          setLive(mt, liveCam(mt.m, t, mt.id));
+          gsap.set(player.current, { autoAlpha: playerAlpha(mt.m, t) });
+          gsap.set(mt.chrome, { opacity: chromeAlpha(mt.m, t) });
+          if (mt.plate) gsap.set(mt.plate, { autoAlpha: plateAlpha(mt.m, t) });
+          // The film is handing back: the card is the card again (interactive,
+          // button says "Product video") while the pull-back and the music finish.
+          if (mt.phase === "open" && v.currentTime >= mt.m.end.release[0]) {
+            mt.phase = "tail";
+            videoOpenRef.current = false;
+            setVideoOpen(false);
+          }
+        }
+        mt.raf = requestAnimationFrame(tickMatch);
+      };
+
+      const startMatch = (m: FilmMatch, slide: HTMLElement): boolean => {
+        const cardEl = card.current;
+        const screen = slide.querySelector<HTMLElement>("[data-film-screen]");
+        if (!cardEl || !screen) return false;
+        const cardW = cardEl.offsetWidth;
+        if (!fitsFilm(cardW, cardEl.offsetHeight)) return false;
+        // Measure the card at rest: no tilt, no drift.
+        gsap.killTweensOf(cardEl, "rotationX,rotationY");
+        gsap.set(cardEl, { rotationX: 0, rotationY: 0 });
+        slide.querySelectorAll("[data-anim='media'] > *").forEach((el) => {
+          gsap.killTweensOf(el, "x,y");
+          gsap.set(el, { x: 0, y: 0 });
+        });
+        const c = cardEl.getBoundingClientRect();
+        const r = screen.getBoundingClientRect();
+        const k = cardW / c.width; // client → card px (the card may be scaled by its perspective)
+        const scr = { x: (r.left - c.left) * k, y: (r.top - c.top) * k, w: r.width * k };
+        // Card chrome outside the slides (glow, top line) leaves with the push.
+        const chrome = Array.from(cardEl.children).filter(
+          (el): el is HTMLElement => el instanceof HTMLElement && el.tagName === "SPAN",
+        );
+        // The plate sits exactly on the live screen's image area, untransformed;
+        // the camera matrix then moves it with the slide.
+        const plate = cardEl.querySelector<HTMLElement>("[data-film-plate]");
+        const u = scr.w / m.plate.posterW; // card px per screen-image px
+        const plateAt = { x: scr.x, y: scr.y + m.plate.pad * u };
+        if (plate) {
+          gsap.set(plate, {
+            left: plateAt.x,
+            top: plateAt.y,
+            width: m.plate.w * u,
+            height: m.plate.h * u,
+            autoAlpha: 0,
+          });
+        }
+        match = {
+          m,
+          slide,
+          plate,
+          plateAt,
+          chrome,
+          scr,
+          cardW,
+          id: liveIdentity(m, scr, cardW),
+          phase: "open",
+          raf: 0,
+          moved: false,
+        };
+        gsap.set(player.current, { clipPath: CLIP_OPEN, autoAlpha: 0 });
+        match.raf = requestAnimationFrame(tickMatch);
+        return true;
+      };
 
       const onOpened = () => {
         player.current?.querySelector<HTMLElement>("[data-player-focus]")?.focus({ preventScroll: true });
-        video.current?.play().catch(() => {});
       };
 
       const onClosed = () => {
@@ -327,6 +487,12 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           const { text, media } = parts(slide);
           gsap.set([text, media], { clearProps: "transform,opacity,visibility" });
         }
+        const v = video.current;
+        if (v) {
+          v.pause();
+          v.currentTime = 0; // next opening starts on the card frame again
+          v.volume = 1;
+        }
         videoTl?.kill();
         videoTl = null;
         const then = afterClose;
@@ -334,11 +500,18 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         then?.();
       };
 
-      const buildVideoTl = (slide: HTMLElement) => {
+      const buildVideoTl = (slide: HTMLElement, film: boolean) => {
         const { text, media } = parts(slide);
         const inner = player.current?.querySelector("[data-player-inner]") ?? [];
-        return gsap
-          .timeline({ paused: true, onComplete: onOpened, onReverseComplete: onClosed })
+        const tl = gsap.timeline({ paused: true, onComplete: onOpened, onReverseComplete: onClosed });
+        if (film) {
+          // Fallback for a film when the card isn't the film's shape (compact
+          // layouts) or motion is reduced: a plain dissolve.
+          return tl
+            .set(player.current, { clipPath: CLIP_OPEN }, 0)
+            .fromTo(player.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: "power2.inOut" }, 0);
+        }
+        return tl
           .set(player.current, { autoAlpha: 1 }, 0)
           .fromTo(
             player.current,
@@ -355,14 +528,36 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         if (busy.current || videoOpenRef.current) return;
         const slide = slides.current[activeRef.current];
         if (!slide || !player.current) return;
+        const v = video.current;
+        const m = projects[activeRef.current].film;
 
+        if (match) endMatch(); // reopened during the hand-back tail: start over
         videoOpenRef.current = true;
         setVideoOpen(true);
         cursorHide();
-        tiltReset();
         afterClose = null;
+        fadeAudio?.kill();
 
-        if (!videoTl) videoTl = buildVideoTl(slide);
+        // Start the film inside the click itself: browsers only allow sound
+        // when play() runs in the user's gesture, not after a transition.
+        if (v) {
+          v.currentTime = 0;
+          v.volume = 1;
+          v.play().catch(() => {
+            // Sound refused (strict autoplay policy): play muted instead; the
+            // mute button shows it and one tap brings the sound back.
+            v.muted = true;
+            v.play().catch(() => {});
+          });
+        }
+
+        if (v && m && !reduce && !videoTl && startMatch(m, slide)) {
+          onOpened();
+          return;
+        }
+
+        tiltReset();
+        if (!videoTl) videoTl = buildVideoTl(slide, Boolean(v));
         if (reduce) {
           videoTl.progress(1).pause();
           onOpened();
@@ -372,13 +567,58 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       });
 
       const closeVideo = safe((then?: () => void) => {
+        // Match mode: fade picture and sound, and ease the live card home from
+        // wherever the camera is.
+        if (match) {
+          const mt = match;
+          if (then) afterClose = then;
+          if (mt.phase === "closing") return;
+          mt.phase = "closing";
+          cancelAnimationFrame(mt.raf);
+          videoOpenRef.current = false;
+          setVideoOpen(false);
+          const v = video.current;
+          const from = liveCam(mt.m, v?.currentTime ?? 0, mt.id);
+          const q = { p: 0 };
+          const tl = gsap.timeline({ onComplete: endMatch });
+          tl.to(player.current, { autoAlpha: 0, duration: 0.45, ease: "power2.inOut" }, 0);
+          tl.to(mt.chrome, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+          if (mt.plate) tl.to(mt.plate, { autoAlpha: 0, duration: 0.45, ease: "power2.inOut" }, 0);
+          if (v && !v.paused) tl.to(v, { volume: 0, duration: 0.45, ease: "power1.in" }, 0);
+          if (from) {
+            const id = mt.id;
+            tl.to(
+              q,
+              {
+                p: 1,
+                duration: 0.7,
+                ease: "power3.inOut",
+                onUpdate: () =>
+                  setLive(mt, {
+                    L: from.L + (id.L - from.L) * q.p,
+                    T: from.T + (id.T - from.T) * q.p,
+                    W: from.W * Math.pow(id.W / from.W, q.p),
+                  }),
+              },
+              0,
+            );
+          }
+          return;
+        }
+
         if (!videoTl) return;
         if (then) afterClose = then;
         if (!videoOpenRef.current) return; // already closing; `then` will run when it finishes
 
         videoOpenRef.current = false;
         setVideoOpen(false);
-        video.current?.pause();
+
+        // Sound fades with the picture instead of cutting off.
+        const v = video.current;
+        if (v && !v.paused) {
+          fadeAudio?.kill();
+          fadeAudio = gsap.to(v, { volume: 0, duration: reduce ? 0 : 0.45, ease: "power1.in" });
+        }
 
         if (reduce) {
           videoTl.progress(0).pause();
@@ -388,7 +628,17 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         videoTl.timeScale(1.2).reverse();
       });
 
-      const videoActive = () => videoTl !== null;
+      // End of the film. Match mode: the hand-back already happened; finish
+      // once the music has resolved. Dissolve mode: the film ends on the card
+      // frame, so dissolve back to the live card.
+      const onFilmEnded = () => {
+        if (match && match.phase === "tail") endMatch();
+        else if (videoOpenRef.current) closeVideo();
+      };
+      const rootEl = root.current;
+      rootEl?.addEventListener("ended", onFilmEnded, true);
+
+      const videoActive = () => videoTl !== null || match !== null;
 
       actions.current = {
         ...actions.current,
@@ -657,7 +907,18 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           closeVideo();
           return;
         }
-        if (videoOpenRef.current) return;
+        if (videoOpenRef.current) {
+          const v = video.current;
+          if (!v || (t && /^(BUTTON|A)$/.test(t.tagName) && e.key === " ")) return; // a focused button handles its own Space
+          if (e.key === " " || e.key === "k") {
+            e.preventDefault();
+            if (v.paused) v.play().catch(() => {});
+            else v.pause();
+          } else if (e.key === "m") {
+            v.muted = !v.muted;
+          }
+          return;
+        }
         if (["ArrowDown", "PageDown", "j"].includes(e.key)) {
           e.preventDefault();
           goTo(activeRef.current + 1);
@@ -698,6 +959,7 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
         window.removeEventListener("keydown", onKey);
         window.removeEventListener("touchstart", onTouchStart);
         window.removeEventListener("touchend", onTouchEnd);
+        rootEl?.removeEventListener("ended", onFilmEnded, true);
       };
     },
     { scope: root, dependencies: [projects.length] },
@@ -851,6 +1113,19 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           </div>
         ))}
 
+        {current.film && (
+          // eslint-disable-next-line @next/next/no-img-element -- positioned and moved by the film controller
+          <img
+            key={current.slug}
+            className={styles.filmPlate}
+            src={current.film.plate.src}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            data-film-plate
+          />
+        )}
+
         <div
           id={PLAYER_ID}
           ref={player}
@@ -859,6 +1134,10 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           aria-label={`${current.name} product video`}
           aria-hidden={!videoOpen}
           inert={!videoOpen}
+          data-idle={videoOpen && filmIdle ? "" : undefined}
+          onPointerMove={wakeFilm}
+          onPointerDown={wakeFilm}
+          onFocus={wakeFilm}
         >
           <div className={styles.playerInner} data-player-inner>
             {current.videoSrc ? (
@@ -867,10 +1146,19 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                 ref={video}
                 className={styles.video}
                 src={current.videoSrc}
-                controls
+                poster={current.videoPoster}
                 playsInline
                 preload="metadata"
+                tabIndex={-1}
                 data-player-focus
+                aria-label={`${current.name} product film`}
+                onPlay={wakeFilm}
+                onPause={() => setFilmIdle(false)}
+                onClick={(e) => {
+                  const v = e.currentTarget;
+                  if (v.paused) v.play().catch(() => {});
+                  else v.pause();
+                }}
               />
             ) : (
               <div className={styles.playerEmpty} tabIndex={-1} data-player-focus>
@@ -894,6 +1182,13 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
               </div>
             )}
           </div>
+          {current.videoSrc && (
+            // The open timeline fades this wrapper in; the idle state fades the
+            // controls inside it, so the two never fight over one opacity.
+            <div className={styles.filmChrome} data-film-chrome>
+              <FilmControls getVideo={getVideo} slug={current.slug} />
+            </div>
+          )}
           <button
             type="button"
             className={`${action.disc} ${action.glass} ${styles.playerClose}`}
@@ -909,13 +1204,29 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       <div
         className={styles.side}
         data-case-fade
-        data-hidden={current.placeholder ? "" : undefined}
-        inert={current.placeholder}
+        data-hidden={current.placeholder || current.noVideo ? "" : undefined}
+        inert={current.placeholder || current.noVideo}
+        // Warm the film when the pointer heads for the button, not on page load
+        // (it's ~15 MB): the opening push runs on the film's clock.
+        onPointerEnter={() => {
+          const v = getVideo();
+          if (v && v.preload !== "auto") v.preload = "auto";
+        }}
+        onFocus={() => {
+          const v = getVideo();
+          if (v && v.preload !== "auto") v.preload = "auto";
+        }}
       >
         <VideoToggle
           open={videoOpen}
           controls={PLAYER_ID}
-          onToggle={() => (videoOpen ? actions.current.closeVideo() : actions.current.openVideo())}
+          onToggle={() => {
+            if (videoOpen) actions.current.closeVideo();
+            else {
+              actions.current.openVideo();
+              wakeFilm(); // chrome visible on open, then rests once the film plays
+            }
+          }}
         />
       </div>
 

@@ -1,4 +1,5 @@
 // One entry per dot in the left rail. Order = dot order.
+import type { FilmMatch } from "@/components/filmMatch";
 
 /** DOM id of a case-study chapter (shared by the rail and the sections). */
 export const chapterAnchor = (id: string) => `chapter-${id}`;
@@ -24,8 +25,18 @@ export type Project = {
    * reach the content column.
    */
   chapters?: { id: string; label: string; short?: string }[];
-  /** Product video for the "Product video" button. */
+  /**
+   * Product film for the "Product video" button. It should open on this card's
+   * exact frame and end on it: the player dissolves over the card (match cut)
+   * and dissolves back when the film ends.
+   */
   videoSrc?: string;
+  /** First frame of the film (shown until it plays). */
+  videoPoster?: string;
+  /** Camera of the film's opening push and closing pull, so the live card can play them (see filmMatch.ts). */
+  film?: FilmMatch;
+  /** This project will never have a product film: no "Product video" button. */
+  noVideo?: boolean;
   /** Case-study page surface (the card morphs into this colour). */
   bg?: string;
   /** Hero text inks the morph lands on: [title, summary, tags]. */
@@ -70,6 +81,17 @@ export const projects: Project[] = [
       poster: "/work/immerlingo/hero-walkthrough-poster.jpg",
       label:
         "ImmerLingo on an iPad: tonight’s plan, a warm-up word, tapping a word in a scene and saving it, the episode summary, then reviewing the card.",
+    },
+    videoSrc: "/work/immerlingo/film.mp4",
+    videoPoster: "/work/immerlingo/film-poster.jpg",
+    // From the film source (film4.js): screen = the card iPad's poster box, land = K2c,
+    // end = S10A. Re-derive if the film's opening or closing shot changes.
+    film: {
+      fps: 30,
+      screen: { x: 235.853, y: 660.06, w: 1450.265 },
+      plate: { src: "/work/immerlingo/film-plate.jpg", w: 1194, h: 834, pad: 31, posterW: 1194, fade: [1.2, 2.2] },
+      open: { from: 0.4, to: 3.3, land: { L: 241.487, T: 744.359, W: 979.868 }, reveal: [2.3, 2.6] },
+      end: { from: 64.8, to: 66.25, scale: 2.2, cx: 960.985, cy: 888.636, release: [64.95, 65.25] },
     },
   },
   {
@@ -162,6 +184,7 @@ export const projects: Project[] = [
       alt: "The Stag Fencing homepage in a browser window: a fenced garden, the headline, rating and project counts, and the free-quote form.",
     },
     accent: "#b83a31",
+    noVideo: true, // no product film for Stag: the case study is the whole story
     badge: "Under NDA · Confidential",
     bg: "#fbfbfd",
     heroInk: ["#1d1d1f", "#6e6e73", "#6e6e73"],

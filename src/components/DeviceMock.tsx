@@ -21,7 +21,7 @@ export function DeviceMock({
 }) {
   return (
     <div className={styles.device} data-device>
-      <div className={styles.screen}>
+      <div className={styles.screen} data-film-screen>
         {screen?.kind === "video" &&
           (play ? (
             <HeroVideo className={styles.media} src={screen.src} poster={screen.poster} label={screen.label} />

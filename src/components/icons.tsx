@@ -34,6 +34,38 @@ export function PlayIcon() {
   );
 }
 
+export function PauseIcon() {
+  return (
+    <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="3.6" height="13" rx="1.2" fill="currentColor" />
+      <rect x="8.9" y="1.5" width="3.6" height="13" rx="1.2" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function SoundIcon() {
+  return (
+    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden="true">
+      <path d="M2 5.6h2.6L8.4 2.4v11.2L4.6 10.4H2a.8.8 0 0 1-.8-.8V6.4a.8.8 0 0 1 .8-.8Z" fill="currentColor" />
+      <path
+        d="M11.4 5.2a3.8 3.8 0 0 1 0 5.6M13.6 3a6.9 6.9 0 0 1 0 10"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function MutedIcon() {
+  return (
+    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden="true">
+      <path d="M2 5.6h2.6L8.4 2.4v11.2L4.6 10.4H2a.8.8 0 0 1-.8-.8V6.4a.8.8 0 0 1 .8-.8Z" fill="currentColor" />
+      <path d="m11.6 5.6 4.8 4.8M16.4 5.6l-4.8 4.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function ArrowLeftIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
