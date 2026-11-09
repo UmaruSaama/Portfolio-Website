@@ -306,6 +306,152 @@
   color: var(--cs-text-tertiary);
 }
 
+/* The walkthrough clip fills the player (same 1020 : 640 frame). */
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #191919;
+  cursor: pointer;
+}
+
+.vPlay {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(20, 20, 22, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  cursor: pointer;
+}
+
+.vPlay svg {
+  margin-left: 3px;
+}
+
+/* 3 px progress hairline on the video's bottom edge */
+.vBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.vBar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent, var(--cs-pink));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* Header steps: follow the clip; click one to jump to it */
+.vSteps {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+.vSteps[data-on] {
+  max-width: 640px;
+  opacity: 1;
+  margin-right: 12px;
+}
+
+.vStep {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 28px;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--cs-text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, gap 0.25s ease, padding 0.25s ease;
+}
+
+.vNum {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--cs-white-10);
+  color: var(--cs-white-80);
+  font-size: 11px;
+  font-weight: 600;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.vTitle {
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vStep[data-done] .vNum {
+  background: var(--cs-white-14);
+  color: #fff;
+}
+
+.vStep[data-active] {
+  gap: 8px;
+  padding-right: 12px;
+  background: color-mix(in srgb, var(--cs-pink) 14%, transparent);
+}
+
+.vStep[data-active] .vNum {
+  background: var(--cs-pink);
+  color: #fff;
+}
+
+.vStep[data-active] .vTitle {
+  max-width: 320px;
+}
+
+.vReplay {
+  height: 28px;
+  margin-left: 4px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cs-white-10);
+  color: var(--cs-text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.vReplay:hover,
+.vStep:hover .vNum {
+  background: var(--cs-white-14);
+}
+
 /* Inert scrub bar: shows it's a player without pretending to play. */
 .playerBar {
   position: absolute;
@@ -344,6 +490,9 @@
   .player[data-on] .playerEmpty,
   .fold,
   .fold[data-folded],
+  .vSteps,
+  .vStep,
+  .vTitle,
   .foldContent,
   .modeThumb {
     transition: none;
@@ -736,6 +885,15 @@
    that would separate it would hang at the end of the first row. */
 @media (max-width: 479px) {
   .foldContent > .divider:last-child {
+    display: none;
+  }
+}
+
+/* Phones: the clips are framed for a laptop-width card (text would land at
+   ~7 px), so compact cards stay Interactive only. */
+@media (max-width: 699px) {
+  .modeSeg,
+  .vSteps {
     display: none;
   }
 }

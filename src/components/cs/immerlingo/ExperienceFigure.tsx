@@ -7,6 +7,7 @@ import {
   type ExperienceFigure as Data,
 } from "./ch08Figures";
 import { touchAnnotations } from "./ch08TouchAnnotations";
+import { experienceVideos } from "./ch08Videos";
 import { useDeviceView, type Device } from "./DeviceView";
 import {
   IconCursor,
@@ -20,6 +21,7 @@ import {
 import styles from "./ExperienceFigure.module.css";
 
 const SCREENS = "/cs/immerlingo/screens";
+const VIDEOS = "/cs/immerlingo/video";
 
 const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] =
   [
@@ -57,6 +59,70 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
   // Mode is per figure: each card can show its own (placeholder) video.
   const [mode, setMode] = useState<"interactive" | "video">("interactive");
   const video = mode === "video";
+
+  // ---------- video mode: a silent walkthrough of the figure's three steps ----------
+  // The clip plays from the start each time Video is chosen; the step in the
+  // header follows the clip (cue times from the render), the hairline shows
+  // progress, and the last frame holds with Replay. Off-screen it pauses.
+  const clip = experienceVideos[fig.slug];
+  const vRef = useRef<HTMLVideoElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+  const [vStep, setVStep] = useState(0); // 0 = before step 1
+  const [vEnded, setVEnded] = useState(false);
+  const [vPaused, setVPaused] = useState(true);
+  const visible = useRef(true);
+  const stepAt = (t: number) => (clip ? clip.cues.filter((c) => t >= c - 0.05).length : 0);
+  const playClip = (from?: number) => {
+    const v = vRef.current;
+    if (!v) return;
+    if (from != null) v.currentTime = from;
+    setVEnded(false);
+    v.play().catch(() => setVPaused(true));
+  };
+  useEffect(() => {
+    const v = vRef.current;
+    if (!v || !clip) return;
+    if (!video) {
+      v.pause();
+      return;
+    }
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    v.currentTime = 0;
+    if (!reduce && visible.current) {
+      // starts after the player has wiped in
+      const id = window.setTimeout(() => v.play().catch(() => setVPaused(true)), 450);
+      return () => window.clearTimeout(id);
+    }
+  }, [video, clip]);
+  useEffect(() => {
+    const v = vRef.current;
+    if (!v || !clip || !video) return;
+    let raf = 0;
+    const loop = () => {
+      const t = v.currentTime;
+      setVStep(stepAt(t));
+      if (barRef.current) barRef.current.style.transform = `scaleX(${Math.min(1, t / (v.duration || clip.dur))})`;
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stepAt only reads clip
+  }, [video, clip]);
+  useEffect(() => {
+    // Observe the figure, not the video: the player is clip-path hidden until
+    // Video is chosen, and a clipped target never counts as visible.
+    const el = vRef.current?.closest("figure");
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      visible.current = e.isIntersecting;
+      const v = vRef.current;
+      if (!v || !video) return;
+      if (!e.isIntersecting) v.pause();
+      else if (!v.ended && v.currentTime > 0 && !matchMedia("(prefers-reduced-motion: reduce)").matches) v.play().catch(() => {});
+    }, { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [video]);
 
   // Annotations off = clean view: the notes fade and the screen grows to
   // fill the card. The device box keeps its layout slot (nothing reflows);
@@ -129,8 +195,34 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
         ? "phone"
         : `tablet, ${view.orientation === "l" ? "landscape" : "portrait"}`;
 
+  const vSteps = clip && (
+    <div className={styles.vSteps} data-on={video ? "" : undefined} inert={!video} aria-label="Walkthrough steps">
+      {fig.steps.map((s, i) => (
+        <button
+          key={s.title}
+          type="button"
+          className={styles.vStep}
+          data-active={vStep === i + 1 ? "" : undefined}
+          data-done={vStep > i + 1 ? "" : undefined}
+          aria-current={vStep === i + 1 ? "step" : undefined}
+          aria-label={`Step ${i + 1}: ${s.title}`}
+          onClick={() => playClip(clip.cues[i])}
+        >
+          <span className={styles.vNum}>{i + 1}</span>
+          <span className={styles.vTitle}>{s.title}</span>
+        </button>
+      ))}
+      {vEnded && (
+        <button type="button" className={styles.vReplay} onClick={() => playClip(0)}>
+          Replay
+        </button>
+      )}
+    </div>
+  );
+
   const controls = (
     <div className={styles.controlsRow}>
+      {vSteps}
       {/* Annotations + device switch fold away in video mode (width and
           opacity animate together; inert so they leave the tab order). */}
       <div
@@ -407,22 +499,48 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
         aria-hidden={!video}
         inert={!video}
       >
-        <div className={styles.playerEmpty}>
-          <span className={styles.playDisc} aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
-            </svg>
-          </span>
-          <p className={styles.playerTitle}>{title} · walkthrough</p>
-          <p className={styles.playerBody}>
-            Video coming soon. Switch to Interactive to explore the screens.
-          </p>
-        </div>
-        <div className={styles.playerBar} aria-hidden="true">
-          <span className={styles.playerTime}>0:00</span>
-          <span className={styles.playerTrack} />
-          <span className={styles.playerTime}>0:00</span>
-        </div>
+        {clip ? (
+          <>
+            <video
+              ref={vRef}
+              className={styles.video}
+              src={video ? `${VIDEOS}/${fig.slug}.mp4` : undefined}
+              poster={`${VIDEOS}/${fig.slug}.jpg`}
+              muted
+              playsInline
+              preload="none"
+              aria-label={`${title}: a silent walkthrough of the three steps`}
+              onPlay={() => setVPaused(false)}
+              onPause={() => setVPaused(true)}
+              onEnded={() => {
+                setVEnded(true);
+                setVStep(3);
+              }}
+              onClick={() => {
+                const v = vRef.current;
+                if (!v) return;
+                if (v.ended) playClip(0);
+                else if (v.paused) playClip();
+                else v.pause();
+              }}
+            />
+            {vPaused && !vEnded && video && (
+              <button type="button" className={styles.vPlay} onClick={() => playClip()} aria-label="Play walkthrough">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
+                </svg>
+              </button>
+            )}
+            <span className={styles.vBar} aria-hidden="true">
+              <span ref={barRef} />
+            </span>
+          </>
+        ) : (
+          <div className={styles.playerEmpty}>
+            <p className={styles.playerTitle}>{title} · walkthrough</p>
+            <p className={styles.playerBody}>Video coming soon. Switch to Interactive to explore the screens.</p>
+          </div>
+        )}
       </div>
     </Figure>
   );
