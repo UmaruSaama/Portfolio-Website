@@ -1,4 +1,4 @@
-// 16px stroke icons for the figure toolbar (Figma "Icon / desktop|tablet|mobile|cursor|film").
+// 16px stroke icons for the figure toolbar (Figma "Icon / desktop|tablet|mobile|cursor|screens|film").
 const P = { width: 16, height: 16, viewBox: "0 0 16 16", fill: "none", "aria-hidden": true } as const;
 const S = { stroke: "currentColor", strokeWidth: 1.4, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 
@@ -34,6 +34,12 @@ export const IconCursor = () => (
   <svg {...P}>
     <path d="M3.5 2.5l9 3.6-3.9 1.4-1.4 3.9-3.7-8.9z" {...S} />
     <path d="M8.6 8.6l3.4 3.4" {...S} />
+  </svg>
+);
+export const IconScreens = () => (
+  <svg {...P}>
+    <rect x="1.75" y="4.25" width="9" height="9" rx="1.4" {...S} />
+    <path d="M5.25 4.25V3.4c0-.75.6-1.35 1.35-1.35h6.3c.75 0 1.35.6 1.35 1.35v6.3c0 .75-.6 1.35-1.35 1.35h-2.15" {...S} />
   </svg>
 );
 export const IconFilm = () => (

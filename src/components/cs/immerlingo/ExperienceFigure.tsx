@@ -10,7 +10,7 @@ import { touchAnnotations } from "./ch08TouchAnnotations";
 import { experienceVideos } from "./ch08Videos";
 import { useDeviceView, type Device } from "./DeviceView";
 import {
-  IconCursor,
+  IconScreens,
   IconDesktop,
   IconFilm,
   IconLandscape,
@@ -363,7 +363,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
         )}
         {(
           [
-            ["interactive", "Interactive", IconCursor],
+            ["interactive", "Screens", IconScreens],
             ["video", "Video", IconFilm],
           ] as const
         ).map(([m, label, MIcon]) => (
@@ -388,7 +388,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
 
   return (
     <Figure
-      type={video ? "Video" : "Interactive"}
+      type={video ? "Video" : "Screens"}
       title={title}
       controls={controls}
       stageClassName={styles.stage}
@@ -583,7 +583,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
         ) : (
           <div className={styles.playerEmpty}>
             <p className={styles.playerTitle}>{title} · walkthrough</p>
-            <p className={styles.playerBody}>Video coming soon. Switch to Interactive to explore the screens.</p>
+            <p className={styles.playerBody}>Video coming soon. Switch to Screens to see each device.</p>
           </div>
         )}
       </div>
