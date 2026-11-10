@@ -115,6 +115,14 @@
   [
    "<p className=\"relative shrink-0 text-[#6e6e73]\">\n            Back to top ↑\n          </p>",
    "<a href=\"#chapter-intro\" className=\"relative shrink-0 text-[#6e6e73] cs-link\">\n            Back to top ↑\n          </a>"
+  ],
+  [
+   "h-[365px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale\">",
+   "h-[365px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale cs-pinbox\">"
+  ],
+  [
+   "left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px]\">",
+   "left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px] cs-unpin\">"
   ]
  ]
 }

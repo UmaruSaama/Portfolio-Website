@@ -136,16 +136,38 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 18px 48px rgba(13, 18, 51, 0.14);
 }
 
-/* "Shelf · bleeds right": scrolls, and runs to the viewport's right edge. */
+/* No one-word last lines in titles; centred titles split evenly. */
+.cs-gen .cs-ch :is(h2, h3) {
+  text-wrap: pretty;
+}
+
+.cs-gen .cs-ch :is(h2, h3).text-center {
+  text-wrap: balance;
+}
+
+/* "Shelf · bleeds right": scrolls, and runs to the viewport's right edge.
+   A scroller clips on both axes, so it carries --room of padding on the
+   left and bottom (cancelled by negative margins) for the cards' drop
+   shadows (0 12px 20px: 20px out to the side, 32px below). */
 .cs-gen .cs-shelf {
   --bleed: max(calc(210 * var(--v)), calc(50vw - 510 * var(--v)));
-  width: calc(100% + var(--bleed));
+  --room: 24px;
+  width: calc(100% + var(--bleed) + var(--room));
+  margin-left: calc(-1 * var(--room));
   margin-right: calc(-1 * var(--bleed));
+  margin-bottom: calc(-1 * var(--room));
+  padding-left: var(--room);
   padding-right: var(--bleed);
+  scroll-padding-left: var(--room);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+}
+
+/* Doubled to beat the generated pb-[24px] (it loads later). */
+.cs-gen .cs-shelf.cs-shelf {
+  padding-bottom: calc(24px + var(--room));
 }
 
 .cs-gen .cs-shelf::-webkit-scrollbar {
@@ -262,8 +284,10 @@
   /* On phones the shelf is a plain stack: no scroller, no arrows. */
   .cs-gen .cs-shelf.cs-shelf {
     width: 100%;
-    margin-right: 0;
+    margin: 0;
+    padding-left: 0;
     padding-right: 0;
+    padding-bottom: 24px;
     overflow: visible;
   }
 
@@ -271,7 +295,51 @@
     height: auto;
   }
 
-  .cs-gen .cs-shelf-ctl {
+  /* Doubled: the generated .flex rule loads later at equal specificity. */
+  .cs-gen .cs-shelf-ctl.cs-shelf-ctl {
     display: none;
+  }
+
+  /* A scaled figure inside a sideways scroller keeps the scroller's 0.8,
+     not its own fit-to-column scale (which made text ~4px on phones). */
+  .cs-gen .cs-wide .cs-scale.cs-scale {
+    --v: inherit;
+  }
+
+  /* Flow panels (Stag skills): content reflows, so draw it at full size
+     instead of shrinking the desktop panel to the column. */
+  .cs-gen .cs-flow.cs-flow {
+    --v: 1px;
+    padding: 20px 20px 28px;
+  }
+
+  .cs-gen .cs-flow .cs-stack.cs-stack {
+    width: 100%;
+  }
+
+  /* One pinned card over colour fields (design challenge): unpin it into
+     the flow so its text stays readable. */
+  .cs-gen .cs-pinbox.cs-pinbox {
+    --v: 1px;
+    height: auto;
+    padding: 20px 20px 28px;
+  }
+
+  .cs-gen .cs-pinbox > .cs-unpin.cs-unpin {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    padding: 28px 20px;
+  }
+
+  .cs-gen .cs-unpin.cs-unpin > :is(h2, h3, p) {
+    width: auto;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .cs-gen .cs-unpin.cs-unpin > h3 {
+    font-size: clamp(20px, 5.4vw, 28px);
   }
 }

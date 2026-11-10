@@ -513,7 +513,7 @@ export function Ch_approach() {
               <div className="absolute left-[892px] size-[16px] top-[282px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/stag/a/imgPoint.svg" />
               </div>
-              <div className="absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex items-center left-[830px] px-[12px] py-[6px] rounded-[999px] top-[244px]">
+              <div style={{ left: "calc(818 * var(--v))", top: "calc(302 * var(--v))" }} className="absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex items-center left-[830px] px-[12px] py-[6px] rounded-[999px] top-[244px]">
                 <p className="[word-break:break-word] font-['SF_Pro:Medium'] font-[510] leading-[normal] relative shrink-0 text-[#1d1d1f] text-[12px] whitespace-nowrap">
                   Will my yard be a mess?
                 </p>
@@ -532,7 +532,7 @@ export function Ch_approach() {
             </p>
           </div>
         </div>
-        <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] h-[330px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale">
+        <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] h-[330px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale cs-pinbox">
           <div className="absolute left-[640px] size-[520px] top-[-160px]">
             <span className="cs-field" style={{ background: "#b83a31", opacity: 0.35, filter: "blur(calc(60 * var(--v)))" }} />
           </div>
@@ -542,7 +542,7 @@ export function Ch_approach() {
           <div className="absolute left-[420px] size-[320px] top-[200px]">
             <span className="cs-field" style={{ background: "#f5c542", opacity: 0.35, filter: "blur(calc(60 * var(--v)))" }} />
           </div>
-          <div className="absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.5)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex flex-col gap-[16px] items-center left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px]">
+          <div className="absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.5)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex flex-col gap-[16px] items-center left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px] cs-unpin">
             <div className="bg-[rgba(184,58,49,0.08)] border-[1.5px] border-[rgba(184,58,49,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/stag/a/imgIconHeroiconsOutlineExclamation.png" />
@@ -672,7 +672,7 @@ export function Ch_skills() {
           </div>
         </div>
         <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-[1020px]">
-          <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] content-stretch flex flex-col gap-[20px] items-start overflow-clip p-[40px] relative rounded-[28px] shrink-0 w-[1020px] cs-scale">
+          <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] content-stretch flex flex-col gap-[20px] items-start overflow-clip p-[40px] relative rounded-[28px] shrink-0 w-[1020px] cs-scale cs-flow">
             <div className="absolute left-[700px] size-[380px] top-[280px]">
               <span className="cs-field" style={{ background: "#f5c542", opacity: 0.45, filter: "blur(calc(57 * var(--v)))" }} />
             </div>

@@ -1384,7 +1384,7 @@ export function Ch_problem() {
             </p>
           </div>
         </div>
-        <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] h-[365px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale">
+        <div style={{ "--cs-w": 1020 } as CSSProperties} className="bg-[#f5f5f7] h-[365px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale cs-pinbox">
           <div className="absolute left-[640px] size-[520px] top-[-160px]">
             <span className="cs-field" style={{ background: "#2e42b8", opacity: 0.35, filter: "blur(calc(60 * var(--v)))" }} />
           </div>
@@ -1394,7 +1394,7 @@ export function Ch_problem() {
           <div className="absolute left-[420px] size-[320px] top-[200px]">
             <span className="cs-field" style={{ background: "#923ef5", opacity: 0.35, filter: "blur(calc(60 * var(--v)))" }} />
           </div>
-          <div className="absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.5)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex flex-col gap-[16px] items-center left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px]">
+          <div className="absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.5)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex flex-col gap-[16px] items-center left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px] cs-unpin">
             <div className="bg-[rgba(46,66,184,0.08)] border-[1.5px] border-[rgba(46,66,184,0.25)] border-solid content-stretch flex items-center p-[10px] relative rounded-[999px] shrink-0">
               <div className="relative shrink-0 size-[24px]">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src="/cs/ccd/a/imgIconHeroiconsOutlineExclamation.png" />

@@ -124,6 +124,22 @@
   [
    "<p className=\"relative shrink-0 text-[#6e6e73]\">\n            Back to top ↑\n          </p>",
    "<a href=\"#chapter-intro\" className=\"relative shrink-0 text-[#6e6e73] cs-link\">\n            Back to top ↑\n          </a>"
+  ],
+  [
+   "h-[330px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale\">",
+   "h-[330px] overflow-clip relative rounded-[24px] shrink-0 w-[1020px] cs-scale cs-pinbox\">"
+  ],
+  [
+   "left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px]\">",
+   "left-[60px] px-[56px] py-[44px] rounded-[28px] top-[35.5px] w-[900px] cs-unpin\">"
+  ],
+  [
+   "items-start overflow-clip p-[40px] relative rounded-[28px] shrink-0 w-[1020px] cs-scale\">",
+   "items-start overflow-clip p-[40px] relative rounded-[28px] shrink-0 w-[1020px] cs-scale cs-flow\">"
+  ],
+  [
+   "<div className=\"absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex items-center left-[830px] px-[12px] py-[6px] rounded-[999px] top-[244px]\">",
+   "<div style={{ left: \"calc(818 * var(--v))\", top: \"calc(302 * var(--v))\" }} className=\"absolute backdrop-blur-[15px] bg-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.85)] border-solid content-stretch drop-shadow-[0px_8px_16px_rgba(0,0,0,0.07)] flex items-center left-[830px] px-[12px] py-[6px] rounded-[999px] top-[244px]\">"
   ]
  ]
 }
