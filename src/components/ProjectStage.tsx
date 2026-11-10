@@ -1134,6 +1134,8 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
                   sizes="(max-width: 900px) 92vw, 960px"
                   draggable={false}
                   data-device
+                  // The film's match cut anchors on this image (its opening push lands on the middle phone).
+                  {...(p.film ? { "data-film-screen": "" } : {})}
                 />
               ) : (
                 <div className={styles.mediaEmpty}>

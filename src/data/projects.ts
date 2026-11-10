@@ -110,6 +110,20 @@ export const projects: Project[] = [
       height: 1280,
       alt: "Three phones showing the Alcheringa ’25 app: the activity log, the pixel-art home screen and the festival map.",
     },
+    videoSrc: "/work/alcheringa-25/film.mp4",
+    videoPoster: "/work/alcheringa-25/film-poster.jpg",
+    // From the film source (alcher-film _cast.js, FM): screen = this card's phone image box
+    // (104.5, 365, w 960 on the 1169 card) in film px; land = the push onto the middle phone's
+    // "Who's headlining?" screen; end = the same framing, pulled back out. The plate is the
+    // full-resolution phone image laid over the live one. Re-derive if the card or the film's
+    // opening or closing shot changes.
+    film: {
+      fps: 60,
+      screen: { x: 171.634, y: 599.487, w: 1576.732 },
+      plate: { src: "/work/alcheringa-25/hero-phones-v3.webp", w: 2080, h: 1280, pad: 0, posterW: 2080, fade: [1.2, 2.2] },
+      open: { from: 0.4, to: 3.1, land: { L: 467.1, T: 678.26, W: 987.43 }, reveal: [2.8, 3.1] },
+      end: { from: 51.8, to: 53.3, scale: 1.944442, cx: 960.815, cy: 973.975, release: [51.5, 51.8] },
+    },
     bg: "#141318",
     heroInk: ["#f4f1ea", "rgba(244,241,234,0.72)", "rgba(244,241,234,0.72)"],
     chapters: [
