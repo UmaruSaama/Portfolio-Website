@@ -527,14 +527,20 @@
 /* ---------- right side + corner ---------- */
 
 .side {
-  transition: opacity 0.3s ease, visibility 0.3s;
   position: absolute;
   right: var(--page-x);
   top: 50%;
   translate: 0 -50%;
 }
 
-.side[data-hidden] {
+/* No CSS transition on .side itself: GSAP tweens its opacity, and a
+   transition on the same property lags every frame of that tween. */
+.sideInner {
+  display: flex;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.sideInner[data-hidden] {
   opacity: 0;
   visibility: hidden;
 }

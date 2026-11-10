@@ -714,6 +714,13 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       const finishClose = () => {
         caseTl?.kill();
         caseTl = null;
+        // The reversed fade writes back the opacity/visibility it recorded at
+        // open time as inline styles. Left there, they override the CSS that
+        // shows or hides per-card controls (the video button stayed hidden on
+        // every card after a case study opened from Stag, or showed on Stag
+        // after one opened from a card with a film). Hand control back to CSS.
+        const faded = root.current?.querySelectorAll<HTMLElement>("[data-case-fade], [data-cta]");
+        if (faded?.length) gsap.set(faded, { clearProps: "opacity,visibility" });
         caseOpen = false;
         caseOpenRef.current = false;
         setCaseSlug(null);
@@ -1234,11 +1241,11 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
       </section>
 
       {/* Only projects that have (or will have) a product video get the button. */}
+      {/* Two layers on purpose: GSAP fades the outer one (case-study morph),
+          CSS hides the inner one per card. Same element for both = they fight. */}
       <div
         className={styles.side}
         data-case-fade
-        data-hidden={current.placeholder || current.noVideo ? "" : undefined}
-        inert={current.placeholder || current.noVideo}
         // Warm the film when the pointer heads for the button, not on page load
         // (it's ~15 MB): the opening push runs on the film's clock.
         onPointerEnter={() => {
@@ -1250,17 +1257,23 @@ export function ProjectStage({ projects }: { projects: Project[] }) {
           if (v && v.preload !== "auto") v.preload = "auto";
         }}
       >
-        <VideoToggle
-          open={videoOpen}
-          controls={PLAYER_ID}
-          onToggle={() => {
-            if (videoOpen) actions.current.closeVideo();
-            else {
-              actions.current.openVideo();
-              wakeFilm(); // chrome visible on open, then rests once the film plays
-            }
-          }}
-        />
+        <div
+          className={styles.sideInner}
+          data-hidden={current.placeholder || current.noVideo ? "" : undefined}
+          inert={current.placeholder || current.noVideo}
+        >
+          <VideoToggle
+            open={videoOpen}
+            controls={PLAYER_ID}
+            onToggle={() => {
+              if (videoOpen) actions.current.closeVideo();
+              else {
+                actions.current.openVideo();
+                wakeFilm(); // chrome visible on open, then rests once the film plays
+              }
+            }}
+          />
+        </div>
       </div>
 
       <div
