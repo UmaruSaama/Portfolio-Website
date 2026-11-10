@@ -338,6 +338,34 @@
   margin-left: 3px;
 }
 
+/* Narration toggle: last chip in the header steps */
+.vSound {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  margin-left: 4px;
+  padding: 0 12px 0 9px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cs-white-10);
+  color: var(--cs-text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.vSound:hover {
+  background: var(--cs-white-14);
+}
+
+.vSound[aria-pressed="true"] svg {
+  color: var(--cs-pink);
+}
+
 /* 3 px progress hairline on the video's bottom edge */
 .vBar {
   position: absolute;

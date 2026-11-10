@@ -1,155 +1,156 @@
-// Experience-clip cue times (seconds): when each of the figure's three steps starts. Generated from the clip renders.
+// Experience-clip cue times (seconds): when each of the figure's three steps starts. Generated from the clip renders
+// (story pass: persona intro → 3 steps → outro, so step 1 starts after the intro line).
 export const experienceVideos: Record<string, { cues: [number, number, number]; dur: number }> = {
   "back-from-the-lesson": {
     "cues": [
-      1.2,
-      4.6,
-      7.8
+      3.81,
+      8.47,
+      12.31
     ],
-    "dur": 11.6
+    "dur": 20.85
   },
   "card-creator": {
     "cues": [
-      1.2,
-      6.2,
-      9
+      5.33,
+      11.4,
+      15.6
     ],
-    "dur": 13
+    "dur": 23.57
   },
   "episode-end": {
     "cues": [
-      1.2,
-      4.6,
-      7.6
+      4.34,
+      8.64,
+      12.46
     ],
-    "dur": 11.4
+    "dur": 20.35
   },
   "explain-this-line": {
     "cues": [
-      1.2,
-      5.6,
-      8.8
+      5.89,
+      11.17,
+      15.73
     ],
-    "dur": 12.6
+    "dur": 23.13
   },
   "hover-lookup": {
     "cues": [
-      2.6,
-      6.3,
-      9.3
+      7.15,
+      12.6,
+      17.1
     ],
-    "dur": 14
+    "dur": 26.73
   },
   "japanese-only-rewatch": {
     "cues": [
-      1.3,
-      5.3,
-      8.8
+      5.32,
+      10.13,
+      14.33
     ],
-    "dur": 12.4
+    "dur": 22.13
   },
   "lesson-listen-first": {
     "cues": [
-      1.2,
-      4.6,
-      7.6
+      4.96,
+      9.04,
+      13.54
     ],
-    "dur": 12
+    "dur": 22.17
   },
   "lesson-the-pattern": {
     "cues": [
-      1.2,
-      3.9,
-      6.4
+      4.12,
+      9.64,
+      13.29
     ],
-    "dur": 10
+    "dur": 20.03
   },
   "manga-reader": {
     "cues": [
-      1.2,
-      4.6,
-      7.6
+      4.08,
+      9.18,
+      13.57
     ],
-    "dur": 11.4
+    "dur": 21.87
   },
   "media-detail": {
     "cues": [
-      1.2,
-      3.9,
-      6.5
+      4.36,
+      8.67,
+      12.37
     ],
-    "dur": 10
+    "dur": 19.82
   },
   "pick-a-show": {
     "cues": [
-      1.2,
-      4.2,
-      6.6
+      5.87,
+      9.47,
+      13.07
     ],
-    "dur": 10.2
+    "dur": 21.6
   },
   "player": {
     "cues": [
-      1.2,
-      4.4,
-      7.5
+      4.64,
+      8.48,
+      12.2
     ],
-    "dur": 11.4
+    "dur": 20.05
   },
   "review": {
     "cues": [
-      1.2,
-      4.4,
-      7.4
+      4.65,
+      8.49,
+      12.27
     ],
-    "dur": 11.4
+    "dur": 19.83
   },
   "saved-for-later": {
     "cues": [
-      1.2,
-      4.8,
-      7.8
+      5.36,
+      10.76,
+      14.7
     ],
-    "dur": 11.6
+    "dur": 20.98
   },
   "scene-summary": {
     "cues": [
-      1.2,
-      4.3,
-      7.4
+      5.74,
+      9.69,
+      13.55
     ],
-    "dur": 11.4
+    "dur": 21.57
   },
   "second-watch-summary": {
     "cues": [
-      1.2,
-      3.8,
-      6
+      4.13,
+      8.03,
+      11.6
     ],
-    "dur": 10.2
+    "dur": 19.27
   },
   "today": {
     "cues": [
-      1.2,
-      3.9,
-      6.4
+      6.09,
+      10.14,
+      14.67
     ],
-    "dur": 10
-  },
-  "warm-up": {
-    "cues": [
-      1.2,
-      4.3,
-      7.4
-    ],
-    "dur": 11.4
+    "dur": 24.35
   },
   "warm-up-cards": {
     "cues": [
-      1.2,
-      4.4,
-      8.2
+      5.49,
+      9.33,
+      13.89
     ],
-    "dur": 12.6
+    "dur": 23.02
+  },
+  "warm-up": {
+    "cues": [
+      4.94,
+      9.04,
+      13
+    ],
+    "dur": 19.23
   }
 };

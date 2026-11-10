@@ -22,6 +22,14 @@ import styles from "./ExperienceFigure.module.css";
 
 const SCREENS = "/cs/immerlingo/screens";
 const VIDEOS = "/cs/immerlingo/video";
+// page-wide narration preference (resets on reload: clips always start muted)
+const SOUND_EVENT = "il-walkthrough-sound";
+let pageSoundOn = false;
+const soundOn_ = () => pageSoundOn;
+function setPageSound(on: boolean) {
+  pageSoundOn = on;
+  window.dispatchEvent(new Event(SOUND_EVENT));
+}
 
 const DEVICES: { id: Device; label: string; Icon: () => React.JSX.Element }[] =
   [
@@ -71,13 +79,36 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
   const [vEnded, setVEnded] = useState(false);
   const [vPaused, setVPaused] = useState(true);
   const visible = useRef(true);
+  // Voice: clips start muted (the persona's lines are captioned in the clip);
+  // one Sound choice applies to every walkthrough on the page.
+  const [soundOn, setSoundOn] = useState(soundOn_);
+  useEffect(() => {
+    const on = () => setSoundOn(soundOn_());
+    window.addEventListener(SOUND_EVENT, on);
+    return () => window.removeEventListener(SOUND_EVENT, on);
+  }, []);
+  useEffect(() => {
+    if (vRef.current) vRef.current.muted = !soundOn;
+  }, [soundOn, video]);
+  const toggleSound = () => {
+    setPageSound(!soundOn_());
+    const v = vRef.current;
+    if (v && soundOn_() && v.paused && !v.ended && video) playClip();
+  };
   const stepAt = (t: number) => (clip ? clip.cues.filter((c) => t >= c - 0.05).length : 0);
   const playClip = (from?: number) => {
     const v = vRef.current;
     if (!v) return;
     if (from != null) v.currentTime = from;
     setVEnded(false);
-    v.play().catch(() => setVPaused(true));
+    v.muted = !soundOn_();
+    v.play().catch(() => {
+      // sound needs a user gesture; fall back to the muted clip
+      if (!v.muted) {
+        v.muted = true;
+        v.play().catch(() => setVPaused(true));
+      } else setVPaused(true);
+    });
   };
   useEffect(() => {
     const v = vRef.current;
@@ -90,7 +121,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
     v.currentTime = 0;
     if (!reduce && visible.current) {
       // starts after the player has wiped in
-      const id = window.setTimeout(() => v.play().catch(() => setVPaused(true)), 450);
+      const id = window.setTimeout(() => playClip(), 450);
       return () => window.clearTimeout(id);
     }
   }, [video, clip]);
@@ -217,6 +248,20 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
           Replay
         </button>
       )}
+      <button
+        type="button"
+        className={styles.vSound}
+        onClick={toggleSound}
+        aria-pressed={soundOn}
+        aria-label={soundOn ? "Mute narration" : "Play narration with sound"}
+        title={soundOn ? "Mute narration" : "Narration is captioned in the clip. Turn sound on to hear it."}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor" stroke="none" />
+          {soundOn ? <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /> : <path d="m16 9.5 5 5m0-5-5 5" />}
+        </svg>
+        <span>{soundOn ? "Sound on" : "Sound"}</span>
+      </button>
     </div>
   );
 
@@ -509,7 +554,7 @@ export function ExperienceFigure({ fig }: { fig: Data }) {
               muted
               playsInline
               preload="none"
-              aria-label={`${title}: a silent walkthrough of the three steps`}
+              aria-label={`${title}: a narrated walkthrough of the three steps, with captions`}
               onPlay={() => setVPaused(false)}
               onPause={() => setVPaused(true)}
               onEnded={() => {
