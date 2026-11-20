@@ -372,3 +372,19 @@ body { background: #EDEDED; font-family: var(--font); color: #222; margin: 0; }
 
 /* the guard sees only the card */
 html:has(#guardMode:not([hidden])) .hx-fab { display: none; }
+
+/* ---- pass 9: two floating buttons on phones (task + controls) ---- */
+.hx-fabs { display: none; }
+@media (max-width: 600px) {
+  .hx-fabs { display: flex; gap: 6px; position: fixed; top: calc(env(safe-area-inset-top) + 12px); left: 50%; transform: translateX(-50%); z-index: 8000; }
+  .hx-fabs .hx-fab { display: inline-flex; position: static; transform: none; top: auto; left: auto; }
+  .harness-open .hx-fabs, html:has(#guardMode:not([hidden])) .hx-fabs, html:has(#intro:not([hidden])) .hx-fabs { display: none; }
+}
+@media (max-width: 600px) {
+  .hx-fabs .hx-fab { width: 30px; height: 30px; padding: 0; justify-content: center; border-radius: 50%; font: 700 15px/1 var(--font); }
+  .hx-fabs [data-intro-open] span { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 16px; }
+}
+@media (max-width: 600px) {
+  /* sit just right of the clock, clear of the signal/"No service" text however wide it gets */
+  .hx-fabs { left: 96px; transform: none; }
+}

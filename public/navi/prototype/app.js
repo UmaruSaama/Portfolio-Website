@@ -392,7 +392,12 @@
   }
 
   /* ---------- first-visit intro (the brief's scenario) ---------- */
-  function openIntro() { const m = $("#intro"); if (!m) return; m.hidden = false; $("[data-intro-start]", m).focus(); track("intro_open"); }
+  function openIntro() {
+    const m = $("#intro"); if (!m) return;
+    let seen = false; try { seen = !!localStorage.getItem("navi-intro-seen"); } catch (e) {}
+    const btn = $("[data-intro-start]", m); btn.textContent = seen ? "Back to the app" : "Start at the gate";   // a re-read shouldn't sound like a restart
+    m.hidden = false; btn.focus(); track("intro_open", { how: seen ? "reread" : "first" });
+  }
   function closeIntro(how) { const m = $("#intro"); if (!m) return; m.hidden = true; try { localStorage.setItem("navi-intro-seen", "1"); } catch (e) {} track("intro_close", { how }); }
 
   /* ---------- keep the whole phone in view on short windows ---------- */

@@ -45,7 +45,10 @@
     </div>
   </aside>
   <!-- phones: the controls live behind a floating button, as a bottom sheet -->
-  <button class="hx-fab" data-harness-open aria-controls="harness" aria-label="Open test controls"><span aria-hidden="true">⚙</span> Test controls</button>
+  <div class="hx-fabs">
+    <button class="hx-fab" data-intro-open aria-controls="intro" aria-label="Read the task again"><span aria-hidden="true">i</span></button>
+    <button class="hx-fab" data-harness-open aria-controls="harness" aria-label="Open test controls"><span aria-hidden="true">⚙</span></button>
+  </div>
   <div class="hx-backdrop" data-harness-close></div>
 
   <!-- ============ PHONE ============ -->
@@ -322,7 +325,7 @@
       <li><b>Your task:</b> use the Airbnb app<span class="only-wide"> on the right</span> to get all 4 of you into a bed for the night.</li>
       <li><b>Before you left,</b> Ramesh, the building's caretaker, said he'd be awake until 3 AM to let you in.</li>
       <li class="only-wide">The <b>panel on the left</b> isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
-      <li class="only-phone">The <b>⚙ Test controls</b> button at the top isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
+      <li class="only-phone">The two round buttons at the top aren't part of the app: <b>⚙</b> changes conditions (signal, battery, time) and opens other scenarios; <b>i</b> brings this back.</li>
     </ul>
     <p class="intro__fine">Think out loud if someone is with you. This test records which screens you visit and what you tap, anonymously: no names, no cookies, no personal data.</p>
     <button class="intro__btn" data-intro-start>Start at the gate</button>
