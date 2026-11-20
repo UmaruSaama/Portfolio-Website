@@ -286,3 +286,28 @@ body { background: #EDEDED; font-family: var(--font); color: #222; margin: 0; }
 .hx__jump button b { display: inline-block; min-width: 16px; }
 .hx__caption { margin: 12px 0 0; font: 400 13px/1.4 var(--font); color: #444; background: #F7F7F7; border-radius: 10px; padding: 10px 12px; }
 .hx__caption:empty { display: none; }
+
+/* ---- pass 6: fixes from the combinatorial test (visual review) ---- */
+/* 112 stays readable in dark mode (white on the dark-theme coral was ~2.6:1) */
+[data-theme="dark"] .c-btn--danger { background: #C13515; color: #fff; }
+/* SMS from a business sender: green bubbles in both themes */
+.sms.sms--out, [data-theme="dark"] .sms.sms--out { background: #34C759; color: #fff; }
+/* offline banner: no near-white bar on a dark 2 AM screen */
+[data-theme="dark"] .c-banner--offline { background: #2B2B2B; color: #F7F7F7; }
+/* toasts sit under the banners, never over the footer's main action or the guard card */
+.device .c-toast { top: 112px; bottom: auto; z-index: 45; }
+/* guard card covers the whole screen; its close button is visible in both themes */
+.guard-mode { inset: 0; padding-top: 62px; padding-bottom: 42px; }
+.guard-mode .c-iconbtn { border: 1px solid rgba(255,255,255,.5); }
+.guard-mode :focus-visible { outline-color: #fff; }
+.guard__code { font-family: var(--font); font-variant-numeric: tabular-nums; }
+/* money rows: amounts never wrap */
+.amount__row > span:last-child { white-space: nowrap; text-align: right; flex: none; }
+.amount__row > span:first-child { min-width: 0; }
+/* tried-and-failed lock steps read as failed */
+.lock__done .numlist__n--done { color: var(--error); }
+/* harness */
+.hx__hint { margin: 6px 0 0; font: 400 12px/1.4 var(--font); color: #6a6a6a; }
+.hx__seg button:disabled { opacity: .45; cursor: not-allowed; }
+.hx__peek { margin-top: 10px; width: 100%; border: 1px solid #222; border-radius: 10px; padding: 8px 10px; background: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.hx__peek[hidden] { display: none; }

@@ -24,6 +24,7 @@
       <div class="hx__seg" data-hx="plan">
         <button data-v="confirmed">Confirmed</button><button data-v="unconfirmed">Not confirmed</button>
       </div>
+      <p class="hx__hint" id="planLock" hidden>Set by this scenario.</p>
       <label class="hx__label">Host shares door PIN with group</label>
       <div class="hx__seg" data-hx="pinShare">
         <button data-v="yes">Yes (opted in)</button><button data-v="no">No</button>
@@ -37,6 +38,7 @@
       <div class="hx__title">Try a scenario</div>
       <div class="hx__jump" id="jump"></div>
       <p class="hx__caption" id="caption"></p>
+      <button class="hx__peek" data-peek-sms>See Priya's SMS now</button>
       <button class="dsp-reset" style="margin-top:12px;text-decoration:underline;background:none;border:0;cursor:pointer;font:inherit" data-reset-demo>Reset demo</button>
     </div>
   </aside>
@@ -92,6 +94,7 @@
           <hr class="sep">
           <section class="sec sec--list">
             <button class="c-row" data-needs="data" data-toast="Prototype: opens Maps (needs data)"><i data-lucide="map"></i><span class="c-row__body"><span class="c-row__title">Directions</span><span class="c-row__sub">Opposite metro pillar 112</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <p class="c-needs-note c-needs-note--data">No data, so maps won't load. The gate is opposite metro pillar 112.</p>
             <div class="c-row"><i data-lucide="id-card"></i><span class="c-row__body"><span class="c-row__title">Keep ID ready for all 4, plus a power bank and USB-C cable</span><span class="c-row__sub">ID may be checked · the power bank and cable open a dead lock</span></span></div>
             <div class="c-row"><i data-lucide="building-2"></i><span class="c-row__body"><span class="c-row__title">If no one opens: Orchid Inn</span><span class="c-row__sub">10 min walk · 24-hour desk · next to metro pillar 118</span></span></div>
             <div class="c-row"><i data-lucide="download"></i><span class="c-row__body"><span class="c-row__title">Saved on this phone</span><span class="c-row__sub">9:12 PM · works without internet</span></span></div>
@@ -181,7 +184,7 @@
           </section>
           <hr class="sep">
           <section class="sec" id="coveredLog"></section>
-          <p class="fine">If Ramesh opens before you've booked or paid anywhere, just go in. If you've already booked or paid, keep that room. We check the call log and your location in the morning and settle it with Rohan or Airbnb, never with you. Reports are checked; false reports can close your account.</p>
+          <p class="fine">If Ramesh opens before you've booked or paid anywhere, just go in. If you've already booked or paid, keep that room. We check the call log and your location in the morning and settle it with Rohan or Airbnb. We'd only ask you to pay back if the call log shows Ramesh answered and offered to let you in. Reports are checked; false reports can close your account.</p>
         </div>
         <div class="c-footer"><button class="c-btn c-btn--text" style="margin:0 auto" data-go="in">Ramesh opened after all? We're in</button></div>
       </section>
@@ -197,7 +200,8 @@
         <div class="page center" style="padding-top:48px" id="inDone" hidden>
           <img class="icon3d icon3d--hero" src="assets/icons3d/door_open.png" alt="">
           <h1 class="h1 center">You're in. Get some rest.</h1>
-          <p class="sub center">Arrived <span data-bind="time"></span>. We've let Rohan know.</p>
+          <p class="sub center" id="inArrived"></p>
+          <p class="fine center mt-8" id="inPaid" hidden>Already paid at Orchid Inn? Keep the receipt: that money still comes back.</p>
           <div class="c-callout mt-24" style="text-align:left"><span class="c-callout__icon"><i data-lucide="sun"></i></span><div><div class="c-callout__title">This morning, 8 AM</div><div class="c-callout__text">One question: how did last night go? It helps the next late arrival.</div></div></div>
           <hr class="sep mt-24">
           <section class="sec sec--list" style="text-align:left">
@@ -214,13 +218,15 @@
           <h1 class="h1">Ramesh hasn't confirmed yet</h1>
           <p class="sub">Rohan approved your 1:45 AM arrival and chose Ramesh, the caretaker, to let you in. Ramesh hasn't said he'll be awake. Decide before you board, while you still have signal.</p>
           <hr class="sep mt-24">
-          <section class="sec sec--list">
-            <button class="choice" data-board="rebook">
+          <div id="boardDone" class="mt-24"></div>
+          <section class="sec sec--list" id="boardChoices">
+            <button class="choice" data-board="rebook" data-needs="data">
               <span class="choice__body"><span class="step-row__t">Switch to Orchid Inn (24-hour desk)</span><span class="step-row__s">Someone at the desk all night, 10 min walk from Rohan's flat. Your ₹1,500 goes toward it; you pay ₹700 more.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
             <button class="choice" data-board="go">
               <span class="choice__body"><span class="step-row__t">Go ahead to Rohan's flat</span><span class="step-row__s">Arrival details saved on your phone. If no one opens within 30 minutes of ringing G2, your ₹1,500 goes to a hotel nearby that's open all night. No extra money for a bed and cab, since Ramesh hasn't said yes.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
-            <button class="choice" data-board="cancel">
+            <button class="choice" data-board="cancel" data-needs="data">
               <span class="choice__body"><span class="step-row__t">Cancel and find my own place</span><span class="step-row__s">Full ₹1,500 back. You'll need somewhere to sleep tonight.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <p class="c-needs-note c-needs-note--data">No data. Switching or cancelling needs internet; "Go ahead" works offline.</p>
           </section>
           <hr class="sep">
           <section class="sec">
@@ -291,7 +297,7 @@
           <button class="c-btn c-btn--danger c-btn--block c-btn--lg" data-toast="Calling 112…"><i data-lucide="phone"></i>Call 112 (police / emergency)</button>
           <button class="c-btn c-btn--primary c-btn--block" data-needs="cell" data-toast="Calling Airbnb's 24-hour safety line…">Airbnb 24-hour safety line</button>
         </div>
-        <p class="t-caption t-muted" style="margin-top:12px">Smell gas? Leave the flat first, don't switch anything on, then call. Emergency calls work without mobile data.</p>
+        <p class="t-caption t-muted" style="margin-top:12px">Smell gas? Leave the flat first, don't switch anything on, then call. 112 works even with no signal. Other calls need a mobile network.</p>
       </div>
     </div>
 

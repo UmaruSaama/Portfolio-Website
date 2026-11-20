@@ -19,9 +19,9 @@
     { id: "asleep", label: "Ramesh is asleep: covered", cap: "Answer the bell question, then press +30 min. Try going offline: the clock keeps running and the screen gives a walking route.", stack: ["pack", "stuck", "noone"], ds: { net: "sms" } },
     { id: "late", label: "The bus is 90 min late", cap: "03:15, after Ramesh's 3 AM, and he didn't answer the re-check. Nobody's fault: Airbnb moves the night, with no top-up.", stack: ["pack", "stuck", "noone"], late: true, ds: { time: "03:15", net: "sms" } },
     { id: "unconf", label: "Not confirmed, no one opens", cap: "Meera went ahead without a Yes. The night still moves with her (host's payout, existing policy); the extra (up to ₹1,500) for a bed and cab doesn't apply.", stack: ["pack", "stuck", "noone"], plan: "unconfirmed", ds: { net: "sms" } },
-    { id: "coguest", label: "Meera's phone is dead: co-guest SMS", cap: "What Priya's phone got: an opt-in with no address, then the arrival details, then the guard line. She can reply HELP or CALL.", stack: ["sms"] }
+    { id: "coguest", label: "Meera's phone is dead: co-guest SMS", cap: "What Priya's phone got: an opt-in with no address, then the arrival details, then the guard line. She can reply HELP or CALL. Tip: in scenario 6, tap \"See Priya's SMS now\" to watch the clock reach her phone.", stack: ["sms"], ds: { net: "sms", battery: 54 } }
   ];
-  const fresh = () => ({ stack: ["pack"], scen: "pack", plan: "confirmed", pinShare: "yes", late: false, t0: null, layer: null, offStart: false, log: [], lockStep: 0, bell: null, from: null, reason: "noone", allIn: false, ramesh: "ask", until: "03:00" });
+  const fresh = () => ({ stack: ["pack"], scen: "pack", plan: "confirmed", pinShare: "yes", late: false, t0: null, layer: null, offStart: false, offEnd: null, sent: false, peekFrom: null, boardDone: null, log: [], lockStep: 0, bell: null, from: null, reason: "noone", allIn: false, ramesh: "ask", until: "03:00" });
   let S = fresh();
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -68,6 +68,7 @@
 
   /* ---------- renderers ---------- */
   function renderPlanStatus() {
+    if (S.late && S.plan === "confirmed") { $("#planStatus").innerHTML = `<div class="c-callout"><span class="c-callout__icon c-callout__icon--warn"><i data-lucide="clock"></i></span><div><div class="c-callout__title">Your bus is late (now about 3:15 AM)</div><div class="c-callout__text">Ramesh didn't reply to our 2:40 AM check, and he's only awake until 3 AM. If no one opens within 30 minutes of ringing G2, Airbnb moves your ₹1,500 night to Orchid Inn. The extra for a bed and cab ended at 3 AM.</div></div></div>`; return; }
     $("#planStatus").innerHTML = S.plan === "confirmed"
       ? `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Ramesh confirmed at 9:10 PM. He's awake until 3 AM</div><div class="c-callout__text">Rohan approved your 1:45 AM arrival and chose Ramesh, the caretaker, to let you in. If no one opens within 30 minutes of ringing G2, before 3 AM, you're covered tonight.</div></div></div>`
       : `<div class="c-callout"><span class="c-callout__icon c-callout__icon--warn"><i data-lucide="alert-triangle"></i></span><div><div class="c-callout__title">Ramesh hadn't confirmed when you boarded</div><div class="c-callout__text">You chose to go ahead. If no one opens within 30 minutes of ringing G2, your night moves with you: your ₹1,500 goes to a hotel nearby that's open all night. The extra (up to ₹1,500) for a bed and cab doesn't apply.</div></div></div>`;
@@ -81,7 +82,7 @@
   function renderLock() {
     const low = DS.get().lowBattery;
     $("#lockSteps").innerHTML = `<h2 class="h2">Steps from your host</h2>` + LOCK.map((st, i) => {
-      if (i < S.lockStep) return `<div class="lock__done"><span class="numlist__n numlist__n--done"><i data-lucide="check"></i></span><span>${st.title}</span><span class="lock__tag">Didn't work</span></div>`;
+      if (i < S.lockStep) return `<div class="lock__done"><span class="numlist__n numlist__n--done"><i data-lucide="x"></i></span><span>${st.title}</span><span class="lock__tag">Didn't work</span></div>`;
       if (i > S.lockStep) return "";
       const actions = st.ask
         ? `<div class="btn-row mt-16"><button class="c-btn c-btn--primary" data-go="in">It opened</button><button class="c-btn c-btn--outline" data-lock-next>Still locked</button></div>`
@@ -100,7 +101,7 @@
     ] : [];
     const rows = [...prior, ...S.log];
     if (!rows.length) return "";
-    return `<h2 class="h2">Logged attempts</h2><p class="fine" style="margin:-8px 0 12px">Your host sees these too. Calls go through Airbnb's line.</p>
+    return `<h2 class="h2">Logged attempts</h2><p class="fine" style="margin:-8px 0 12px">${canCall() ? "Your host sees these too. Calls go through Airbnb's line." : "Saved on this phone. Your host sees them once you have signal."}</p>
       <ul class="log">${rows.map(r => `<li><span class="log__ic"><i data-lucide="${r.icon || "phone-missed"}"></i></span><div><div class="log__t">${r.what}</div><div class="log__m">${hm(r.t)} · ${r.who}</div></div></li>`).join("")}</ul>`;
   }
 
@@ -114,7 +115,7 @@
       <p class="c-needs-note c-needs-note--cell">No signal. Calls can't go out.</p></section>`;
     const support = `<section class="sec sec--list"><button class="c-row" data-needs="cell" data-toast="Calling Airbnb support (000 800 4405 103)…"><i data-lucide="headphones"></i><span class="c-row__body"><span class="c-row__title">Call Airbnb Support</span><span class="c-row__sub">24 hours · they already have your call log</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
       <button class="c-row" data-open-sheet="safety"><img class="icon3d icon3d--row" src="assets/icons3d/safety.png" alt=""><span class="c-row__body"><span class="c-row__title">I don't feel safe</span><span class="c-row__sub">No waiting</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button></section>`;
-    const staysSec = `<hr class="sep"><section class="sec"><h2 class="h2">Open all night, nearby</h2>${staysHTML()}<p class="fine mt-12">Once you've rung G2, you can go: the 30 minutes keep running on this phone.</p></section>`;
+    const staysSec = `<hr class="sep"><section class="sec"><h2 class="h2">Open all night, nearby</h2>${staysHTML()}<p class="fine mt-12">${money ? "You can go now: the 30 minutes keep running on this phone." : "Once you've rung G2, you can go: the 30 minutes keep running on this phone."}</p><p class="c-needs-note c-needs-note--cell">No signal. Walk there: both desks are open all night.</p></section>`;
     const head = (title, sub) => `<div class="head-row"><div><h1 class="h1">${title}</h1><p class="sub">${sub}</p></div><img class="icon3d icon3d--head" src="assets/icons3d/noone.png" alt=""></div>`;
     const log = logHTML();
     const logSec = log ? `<hr class="sep"><section class="sec">${log}</section>` : "";
@@ -135,7 +136,7 @@
     }
 
     // 1) the guest's own statement comes first (not needed when someone is demanding money)
-    if (!money && S.bell !== "yes") {
+    if (!money && S.bell !== "yes" && S.t0 === null) {
       const q = gate ? "Did the guard ring G2 on the intercom?" : "Did you ring Ramesh's bell?";
       const qs = gate ? "Ramesh, the caretaker, is in G2. The guard card asks the guard to ring him." : "Ground floor, flat G2, next to the lift. He may just be asleep.";
       const wait = gate ? "Show the guard card. It asks him to ring G2." : "Ring once and wait a minute. Then come back here.";
@@ -152,8 +153,10 @@
     const left = Math.max(0, WAIT - elapsed);
     const pct = Math.min(100, Math.round(100 * elapsed / WAIT));
     const at = fromMin(toMin(S.t0) + WAIT);
+    if (left === 0 && S.offEnd === null) S.offEnd = !canCall();
     const low = DS.get().lowBattery;
     const full = layer === "full";
+    const moneyNight = money && !full ? `<div class="c-callout mt-12"><span class="c-callout__icon"><i data-lucide="clock"></i></span><div><div class="c-callout__title">Outside Ramesh's hours</div><div class="c-callout__text">Your ₹1,500 night still moves with you. The extra for a bed and cab only applies until 3 AM, the hours Ramesh confirmed.</div></div></div>` : "";
     const subRang = money ? "Don't pay. Your stay is already paid." : gate ? "The guard rang G2. Ramesh isn't answering." : "You rang G2. Ramesh isn't answering.";
     el.innerHTML = head(money ? "Someone wants money" : "No one is answering", subRang) +
       `<div class="status-card mt-24">
@@ -165,16 +168,16 @@
         <div class="meter mt-12" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Time waited"><div class="meter__fill" style="width:${Math.max(pct, 3)}%"></div></div>
         ${left > 0 ? `<p class="fine mt-12">You don't have to wait outside. We'll keep calling Ramesh, and your report is saved: Ramesh and Rohan can't cancel it.</p>` : ""}
         ${left === 0 ? `<button class="c-btn c-btn--brand c-btn--block c-btn--lg mt-16" data-go="covered">See where to go</button>` : ""}
-      </div>
+      </div>${moneyNight}
       ${!canCall() ? `<div class="c-callout mt-12"><span class="c-callout__icon"><i data-lucide="wifi-off"></i></span><div><div class="c-callout__title">No signal. The timer still runs on this phone</div><div class="c-callout__text">Your location is saved here. If the 30 minutes end before you get signal, it still counts. We check your saved location in the morning, then pay you back.</div></div></div>` : ""}
-      <div class="btn-row mt-12"><button class="c-btn c-btn--outline" data-knock><i data-lucide="door-closed"></i>Knocked at G2</button><button class="c-btn c-btn--outline" data-go="in">Ramesh is here</button></div>
+      <div class="btn-row mt-12"><button class="c-btn c-btn--outline" data-knock><i data-lucide="door-closed"></i>Knocked at G2</button><button class="c-btn c-btn--outline" data-go="in" data-arrived>Ramesh is here</button></div>
       ${low ? `<div class="c-callout mt-12"><span class="c-callout__icon c-callout__icon--err"><i data-lucide="battery-low"></i></span><div><div class="c-callout__title">Save your battery</div><div class="c-callout__text">Priya, Arjun or Kabir can reply CALL to the SMS. Their calls count too.</div></div></div>` : ""}
       ${staysSec}<hr class="sep">${callRows}${logSec}<hr class="sep">${support}`;
   }
 
   function renderCovered() {
     const full = layerNow() === "full";
-    const later = S.offStart;
+    const later = S.offEnd ?? S.offStart;   // daytime check only if the 30 minutes ended with no signal
     const f = funder();
     $("#coveredTitle").textContent = full ? "You're covered tonight" : "Your night moves with you";
     $("#coveredSub").textContent = full ? "Ramesh said he'd be here, so this one isn't on you."
@@ -185,7 +188,7 @@
     let hero;
     if (!noData() && !later) {
       hero = full
-        ? `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Orchid Inn · you pay ₹0</div><div class="c-callout__text">Rooms for 4, ₹2,200. Your ₹1,500 night plus ₹700 extra are applied when you book. 10 min walk. Taking a cab? Keep the receipt: up to ₹3,000 in total with the cab, back by 6 PM on 21 Nov.</div>
+        ? `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Orchid Inn · you pay ₹0</div><div class="c-callout__text">Rooms for 4 from ₹2,200, 10 min walk. Your ₹1,500 night plus up to ₹1,500 extra are applied when you book, so you pay ₹0. Taking a cab? Keep the receipt: up to ₹3,000 in total with the cab, back by 6 PM on 21 Nov.</div>
             <button class="c-btn c-btn--brand c-btn--block mt-12" data-toast="Opens Orchid Inn with ₹2,200 applied: you pay ₹0">Book Orchid Inn</button></div></div>`
         : `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Orchid Inn with your ₹1,500</div><div class="c-callout__text">Rooms for 4 from ₹2,200, 10 min walk. Your night's ₹1,500 is applied; you pay the rest, from ₹700.</div>
             <button class="c-btn c-btn--brand c-btn--block mt-12" data-toast="Opens Orchid Inn with ₹1,500 applied">Book Orchid Inn</button></div></div>`;
@@ -219,7 +222,7 @@
            ["in", fromMin(toMin(arrival()) - 15), "Ramesh didn't answer our wake-up call. We're calling host Rohan."]]
         : [["in", "21:15", "Ramesh hasn't confirmed. Meera chose to go ahead. If no one opens within 30 minutes of ringing G2, her Rs 1,500 goes to a hotel nearby that's open all night. You pay any difference. No extra money for a bed and cab."]]),
       ...(t0 ? [["out", t0, "HELP"], ["in", t0, `Got it. Keep ringing G2, or ask the guard to. Calls are logged. If no one lets you in by ${hm(at)}, ${full ? "you're all covered tonight: up to Rs 3,000 in total with the cab" : "Meera's Rs 1,500 goes to a hotel nearby that's open all night; you pay any difference"}. Reply CALL to ring Ramesh.`]] : []),
-      ...(covered ? [["in", at, `${full ? "You're all covered tonight: up to Rs 3,000 in total with the cab." : "Meera's Rs 1,500 night has moved."} Walk to Orchid Inn: out of the gate, left, 800 m, next to metro pillar 118. Pay at the 24-hour desk and keep the receipt. ${full ? "Meera gets up to Rs 3,000 in total with the cab back by 6 PM on 21 Nov." : "Meera gets Rs 1,500 back by 6 PM on 21 Nov. You pay the rest, from Rs 700."}`]] : [])
+      ...(covered ? [["in", at, `${full ? "You're all covered tonight: up to Rs 3,000 in total with the cab." : "Meera's Rs 1,500 night has moved."} Walk to Orchid Inn: out of the gate, left, 800 m, next to metro pillar 118. If Meera books it in her app, don't pay at the desk. Otherwise pay there and keep the receipt. ${full ? "Meera gets up to Rs 3,000 in total with the cab back by 6 PM on 21 Nov." : "Meera gets Rs 1,500 back by 6 PM on 21 Nov. You pay the rest, from Rs 700."}`]] : [])
     ];
     $("#smsThread").innerHTML = `<div class="c-chat__day">Today</div>` + msgs.map(([d, t, x]) =>
       `<span class="c-msg__meta ${d === "out" ? "c-msg__meta--out" : ""}">${hm(t)}</span><div class="sms ${d === "out" ? "sms--out" : ""}">${x}</div>`).join("") +
@@ -248,12 +251,27 @@
     $("#rameshBody").innerHTML = states[S.ramesh];
   }
 
-  function renderIn() { $("#inAsk").hidden = S.allIn; $("#inDone").hidden = !S.allIn; }
+  function renderIn() {
+    $("#inAsk").hidden = S.allIn; $("#inDone").hidden = !S.allIn;
+    const ended = S.t0 !== null && toMin(now()) - toMin(S.t0) >= WAIT;
+    $("#inArrived").textContent = `Arrived ${hm(now())}. ` + (canCall() && !noData() ? "We've let Rohan know." : "We'll tell Rohan when your phone has signal.");
+    $("#inPaid").hidden = !ended;
+  }
+  function renderBoard() {
+    $("#boardChoices").hidden = !!S.boardDone;
+    $("#boardDone").innerHTML = !S.boardDone ? "" : S.boardDone === "cancel"
+      ? `<div class="c-callout"><span class="c-callout__icon c-callout__icon--warn"><i data-lucide="x"></i></span><div><div class="c-callout__title">Booking cancelled</div><div class="c-callout__text">₹1,500 back to your card. You have no stay booked for tonight. (Prototype: this path ends here.)</div></div></div>`
+      : `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">You're booked at Orchid Inn tonight</div><div class="c-callout__text">24-hour desk, 10 min walk from Rohan's flat. Your ₹1,500 went toward it; you paid ₹700 more. (Prototype: this path ends here.)</div></div></div>`;
+  }
 
   function renderHarness() {
     $$("[data-hx]").forEach(g => $$("button", g).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === S[g.dataset.hx]))));
     $("#jump").innerHTML = SCEN.map((s, i) => `<button data-scen="${s.id}" aria-current="${S.scen === s.id}"><b>${i + 1}</b> ${s.label}</button>`).join("");
     const sc = SCEN.find(s => s.id === S.scen); $("#caption").textContent = sc ? sc.cap : "";
+    const locked = ["board", "late", "unconf"].includes(S.scen);
+    $$("[data-hx=plan] button").forEach(b => (b.disabled = locked));
+    $("#planLock").hidden = !locked;
+    const pk = $("[data-peek-sms]"); pk.textContent = S.peekFrom ? "Back to Meera's phone" : "See Priya's SMS now"; pk.hidden = S.scen === "coguest";
   }
 
   function render() {
@@ -261,7 +279,7 @@
     if (id !== "gate") $("#guardMode").hidden = true;
     $$(".screen").forEach(s => s.classList.toggle("is-active", s.dataset.screen === id));
     $("#phone").dataset.app = id === "sms" ? "sms" : id === "ramesh" ? "web" : "airbnb";
-    renderPlanStatus(); renderLock(); renderNoone(); renderSMS(); renderCovered(); renderRamesh(); renderIn(); renderHarness();
+    renderPlanStatus(); renderLock(); renderNoone(); renderSMS(); renderCovered(); renderRamesh(); renderIn(); renderBoard(); renderHarness();
     document.dispatchEvent(new Event("app:rendered"));
     DS.refreshIcons();
     const st = DS.get(); $$("[data-bind='battery']").forEach(e => (e.textContent = st.battery + "%")); $$("[data-bind='time']").forEach(e => (e.textContent = hm(st.time)));
@@ -274,6 +292,7 @@
     if (sc.plan) S.plan = sc.plan;
     if (sc.late) S.late = true;
     DS.set({ time: "01:45", net: "offline", battery: 6, ...(sc.ds || {}) });
+    const toast = document.querySelector(".c-toast"); if (toast) toast.hidden = true;
     onEnter(cur()); render(); $("#screens").scrollTop = 0;
   }
 
@@ -301,6 +320,11 @@
       if (S.bell === "yes") { addLog("You", S.from === "gate" ? "Guard rang G2 on the intercom: no answer" : "Rang Ramesh's bell at G2: no answer", "bell"); startClock(); }
       render();
     }
+    if (t.hasAttribute("data-arrived")) addLog("You", "Ramesh arrived: we're in", "door-open");
+    if (t.hasAttribute("data-peek-sms")) {
+      if (S.peekFrom) { S.stack = S.peekFrom; S.peekFrom = null; } else { S.peekFrom = [...S.stack]; S.stack = [...S.stack, "sms"]; }
+      render(); $("#screens").scrollTop = 0;
+    }
     if (t.hasAttribute("data-knock")) { addLog("You", "Knocked at G2: no answer", "door-closed"); DS.toast("Logged: knocked at G2", $("#phone")); render(); }
     if (t.dataset.call) {
       if (!canCall()) return;
@@ -317,9 +341,7 @@
         S.plan = "unconfirmed"; S.stack = ["pack"]; S.scen = "pack";
         DS.set({ time: "01:45", net: "offline", battery: 6 });
         DS.toast("Prototype: skipping ahead to 1:45 AM, at the building", $("#phone"));
-      } else DS.toast(t.dataset.board === "cancel"
-        ? "Cancelled. ₹1,500 back to your card. You have no stay booked for tonight."
-        : "Switched to Orchid Inn (24-hour desk); your ₹1,500 went toward it. (Prototype: this path ends here.)", $("#phone"));
+      } else S.boardDone = t.dataset.board;
       render();
     }
     if (t.dataset.until) { S.until = t.dataset.until; render(); }
@@ -328,17 +350,21 @@
     const hx = t.closest("[data-hx]");
     if (hx && t.dataset.v) {
       S[hx.dataset.hx] = t.dataset.v;
-      if (hx.dataset.hx === "plan") { S.t0 = null; S.layer = null; S.log = []; S.bell = null; }
+      if (hx.dataset.hx === "plan" && S.t0 === null) { S.layer = null; S.log = []; S.bell = null; }   // once the clock runs, a plan change can't rewrite it
       render();
     }
     if (t.dataset.advance) { DS.set({ time: fromMin(toMin(now()) + Number(t.dataset.advance)) }); }
     if (t.hasAttribute("data-reset-demo")) runScenario("pack");
   });
-  document.addEventListener("ds:change", () => { if (document.readyState !== "loading") render(); });
+  document.addEventListener("ds:change", () => {
+    // timer started with no signal: once a call or SMS can get out, it is sent
+    if (S.t0 !== null && S.offStart && !S.sent && canCall()) { S.sent = true; addLog("Your phone", "Signal back: timer and location sent", "send"); }
+    if (document.readyState !== "loading") render();
+  });
 
   function init() {
     let first = true;
-    try { first = !localStorage.getItem("navi-proto-started-v6"); localStorage.setItem("navi-proto-started-v6", "1"); } catch (e) {}
+    try { first = !localStorage.getItem("navi-proto-started-v7"); localStorage.setItem("navi-proto-started-v7", "1"); } catch (e) {}
     if (first) { runScenario("pack"); return; }
     render();
   }
