@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navi DS · Airbnb DNA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  body { background: #EDEDED; font-family: var(--font); color: #222; }
+  .gallery-head { padding: 32px 40px 8px; max-width: 1400px; margin: 0 auto; }
+  .gallery-head h1 { font: 800 28px/1.2 var(--font); margin: 0 0 6px; }
+  .gallery-head p { margin: 0; color: #6A6A6A; max-width: 760px; }
+  .gallery { display: flex; gap: 40px; align-items: flex-start; padding: 24px 40px 80px; max-width: 1400px; margin: 0 auto; flex-wrap: wrap; }
+  .gallery__panel { position: sticky; top: 24px; }
+  .phones { display: flex; flex-wrap: wrap; gap: 48px; flex: 1; }
+  .phone-cap { font: 700 13px/1 var(--font); color: #6A6A6A; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 14px 8px; }
+  .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .sw { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); font: var(--t-caption); }
+  .sw i { display: block; height: 44px; }
+  .sw span { display: block; padding: 6px 8px; }
+  .ph-img { border-radius: var(--r-lg); aspect-ratio: 4/3; background: linear-gradient(135deg,#d9c7b3,#a8b8c8); display: grid; place-items: center; color: rgba(255,255,255,.9); }
+  .ph-img svg.lucide { width: 40px; height: 40px; }
+  @media (max-width: 860px) { .gallery { padding: 16px; } .gallery__panel { position: static; } .gallery-head { padding: 24px 16px 0; } }
+</style>
+</head>
+<body>
+<header class="gallery-head">
+  <h1>Design system: Airbnb DNA for the late-night check-in prototype</h1>
+  <p>Tokens and components matched to Airbnb iOS screens on Mobbin. Change the conditions on the left: every phone reacts. The status bar, banners, network-dependent buttons and battery all change, because degraded states are the subject of this project.</p>
+</header>
+
+<main class="gallery">
+  <aside class="gallery__panel" data-ds-panel></aside>
+
+  <div class="phones">
+
+    <!-- 1. Foundations -->
+    <section>
+      <p class="phone-cap">1 · Foundations</p>
+      <div class="device">
+        <div class="c-status"></div>
+        <div class="device__screen"><div class="page stack-lg">
+          <h1 class="t-title-1">Foundations</h1>
+          <div class="swatches">
+            <div class="sw"><i style="background:var(--rausch)"></i><span>Rausch<br>#FF385C</span></div>
+            <div class="sw"><i style="background:var(--brand-gradient)"></i><span>Brand CTA<br>gradient</span></div>
+            <div class="sw"><i style="background:var(--ink)"></i><span>Ink<br>#222222</span></div>
+            <div class="sw"><i style="background:var(--muted)"></i><span>Muted<br>#6A6A6A</span></div>
+            <div class="sw"><i style="background:var(--line)"></i><span>Line<br>#DDDDDD</span></div>
+            <div class="sw"><i style="background:var(--fill)"></i><span>Fill<br>#F2F2F2</span></div>
+            <div class="sw"><i style="background:var(--info)"></i><span>Info</span></div>
+            <div class="sw"><i style="background:var(--warning)"></i><span>Warning</span></div>
+            <div class="sw"><i style="background:var(--error)"></i><span>Error<br>#C13515</span></div>
+          </div>
+          <div class="stack-sm">
+            <p class="t-display">Display 32</p>
+            <p class="t-title-1">Title 1 · 26</p>
+            <p class="t-title-2">Title 2 · 22</p>
+            <p class="t-title-3">Title 3 · 18</p>
+            <p class="t-strong">Body strong · 16</p>
+            <p class="t-body">Body · 16. Check-in after 3:00 PM.</p>
+            <p class="t-small t-muted">Small · 14 · muted</p>
+            <p class="t-caption t-muted">Caption · 12</p>
+          </div>
+          <div class="row" style="gap:16px">
+            <div style="width:48px;height:48px;border-radius:var(--r-sm);background:var(--fill)"></div>
+            <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--fill)"></div>
+            <div style="width:48px;height:48px;border-radius:var(--r-lg);background:var(--fill)"></div>
+            <div style="width:48px;height:48px;border-radius:var(--r-xl);background:var(--fill)"></div>
+            <div style="width:48px;height:48px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow-card)"></div>
+          </div>
+          <p class="t-caption t-muted">Radius 8 / 12 / 16 / 24 · card shadow. Spacing on a 4pt grid, 24px gutter. Touch targets ≥ 44px, primary night actions 52px.</p>
+        </div></div>
+        <div class="device__home"></div>
+      </div>
+    </section>
+
+    <!-- 2. Actions -->
+    <section>
+      <p class="phone-cap">2 · Buttons, rows, nav</p>
+      <div class="device">
+        <div class="c-status"></div>
+        <div class="c-banner c-banner--offline"><i data-lucide="wifi-off"></i>You're offline<span class="c-banner__meta">Saved 11:48 PM</span></div>
+        <div class="c-banner c-banner--sms"><i data-lucide="message-square"></i>No mobile data · calls and SMS work</div>
+        <div class="c-banner c-banner--weak"><i data-lucide="signal-low"></i>Weak connection · things may load slowly</div>
+        <div class="c-banner c-banner--battery"><i data-lucide="battery-low"></i>Battery <span data-bind="battery"></span> · details are saved on this phone</div>
+        <nav class="c-nav"><button class="c-iconbtn c-iconbtn--filled" aria-label="Back"><i data-lucide="arrow-left"></i></button><div class="c-nav__title"></div><button class="c-pill-btn">Details</button></nav>
+        <div class="device__screen"><div class="page stack">
+          <h1 class="t-title-1">Actions</h1>
+          <button class="c-btn c-btn--brand c-btn--block c-btn--lg">Brand action</button>
+          <button class="c-btn c-btn--primary c-btn--block">Primary · Show details</button>
+          <button class="c-btn c-btn--secondary c-btn--block">Secondary · Remind host</button>
+          <button class="c-btn c-btn--outline c-btn--block">Outline</button>
+          <div class="row"><button class="c-btn c-btn--primary is-loading" style="flex:1">Loading</button><button class="c-btn c-btn--secondary" disabled style="flex:1">Disabled</button></div>
+          <div>
+            <button class="c-btn c-btn--primary c-btn--block" data-needs="data" data-toast="Message sent to host">Message host (needs data)</button>
+            <p class="c-needs-note c-needs-note--data">Needs mobile data or Wi-Fi.</p>
+          </div>
+          <div>
+            <button class="c-btn c-btn--secondary c-btn--block" data-needs="cell" data-toast="Calling host…"><i data-lucide="phone"></i>Call host (needs signal)</button>
+            <p class="c-needs-note c-needs-note--cell">No signal. Calls need a mobile network.</p>
+          </div>
+          <button class="c-btn c-btn--text">Text button</button>
+          <div class="c-list">
+            <button class="c-row"><i data-lucide="message-square"></i><span class="c-row__body"><span class="c-row__title">Message Host</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="c-row"><i data-lucide="shield"></i><span class="c-row__body"><span class="c-row__title">Get help with a safety issue</span><span class="c-row__sub">24-hour safety line</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="c-row"><i data-lucide="map-pin"></i><span class="c-row__body"><span class="c-row__title">Directions</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+          </div>
+        </div></div>
+        <div class="device__home"></div>
+      </div>
+    </section>
+
+    <!-- 3. Content -->
+    <section>
+      <p class="phone-cap">3 · Cards, callouts, badges</p>
+      <div class="device">
+        <div class="c-status"></div>
+        <div class="device__screen"><div class="page stack">
+          <div style="position:relative"><div class="ph-img"><i data-lucide="home"></i></div><span class="c-badge" style="position:absolute;left:12px;top:12px">Pending</span></div>
+          <div><h2 class="t-title-2">Room in Manali</h2><p class="t-body t-muted" style="margin:4px 0 0">Hosted by Rohan</p></div>
+          <div class="c-callout"><span class="c-callout__icon"><i data-lucide="clock"></i></span><div><div class="c-callout__title">Your reservation is pending</div><div class="c-callout__text">The host will reply within 24 hours.</div></div></div>
+          <div class="c-callout c-callout--tinted c-callout--success"><span class="c-callout__icon"><i data-lucide="check"></i></span><div><div class="c-callout__title">Saved to this phone</div><div class="c-callout__text">Works with no signal.</div></div></div>
+          <div class="c-callout c-callout--tinted c-callout--warning"><span class="c-callout__icon"><i data-lucide="alert-triangle"></i></span><div><div class="c-callout__title">Arrival after the check-in window</div><div class="c-callout__text">Ask the host to confirm.</div></div></div>
+          <div class="c-callout c-callout--tinted c-callout--error"><span class="c-callout__icon"><i data-lucide="x"></i></span><div><div class="c-callout__title">Host hasn't replied</div><div class="c-callout__text">Sent 01:52 · no reply yet.</div></div></div>
+          <div class="c-card c-card--filled"><div class="c-split"><div><div class="t-strong">Check-in</div><div class="t-small">Fri 20 Nov</div><div class="t-small">15:00</div></div><div class="c-split__bar"></div><div><div class="t-strong">Checkout</div><div class="t-small">Sun 22 Nov</div><div class="t-small">11:00</div></div></div></div>
+          <div class="row" style="flex-wrap:wrap;gap:8px"><span class="c-badge c-badge--saved"><i data-lucide="download"></i>Saved offline</span><span class="c-badge c-badge--warn"><i data-lucide="clock"></i>Late arrival</span><span class="c-badge c-badge--error">Needs attention</span><span class="c-chip is-selected">4 guests</span><span class="c-chip">Bus</span></div>
+          <div class="c-kv"><div class="c-kv__k">Confirmation code</div><div class="c-kv__v">HM9E33CKST</div></div>
+          <div class="row"><span class="c-avatar"><span>R</span><span class="c-avatar__status"></span></span><div><div class="t-strong">Rohan</div><div class="t-small t-muted">Host · usually replies in an hour</div></div></div>
+          <div class="c-card c-card--elevated c-card__pad c-trip"><div class="c-trip__img" style="background:linear-gradient(135deg,#d9c7b3,#a8b8c8)"></div><div><div class="t-title-3">Your stay</div><div class="t-small t-muted">Hosted by Rohan</div><div class="t-small t-muted" style="margin-top:6px">20 – 22 Nov</div></div></div>
+        </div></div>
+        <div class="device__home"></div>
+      </div>
+    </section>
+
+    <!-- 4. Check-in building blocks -->
+    <section>
+      <p class="phone-cap">4 · Check-in blocks (reacts to conditions)</p>
+      <div class="device">
+        <div class="c-status"></div>
+        <div class="c-banner c-banner--offline"><i data-lucide="wifi-off"></i>You're offline<span class="c-banner__meta">Saved 11:48 PM</span></div>
+        <div class="c-banner c-banner--sms"><i data-lucide="message-square"></i>No mobile data · calls and SMS work</div>
+        <div class="c-banner c-banner--battery"><i data-lucide="battery-low"></i>Battery <span data-bind="battery"></span></div>
+        <div class="device__screen"><div class="page stack">
+          <h1 class="t-title-1">Check-in</h1>
+          <div class="c-code"><div class="c-code__label">Gate code</div><div class="c-code__value">4 8 1 9</div><div class="c-code__meta">Keypad on the left of the main gate</div></div>
+          <div class="c-map"><span class="c-map__pin"><i data-lucide="home"></i></span></div>
+          <div class="c-list">
+            <div class="c-row c-row--divided"><i data-lucide="map-pin"></i><span class="c-row__body"><span class="c-row__title">12 Old Manali Rd</span><span class="c-row__sub">Blue gate after the temple</span></span></div>
+            <div class="c-row c-row--divided"><i data-lucide="user"></i><span class="c-row__body"><span class="c-row__title">Caretaker · Prem</span><span class="c-row__sub">Lives on site, ground floor</span></span></div>
+          </div>
+          <h2 class="t-title-3">Step tracker <span class="t-caption t-muted">(generic states)</span></h2>
+          <ol class="c-steps">
+            <li class="c-step is-done"><span class="c-step__dot"><i data-lucide="check"></i></span><div><div class="c-step__title">Done step</div><div class="c-step__meta">01:47</div></div></li>
+            <li class="c-step is-failed"><span class="c-step__dot"><i data-lucide="x"></i></span><div><div class="c-step__title">Failed step</div><div class="c-step__meta">01:49 · reason</div></div></li>
+            <li class="c-step is-active"><span class="c-step__dot">3</span><div><div class="c-step__title">Active step</div><div class="c-step__meta">Now</div></div></li>
+            <li class="c-step"><span class="c-step__dot">4</span><div><div class="c-step__title">Pending step</div><div class="c-step__meta">Condition to reach it</div></div></li>
+          </ol>
+          <div class="c-timenote"><i data-lucide="moon"></i>It's <span data-bind="time"></span> for your host.</div>
+          <h2 class="t-title-3">Loading</h2>
+          <div class="c-skel" style="height:20px;width:70%"></div><div class="c-skel" style="height:14px;width:45%"></div>
+        </div></div>
+        <div class="c-footer"><button class="c-btn c-btn--brand c-btn--block c-btn--lg" data-open-sheet="sheet-demo">Open bottom sheet</button></div>
+        <div class="c-sheet-wrap" id="sheet-demo" role="dialog" aria-modal="true" aria-label="Can't get in">
+          <div class="c-sheet c-sheet--center">
+            <div class="c-sheet__close"><button class="c-iconbtn" data-close-sheet aria-label="Close"><i data-lucide="x"></i></button></div>
+            <div class="c-sheet__icon" style="color:var(--warning)"><i data-lucide="alert-triangle"></i></div>
+            <h2 class="t-title-2">Bottom sheet</h2>
+            <p class="t-body t-muted">Centered icon, title, body and stacked actions, like Airbnb's "Are you sure?" sheet.</p>
+            <div class="c-timenote" style="margin:4px 0 20px"><i data-lucide="moon"></i>It's 02:43 for them.</div>
+            <div class="stack-sm"><button class="c-btn c-btn--primary c-btn--block c-btn--lg">Primary</button><button class="c-btn c-btn--secondary c-btn--block" data-close-sheet>Not now</button></div>
+          </div>
+        </div>
+        <div class="device__home"></div>
+      </div>
+    </section>
+
+    <!-- 5. Chat -->
+    <section>
+      <p class="phone-cap">5 · Messages & support</p>
+      <div class="device">
+        <div class="c-status"></div>
+        <div class="c-banner c-banner--offline"><i data-lucide="wifi-off"></i>You're offline · messages will send later</div>
+        <nav class="c-nav c-nav--bordered"><button class="c-iconbtn" aria-label="Back"><i data-lucide="arrow-left"></i></button><div class="c-nav__title"><span class="c-avatar c-avatar--brand" style="margin:0 auto 2px;width:32px;height:32px"><i data-lucide="home" style="width:16px;height:16px"></i></span><span class="t-caption">Airbnb Support</span></div><button class="c-pill-btn">Details</button></nav>
+        <div class="device__screen">
+          <div class="c-chat">
+            <div class="c-chat__day">Today</div>
+            <div class="c-chat__system">Your check-in details arrived 48 hours before arrival.</div>
+            <span class="c-msg__meta c-msg__meta--out">01:49</span>
+            <div class="c-msg c-msg--out">Sent message</div>
+            <div class="c-msg c-msg--out c-msg--failed">Failed message</div>
+            <span class="c-msg__fail"><i data-lucide="alert-circle"></i>Not sent · tap to retry</span>
+            <div class="c-msg c-msg--sms">Variant: message sent by SMS</div>
+            <span class="c-msg__meta">Airbnb Support 01:58</span>
+            <div class="c-msg c-msg--in">Let's get you help. What's happening?</div>
+            <div class="c-options"><button>I can't get into my place</button><button>I want to report a safety issue</button><button>I'd rather type out my issue</button></div>
+          </div>
+        </div>
+        <div class="c-composer"><input class="c-composer__input" placeholder="Write a message…" aria-label="Message"><button class="c-composer__send" aria-label="Send" data-needs="data"><i data-lucide="arrow-up"></i></button></div>
+        <div class="device__home"></div>
+      </div>
+    </section>
+
+    <!-- 6. Shell -->
+    <section>
+      <p class="phone-cap">6 · App shell & empty state</p>
+      <div class="device">
+        <div class="c-status"></div>
+        <div class="device__screen"><div class="page stack">
+          <h1 class="t-display">Trips</h1>
+          <div class="c-timeline">
+            <div class="c-timeline__day">Fri<div class="c-timeline__date">20</div></div>
+            <div class="c-timeline__item"><span class="c-timeline__thumb"><i data-lucide="door-open"></i></span><div><div class="t-strong">Check-in</div><div class="t-small t-muted">After 3:00 PM</div></div></div>
+            <div class="c-timeline__day">Sun<div class="c-timeline__date">22</div></div>
+            <div class="c-timeline__item"><span class="c-timeline__thumb"><i data-lucide="door-closed"></i></span><div><div class="t-strong">Checkout</div><div class="t-small t-muted">Before 11:00 AM</div></div></div>
+          </div>
+          <label class="c-field"><span class="c-field__label">Arrival time</span><input class="c-field__input" value="01:45"></label>
+          <label class="c-field is-error"><span class="c-field__label">Gate code</span><input class="c-field__input" value="4891"></label>
+          <div class="c-field__error"><i data-lucide="alert-circle" style="width:14px;height:14px"></i>That code didn't open the gate</div>
+          <div class="c-empty"><div class="c-empty__icon"><i data-lucide="luggage"></i></div><div class="t-title-3">No trips booked… yet</div><p class="t-small t-muted">Time to dust off your bags.</p></div>
+        </div></div>
+        <nav class="c-tabbar" aria-label="Main">
+          <a class="c-tab"><i data-lucide="search"></i>Explore</a>
+          <a class="c-tab"><i data-lucide="heart"></i>Wishlists</a>
+          <a class="c-tab is-active" aria-current="page"><i data-lucide="home"></i>Trips</a>
+          <a class="c-tab"><i data-lucide="message-square"></i>Messages</a>
+          <a class="c-tab"><i data-lucide="user-circle"></i>Profile</a>
+        </nav>
+        <div class="device__home"></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="ds.js"></script>
+</body>
+</html>

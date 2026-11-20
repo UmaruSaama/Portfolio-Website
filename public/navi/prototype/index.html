@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirmed before you board · Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&family=Noto+Sans+Bengali:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system/tokens.css">
+<link rel="stylesheet" href="design-system/components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="stage">
+
+  <!-- ============ DEMO HARNESS (not product UI) ============ -->
+  <aside class="harness" aria-label="Demo controls">
+    <div class="harness__note"><b>Demo controls, not part of the product.</b> Set the conditions Meera arrives in, then use the phone. Times are simulated.</div>
+    <div data-ds-panel></div>
+    <div class="hx">
+      <div class="hx__title">Scenario</div>
+      <label class="hx__label">Ramesh before boarding</label>
+      <div class="hx__seg" data-hx="plan">
+        <button data-v="confirmed">Confirmed</button><button data-v="unconfirmed">Not confirmed</button>
+      </div>
+      <label class="hx__label">Host shares door PIN with group</label>
+      <div class="hx__seg" data-hx="pinShare">
+        <button data-v="yes">Yes (opted in)</button><button data-v="no">No</button>
+      </div>
+      <label class="hx__label">Move time forward</label>
+      <div class="hx__seg">
+        <button data-advance="5">+5 min</button><button data-advance="10">+10 min</button><button data-advance="30">+30 min</button>
+      </div>
+    </div>
+    <div class="hx">
+      <div class="hx__title">Try a scenario</div>
+      <div class="hx__jump" id="jump"></div>
+      <p class="hx__caption" id="caption"></p>
+      <button class="dsp-reset" style="margin-top:12px;text-decoration:underline;background:none;border:0;cursor:pointer;font:inherit" data-reset-demo>Reset demo</button>
+    </div>
+  </aside>
+
+  <!-- ============ PHONE ============ -->
+  <div class="device" id="phone">
+    <div class="c-status"></div>
+    <div class="c-banner c-banner--offline"><i data-lucide="wifi-off"></i>Your device is offline.<span class="c-banner__meta">Saved 9:12 PM</span></div>
+    <div class="c-banner c-banner--sms"><i data-lucide="message-square"></i>No mobile data · calls and SMS still work</div>
+    <div class="c-banner c-banner--weak"><i data-lucide="signal-low"></i>Weak connection</div>
+    <div class="c-banner c-banner--battery"><i data-lucide="battery-low"></i>Battery <span data-bind="battery"></span> · your group has the details by SMS</div>
+
+    <div class="device__screen" id="screens">
+
+      <!-- 1. ARRIVAL PLAN (Airbnb reservation-detail pattern) -->
+      <section class="screen" data-screen="pack" data-title="Arrival plan">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back to trip" data-toast="Prototype: the trip screen isn't built"><i data-lucide="arrow-left"></i></button><span class="c-nav__fill"></span><button class="c-iconbtn" aria-label="Share arrival details with your group" data-toast="Already sent by SMS to Priya, Arjun and Kabir"><i data-lucide="share"></i></button></nav>
+        <div class="page">
+          <div class="hero-photo hero-photo--short"><img src="assets/photos/listing.jpg" alt="Living room of the flat"><span class="hero-photo__chip">Check-in · about 1:45 AM</span></div>
+          <h1 class="h1">Lakeview Residency</h1>
+          <p class="sub">Hosted by Rohan · Flat 3B, Indiranagar</p>
+          <div id="planStatus" class="mt-24"></div>
+
+          <hr class="sep">
+          <section class="sec">
+            <h2 class="h2">Check-in instructions</h2>
+            <div class="step-row"><img src="assets/photos/gate.jpg" alt="Main gate at night"><div><div class="step-row__t">Main gate, Block B</div><div class="step-row__s">Guard cabin on the right · pre-approval code 482 913</div></div></div>
+            <div class="step-row"><img src="assets/photos/door.jpg" alt="Third-floor corridor"><div><div class="step-row__t">Flat 3B, 3rd floor</div><div class="step-row__s">Second door · you let yourselves in with the PIN</div></div></div>
+          </section>
+
+          <hr class="sep">
+          <section class="sec">
+            <h2 class="h2">Your backup at the door</h2>
+            <div class="person">
+              <span class="person__av">R<span class="person__dot"></span></span>
+              <div class="person__body"><div class="step-row__t">Ramesh</div><div class="step-row__s">Caretaker · ground floor, G2</div></div>
+              <button class="c-iconbtn c-iconbtn--outline" aria-label="Call Ramesh" data-needs="cell" data-call="Ramesh"><i data-lucide="phone"></i></button>
+            </div>
+            <p class="fine mt-12">Calls go through Airbnb's line and are logged. His number stays private.</p>
+            <p class="c-needs-note c-needs-note--cell">No signal. Calls need a mobile network.</p>
+          </section>
+
+          <hr class="sep">
+          <section class="sec">
+            <h2 class="h2">Your group has it too</h2>
+            <div class="group">
+              <span class="group__av">P</span><span class="group__av">A</span><span class="group__av">K</span>
+              <div class="group__body"><div class="step-row__t">Priya, Arjun, Kabir</div><div class="step-row__s">Sent by SMS at 9:12 PM, to numbers you confirmed.</div></div>
+            </div>
+            <p class="fine mt-12">They can reply HELP or CALL. Only you can cancel or change times.</p>
+          </section>
+
+          <hr class="sep">
+          <section class="sec sec--list">
+            <button class="c-row" data-needs="data" data-toast="Prototype: opens Maps (needs data)"><i data-lucide="map"></i><span class="c-row__body"><span class="c-row__title">Directions</span><span class="c-row__sub">Opposite metro pillar 112</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <div class="c-row"><i data-lucide="id-card"></i><span class="c-row__body"><span class="c-row__title">Keep ID ready for all 4, plus a power bank and USB-C cable</span><span class="c-row__sub">ID may be checked · the power bank and cable open a dead lock</span></span></div>
+            <div class="c-row"><i data-lucide="building-2"></i><span class="c-row__body"><span class="c-row__title">If no one opens: Lakeside Inn</span><span class="c-row__sub">10 min walk · 24-hour desk · next to metro pillar 118</span></span></div>
+            <div class="c-row"><i data-lucide="download"></i><span class="c-row__body"><span class="c-row__title">Saved on this phone</span><span class="c-row__sub">9:12 PM · works without internet</span></span></div>
+          </section>
+        </div>
+        <div class="c-footer c-footer--stack">
+          <button class="c-btn c-btn--brand c-btn--block c-btn--lg" data-go="stuck">Something's stopping us</button>
+          <button class="c-btn c-btn--text" data-go="in">We're in</button>
+        </div>
+      </section>
+
+      <!-- 2. WHAT'S STOPPING YOU -->
+      <section class="screen" data-screen="stuck" data-title="What's stopping you?">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back" data-back><i data-lucide="arrow-left"></i></button></nav>
+        <div class="page">
+          <h1 class="h1">What's stopping you?</h1>
+          <p class="sub">Pick the first thing in your way. Every step is saved on this phone.</p>
+          <div class="mt-24">
+            <button class="barrier" data-go="gate"><img class="icon3d" src="assets/icons3d/gate.png" alt=""><span class="barrier__body"><span class="step-row__t">The gate</span><span class="step-row__s">Guard, society gate, gate lock</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="barrier" data-go="door"><img class="icon3d" src="assets/icons3d/door.png" alt=""><span class="barrier__body"><span class="step-row__t">The door</span><span class="step-row__s">PIN doesn't work, keypad dead, no key</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="barrier" data-go="noone"><img class="icon3d" src="assets/icons3d/noone.png" alt=""><span class="barrier__body"><span class="step-row__t">No one is here</span><span class="step-row__s">Ramesh or the host isn't answering</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+          </div>
+          <hr class="sep mt-24">
+          <section class="sec sec--list">
+            <button class="c-row" data-go="noone" data-reason="money"><i data-lucide="banknote"></i><span class="c-row__body"><span class="c-row__title">Someone wants money to let us in</span><span class="c-row__sub">Your stay is paid. Don't pay anyone.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="c-row" data-open-sheet="safety"><img class="icon3d icon3d--row" src="assets/icons3d/safety.png" alt=""><span class="c-row__body"><span class="c-row__title">I don't feel safe</span><span class="c-row__sub">Goes straight to help, no waiting</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+          </section>
+        </div>
+      </section>
+
+      <!-- 3. GATE -->
+      <section class="screen" data-screen="gate" data-title="At the gate">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back" data-back><i data-lucide="arrow-left"></i></button></nav>
+        <div class="page">
+          <h1 class="h1">At the gate</h1>
+          <div class="hero-photo hero-photo--wide mt-16"><img src="assets/photos/gate.jpg" alt="The main gate at night, guard cabin on the right"><span class="hero-photo__chip">Your gate · host's photo</span></div>
+          <ol class="numlist mt-24">
+            <li><span class="numlist__n">1</span><span>Go to the <b>guard cabin on the right</b>.</span></li>
+            <li><span class="numlist__n">2</span><span>Show the guard card. You don't need to read it.</span></li>
+            <li><span class="numlist__n">3</span><span>If he won't open, the card asks him to <b>ring G2 (Ramesh) on the intercom</b>.</span></li>
+          </ol>
+          <button class="c-btn c-btn--brand c-btn--block c-btn--lg mt-24" data-open-guard>Show the guard card</button>
+          <div class="btn-row mt-12">
+            <button class="c-btn c-btn--outline" data-voice-note><i data-lucide="play"></i><span>Play Rohan's note</span></button>
+            <button class="c-btn c-btn--outline" data-needs="cell" data-call="Ramesh"><i data-lucide="phone"></i>Call Ramesh</button>
+          </div>
+          <p class="fine mt-12">Rohan's note is in Assamese, the guard's language, 0:09, and plays offline. (Prototype: synthetic sample voice.)</p>
+          <p class="c-needs-note c-needs-note--cell">No signal: the guard can still ring G2 on his intercom.</p>
+        </div>
+        <div class="c-footer">
+          <button class="c-btn c-btn--secondary" style="flex:1" data-go="door">We're through</button>
+          <button class="c-btn c-btn--outline" style="flex:1" data-go="noone" data-from="gate">Still stuck</button>
+        </div>
+      </section>
+
+      <!-- 4. DOOR -->
+      <section class="screen" data-screen="door" data-title="Open the door">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back" data-back><i data-lucide="arrow-left"></i></button></nav>
+        <div class="page">
+          <h1 class="h1">Flat 3B door</h1>
+          <p class="sub">Keypad lock with a USB-C emergency port</p>
+          <figure class="hero-photo hero-photo--wide mt-16"><img src="assets/photos/door.jpg" alt="Third-floor corridor with two doors; Flat 3B is the second door"><span class="photo__pin" style="left:41%;top:40%" aria-hidden="true"></span><span class="hero-photo__chip">Yours: the second door</span></figure>
+          <div id="lockSteps" class="mt-24"></div>
+        </div>
+      </section>
+
+      <!-- 5. NO ONE HERE -->
+      <section class="screen" data-screen="noone" data-title="No one is answering">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back" data-back><i data-lucide="arrow-left"></i></button></nav>
+        <div class="page" id="nooneBody"></div>
+      </section>
+
+      <!-- 6. COVERED -->
+      <section class="screen" data-screen="covered" data-title="You're covered tonight">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back" data-back><i data-lucide="arrow-left"></i></button></nav>
+        <div class="page">
+          <img class="icon3d icon3d--hero" src="assets/icons3d/bed.png" alt="">
+          <h1 class="h1 center" id="coveredTitle">You're covered tonight</h1>
+          <p class="sub center" id="coveredSub"></p>
+          <div id="coveredHero" class="mt-24"></div>
+          <div class="amount mt-16" id="coveredAmount"></div>
+          <hr class="sep mt-24">
+          <section class="sec">
+            <h2 class="h2">Open all night, nearby</h2>
+            <div id="coveredStays"></div>
+            <p class="fine mt-12">Saved when you boarded. Another place open all night works too.</p>
+          </section>
+          <hr class="sep">
+          <section class="sec" id="coveredLog"></section>
+          <p class="fine">If Ramesh opens before you've booked or paid anywhere, just go in. If you've already booked or paid, keep that room. We check the call log and your location in the morning and settle it with Rohan or Airbnb, never with you. Reports are checked; false reports can close your account.</p>
+        </div>
+        <div class="c-footer"><button class="c-btn c-btn--text" style="margin:0 auto" data-go="in">Ramesh opened after all? We're in</button></div>
+      </section>
+
+      <!-- 7. WE'RE IN -->
+      <section class="screen" data-screen="in" data-title="">
+        <div class="page center" style="padding-top:48px" id="inAsk">
+          <img class="icon3d icon3d--hero" src="assets/icons3d/door_open.png" alt="">
+          <h1 class="h1 center">Is everyone inside?</h1>
+          <p class="sub center">Tap when all 4 of you are inside.</p>
+          <div class="btn-row mt-24"><button class="c-btn c-btn--primary" data-all-in="yes">All 4 are in</button><button class="c-btn c-btn--outline" data-all-in="no">Not yet</button></div>
+        </div>
+        <div class="page center" style="padding-top:48px" id="inDone" hidden>
+          <img class="icon3d icon3d--hero" src="assets/icons3d/door_open.png" alt="">
+          <h1 class="h1 center">You're in. Get some rest.</h1>
+          <p class="sub center">Arrived <span data-bind="time"></span>. We've let Rohan know.</p>
+          <div class="c-callout mt-24" style="text-align:left"><span class="c-callout__icon"><i data-lucide="sun"></i></span><div><div class="c-callout__title">This morning, 8 AM</div><div class="c-callout__text">One question: how did last night go? It helps the next late arrival.</div></div></div>
+          <hr class="sep mt-24">
+          <section class="sec sec--list" style="text-align:left">
+            <button class="c-row" data-open-sheet="safety"><i data-lucide="triangle-alert"></i><span class="c-row__body"><span class="c-row__title">Something's wrong inside</span><span class="c-row__sub">Gas smell, someone else there, no power</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+          </section>
+        </div>
+      </section>
+
+      <!-- 0a. BEFORE BOARDING: nothing confirmed at boarding -1h (Meera's app, at the bus station) -->
+      <section class="screen" data-screen="board">
+        <nav class="c-nav"><button class="c-iconbtn" aria-label="Back to trip" data-toast="Prototype: the trip screen isn't built"><i data-lucide="arrow-left"></i></button></nav>
+        <div class="page">
+          <div class="hero-photo hero-photo--short"><img src="assets/photos/listing.jpg" alt="Living room of the flat"><span class="hero-photo__chip">Bus leaves 10:15 PM</span></div>
+          <h1 class="h1">Ramesh hasn't confirmed yet</h1>
+          <p class="sub">Rohan approved your 1:45 AM arrival and chose Ramesh, the caretaker, to let you in. Ramesh hasn't said he'll be awake. Decide before you board, while you still have signal.</p>
+          <hr class="sep mt-24">
+          <section class="sec sec--list">
+            <button class="choice" data-board="rebook">
+              <span class="choice__body"><span class="step-row__t">Switch to Lakeside Inn (24-hour desk)</span><span class="step-row__s">Someone at the desk all night, 10 min walk from Rohan's flat. Your ₹1,500 goes toward it; you pay ₹700 more.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="choice" data-board="go">
+              <span class="choice__body"><span class="step-row__t">Go ahead to Rohan's flat</span><span class="step-row__s">Arrival details saved on your phone. If no one opens within 30 minutes of ringing G2, your ₹1,500 goes to a hotel nearby that's open all night. No extra money for a bed and cab, since Ramesh hasn't said yes.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+            <button class="choice" data-board="cancel">
+              <span class="choice__body"><span class="step-row__t">Cancel and find my own place</span><span class="step-row__s">Full ₹1,500 back. You'll need somewhere to sleep tonight.</span></span><i data-lucide="chevron-right" class="c-row__chev"></i></button>
+          </section>
+          <hr class="sep">
+          <section class="sec">
+            <div class="c-callout"><span class="c-callout__icon"><i data-lucide="bell"></i></span><div><div class="c-callout__title">If Ramesh says yes later</div><div class="c-callout__text">We'll text you and your group. Going ahead keeps that chance open until you arrive.</div></div></div>
+            <p class="fine mt-12">If you don't choose by 10:15 PM, we keep your booking as it is. Your arrival details are already saved and sent. If no one opens within 30 minutes of ringing G2, your night still moves with you.</p>
+          </section>
+        </div>
+      </section>
+
+      <!-- 0b. THE NAMED PERSON'S PAGE: Ramesh opens the SMS link. No app, no account. -->
+      <section class="screen" data-screen="ramesh">
+        <div class="web">
+          <div class="web__bar"><i data-lucide="lock"></i>abnb.me/r/3B7K</div>
+          <div class="page">
+            <div class="web__brand">airbnb</div>
+            <p class="web__hi mt-16" lang="hi">रोहन ने आपको आज रात के मेहमानों को अंदर लाने के लिए चुना है।</p>
+            <p class="sub">Rohan has chosen you to let tonight's guests in.</p>
+            <div class="web__card mt-16">
+              <div class="step-row__t">Meera + 3 guests · Flat 3B</div>
+              <div class="step-row__s">Tonight, about 1:45 AM · overnight bus</div>
+            </div>
+            <div id="rameshBody"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. CO-GUEST SMS (the phone's own Messages app) -->
+      <section class="screen" data-screen="sms" data-title="">
+        <div class="sms-head"><div class="sms-head__av">AB</div><div class="t-small-strong">AX-AIRBNB</div><div class="t-caption t-muted">Text message</div></div>
+        <div class="c-chat" id="smsThread"></div>
+      </section>
+
+    </div>
+
+    <!-- guard mode: full screen, turned toward the guard -->
+    <div class="guard-mode" id="guardMode" hidden role="dialog" aria-modal="true" aria-label="Guard card">
+      <div class="guard-mode__bar"><span>Showing to the guard</span><button class="c-iconbtn" data-close-guard aria-label="Close guard card"><i data-lucide="x"></i></button></div>
+      <div class="guard-mode__host" lang="as">
+        <div class="guard__tag" lang="en">From Rohan, flat owner · Assamese</div>
+        <div class="guard-mode__as">এওঁলোক ফ্লেট 3B ৰ অতিথি। মই ৰোহন, ঘৰৰ গৰাকী। অনুগ্ৰহ কৰি সোমাবলৈ দিয়ক।</div>
+        <div class="guard-mode__en" lang="en">"These are guests of Flat 3B. I'm Rohan, the owner. Please let them in."</div>
+      </div>
+      <div class="guard-mode__facts">
+        <div><div class="guard__tag">Flat</div><div class="guard-mode__big">3B</div></div>
+        <div><div class="guard__tag">Guests</div><div class="guard-mode__mid">Meera + 3</div><div class="guard-mode__en">20–22 Nov</div></div>
+      </div>
+      <div class="guard-mode__code">
+        <div class="guard__tag">Society pre-approval code · <span lang="hi" style="font-family:'Noto Sans Devanagari',var(--font)">प्री-अप्रूवल कोड</span></div>
+        <div class="guard__code">482 913</div>
+      </div>
+      <div class="guard-mode__ask">
+        <div class="guard__tag">Please</div>
+        <div class="guard-mode__hi" lang="hi">कृपया इंटरकॉम पर फ़्लैट G2 (रमेश, केयरटेकर) को कॉल करें</div>
+        <div class="guard-mode__en" lang="en">"Please ring flat G2 (Ramesh, caretaker) on the intercom."</div>
+      </div>
+      <button class="guard-mode__play" data-voice-note><i data-lucide="play"></i><span>Play Rohan's voice note · 0:09</span></button>
+      <p class="guard-mode__fine">Rohan chose the guard's language. Booking details for the guard to check; the society's own rules still apply.</p>
+    </div>
+
+    <!-- safety sheet -->
+    <div class="c-sheet-wrap" id="safety" role="dialog" aria-modal="true" aria-label="Safety">
+      <div class="c-sheet">
+        <div class="c-sheet__close"><button class="c-iconbtn" data-close-sheet aria-label="Close"><i data-lucide="x"></i></button></div>
+        <img class="icon3d icon3d--lg" src="assets/icons3d/safety.png" alt="">
+        <h2 class="t-title-2">Get help now</h2>
+        <p class="t-body t-muted">No timers and no questions first.</p>
+        <div class="stack-sm" style="margin-top:16px">
+          <button class="c-btn c-btn--danger c-btn--block c-btn--lg" data-toast="Calling 112…"><i data-lucide="phone"></i>Call 112 (police / emergency)</button>
+          <button class="c-btn c-btn--primary c-btn--block" data-needs="cell" data-toast="Calling Airbnb's 24-hour safety line…">Airbnb 24-hour safety line</button>
+        </div>
+        <p class="t-caption t-muted" style="margin-top:12px">Smell gas? Leave the flat first, don't switch anything on, then call. Emergency calls work without mobile data.</p>
+      </div>
+    </div>
+
+    <div class="device__home"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="design-system/ds.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

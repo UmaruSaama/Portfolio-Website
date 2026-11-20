@@ -1,0 +1,98 @@
+/* =========================================================
+   Airbnb-DNA tokens for the Navi late-night check-in prototype
+   Values are matched by eye from Airbnb iOS screens on Mobbin
+   (see design-system/README.md). This is not Airbnb's real DLS,
+   which is private.
+   Substitutions: Airbnb Cereal -> Figtree; Airbnb icons -> Lucide.
+   ========================================================= */
+:root {
+  /* Brand */
+  --rausch: #FF385C;
+  --rausch-deep: #E00B41;                 /* hover / pressed */
+  --brand-gradient: linear-gradient(90deg, #E61E4D 0%, #E31C5F 50%, #D70466 100%);
+  --brand-text: #D70466;                  /* Rausch shade with AA contrast on white, for small text */
+
+  /* Neutrals (Airbnb "Hof" / "Foggy" family) */
+  --ink: #222222;                         /* primary text, dark buttons */
+  --ink-2: #3F3F3F;                       /* sent chat bubble */
+  --muted: #6A6A6A;                       /* secondary text, 5.3:1 on white */
+  --subtle: #929292;                      /* placeholder; never body text */
+  --line: #DDDDDD;                        /* borders, dividers */
+  --line-soft: #EBEBEB;
+  --fill: #F2F2F2;                        /* grey buttons, received bubbles */
+  --fill-soft: #F7F7F7;                   /* sections, inputs */
+  --surface: #FFFFFF;
+  --on-ink: #FFFFFF;                      /* text on dark (ink) buttons */
+  --scrim: rgba(0, 0, 0, 0.5);
+
+  /* Semantic */
+  --info: #1F6FEB;      --info-bg: #EEF4FE;
+  --success: #00760A;   --success-bg: #EAF6EA;
+  --warning: #945600;   --warning-bg: #FFF4E5;   /* amber, AA on its tint */
+  --error: #C13515;     --error-bg: #FFF0ED;     /* Airbnb's error red */
+  --offline: #222222;   --offline-bg: #F2F2F2;
+
+  /* Type: Cereal-like scale. Weights are 400 / 500 / 600 / 700 / 800 */
+  --font: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "Roboto Mono", Menlo, monospace;
+  --t-display: 600 30px/34px var(--font);   /* "Get help", trip city (measured vs Mobbin)*/
+  --t-title-1: 600 22px/26px var(--font);   /* page titles: "Reservation details" (measured) */
+  --t-title-2: 600 20px/24px var(--font);   /* section titles: "Getting there" */
+  --t-title-3: 600 18px/22px var(--font);   /* card titles */
+  --t-body-strong: 600 16px/20px var(--font);
+  --t-body: 400 16px/21px var(--font);
+  --t-small-strong: 600 14px/18px var(--font);
+  --t-small: 400 14px/18px var(--font);
+  --t-caption: 400 12px/16px var(--font);
+  --t-code: 700 34px/40px var(--font-mono); /* door / lockbox code */
+  --tracking-code: 0.18em;
+
+  /* Spacing: 4pt grid; screen gutter is 24px, like Airbnb iOS */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --gutter: 24px;
+
+  /* Radius */
+  --r-sm: 8px;      /* inputs, small buttons */
+  --r-md: 12px;     /* list cards, info boxes */
+  --r-lg: 16px;     /* image cards, trip cards */
+  --r-xl: 24px;     /* bottom sheets, host card */
+  --r-pill: 999px;  /* chips, Details pill, map button */
+
+  /* Elevation */
+  --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-sheet: 0 -8px 28px rgba(0, 0, 0, 0.18);
+
+  /* Touch & motion */
+  --tap: 44px;                      /* minimum touch target */
+  --tap-night: 52px;                /* primary actions at night, one-handed, cold */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 200ms;
+}
+
+/* Dark theme: the Airbnb app supports it, and at 1:45 AM with
+   brightness turned down it is the realistic state */
+[data-theme="dark"] {
+  --ink: #F7F7F7;
+  --ink-2: #3A3A3A;
+  --muted: #B0B0B0;
+  --subtle: #8A8A8A;
+  --line: #3A3A3A;
+  --line-soft: #2C2C2C;
+  --fill: #2A2A2A;
+  --fill-soft: #1E1E1E;
+  --surface: #121212;
+  --on-ink: #121212;
+  --brand-text: #FF5A7A;
+  --info-bg: #13243D;     --info: #6EA8FF;
+  --success-bg: #12301A;  --success: #4CC35A;
+  --warning-bg: #3A2A12;  --warning: #F0A54A;
+  --error-bg: #3D1712;    --error: #FF7A5C;
+  --offline-bg: #2A2A2A;  --offline: #F7F7F7;
+  --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0ms; }
+}

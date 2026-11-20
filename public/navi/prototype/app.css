@@ -1,0 +1,288 @@
+/* Prototype-level styles: the stage, demo harness and screen-specific bits.
+   Everything visual reuses design-system tokens and components. */
+body { background: #EDEDED; font-family: var(--font); color: #222; margin: 0; }
+.stage { display: flex; gap: 40px; justify-content: center; align-items: flex-start; padding: 32px 24px 64px; flex-wrap: wrap; }
+.harness { width: 260px; position: sticky; top: 24px; display: grid; gap: 16px; }
+.harness__note { font: 400 12px/1.4 var(--font); color: #6A6A6A; background: #fff; border: 1px dashed #bbb; border-radius: 12px; padding: 10px 12px; }
+.hx { background: #fff; border: 1px solid #ddd; border-radius: 16px; padding: 16px; font: 500 13px/1.3 var(--font); box-shadow: 0 6px 16px rgba(0,0,0,.06); }
+.hx__title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.hx__label { display: block; margin: 12px 0 6px; color: #6a6a6a; }
+.hx__seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.hx__seg button, .hx__jump button { border: 1px solid #ddd; border-radius: 999px; padding: 6px 10px; background: #fff; cursor: pointer; font: inherit; }
+.hx__seg button[aria-pressed=true], .hx__jump button[aria-current=true] { background: #222; color: #fff; border-color: #222; }
+.hx__jump { display: grid; gap: 6px; }
+.hx__jump button { text-align: left; border-radius: 10px; }
+@media (max-width: 860px) { .harness { position: static; width: 100%; max-width: 390px; } .stage { padding: 0 0 32px; } }
+
+/* screens */
+.screen { display: none; }
+.screen.is-active { display: block; animation: fade 180ms var(--ease); }
+
+/* arrival pack */
+.pack-hero { padding: var(--s-4) var(--gutter) 0; }
+.pack-status { display: flex; align-items: center; gap: var(--s-2); }
+.pack-step { display: grid; grid-template-columns: 32px 1fr; gap: var(--s-3); padding: var(--s-3) 0; }
+.pack-step + .pack-step { border-top: 1px solid var(--line-soft); }
+.pack-step__n { width: 32px; height: 32px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; font: var(--t-small-strong); }
+.saved-note { font: var(--t-caption); color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.saved-note svg.lucide { width: 14px; height: 14px; }
+
+/* barrier chooser */
+.barrier { display: flex; align-items: center; gap: var(--s-4); width: 100%; text-align: left; padding: var(--s-5) var(--s-4); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); min-height: 76px; }
+.barrier + .barrier { margin-top: var(--s-3); }
+.barrier:active { background: var(--fill-soft); }
+.barrier__icon { width: 44px; height: 44px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; flex: none; }
+.barrier__icon svg.lucide { width: 22px; height: 22px; }
+
+/* guard card: big, high contrast, bilingual */
+.guard { background: var(--ink); color: var(--on-ink); border-radius: var(--r-xl); padding: var(--s-6) var(--s-5); }
+.guard__hi { font: 700 22px/1.35 var(--font); }
+.guard__en { font: 500 15px/1.35 var(--font); opacity: .75; margin-top: 2px; }
+.guard__row { padding: var(--s-4) 0; border-top: 1px solid rgba(255,255,255,.18); }
+[data-theme="dark"] .guard__row { border-top-color: rgba(0,0,0,.18); }
+.guard__row:first-of-type { border-top: 0; padding-top: 0; }
+.guard__code { font: 800 40px/1 var(--font-mono); letter-spacing: .12em; margin-top: var(--s-2); }
+.guard__tag { font: 600 11px/1.3 var(--font); text-transform: uppercase; letter-spacing: .06em; opacity: .6; margin-bottom: 6px; }
+.guard__row--host .guard__hi { font-size: 20px; line-height: 1.45; }
+.guard__disclaimer { font: var(--t-caption); color: var(--muted); margin-top: var(--s-3); text-align: center; }
+
+/* lock steps */
+.lockstep { border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-4); }
+.lockstep.is-current { border: 2px solid var(--ink); }
+.lockstep.is-done { opacity: .55; }
+.lockstep__head { display: flex; gap: var(--s-3); align-items: center; }
+.lockstep__body { margin: var(--s-3) 0 0 44px; }
+.lockstep__actions { display: flex; gap: var(--s-2); margin-top: var(--s-3); }
+.lockstep__actions .c-btn { flex: 1; min-height: 44px; }
+
+/* guarantee timer */
+.meter { height: 8px; border-radius: 4px; background: var(--fill); overflow: hidden; }
+.meter__fill { height: 100%; background: var(--ink); border-radius: 4px; transition: width var(--dur) var(--ease); }
+.covered { border-radius: var(--r-xl); padding: var(--s-6) var(--s-5); background: var(--success-bg); }
+.covered__amt { font: 800 40px/1 var(--font); color: var(--success); margin: var(--s-2) 0; }
+
+/* SMS app (not Airbnb DNA: it's the phone's own Messages app) */
+.sms-head { text-align: center; padding: var(--s-3) 0 var(--s-2); border-bottom: 1px solid var(--line-soft); }
+.sms-head__av { width: 44px; height: 44px; border-radius: 50%; background: #9AA0A6; color: #fff; display: grid; place-items: center; margin: 0 auto 4px; font: 600 16px/1 var(--font); }
+.sms { align-self: flex-start; max-width: 82%; background: #E9E9EB; color: #000; border-radius: 18px; padding: 10px 14px; font: 400 15px/1.35 -apple-system, var(--font); white-space: pre-line; }
+[data-theme="dark"] .sms { background: #26252A; color: #fff; }
+.sms a { color: #0A84FF; }
+.sms--out { align-self: flex-end; background: #0A84FF; color: #fff; }
+
+/* the co-guest view is their phone's own Messages app, not the Airbnb app */
+.device[data-app="sms"] .c-banner { display: none !important; }
+
+/* done */
+.done-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--success-bg); color: var(--success); display: grid; place-items: center; margin: var(--s-10) auto var(--s-5); }
+.done-icon svg.lucide { width: 36px; height: 36px; }
+
+/* ---- Airbnb-DNA pass 2: 3D icons + host photos ---- */
+.icon3d { width: 52px; height: 52px; object-fit: contain; flex: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,.08)); }
+.icon3d--sm { width: 36px; height: 36px; }
+.icon3d--lg { width: 88px; height: 88px; display: block; margin-bottom: var(--s-2); }
+.icon3d--hero { width: 140px; height: 140px; display: block; margin: var(--s-8) auto var(--s-4); }
+.barrier { padding: var(--s-4); }
+.c-trip__img { object-fit: cover; }
+.pack-step--img { grid-template-columns: 64px 1fr; align-items: center; }
+.pack-thumb { width: 64px; height: 64px; border-radius: var(--r-md); object-fit: cover; background: var(--fill); display: grid; place-items: center; font: var(--t-title-3); }
+.pack-thumb--av { border-radius: 50%; background: var(--fill); }
+.photo { margin: 0; position: relative; }
+.photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--r-lg); display: block; }
+.photo figcaption { font: var(--t-caption); color: var(--muted); margin-top: 6px; }
+.photo__pin { position: absolute; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; background: var(--rausch); border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(255,56,92,.3), var(--shadow-card); }
+.barrier .icon3d { width: 60px; height: 60px; }
+
+/* ---- gate screen v2 + guard mode ---- */
+.photo--wide img { aspect-ratio: 16/9; }
+.photo__chip { position: absolute; left: 12px; top: 12px; background: var(--surface); color: var(--ink); border-radius: var(--r-pill); padding: 6px 12px; font: var(--t-small-strong); box-shadow: var(--shadow-soft); }
+.gate-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.gate-steps li { display: flex; gap: 12px; align-items: flex-start; font: var(--t-body); }
+.gate-steps__n { width: 24px; height: 24px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; font: var(--t-caption); font-weight: 700; flex: none; margin-top: 1px; }
+.guard-mode { position: absolute; inset: 54px 0 34px; z-index: 35; background: #111; color: #fff; padding: 8px 20px 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; animation: fade 160ms var(--ease); }
+.guard-mode[hidden] { display: none; }
+.guard-mode .guard__tag { color: #fff; }
+.guard-mode__bar { display: flex; align-items: center; justify-content: space-between; font: var(--t-small-strong); opacity: .75; }
+.guard-mode__bar .c-iconbtn { color: #fff; }
+.guard-mode__as { font: 700 21px/1.45 'Noto Sans Bengali', var(--font); }
+.guard-mode__en { font: 400 14px/1.35 var(--font); opacity: .72; margin-top: 4px; }
+.guard-mode__facts { display: grid; grid-template-columns: 1fr 1.4fr; gap: 12px; border-top: 1px solid rgba(255,255,255,.16); padding-top: 14px; }
+.guard-mode__big { font: 800 40px/1 var(--font); }
+.guard-mode__mid { font: 700 22px/1.2 var(--font); }
+.guard-mode__code { border-top: 1px solid rgba(255,255,255,.16); padding-top: 14px; }
+.guard-mode .guard__code { margin-top: 4px; }
+.guard-mode__hi { font: 600 15px/1.4 'Noto Sans Devanagari', var(--font); opacity: .85; }
+.guard-mode__play { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; border-radius: var(--r-md); background: #fff; color: #111; font: var(--t-body-strong); margin-top: auto; }
+.guard-mode__fine { font: var(--t-caption); opacity: .55; text-align: center; margin: 0; }
+
+/* =========================================================
+   Pass 3: Airbnb pattern kit. Overrides the earlier styles.
+   Matched to Airbnb iOS screens on Mobbin: Reservation details,
+   pending reservation, Trips sheet, Get help, the "Are you sure?" sheet.
+   ========================================================= */
+/* nav: plain arrow, no centred title on content screens; the title lives in the page */
+.c-nav { height: 52px; padding: 0 12px; gap: 4px; background: var(--surface); }
+.c-nav__fill { flex: 1; }
+.c-iconbtn { width: 44px; height: 44px; color: var(--ink); }
+.c-iconbtn svg.lucide { width: 22px; height: 22px; }
+.c-iconbtn--outline { border: 1px solid var(--line); }
+
+/* page rhythm: 24px gutter; sections separated by 1px hairlines */
+.page { padding: 0 var(--gutter) var(--s-8); }
+.h1 { font: 600 26px/30px var(--font); margin: 8px 0 0; letter-spacing: -0.01em; color: var(--ink); }
+.h2 { font: 600 20px/24px var(--font); margin: 0 0 var(--s-4); color: var(--ink); }
+.sub { font: 400 16px/22px var(--font); color: var(--muted); margin: 6px 0 0; }
+.p { font: 400 15px/21px var(--font); margin: 0; color: var(--ink); }
+.fine { font: 400 12px/16px var(--font); color: var(--muted); margin: 0; }
+.ink { color: var(--ink); }
+.center { text-align: center; }
+.sep { height: 1px; border: 0; background: var(--line-soft); margin: 0; }
+.sec { padding: var(--s-6) 0; }
+.sec--list { padding: var(--s-2) 0; }
+.mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+
+/* buttons: Airbnb radius about 12px; outline buttons are 1px ink */
+.c-btn { border-radius: 12px; min-height: 48px; padding: 0 20px; font: 600 16px/20px var(--font); white-space: nowrap; }
+.c-btn--lg { min-height: 52px; border-radius: 12px; }
+.c-btn--outline { border: 1px solid var(--ink); background: var(--surface); }
+.c-btn--text { min-height: 44px; padding: 0; font: 600 16px/20px var(--font); }
+.c-btn svg.lucide { width: 18px; height: 18px; stroke-width: 2; }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-row .c-btn { padding: 0 12px; }
+
+/* sticky footer like the "Reserve" bar */
+.c-footer { padding: 12px var(--gutter) 12px; gap: 8px; box-shadow: 0 -1px 0 var(--line-soft); border-top: 0; }
+.c-footer--stack { flex-direction: column; align-items: stretch; gap: 0; }
+.c-footer--stack .c-btn--text { align-self: center; }
+
+/* hero photo with a white chip, like the "Pending" card */
+.hero-photo { position: relative; margin: 8px 0 0; }
+.hero-photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 16px; display: block; background: var(--fill); }
+.hero-photo--wide img { aspect-ratio: 16/10; }
+.hero-photo__chip { position: absolute; left: 12px; top: 12px; background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 12px; font: 600 13px/16px var(--font); box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.h1 + .sub { margin-top: 4px; }
+.hero-photo + .h1 { margin-top: 20px; }
+
+/* callouts: white, hairline border, coloured round icon */
+.c-callout { border: 1px solid var(--line); border-radius: 16px; padding: 16px; background: var(--surface); gap: 12px; align-items: flex-start; }
+.c-callout__icon { width: 32px; height: 32px; background: var(--ink); color: var(--on-ink); }
+.c-callout__icon--ok { background: #008A05; color: #fff; }
+.c-callout__icon--warn { background: #C45A00; color: #fff; }
+.c-callout__icon--err { background: var(--error); color: #fff; }
+.c-callout__title { font: 600 15px/20px var(--font); }
+.c-callout__text { font: 400 14px/19px var(--font); margin-top: 2px; }
+
+/* rows with a photo thumbnail (Trips itinerary style) */
+.step-row { display: flex; gap: 16px; align-items: center; padding: 8px 0; }
+.step-row + .step-row { margin-top: 8px; }
+.step-row img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; flex: none; background: var(--fill); }
+.step-row__t { display: block; font: 600 16px/20px var(--font); color: var(--ink); }
+.step-row__s { display: block; font: 400 14px/19px var(--font); color: var(--muted); margin-top: 2px; }
+
+/* person row (Meet your host style) */
+.person { display: flex; align-items: center; gap: 16px; }
+.person__av { width: 56px; height: 56px; border-radius: 50%; background: #3F3F3F; color: #fff; display: grid; place-items: center; font: 600 22px/1 var(--font); position: relative; flex: none; }
+.person__dot { position: absolute; right: 0; bottom: 2px; width: 14px; height: 14px; border-radius: 50%; background: #008A05; border: 2px solid var(--surface); }
+.person__body { flex: 1; min-width: 0; }
+
+/* list rows */
+.c-row { min-height: 60px; padding: 10px 0; gap: 16px; border-radius: 0; }
+.c-row > svg.lucide:first-child { width: 24px; height: 24px; }
+.c-row__title { font: 400 16px/20px var(--font); }
+.c-row__sub { font: 400 14px/18px var(--font); }
+.c-row__chev { width: 18px !important; height: 18px !important; color: var(--ink); }
+.c-needs-note { margin-top: 8px; }
+
+/* barrier choice cards */
+.barrier { display: flex; align-items: center; gap: 16px; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); min-height: 84px; box-shadow: none; transition: box-shadow var(--dur) var(--ease); }
+.barrier + .barrier { margin-top: 12px; }
+.barrier:active { box-shadow: var(--shadow-card); }
+.barrier__body { flex: 1; min-width: 0; }
+.barrier .icon3d { width: 56px; height: 56px; }
+.icon3d--row { width: 28px; height: 28px; }
+.icon3d--hero { width: 128px; height: 128px; display: block; margin: 8px auto 12px; }
+.icon3d--head { width: 72px; height: 72px; }
+.head-row { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+
+/* numbered list */
+.numlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.numlist li { display: flex; gap: 14px; align-items: flex-start; font: 400 16px/22px var(--font); color: var(--ink); }
+.numlist__n { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font: 600 13px/1 var(--font); flex: none; color: var(--ink); background: var(--surface); }
+.numlist__n--on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.numlist__n--done { background: var(--fill); border-color: var(--fill); color: var(--muted); }
+.numlist__n svg.lucide { width: 14px; height: 14px; }
+
+/* door steps */
+.lock__done { display: flex; align-items: center; gap: 12px; padding: 10px 0; font: 400 15px/20px var(--font); color: var(--muted); }
+.lock__tag { margin-left: auto; font: 600 12px/16px var(--font); color: var(--muted); }
+.lock__card { border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-top: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.lock__head { display: flex; align-items: center; gap: 12px; }
+.lock__body { margin-top: 12px; }
+.pin { background: var(--fill-soft); border-radius: 12px; padding: 16px; text-align: center; }
+.pin__label { font: 600 12px/16px var(--font); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.pin__value { font: 700 34px/40px var(--font); letter-spacing: .12em; margin: 6px 0 2px; color: var(--ink); }
+.pin__meta { font: 400 12px/16px var(--font); color: var(--muted); }
+.warnline { display: none; font: 600 13px/18px var(--font); color: var(--error); margin: 8px 0 0; }
+
+/* no-one status */
+.status-card { border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+.meter { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.meter__fill { height: 100%; border-radius: 3px; background: var(--rausch); }
+
+/* attempt log */
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.log li { display: flex; gap: 12px; align-items: flex-start; }
+.log__ic { width: 32px; height: 32px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; flex: none; color: var(--muted); }
+.log__ic svg.lucide { width: 16px; height: 16px; }
+.log__t { font: 400 15px/20px var(--font); color: var(--ink); }
+.log__m { font: 400 13px/17px var(--font); color: var(--muted); margin-top: 2px; }
+
+/* pin overlay on door photo */
+.photo__pin { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; background: var(--rausch); border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(255,56,92,.28), 0 4px 10px rgba(0,0,0,.25); }
+
+/* banners: calmer, one line each */
+.c-banner { padding: 8px var(--gutter); font: 600 13px/16px var(--font); }
+.c-banner--battery { background: #FFF0EE; color: #B42318; }
+
+/* sheet */
+.c-sheet { padding: 12px var(--gutter) 24px; }
+.c-sheet .icon3d--lg { margin: 0 0 8px; }
+
+/* ---- pass 4: after the stress test ---- */
+/* group row: overlapping initials, like Airbnb's guest avatars */
+.group { display: flex; align-items: center; gap: 12px; }
+.group__av { width: 40px; height: 40px; border-radius: 50%; background: #3F3F3F; color: #fff; display: grid; place-items: center; font: 600 15px/1 var(--font); border: 2px solid var(--surface); flex: none; }
+.group__av + .group__av { margin-left: -22px; }
+.group__body { flex: 1; min-width: 0; margin-left: 4px; }
+/* price breakdown, like Airbnb's "Price details" */
+.amount { border: 1px solid var(--line); border-radius: 16px; padding: 4px 16px; }
+.amount__row { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; font: 400 15px/20px var(--font); color: var(--ink); }
+.amount__row + .amount__row { border-top: 1px solid var(--line-soft); }
+.amount__row--total { font-weight: 600; }
+.stay__ic { width: 56px; height: 56px; border-radius: 12px; background: var(--fill); display: grid; place-items: center; flex: none; color: var(--ink); }
+.stay__ic svg.lucide { width: 24px; height: 24px; }
+
+/* ---- pass 5: critic fixes (before-boarding screens, scenarios) ---- */
+.hero-photo--short img { aspect-ratio: 16/9; }
+.device[data-app="web"] .c-banner { display: none !important; }
+/* decision rows on the boarding sheet (Airbnb "Cancel / Change" option rows) */
+.choice { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 16px 0; background: none; border: 0; border-bottom: 1px solid var(--line-soft); cursor: pointer; font: inherit; color: var(--ink); }
+.choice:last-child { border-bottom: 0; }
+.choice__body { flex: 1; min-width: 0; }
+/* the named person's light web page (no app, no account) */
+.web { min-height: 100%; background: var(--surface); }
+.web__bar { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 4px 16px 12px; padding: 8px 12px; background: var(--fill-soft); border-radius: 10px; font: 400 13px/16px var(--font); color: var(--muted); }
+.web__bar svg.lucide { width: 12px; height: 12px; }
+.web__brand { font: 800 22px/1 var(--font); color: var(--rausch); letter-spacing: -0.02em; }
+.web__hi { font: 600 20px/28px 'Noto Sans Devanagari', var(--font); color: var(--ink); margin-bottom: 0; }
+.web__card { border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; background: var(--surface); font: 500 15px/18px var(--font); color: var(--ink); cursor: pointer; min-height: 44px; }
+.chip[aria-pressed=true] { border: 2px solid var(--ink); padding: 9px 15px; font-weight: 600; }
+.done-tick { width: 56px; height: 56px; border-radius: 50%; background: #008A05; color: #fff; display: grid; place-items: center; margin: 0 auto 12px; }
+.done-tick svg.lucide { width: 28px; height: 28px; }
+/* guard card: the intercom ask */
+.guard-mode__ask { border-top: 1px solid rgba(255,255,255,.16); padding-top: 14px; }
+/* scenario list */
+.hx__jump button b { display: inline-block; min-width: 16px; }
+.hx__caption { margin: 12px 0 0; font: 400 13px/1.4 var(--font); color: #444; background: #F7F7F7; border-radius: 10px; padding: 10px 12px; }
+.hx__caption:empty { display: none; }
