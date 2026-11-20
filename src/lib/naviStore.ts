@@ -53,6 +53,11 @@ export type NaviEvent = {
   comment?: string;
 };
 
+/** Deletes every stored test event (owner action from the private stats page). */
+export async function clearEvents() {
+  await pipeline([["DEL", KEY_EVENTS]]);
+}
+
 /** Newest first. */
 export async function readEvents(): Promise<NaviEvent[]> {
   const [r] = await pipeline([["LRANGE", KEY_EVENTS, 0, MAX_EVENTS - 1]]);

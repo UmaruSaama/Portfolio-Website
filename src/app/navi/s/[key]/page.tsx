@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { readEvents, storeReady, type NaviEvent } from "@/lib/naviStore";
 import { LiveRefresh } from "./LiveRefresh";
+import { ClearData } from "./ClearData";
 import st from "./stats.module.css";
 
 /*
@@ -78,7 +79,7 @@ async function Stats({ params }: { params: Promise<{ key: string }> }) {
   const head = (
     <header className={st.head}>
       <h1>Navi prototype · live test</h1>
-      <LiveRefresh seconds={10} />
+      <span style={{ display: "flex", gap: 12, alignItems: "center" }}><LiveRefresh seconds={10} /><ClearData secret={secret} /></span>
     </header>
   );
   if (!storeReady()) return <>{head}<p className={st.warn}>No store connected yet. In Vercel: Storage → Upstash for Redis → Connect to this project, then redeploy.</p></>;

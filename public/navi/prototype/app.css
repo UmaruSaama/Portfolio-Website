@@ -413,3 +413,9 @@ html:has(#guardMode:not([hidden])) .hx-fab { display: none; }
 .intro__btn:disabled { background: #ddd; color: #888; cursor: not-allowed; }
 .thanks__skip { display: block; margin: 12px auto 0; border: 0; background: none; font: 600 14px/20px var(--font); text-decoration: underline; color: #222; cursor: pointer; }
 #confetti { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 10001; pointer-events: none; display: none; }
+
+/* ---- pass 11: the test bar overlaps the status bar's notch space instead of pushing the app down ---- */
+@media (max-width: 600px) {
+  .stage > .device { top: 0; height: 100vh; height: 100dvh; }
+  .c-status { height: auto; padding: calc(40px + env(safe-area-inset-top) + 8px) 20px 8px 24px; }
+}

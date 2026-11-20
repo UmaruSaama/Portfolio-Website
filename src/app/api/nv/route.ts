@@ -1,4 +1,4 @@
-import { pushEvents, storeReady } from "@/lib/naviStore";
+import { clearEvents, pushEvents, storeReady } from "@/lib/naviStore";
 
 /*
   Collector for the Navi prototype's test events (sent with navigator.sendBeacon from
@@ -32,5 +32,14 @@ export async function POST(req: Request) {
   const country = req.headers.get("x-vercel-ip-country") || "";
   const list = (Array.isArray(body) ? body : [body]).slice(0, 50).map((x) => clean(x, country)).filter(Boolean) as object[];
   try { await pushEvents(list); } catch { return new Response(null, { status: 502 }); }
+  return new Response(null, { status: 204 });
+}
+
+/** Owner only: wipe all test events. Needs the stats secret in the x-navi-key header. */
+export async function DELETE(req: Request) {
+  const secret = process.env.NAVI_STATS_KEY || "";
+  if (!secret || req.headers.get("x-navi-key") !== secret) return new Response(null, { status: 404 });
+  if (!storeReady()) return new Response(null, { status: 204 });
+  try { await clearEvents(); } catch { return new Response(null, { status: 502 }); }
   return new Response(null, { status: 204 });
 }
