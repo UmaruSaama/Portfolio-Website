@@ -21,14 +21,14 @@ const ROWS: [Stop, Stop][] = [
     {
       img: "j02-board", alt: "Boarding screen: Ramesh hasn't confirmed; switch, go ahead or cancel", time: "9:15 PM · at the bus station, no Yes yet",
       title: "Meera decides while she still has signal",
-      why: "I put “switch to a 24-hour desk” first because it’s the only choice that guarantees a bed. Cancel says plainly she’ll still need somewhere to sleep.",
+      why: "I put “switch to a 24-hour desk” first because it’s the only choice with a bed sorted before the bus leaves. Cancel says plainly she’ll still need somewhere to sleep.",
     },
   ],
   [
     {
       img: "j03-arrival", alt: "Arrival screen offline at 6% battery, labelled Saved 9:12 PM", time: "1:45 AM · at the building",
       title: "Everything is saved, and it says so",
-      why: "On a real phone, Airbnb showed a red “Error” over details that were fine offline. Here it says “Saved 9:12 PM”, and the battery banner says the group has it all by SMS.",
+      why: "On a real phone in airplane mode, Airbnb opened a past trip under a red “Error · You’re offline right now”. Here it says “Saved 9:12 PM”, and the battery banner says the group has it all by SMS.",
     },
     {
       img: "j04-stuck", alt: "What's stopping you? Gate, door, no one here, money, safety", time: "1:46 AM",

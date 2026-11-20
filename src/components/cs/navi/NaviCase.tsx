@@ -120,9 +120,9 @@ export function NaviCase() {
         <Chapter id="who" label="Who">
           <Opener
             eyebrow="02 · Who"
-            title="Six parties are involved, and at 1:45 AM only the guest is reliably awake."
+            title="Six parties are involved. At 1:45 AM the only ones awake are the guests, and a guard who can’t let them in."
             introTitle="The design has to connect people who are never awake at the same time."
-            intro={<p className={cs.body}>The host is responsible, someone on site is available, Airbnb is accountable. Most failures come from treating them as one person.</p>}
+            intro={<p className={cs.body}>The host is responsible, someone on site is available, Airbnb is accountable. I kept the three apart on purpose: each has a different job, at a different hour.</p>}
           />
           <div className={cs.strip}>
             <table className={s.table}>
@@ -164,13 +164,13 @@ export function NaviCase() {
           <SectionHead label="Guardrails" title="What must not get worse" />
           <ul className={s.guards}>
             <li><span className={cs.strong}>Fraud:</span> a random audit of 1 in 10 claims, plus flags (claims at exactly minute 30, receipts near the cap, repeat claims).</li>
-            <li><span className={cs.strong}>Supply:</span> late-arrival approvals and caretaker confirmations. Hosts leave through silence, not by saying No.</li>
+            <li><span className={cs.strong}>Supply:</span> late-arrival approvals and caretaker confirmations. My bet: hosts leave through silence, not by saying No.</li>
             <li><span className={cs.strong}>Host burden:</span> night contacts per host per late arrival <Cite c="C434" />.</li>
             <li><span className={cs.strong}>Also watched:</span> time to a person at night, false alarms, late arrivals nobody declared.</li>
           </ul>
           <Callout>No baseline exists, so every target is a hypothesis.</Callout>
           <Pointers items={[["c", "The metric and the economics"]]} />
-          <ChapterEnd>Then the question was which kind of solution moves that number.</ChapterEnd>
+          <ChapterEnd>So I judged every option by one question: what would Airbnb have to do at 2 AM?</ChapterEnd>
         </Chapter>
 
         {/* ================= 4 · WHAT ================= */}
@@ -271,7 +271,7 @@ export function NaviCase() {
             <table className={s.table}>
               <thead><tr><th>Layer</th><th>Who gets it</th><th>Who pays</th><th>How fast</th></tr></thead>
               <tbody>
-                <tr><td className={cs.strong}>1 · Your night moves with you (₹1,500)</td><td>Anyone who rang G2 (or had the guard ring), waited 30 min and wasn’t let in. Confirmed or not.</td><td>Host’s payout when the host owns access <Cite c="C350 C393" />. Airbnb for a late bus nobody chose, if Ramesh doesn’t confirm the new time.</td><td>Credit now with data. Paid at a desk: back by 6 PM next day*</td></tr>
+                <tr><td className={cs.strong}>1 · Your night moves with you (₹1,500)</td><td>Anyone who rang the caretaker’s bell (flat G2), or had the guard ring it, waited 30 min and wasn’t let in. Confirmed or not.</td><td>Host’s payout when the host owns access <Cite c="C350 C393" />. Airbnb for a late bus nobody chose, if Ramesh doesn’t confirm the new time.</td><td>Credit now with data. Paid at a desk: back by 6 PM next day*</td></tr>
                 <tr><td className={cs.strong}>2 · Covered tonight (top-up to ₹3,000 in total, cab included)</td><td>Only when a confirmed Yes failed inside Ramesh’s hours. A Yes before the group rings counts.</td><td>Airbnb pays the gap</td><td>Applied at booking, or against the receipt</td></tr>
               </tbody>
             </table>
@@ -287,13 +287,13 @@ export function NaviCase() {
                 <thead><tr><th>Configuration</th><th>Cost to Airbnb</th><th>Read</th></tr></thead>
                 <tbody>
                   <tr><td className={cs.strong}>Prevention only: confirm, SMS pack, wake-up call</td><td>₹5k–50k</td><td>Avoiding 2–15 failed nights pays for it</td></tr>
-                  <tr><td className={cs.strong}>+ payout on top of the refund (first version, 5% claims)</td><td>₹90k–235k</td><td>Rejected: pays guests to claim</td></tr>
+                  <tr><td className={cs.strong}>+ payout on top of the refund (first version, 2–5% claims)</td><td>₹40k–235k</td><td>Rejected: pays guests to claim</td></tr>
                   <tr><td className={cs.strong}>+ payout that replaces the night (2–5% claims)</td><td>₹15k–85k</td><td>Chosen</td></tr>
                   <tr><td className={cs.strong}>+ late bus: Airbnb moves the night</td><td>+₹7.5k–30k</td><td>Assumes 0.5–2% of late arrivals</td></tr>
                 </tbody>
               </table>
             </div>
-            <p className={`${cs.small} ${s.protoNote}`}>No baseline exists, so every figure is a hypothesis.</p>
+            <p className={`${cs.small} ${s.protoNote}`}>At the same claim rates, paying on top of the refund costs up to nearly three times the chosen version.</p>
           </Figure>
           <Pointers items={[["c", "Assumptions behind the numbers"]]} />
           <ChapterEnd>Then I tried to break it.</ChapterEnd>
@@ -303,7 +303,7 @@ export function NaviCase() {
         <Chapter id="so-what" label="So what">
           <Opener
             eyebrow="07 · So what"
-            title="Prevention held up. My first payout didn’t, so now it replaces the night instead of adding to it."
+            title="Prevention survived my stress test. My first payout didn’t, so now it replaces the night instead of adding to it."
             titleWidth={900}
             introTitle="Every night ends at a named place or a stated limit."
             intro={<p className={cs.body}>I ran a red team (six kinds of attacker, about 25 attacks), walked ten worst-case nights minute by minute, and modelled the economics at scale. My first payout paid guests to claim, was easy to stage, and was 60–85% of the cost.</p>}
@@ -326,7 +326,8 @@ export function NaviCase() {
           <SectionHead label="Judgement" title="Where I changed my mind, and where I held my ground" />
           <ul className={s.guards}>
             <li><span className={cs.strong}>I was wrong about the late bus.</span> I first decided a warning on the bus was protection enough, but it left them paying twice. Now Ramesh’s re-check decides who pays, and the night moves either way.</li>
-            <li><span className={cs.strong}>I kept the full 30 minutes after a missed wake-up call.</span> A missed 1:25 AM call is weak evidence that nobody will answer at 1:45.</li>
+            <li><span className={cs.strong}>A critique round proposed cutting the wait to 10 minutes after a missed wake-up call. I kept 30.</span> A missed 1:25 AM call is weak evidence that nobody will answer at 1:45, and a shorter wait raises the cost on thin evidence.</li>
+            <li><span className={cs.strong}>I also turned down two other proposals:</span> charging hosts the cancellation fee straight away (it would push budget hosts to refuse late arrivals), and booking hotels by SMS reply (a text would become a spending trigger).</li>
           </ul>
 
           <SectionHead label="Where every night ends" title="A named place, or a stated limit" />
@@ -340,15 +341,15 @@ export function NaviCase() {
           <SectionHead label="Validation" title="What I tested" />
           <ul className={s.guards}>
             <li>154 logged research claims, 120 of them verified against their sources.</li>
-            <li>Five independent critique rounds, each of which changed the design.</li>
+            <li>Five critique rounds on the design, each of which changed it, and some proposals I turned down (above).</li>
             <li>The stress test above, and one device test.</li>
-            <li>An automated test of every scenario under every network condition: 704 runs, 3,456 screen states, 0 errors after fixes.</li>
+            <li>An automated test of every scenario under every network condition, which caught eight bugs I then fixed.</li>
             <li>A live test with people on their own phones (below).</li>
           </ul>
 
           <Figure type="Live" title="Live test · get Meera’s group of 4 into a bed">
             <p className={`${cs.body} ${s.liveIntro}`}>
-              Right now, people are trying the prototype on their own phones, with one job: get Meera’s group of 4 into a bed. It counts only the real path, refuses shortcuts like tapping “We’re in” before the door opens, and logs whether they got there, how long it took and a 1–5 ease rating. The numbers are live, small and informal: they show where people get stuck, not proof that the design works.
+              Since 20 Nov, people have been trying the prototype on their own phones, with one job: get Meera’s group of 4 into a bed. It counts only the real path, refuses shortcuts like tapping “We’re in” before the door opens, and logs whether they got there, how long it took and a 1–5 ease rating. The numbers are live, small and informal: they show where people get stuck, not proof that the design works.
             </p>
             <LiveResults />
           </Figure>

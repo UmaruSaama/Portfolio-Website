@@ -47,7 +47,7 @@ export function LiveResults() {
         ))}
       </ol>
       {d.topRefused.length > 0 && (
-        <p className={cs.small}>Most-tried shortcuts: {d.topRefused.map((r) => `“${r.label}” (${r.n})`).join(" · ")}. Each one is a moment a tester believed they were in before they were.</p>
+        <p className={cs.small}>Most-tried shortcuts: {d.topRefused.map((r) => `“${r.label}” (${r.n})`).join(" · ")}. Each is a tap that claimed success before the scenario allowed it.</p>
       )}
     </div>
   );
