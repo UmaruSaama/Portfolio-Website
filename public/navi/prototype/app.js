@@ -301,7 +301,11 @@
   document.addEventListener("click", e => {
     const t = e.target.closest("button, a"); if (!t) return;
     if (t.hasAttribute("data-intro-start")) { closeIntro("start"); return; }
-    if (t.hasAttribute("data-intro-open")) { openIntro(); return; }
+    if (t.hasAttribute("data-intro-open")) { setSheet(false); openIntro(); return; }
+    if (t.hasAttribute("data-harness-open")) { setSheet(true); track("harness_open"); return; }
+    if (t.hasAttribute("data-harness-close")) { setSheet(false); return; }
+    // phones: picking a scenario closes the sheet so the tester sees the result
+    if (t.dataset.scen || t.hasAttribute("data-reset-demo") || t.hasAttribute("data-peek-sms")) setTimeout(() => setSheet(false), 120);
     if (t.closest("#phone")) track("tap", { label: (t.innerText || t.getAttribute("aria-label") || "").replace(/\s+/g, " ").trim().slice(0, 60), disabled: getComputedStyle(t).pointerEvents === "none" });
     else if (t.dataset.scen) track("scenario_pick", { pick: t.dataset.scen });
     else if (t.closest(".harness")) track("harness", { label: (t.innerText || "").trim().slice(0, 40) });
@@ -379,6 +383,13 @@
   }
   window.naviTrack = track;
   let lastScreen = null;
+
+  /* ---------- phones: test controls as a bottom sheet behind a floating button ---------- */
+  function setSheet(open) {
+    document.documentElement.classList.toggle("harness-open", open);
+    const fab = $("[data-harness-open]"); if (fab) fab.setAttribute("aria-expanded", String(open));
+    if (open) $("#harness [data-harness-close]")?.focus();
+  }
 
   /* ---------- first-visit intro (the brief's scenario) ---------- */
   function openIntro() { const m = $("#intro"); if (!m) return; m.hidden = false; $("[data-intro-start]", m).focus(); track("intro_open"); }

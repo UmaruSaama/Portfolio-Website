@@ -5,7 +5,7 @@ import { pushEvents, storeReady } from "@/lib/naviStore";
   /navi/prototype). Anonymous: no IP is stored, only the country Vercel derives from it.
   Whitelisted fields, short strings, small batches, so junk can't grow the store much.
 */
-const EVENTS = new Set(["open", "intro_open", "intro_close", "screen_view", "tap", "scenario_pick", "harness", "leave"]);
+const EVENTS = new Set(["open", "intro_open", "intro_close", "screen_view", "tap", "scenario_pick", "harness", "harness_open", "leave"]);
 const STR = ["event", "sid", "screen", "scenario", "net", "sim_time", "plan", "label", "pick", "how"] as const;
 
 function clean(raw: unknown, country: string) {

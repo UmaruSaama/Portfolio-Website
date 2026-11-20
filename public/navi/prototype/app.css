@@ -336,3 +336,39 @@ body { background: #EDEDED; font-family: var(--font); color: #222; margin: 0; }
 .intro__fine { margin: 0 0 20px; font: 400 13px/18px var(--font); color: #6a6a6a; }
 .intro__btn { width: 100%; min-height: 52px; border: 0; border-radius: 12px; background: linear-gradient(90deg, #E61E4D, #D70466); color: #fff; font: 600 16px/20px var(--font); cursor: pointer; }
 .intro__btn:focus-visible { outline: 3px solid #222; outline-offset: 3px; }
+
+/* ---- pass 8: adaptive for phones ---- */
+.hx-fab, .hx-sheethead, .hx-backdrop { display: none; }
+@media (max-width: 600px) {
+  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  .stage { display: block; padding: 0; }
+  /* the app fills the real screen: no frame, no fake home bar */
+  .stage > .device { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; box-shadow: none; zoom: 1 !important; }
+  .device__home { display: none; }
+  .c-footer { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+  /* floating button sits in the status-bar gap (between time and battery), never over app UI */
+  .hx-fab { display: inline-flex; align-items: center; gap: 6px; position: fixed; top: calc(env(safe-area-inset-top) + 12px); left: 50%; transform: translateX(-50%); z-index: 8000; height: 28px; padding: 0 12px; border: 0; border-radius: 999px; background: rgba(17,17,17,.86); color: #fff; font: 600 12px/1 var(--font); box-shadow: 0 2px 8px rgba(0,0,0,.25); cursor: pointer; }
+  .harness-open .hx-fab { display: none; }
+  /* the controls become a bottom sheet */
+  .harness { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9000; width: auto; max-width: none; max-height: 82dvh; overflow-y: auto; overscroll-behavior: contain; background: #F2F2F2; border-radius: 20px 20px 0 0; padding: 0 12px calc(16px + env(safe-area-inset-bottom)); display: grid; gap: 12px; box-shadow: 0 -12px 40px rgba(0,0,0,.28); transform: translateY(105%); transition: transform 240ms cubic-bezier(.2,.8,.2,1); visibility: hidden; }
+  .harness-open .harness { transform: none; visibility: visible; }
+  .hx-sheethead { display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1; margin: 0 -12px; padding: 14px 16px 10px; background: #F2F2F2; font: 700 16px/1 var(--font); order: -3; }
+  .hx-sheethead::before { content: ""; position: absolute; top: 6px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 2px; background: #c8c8c8; }
+  .hx-sheethead button { border: 0; background: #222; color: #fff; border-radius: 999px; padding: 8px 14px; font: 600 14px/1 var(--font); cursor: pointer; }
+  .harness .hx:last-of-type { order: -2; }        /* scenarios first: the thing testers switch most */
+  .harness__note { order: -1; }
+  .harness .dsp { width: auto; box-shadow: none; }
+  .harness .hx { box-shadow: none; }
+  .hx-backdrop { position: fixed; inset: 0; z-index: 8999; background: rgba(0,0,0,.4); }
+  .harness-open .hx-backdrop { display: block; }
+  /* intro fits small screens */
+  .intro { padding: 12px; align-items: end; }
+  .intro__card { padding: 24px 20px calc(20px + env(safe-area-inset-bottom)); border-radius: 20px; }
+  .intro__title { font-size: 24px; line-height: 28px; }
+}
+
+.only-phone { display: none; }
+@media (max-width: 600px) { .only-wide { display: none; } .only-phone { display: list-item; } }
+
+/* the guard sees only the card */
+html:has(#guardMode:not([hidden])) .hx-fab { display: none; }

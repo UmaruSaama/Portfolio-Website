@@ -15,7 +15,8 @@
 <div class="stage">
 
   <!-- ============ DEMO HARNESS (not product UI) ============ -->
-  <aside class="harness" aria-label="Demo controls">
+  <aside class="harness" id="harness" aria-label="Demo controls">
+    <div class="hx-sheethead"><b>Test controls</b><button data-harness-close>Done</button></div>
     <div class="harness__note"><b>Demo controls, not part of the product.</b> Set the conditions Meera arrives in, then use the phone. Times are simulated.</div>
     <div data-ds-panel></div>
     <div class="hx">
@@ -43,6 +44,9 @@
       <button class="dsp-reset" style="margin:12px 0 0 16px;text-decoration:underline;background:none;border:0;cursor:pointer;font:inherit" data-intro-open>About this test</button>
     </div>
   </aside>
+  <!-- phones: the controls live behind a floating button, as a bottom sheet -->
+  <button class="hx-fab" data-harness-open aria-controls="harness" aria-label="Open test controls"><span aria-hidden="true">⚙</span> Test controls</button>
+  <div class="hx-backdrop" data-harness-close></div>
 
   <!-- ============ PHONE ============ -->
   <div class="device" id="phone">
@@ -315,9 +319,10 @@
     <h2 class="intro__title" id="introTitle">You're Meera. It's 1:45 AM.</h2>
     <p class="intro__lead">You and 3 friends just got off an overnight bus. Your phone is at <b>6%</b>, and there's <b>barely any network</b>: calls and SMS work, mobile data doesn't. The <b>gate lock isn't working</b>, and the host, Rohan, <b>isn't picking up</b>.</p>
     <ul class="intro__list">
-      <li><b>Your task:</b> use the Airbnb app on the right to get all 4 of you into a bed for the night.</li>
+      <li><b>Your task:</b> use the Airbnb app<span class="only-wide"> on the right</span> to get all 4 of you into a bed for the night.</li>
       <li><b>Before you left,</b> Ramesh, the building's caretaker, said he'd be awake until 3 AM to let you in.</li>
-      <li>The <b>panel on the left</b> isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
+      <li class="only-wide">The <b>panel on the left</b> isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
+      <li class="only-phone">The <b>⚙ Test controls</b> button at the top isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
     </ul>
     <p class="intro__fine">Think out loud if someone is with you. This test records which screens you visit and what you tap, anonymously: no names, no cookies, no personal data.</p>
     <button class="intro__btn" data-intro-start>Start at the gate</button>
