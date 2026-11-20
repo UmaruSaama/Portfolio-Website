@@ -6,7 +6,7 @@
   position: relative;
   padding: calc(160 * var(--v)) 0 calc(120 * var(--v));
   background:
-    radial-gradient(60% 50% at 70% 0%, rgb(255 56 92 / 0.18), transparent 70%),
+    radial-gradient(55% 60% at 18% 0%, rgb(255 56 92 / 0.16), transparent 70%),
     var(--cs-surface-06);
   border-bottom: 1px solid var(--cs-white-08);
   margin-bottom: calc(96 * var(--v));
@@ -286,3 +286,30 @@
   .table { min-width: 640px; }
   .proto { height: 820px; }
 }
+
+/* ---------- hero with the product demo film ---------- */
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1fr calc(340 * var(--v));
+  column-gap: calc(64 * var(--v));
+  align-items: center;
+}
+.heroText { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.heroText .facts { grid-template-columns: 1fr 1fr; }
+.heroDemo { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.heroVideo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 470 / 920;
+  cursor: pointer;
+  filter: drop-shadow(0 24px 48px rgb(0 0 0 / 0.5));
+}
+.heroCaption { margin: 0; font-size: 12px; color: var(--cs-text-tertiary); text-align: center; }
+
+@media (max-width: 1023px) {
+  .heroGrid { grid-template-columns: 1fr; row-gap: 40px; }
+  .heroDemo { max-width: 320px; margin: 0 auto; width: 100%; }
+}
+
+.heroVideo { border-radius: 28px; background: #0f0f0f; }

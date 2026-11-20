@@ -311,3 +311,10 @@ body { background: #EDEDED; font-family: var(--font); color: #222; margin: 0; }
 .hx__seg button:disabled { opacity: .45; cursor: not-allowed; }
 .hx__peek { margin-top: 10px; width: 100%; border: 1px solid #222; border-radius: 10px; padding: 8px 10px; background: #fff; font: inherit; font-weight: 600; cursor: pointer; }
 .hx__peek[hidden] { display: none; }
+
+/* ---- demo mode (?demo): phone only, for recording ---- */
+.demo body { background: #0f0f0f; }
+.demo .harness { display: none; }
+.demo .stage { padding: 24px; gap: 0; }
+.tap-ripple { position: fixed; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255,56,92,.35); border: 2px solid rgba(255,56,92,.9); pointer-events: none; z-index: 9999; animation: tapr 600ms ease-out forwards; }
+@keyframes tapr { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }

@@ -2,6 +2,8 @@ import page from "../../CaseStudy.module.css";
 import cs from "../cs.module.css";
 import { Chapter, ChapterEnd, Fact, Figure, Opener, Quote, SectionHead } from "../Primitives";
 import s from "./navi.module.css";
+import { HeroVideo } from "../../HeroVideo";
+import { Journey } from "./Journey";
 
 /*
   Navi take-home: Airbnb late-night check-in. One page, seven chapters, one per beat
@@ -28,7 +30,8 @@ export function NaviCase() {
     <div className={page.page}>
       {/* ---------------- hero ---------------- */}
       <header className={s.hero}>
-        <div className={s.heroInner}>
+        <div className={`${s.heroInner} ${s.heroGrid}`}>
+          <div className={s.heroText}>
           <p className={cs.eyebrow}>Navi · product design take-home · option 2 · Airbnb</p>
           <h1 className={s.title}>Confirmed before you board</h1>
           <p className={`${cs.h3} ${s.heroSub}`}>
@@ -44,6 +47,16 @@ export function NaviCase() {
             <Fact label="Time">48 hours</Fact>
             <Fact label="Built">Coded prototype, 9 scenarios</Fact>
             <Fact label="Evidence">154 research claims, 1 device test</Fact>
+          </div>
+          </div>
+          <div className={s.heroDemo}>
+            <HeroVideo
+              className={s.heroVideo}
+              src="/navi/media/demo.mp4"
+              poster="/navi/media/demo-poster.jpg"
+              label="Product demo: Meera at the gate at 1:45 AM, offline at 6%, through to a bed for the night."
+            />
+            <p className={s.heroCaption}>1:45 AM, offline, 6% battery. Tap the film to pause.</p>
           </div>
         </div>
       </header>
@@ -272,6 +285,8 @@ export function NaviCase() {
             <li><span className={s.step}>3</span><h4 className={cs.h3}>“What’s stopping you?”</h4><p className={cs.small}>Gate: a full-screen card for the guard, with the host’s line in the guard’s language and a request in Hindi to ring G2. Door: the host’s steps for that lock. No one here: ring G2, then a 30-minute clock that runs on the phone even offline.</p></li>
             <li><span className={s.step}>4</span><h4 className={cs.h3}>The money moves by rule</h4><p className={cs.small}>Every failed night ends at a named place, with what you pay now and when money comes back. No person needed at 2 AM.</p></li>
           </ol>
+
+          <Journey />
 
           <Figure type="Prototype" title="Live prototype · pick a scenario on the left, then use the phone">
             <div className={s.protoWrap}>

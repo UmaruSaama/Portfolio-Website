@@ -1,0 +1,90 @@
+/* Annotated user journey: two phones per row, notes on the outer sides, a hairline
+   connector from each note to its phone. Compact: phone then note, stacked. */
+.journey {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.canvas {
+  display: flex;
+  flex-direction: column;
+  gap: calc(72 * var(--v));
+  padding: calc(56 * var(--v)) calc(24 * var(--v));
+  border: 1px solid var(--cs-white-08);
+  border-radius: 24px;
+  background:
+    radial-gradient(50% 30% at 50% 0%, rgb(255 56 92 / 0.08), transparent 70%),
+    var(--cs-surface-04);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr calc(232 * var(--v)) calc(232 * var(--v)) 1fr;
+  column-gap: calc(40 * var(--v));
+  align-items: center;
+}
+
+.phone {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 16px 32px rgb(0 0 0 / 0.45));
+}
+
+.note {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.noteL { text-align: right; align-items: flex-end; }
+.noteR { text-align: left; align-items: flex-start; }
+
+.time {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cs-pink);
+}
+
+/* connector: from the note's inner edge to the phone */
+.line {
+  position: absolute;
+  top: 50%;
+  width: calc(32 * var(--v));
+  height: 1px;
+  background: var(--cs-white-40);
+}
+.line::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cs-white-70);
+}
+.noteL .line { right: calc(-36 * var(--v)); }
+.noteL .line::after { right: -3px; }
+.noteR .line { left: calc(-36 * var(--v)); }
+.noteR .line::after { left: -3px; }
+
+@media (max-width: 1023px) {
+  .canvas { padding: 24px 16px; gap: 40px; }
+  .row {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+    justify-items: center;
+  }
+  .phone { width: min(72%, 300px); }
+  .row > :nth-child(1) { order: 2; }   /* note A after phone A */
+  .row > :nth-child(2) { order: 1; }
+  .row > :nth-child(3) { order: 3; margin-top: 24px; }
+  .row > :nth-child(4) { order: 4; }
+  .note, .noteL, .noteR { text-align: left; align-items: flex-start; max-width: 480px; }
+  .line { display: none; }
+}

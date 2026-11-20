@@ -362,6 +362,18 @@
     if (document.readyState !== "loading") render();
   });
 
+  // ?demo: phone only, no harness, taps shown as ripples (used to record the case-study film and journey stills)
+  const DEMO = new URLSearchParams(location.search).has("demo");
+  if (DEMO) {
+    document.documentElement.classList.add("demo");
+    document.addEventListener("pointerdown", e => {
+      const r = document.createElement("span"); r.className = "tap-ripple";
+      r.style.left = e.clientX + "px"; r.style.top = e.clientY + "px";
+      document.body.appendChild(r); setTimeout(() => r.remove(), 650);
+    }, true);
+    window.NAVI_DEMO = { run: runScenario, state: () => S, set: patch => { Object.assign(S, patch); render(); } };
+  }
+
   function init() {
     let first = true;
     try { first = !localStorage.getItem("navi-proto-started-v7"); localStorage.setItem("navi-proto-started-v7", "1"); } catch (e) {}
