@@ -1,0 +1,35 @@
+.page { min-height: 100vh; background: #0f0f0f; color: rgba(255,255,255,.92); font-family: "Hanken Grotesk Variable", system-ui, sans-serif; font-stretch: 100%; padding: 40px clamp(16px, 4vw, 56px) 80px; display: flex; flex-direction: column; gap: 20px; }
+.head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.head h1 { margin: 0; font-size: 28px; font-weight: 600; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpis > div { background: #1a1a1a; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.kpis b { font-size: 30px; font-weight: 600; }
+.kpis span { font-size: 13px; color: rgba(255,255,255,.6); }
+.card { background: #141414; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 20px; }
+.card h2 { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.note { margin: 0 0 12px; font-size: 13px; color: rgba(255,255,255,.55); }
+.warn { padding: 16px; border-radius: 12px; background: rgba(255,214,0,.12); color: #ffe680; }
+.funnel { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.funnel li { display: grid; grid-template-columns: minmax(180px, 320px) 1fr 90px; gap: 12px; align-items: center; font-size: 14px; }
+.fVal { text-align: right; font-variant-numeric: tabular-nums; }
+.fVal small { color: rgba(255,255,255,.5); }
+.bar { height: 10px; border-radius: 5px; background: rgba(255,255,255,.08); overflow: hidden; }
+.bar span { display: block; height: 100%; background: #ff375f; border-radius: 5px; }
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.list li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.scroll { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table th { text-align: left; font-weight: 500; color: rgba(255,255,255,.5); padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,.12); white-space: nowrap; }
+.table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,.06); white-space: nowrap; }
+.feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13px; max-height: 520px; overflow: auto; }
+.feed li { display: grid; grid-template-columns: 70px 80px 110px 1fr; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+.when { color: rgba(255,255,255,.45); }
+.page code { font-size: 12px; color: #7ff0e3; }
+@media (max-width: 760px) {
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .two { grid-template-columns: 1fr; }
+  .funnel li { grid-template-columns: 1fr 70px; }
+  .funnel .bar { grid-column: 1 / -1; grid-row: 2; }
+  .feed li { grid-template-columns: 60px 1fr; }
+}

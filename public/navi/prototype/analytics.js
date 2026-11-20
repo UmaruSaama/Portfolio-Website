@@ -9,8 +9,26 @@
   var POSTHOG_HOST = "https://us.i.posthog.com";     // EU projects: "https://eu.i.posthog.com"
   var CLARITY_ID = "";                               // e.g. "abc123xyz"
 
-  if (/[?&]demo/.test(location.search) || /^(localhost|127\.)/.test(location.hostname)) return;
+  if (/[?&]demo/.test(location.search)) return;
   var sinks = [];
+
+  // 1) Own analytics on shivamumaru.com: batched to /api/nv, read on the private stats page.
+  //    Only when served by the site itself (/navi/prototype), so the local python server sends nothing.
+  if (location.pathname.indexOf("/navi/prototype") === 0) {
+    var q = [];
+    var flush = function () {
+      if (!q.length) return;
+      var body = JSON.stringify(q.splice(0, 50));
+      try { if (!(navigator.sendBeacon && navigator.sendBeacon("/api/nv", new Blob([body], { type: "application/json" })))) fetch("/api/nv", { method: "POST", body: body, keepalive: true }); } catch (e) {}
+    };
+    setInterval(flush, 3000);
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") flush(); });
+    sinks.push(function (event, props) { q.push(props); if (q.length >= 40) flush(); });
+  }
+
+  // 2) Optional third-party tools: only on the live site, only if an ID is set below.
+  if (/^(localhost|127\.)/.test(location.hostname)) { POSTHOG_KEY = ""; CLARITY_ID = ""; }
 
   if (POSTHOG_KEY) {
     // official PostHog loader snippet (loads array.js from PostHog's assets CDN)
