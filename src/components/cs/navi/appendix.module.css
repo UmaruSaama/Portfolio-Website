@@ -1,0 +1,23 @@
+.wrap { display: flex; flex-direction: column; gap: 16px; color: var(--cs-text-secondary, rgba(255,255,255,.6)); }
+.section { display: flex; flex-direction: column; gap: 14px; padding-top: 40px; margin-top: 8px; border-top: 1px solid rgba(255,255,255,.08); scroll-margin-top: 140px; }
+.title { margin: 0; display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 500; line-height: 1.25; color: rgba(255,255,255,.92); }
+.letter { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(255,55,95,.14); color: #ff375f; font-size: 15px; font-weight: 600; flex: none; }
+.h { margin: 12px 0 0; font-size: 17px; font-weight: 600; color: rgba(255,255,255,.92); }
+.list { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 14px; line-height: 1.55; }
+.list ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.list strong, .table strong, .kv strong, .wrap p strong { color: rgba(255,255,255,.92); font-weight: 600; }
+.scroll { overflow-x: auto; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; }
+.table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5; min-width: 560px; }
+.table th { text-align: left; font-weight: 500; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: rgba(255,255,255,.5); padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.03); }
+.table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.06); vertical-align: top; }
+.table tr:last-child td { border-bottom: 0; }
+.kv { margin: 0; display: grid; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; }
+.kv > div { display: grid; grid-template-columns: 180px 1fr; gap: 16px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 13px; line-height: 1.5; }
+.kv > div:last-child { border-bottom: 0; }
+.kv dt { color: rgba(255,255,255,.92); }
+.kv dd { margin: 0; }
+.cite { display: inline-block; padding: 0 5px; border-radius: 5px; background: rgba(255,255,255,.08); font-size: 11px; color: rgba(255,255,255,.55); white-space: nowrap; }
+@media (max-width: 760px) {
+  .kv > div { grid-template-columns: 1fr; gap: 4px; }
+  .title { font-size: 20px; }
+}

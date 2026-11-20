@@ -1,0 +1,18 @@
+.wrap { display: flex; flex-direction: column; gap: 20px; padding: 24px; }
+.liveRow { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--cs-text-tertiary); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cs-mint); box-shadow: 0 0 0 4px var(--cs-mint-28); }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpis > div { background: var(--cs-surface-10); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.kpis b { font-size: 28px; font-weight: 600; color: var(--cs-text-primary); }
+.kpis span { font-size: 13px; line-height: 1.4; color: var(--cs-text-secondary); }
+.funnel { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.funnel li { display: grid; grid-template-columns: minmax(200px, 320px) 1fr 48px; gap: 12px; align-items: center; font-size: 14px; color: var(--cs-text-secondary); }
+.bar { height: 8px; border-radius: 4px; background: var(--cs-white-08); overflow: hidden; }
+.bar span { display: block; height: 100%; border-radius: 4px; background: var(--cs-pink); }
+.fVal { text-align: right; font-variant-numeric: tabular-nums; color: var(--cs-text-primary); }
+@media (max-width: 1023px) {
+  .wrap { padding: 16px; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .funnel li { grid-template-columns: 1fr 44px; }
+  .funnel .bar { grid-column: 1 / -1; grid-row: 2; }
+}
