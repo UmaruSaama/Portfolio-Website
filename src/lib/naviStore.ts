@@ -3,8 +3,14 @@
  * No dependency: it calls the REST API with fetch. Works with the env vars Vercel adds
  * when an Upstash for Redis store is connected to the project (KV_REST_API_* or UPSTASH_REDIS_REST_*).
  */
-const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || "";
-const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+// Any prefix works: Vercel names these <PREFIX>_REST_API_URL / <PREFIX>_REST_API_TOKEN (KV_ by default).
+function envBySuffix(suffix: string, fallback: string) {
+  if (process.env[fallback]) return process.env[fallback] as string;
+  const k = Object.keys(process.env).find((n) => n.endsWith(suffix) && !n.includes("READ_ONLY"));
+  return (k && process.env[k]) || "";
+}
+const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || envBySuffix("_REST_API_URL", "KV_REST_API_URL");
+const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || envBySuffix("_REST_API_TOKEN", "KV_REST_API_TOKEN");
 
 export const KEY_EVENTS = "navi:events";
 export const MAX_EVENTS = 20000;
