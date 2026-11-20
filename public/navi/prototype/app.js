@@ -21,7 +21,7 @@
     { id: "unconf", label: "Not confirmed, no one opens", cap: "Meera went ahead without a Yes. The night still moves with her (host's payout, existing policy); the extra (up to ₹1,500) for a bed and cab doesn't apply.", stack: ["pack", "stuck", "noone"], plan: "unconfirmed", ds: { net: "sms" } },
     { id: "coguest", label: "Meera's phone is dead: co-guest SMS", cap: "What Priya's phone got: an opt-in with no address, then the arrival details, then the guard line. She can reply HELP or CALL. Tip: in scenario 6, tap \"See Priya's SMS now\" to watch the clock reach her phone.", stack: ["sms"], ds: { net: "sms", battery: 54 } }
   ];
-  const fresh = () => ({ stack: ["pack"], scen: "pack", plan: "confirmed", pinShare: "yes", late: false, t0: null, layer: null, offStart: false, offEnd: null, sent: false, peekFrom: null, boardDone: null, log: [], lockStep: 0, done: false, startedAt: Date.now(), bell: null, from: null, reason: "noone", allIn: false, ramesh: "ask", until: "03:00" });
+  const fresh = () => ({ stack: ["pack"], scen: "pack", plan: "confirmed", pinShare: "yes", late: false, t0: null, layer: null, offStart: false, offEnd: null, sent: false, peekFrom: null, boardDone: null, log: [], lockStep: 0, done: false, cardShown: false, through: false, doorOpen: false, startedAt: Date.now(), bell: null, from: null, reason: "noone", allIn: false, ramesh: "ask", until: "03:00" });
   let S = fresh();
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -41,6 +41,39 @@
   const layerNow = () => S.layer || (fullLayer() ? "full" : "night");
   // who funds layer 1 when layer 2 doesn't apply
   const funder = () => S.plan !== "confirmed" ? "host" : S.late ? "airbnb" : "review";
+
+  /* ---------- the test world: the scenario decides what works, not the tester ----------
+     gate: "card" = the guard opens once he's shown the card, "open" = no gate in the way.
+     pin / bank: does the PIN, or the power bank + PIN, open the door? ramesh: does he ever answer?
+     win: the only endings that count as finishing this scenario. */
+  const WORLD = {
+    pack:   { gate: "card", pin: false, bank: false, ramesh: false, win: ["covered"] },   // the brief's night, worst case
+    gate:   { gate: "card", pin: true,  bank: true,  ramesh: false, win: ["in"] },
+    door:   { gate: "open", pin: false, bank: true,  ramesh: false, win: ["in"] },
+    asleep: { gate: "open", pin: false, bank: false, ramesh: false, win: ["covered"] },
+    late:   { gate: "open", pin: false, bank: false, ramesh: false, win: ["covered"] },
+    unconf: { gate: "open", pin: false, bank: false, ramesh: false, win: ["covered"] },
+    board:  { gate: "card", pin: false, bank: false, ramesh: false, win: ["switched", "covered"] },
+  };
+  const world = () => WORLD[S.scen] || null;
+  // Returns an in-world reply when a tap claims something the scenario doesn't allow (and logs the try).
+  function blocked(t) {
+    const w = world(); if (!w || DEMO) return null;
+    const to = t.dataset.go, here = cur();
+    let msg = null;
+    if (to === "door" && here === "gate" && w.gate === "card" && !S.cardShown) msg = "The gate's still locked. The guard is watching you from his cabin.";
+    else if (to === "in") {
+      if (t.hasAttribute("data-arrived") || here === "covered") { if (!w.ramesh) msg = "No sign of Ramesh. The lights in G2 are off."; }
+      else if (here === "door" && t.closest(".lock__card")) {
+        if (S.lockStep === 0 && !w.pin) msg = "You enter 4819#. Nothing happens: the keypad stays dark.";
+        else if (S.lockStep === 1 && !w.bank) msg = "You hold a power bank to the port and try the PIN again. Still dark: the lock's battery is completely flat.";
+        else S.doorOpen = true;
+      }
+      else if (!S.doorOpen) msg = here === "pack" || here === "stuck" || (w.gate === "card" && !S.through) ? "You're still outside. The gate lock isn't working." : "The door's still locked.";
+    }
+    if (msg) track("blocked", { label: (t.innerText || "").replace(/\s+/g, " ").trim().slice(0, 60), how: msg.slice(0, 60) });
+    return msg;
+  }
 
   function go(id) { if (cur() !== id) S.stack.push(id); onEnter(id); render(); $("#screens").scrollTop = 0; if (id === "covered") complete("covered"); }
   function back() { if (S.stack.length > 1) S.stack.pop(); render(); }
@@ -167,6 +200,7 @@
                   : `<div class="step-row__t">Your ₹1,500 night has moved</div><div class="step-row__s">30 minutes and no one let you in</div>`)}
         <div class="meter mt-12" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Time waited"><div class="meter__fill" style="width:${Math.max(pct, 3)}%"></div></div>
         ${left > 0 ? `<p class="fine mt-12">You don't have to wait outside. We'll keep calling Ramesh, and your report is saved: Ramesh and Rohan can't cancel it.</p>` : ""}
+        ${left > 0 && !DEMO ? `<button class="testskip" data-advance="${left}">Skip the ${left}-minute wait <span>(test only)</span></button>` : ""}
         ${left === 0 ? `<button class="c-btn c-btn--brand c-btn--block c-btn--lg mt-16" data-go="covered">See where to go</button>` : ""}
       </div>${moneyNight}
       ${!canCall() ? `<div class="c-callout mt-12"><span class="c-callout__icon"><i data-lucide="wifi-off"></i></span><div><div class="c-callout__title">No signal. The timer still runs on this phone</div><div class="c-callout__text">Your location is saved here. If the 30 minutes end before you get signal, it still counts. We check your saved location in the morning, then pay you back.</div></div></div>` : ""}
@@ -315,9 +349,15 @@
     else if (t.closest(".harness")) track("harness", { label: (t.innerText || "").trim().slice(0, 40) });
     if (t.dataset.reason) S.reason = t.dataset.reason;
     if (t.dataset.from) S.from = t.dataset.from;
-    if (t.dataset.go) { e.preventDefault(); go(t.dataset.go); }
+    if (t.dataset.go) {
+      e.preventDefault();
+      const no = blocked(t);
+      if (no) { DS.toast(no, $("#phone")); return; }
+      if (t.dataset.go === "door" && cur() === "gate") S.through = true;
+      go(t.dataset.go);
+    }
     if (t.hasAttribute("data-back")) { if (cur() === "noone") { S.reason = "noone"; S.from = null; } back(); }
-    if (t.hasAttribute("data-open-guard")) { const g = $("#guardMode"); g.hidden = false; $("[data-close-guard]", g).focus(); }
+    if (t.hasAttribute("data-open-guard")) { S.cardShown = true; const g = $("#guardMode"); g.hidden = false; $("[data-close-guard]", g).focus(); }
     if (t.hasAttribute("data-close-guard")) $("#guardMode").hidden = true;
     if (t.hasAttribute("data-voice-note")) {
       const label = t.querySelector("span"); if (t.dataset.playing) return;
@@ -404,6 +444,7 @@
   let rating = 0;
   function complete(outcome) {
     if (S.done || DEMO) return;
+    const w = world(); if (!w || !w.win.includes(outcome)) return;   // only the ending this scenario allows counts
     S.done = true;
     const secs = Math.max(1, Math.round((Date.now() - S.startedAt) / 1000));
     track("task_complete", { how: outcome, label: String(secs) });

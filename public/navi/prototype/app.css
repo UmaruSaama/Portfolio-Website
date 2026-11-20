@@ -419,3 +419,8 @@ html:has(#guardMode:not([hidden])) .hx-fab { display: none; }
   .stage > .device { top: 0; height: 100vh; height: 100dvh; }
   .c-status { height: auto; padding: calc(40px + env(safe-area-inset-top) + 8px) 20px 8px 24px; }
 }
+
+/* test-only skip on the 30-minute clock (clearly not product UI) */
+.testskip { display: block; width: 100%; margin-top: 12px; padding: 10px 12px; border: 1px dashed #b0b0b0; border-radius: 12px; background: #fafafa; color: #222; font: 600 14px/18px var(--font); cursor: pointer; }
+.testskip span { font-weight: 400; color: #6a6a6a; }
+[data-theme="dark"] .testskip { background: #1e1e1e; color: #f7f7f7; border-color: #555; }

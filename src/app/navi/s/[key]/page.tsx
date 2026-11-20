@@ -29,6 +29,7 @@ function summarise(evs: NaviEvent[]) {
   const screenViews = new Map<string, number>();
   const deadTaps = new Map<string, number>();
   const feedback: NaviEvent[] = [];
+  const blockedMap = new Map<string, number>();
   for (const e of asc) {
     let s = sessions.get(e.sid);
     if (!s) { s = { sid: e.sid, first: e.ts, last: e.ts, dur: 0, screens: new Set(), taps: 0, dead: 0, picks: [], country: e.country || "", lastScreen: "", rang: false, allIn: false, done: "", secs: 0 }; sessions.set(e.sid, s); }
@@ -44,6 +45,7 @@ function summarise(evs: NaviEvent[]) {
     if (e.event === "scenario_pick" && e.pick) s.picks.push(e.pick);
     if (e.event === "task_complete" && !s.done) { s.done = e.how || "done"; s.secs = Number(e.label) || 0; }
     if (e.event === "feedback") feedback.push(e);
+    if (e.event === "blocked") { const k = `“${e.label || "?"}” → ${e.how || ""}`; blockedMap.set(k, (blockedMap.get(k) ?? 0) + 1); }
   }
   const list = [...sessions.values()].sort((a, b) => b.last - a.last);
   const n = list.length || 1;
@@ -62,7 +64,7 @@ function summarise(evs: NaviEvent[]) {
   const doneTimes = list.filter((s) => s.done && s.secs).map((s) => s.secs).sort((a, b) => a - b);
   const median = doneTimes.length ? doneTimes[Math.floor(doneTimes.length / 2)] : 0;
   const live = list.filter((s) => Date.now() - s.last < 5 * 60_000).length;
-  return { live, list, n, funnel, feedback: [...feedback].reverse(), avg, rated: rated.length, median, screenViews: [...screenViews.entries()].sort((a, b) => b[1] - a[1]), deadTaps: [...deadTaps.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12) };
+  return { blocked: [...blockedMap.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12), live, list, n, funnel, feedback: [...feedback].reverse(), avg, rated: rated.length, median, screenViews: [...screenViews.entries()].sort((a, b) => b[1] - a[1]), deadTaps: [...deadTaps.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12) };
 }
 
 const ago = (ts: number) => {
@@ -85,7 +87,7 @@ async function Stats({ params }: { params: Promise<{ key: string }> }) {
   if (!storeReady()) return <>{head}<p className={st.warn}>No store connected yet. In Vercel: Storage → Upstash for Redis → Connect to this project, then redeploy.</p></>;
 
   const evs = await readEvents();
-  const { live, list, n, funnel, feedback, avg, rated, median, screenViews, deadTaps } = summarise(evs);
+  const { blocked, live, list, n, funnel, feedback, avg, rated, median, screenViews, deadTaps } = summarise(evs);
 
   return (
     <>
@@ -129,6 +131,9 @@ async function Stats({ params }: { params: Promise<{ key: string }> }) {
           <h2>Taps on greyed-out buttons</h2>
           <p className={st.note}>Where testers tried something the network didn’t allow. High counts mean the disabled state isn’t clear.</p>
           {deadTaps.length ? <ul className={st.list}>{deadTaps.map(([k, v]) => <li key={k}><span>{k}</span><b>{v}</b></li>)}</ul> : <p className={st.note}>None yet.</p>}
+          <h2 style={{ marginTop: 20 }}>Shortcuts the night refused</h2>
+          <p className={st.note}>Times a tester claimed success (“We’re in”, “It opened”, “Ramesh is here”) before the scenario allowed it.</p>
+          {blocked.length ? <ul className={st.list}>{blocked.map(([k, v]) => <li key={k}><span>{k}</span><b>{v}</b></li>)}</ul> : <p className={st.note}>None yet.</p>}
         </section>
         <section className={st.card}>
           <h2>Screen views</h2>
