@@ -12,6 +12,8 @@ import st from "./stats.module.css";
   in code). Any other key is a 404. Not indexed, not linked anywhere.
 */
 export const metadata: Metadata = { title: "Not found", robots: { index: false, follow: false } };
+// Rendered per request: the key is only known at runtime, and the root layout reads the pathname.
+export const instant = false;
 
 const SCREEN_NAMES: Record<string, string> = {
   pack: "Arrival details", stuck: "What's stopping you?", gate: "Gate", door: "Door", noone: "No one is answering",
