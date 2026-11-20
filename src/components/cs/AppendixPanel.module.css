@@ -179,4 +179,28 @@
     overflow-x: auto;
     scrollbar-width: none;
   }
+
+  /* Opt-in (scrollTabs): one scrolling row, so a long A–J list doesn't
+     stack into a header that covers most of a phone screen. */
+  .tabsScroll {
+    position: relative;
+    flex-wrap: nowrap;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter);
+    scroll-padding: 0 var(--gutter);
+    overscroll-behavior-x: contain;
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+
+  .tabsScroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabsScroll > li {
+    flex: none;
+  }
+
+  .tabsScroll .tab {
+    white-space: nowrap;
+  }
 }

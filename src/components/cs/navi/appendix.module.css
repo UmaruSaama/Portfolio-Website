@@ -20,4 +20,22 @@
 @media (max-width: 760px) {
   .kv > div { grid-template-columns: 1fr; gap: 4px; }
   .title { font-size: 20px; }
+  .section { scroll-margin-top: 110px; }
+}
+
+/* Phones: each table row becomes a card; the first cell is its title,
+   every other cell carries its column name as a small label. */
+@media (max-width: 600px) {
+  .scroll { overflow: visible; border: 0; border-radius: 0; }
+  .table { min-width: 0; font-size: 14px; }
+  .table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .table, .table tbody, .table tr, .table td { display: block; }
+  .table tbody { display: flex; flex-direction: column; gap: 10px; }
+  .table tr { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(255,255,255,.03); }
+  .table td, .table tr:last-child td { padding: 0; border: 0; }
+  .table td:empty { display: none; }
+  .table td::before { content: attr(data-label); display: block; margin-bottom: 2px; font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+  .table td:first-child { font-size: 15px; font-weight: 600; color: rgba(255,255,255,.92); }
+  .table td:first-child::before { display: none; }
+  .cite { font-size: 12px; }
 }

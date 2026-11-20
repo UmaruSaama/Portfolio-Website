@@ -9,6 +9,8 @@ import { Journey } from "./Journey";
 import { LiveResults } from "./LiveResults";
 import { NaviAppendix, naviAppendixSections } from "./NaviAppendix";
 import { Pointer, Pointers } from "./Pointer";
+import { ProtoEmbed } from "./ProtoEmbed";
+import { RTable } from "./RTable";
 import s from "./navi.module.css";
 
 /*
@@ -21,8 +23,9 @@ import s from "./navi.module.css";
 
 const PROTO = "/navi/prototype/index.html";
 
+/* Rail numbers match the chapter eyebrows (01 Frame … 07 So what); the intro is 00. */
 const RAIL = [
-  { id: "intro", label: "Intro" },
+  { id: "intro", label: "Intro", num: "00" },
   { id: "frame", label: "Frame" },
   { id: "who", label: "Who" },
   { id: "why", label: "Why" },
@@ -30,7 +33,7 @@ const RAIL = [
   { id: "why-ai", label: "Why AI?" },
   { id: "how", label: "How" },
   { id: "so-what", label: "So what" },
-];
+].map((c, i) => ({ ...c, num: c.num ?? String(i).padStart(2, "0") }));
 
 function Cite({ c }: { c: string }) {
   return <span className={s.cite}>{c}</span>;
@@ -124,20 +127,18 @@ export function NaviCase() {
             introTitle="The design has to connect people who are never awake at the same time."
             intro={<p className={cs.body}>The host is responsible, someone on site is available, Airbnb is accountable. I kept the three apart on purpose: each has a different job, at a different hour.</p>}
           />
-          <div className={cs.strip}>
-            <table className={s.table}>
-              <caption className={s.caption}>Who can act at 1:45 AM</caption>
-              <thead><tr><th>Party</th><th>Has the app?</th><th>At 1:45 AM</th><th>Owns</th></tr></thead>
-              <tbody>
-                <tr><td className={cs.strong}>Meera, the booker</td><td>Yes</td><td>At the gate, 6%, no data</td><td>Arrival time, the group’s numbers</td></tr>
-                <tr><td className={cs.strong}>3 co-guests</td><td>Only if invited and logged in <Cite c="C367" /></td><td>At the gate, phones alive</td><td>Can carry the plan</td></tr>
-                <tr><td className={cs.strong}>Rohan, the host</td><td>Yes</td><td>Asleep; daytime replies only <Cite c="C434" /></td><td>The arrival plan</td></tr>
-                <tr><td className={cs.strong}>Ramesh, the caretaker</td><td>Usually no <Cite c="C482" /></td><td>The only one who can open</td><td>“I’ll be awake”</td></tr>
-                <tr><td className={cs.strong}>Society guard</td><td>No</td><td>Awake; society rules <Cite c="C427" /></td><td>The gate</td></tr>
-                <tr><td className={cs.strong}>Airbnb</td><td>n/a</td><td>Rules at night, people by day</td><td>The night ending in a bed</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <RTable
+            caption="Who can act at 1:45 AM"
+            head={["Party", "Has the app?", "At 1:45 AM", "Owns"]}
+            rows={[
+              ["Meera, the booker", "Yes", "At the gate, 6%, no data", "Arrival time, the group’s numbers"],
+              ["3 co-guests", <>Only if invited and logged in <Cite c="C367" /></>, "At the gate, phones alive", "Can carry the plan"],
+              ["Rohan, the host", "Yes", <>Asleep; daytime replies only <Cite c="C434" /></>, "The arrival plan"],
+              ["Ramesh, the caretaker", <>Usually no <Cite c="C482" /></>, "The only one who can open", "“I’ll be awake”"],
+              ["Society guard", "No", <>Awake; society rules <Cite c="C427" /></>, "The gate"],
+              ["Airbnb", "n/a", "Rules at night, people by day", "The night ending in a bed"],
+            ]}
+          />
           <SectionHead label="My bets, written before any research" title="I wrote six bets first. Three changed the design." />
           <ul className={s.cards3}>
             <li className={cs.cardSmall}><span className={`${s.pill} ${s.bad}`}>Overturned</span><h4 className={cs.h3}>I was wrong about the code</h4><p className={cs.small}>The barrier is often a person or a gate, not a code <Cite c="C421 C427" />. So I designed barrier by barrier.</p></li>
@@ -235,12 +236,7 @@ export function NaviCase() {
           <Journey />
 
           <Figure type="Prototype" title="Live prototype · pick a scenario, then use the phone">
-            <div className={s.protoWrap}>
-              <iframe className={s.proto} src={PROTO} title="Confirmed before you board: interactive prototype" loading="lazy" />
-            </div>
-            <p className={`${cs.small} ${s.protoNote}`}>
-              Coded, so signal, battery and time are real states. <a className={s.link} href={PROTO} target="_blank" rel="noopener">Open full screen ↗</a>
-            </p>
+            <ProtoEmbed src={PROTO} poster="/navi/media/demo-poster.jpg" />
           </Figure>
 
           <Figure type="Audio" title="Rohan’s voice note for the guard · Assamese · plays offline">
@@ -251,47 +247,43 @@ export function NaviCase() {
           </Figure>
 
           <SectionHead label="Who acts" title="Who acts, and what happens if they don’t" />
-          <div className={cs.strip}>
-            <table className={s.table}>
-              <thead><tr><th>Step</th><th>Who, by when</th><th>If nothing happens</th></tr></thead>
-              <tbody>
-                <tr><td className={cs.strong}>Name who opens</td><td>Host, 24 h before arrival</td><td>Free change for Meera, recorded as host-caused</td></tr>
-                <tr><td className={cs.strong}>Confirm “I’ll be awake”</td><td>Ramesh, 1 h before boarding</td><td>Meera decides at the station</td></tr>
-                <tr><td className={cs.strong}>Wake-up call</td><td>Automatic, 20 min before arrival</td><td>Host called; group told on the bus</td></tr>
-                <tr><td className={cs.strong}>Bus late past his hours</td><td>Automatic re-check, before his “awake until”</td><td>Group told on the bus; if no one opens, Airbnb moves the night</td></tr>
-                <tr><td className={cs.strong}>No one opens</td><td>The group, 30 min after ringing</td><td>The night moves; top-up if a Yes failed</td></tr>
-                <tr><td className={cs.strong}>Morning check</td><td>Airbnb, by day</td><td>Host disputes with Airbnb <Cite c="C391" />; the guest’s money doesn’t wait</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <RTable
+            head={["Step", "Who, by when", "If nothing happens"]}
+            rows={[
+              ["Name who opens", "Host, 24 h before arrival", "Free change for Meera, recorded as host-caused"],
+              ["Confirm “I’ll be awake”", "Ramesh, 1 h before boarding", "Meera decides at the station"],
+              ["Wake-up call", "Automatic, 20 min before arrival", "Host called; group told on the bus"],
+              ["Bus late past his hours", "Automatic re-check, before his “awake until”", "Group told on the bus; if no one opens, Airbnb moves the night"],
+              ["No one opens", "The group, 30 min after ringing", "The night moves; top-up if a Yes failed"],
+              ["Morning check", "Airbnb, by day", <>Host disputes with Airbnb <Cite c="C391" />; the guest’s money doesn’t wait</>],
+            ]}
+          />
           <Pointers items={[["d", "Full table and rules"], ["f", "Every failure under every network condition"]]} />
 
           <SectionHead label="Money, by fault" title="Nobody pays twice, nobody profits from claiming" />
-          <div className={cs.strip}>
-            <table className={s.table}>
-              <thead><tr><th>Layer</th><th>Who gets it</th><th>Who pays</th><th>How fast</th></tr></thead>
-              <tbody>
-                <tr><td className={cs.strong}>1 · Your night moves with you (₹1,500)</td><td>Anyone who rang the caretaker’s bell (flat G2), or had the guard ring it, waited 30 min and wasn’t let in. Confirmed or not.</td><td>Host’s payout when the host owns access <Cite c="C350 C393" />. Airbnb for a late bus nobody chose, if Ramesh doesn’t confirm the new time.</td><td>Credit now with data. Paid at a desk: back by 6 PM next day*</td></tr>
-                <tr><td className={cs.strong}>2 · Covered tonight (top-up to ₹3,000 in total, cab included)</td><td>Only when a confirmed Yes failed inside Ramesh’s hours. A Yes before the group rings counts.</td><td>Airbnb pays the gap</td><td>Applied at booking, or against the receipt</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <RTable
+            head={["Layer", "Who gets it", "Who pays", "How fast"]}
+            rows={[
+              ["1 · Your night moves with you (₹1,500)", "Anyone who rang the caretaker’s bell (flat G2), or had the guard ring it, waited 30 min and wasn’t let in. Confirmed or not.", <>Host’s payout when the host owns access <Cite c="C350 C393" />. Airbnb for a late bus nobody chose, if Ramesh doesn’t confirm the new time.</>, "Credit now with data. Paid at a desk: back by 6 PM next day*"],
+              ["2 · Covered tonight (top-up to ₹3,000 in total, cab included)", "Only when a confirmed Yes failed inside Ramesh’s hours. A Yes before the group rings counts.", "Airbnb pays the gap", "Applied at booking, or against the receipt"],
+            ]}
+          />
           <p className={`${cs.small} ${s.note}`}>*Proposed policy. Today most refunds arrive within 15 days <Cite c="C386" />. The ₹3,000 cap, the 30 minutes and every timer are pilot hypotheses.</p>
           <Callout title="Why would a host say Yes?">
             A failed Yes costs a host at most that night’s payout, so the risk isn’t money, it’s inertia. So naming who opens is part of approving a late arrival, which hosts already do <Cite c="C370" />. I held back the cancellation fee (50%, $50 minimum <Cite c="C394" />): it’s more than a ₹1,500 night. It switches on only if under ~70% approve with a plan and declines stay flat.
           </Callout>
 
           <Figure type="Economics" title="What it costs Airbnb, per 1,000 late arrivals">
-            <div className={cs.strip}>
-              <table className={s.table}>
-                <thead><tr><th>Configuration</th><th>Cost to Airbnb</th><th>Read</th></tr></thead>
-                <tbody>
-                  <tr><td className={cs.strong}>Prevention only: confirm, SMS pack, wake-up call</td><td>₹5k–50k</td><td>Avoiding 2–15 failed nights pays for it</td></tr>
-                  <tr><td className={cs.strong}>+ payout on top of the refund (first version, 2–5% claims)</td><td>₹40k–235k</td><td>Rejected: pays guests to claim</td></tr>
-                  <tr><td className={cs.strong}>+ payout that replaces the night (2–5% claims)</td><td>₹15k–85k</td><td>Chosen</td></tr>
-                  <tr><td className={cs.strong}>+ late bus: Airbnb moves the night</td><td>+₹7.5k–30k</td><td>Assumes 0.5–2% of late arrivals</td></tr>
-                </tbody>
-              </table>
+            <div className={s.figTable}>
+              <RTable
+                head={["Configuration", "Cost to Airbnb", "Read"]}
+                rows={[
+                  ["Prevention only: confirm, SMS pack, wake-up call", "₹5k–50k", "Avoiding 2–15 failed nights pays for it"],
+                  ["+ payout on top of the refund (first version, 2–5% claims)", "₹40k–235k", "Rejected: pays guests to claim"],
+                  ["+ payout that replaces the night (2–5% claims)", "₹15k–85k", "Chosen"],
+                  ["+ late bus: Airbnb moves the night", "+₹7.5k–30k", "Assumes 0.5–2% of late arrivals"],
+                ]}
+              />
             </div>
             <p className={`${cs.small} ${s.protoNote}`}>At the same claim rates, paying on top of the refund costs up to nearly three times the chosen version.</p>
           </Figure>
@@ -308,19 +300,19 @@ export function NaviCase() {
             introTitle="Every night ends at a named place or a stated limit."
             intro={<p className={cs.body}>I ran a red team (six kinds of attacker, about 25 attacks), walked ten worst-case nights minute by minute, and modelled the economics at scale. My first payout paid guests to claim, was easy to stage, and was 60–85% of the cost.</p>}
           />
-          <div className={cs.strip}>
-            <table className={s.table}>
-              <caption className={s.caption}>What broke, and what I changed</caption>
-              <thead><tr><th>What broke</th><th>What I changed</th></tr></thead>
-              <tbody>
-                <tr><td>The payout came on top of the refund</td><td className={cs.strong}>It replaces the night: ₹3,000 in total, cab included</td></tr>
-                <tr><td>Money came back in up to 15 days <Cite c="C386" /></td><td className={cs.strong}>Credit now with data; at a desk, back by 6 PM next day (proposed)</td></tr>
-                <tr><td>A silent host triggered nothing</td><td className={cs.strong}>Approving a late arrival means naming who opens</td></tr>
-                <tr><td>A “coming in 10” call could stop the clock</td><td className={cs.strong}>Only the guest stops it, with no pause; calls go through a logged, masked Airbnb line</td></tr>
-                <tr><td>Anyone who replied YES got the address and PIN</td><td className={cs.strong}>Meera confirms each number; co-guests can only send HELP and CALL</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <RTable
+            caption="What broke, and what I changed"
+            head={["What broke", "What I changed"]}
+            strong={1}
+            labelFirst
+            rows={[
+              ["The payout came on top of the refund", "It replaces the night: ₹3,000 in total, cab included"],
+              [<>Money came back in up to 15 days <Cite c="C386" /></>, "Credit now with data; at a desk, back by 6 PM next day (proposed)"],
+              ["A silent host triggered nothing", "Approving a late arrival means naming who opens"],
+              ["A “coming in 10” call could stop the clock", "Only the guest stops it, with no pause; calls go through a logged, masked Airbnb line"],
+              ["Anyone who replied YES got the address and PIN", "Meera confirms each number; co-guests can only send HELP and CALL"],
+            ]}
+          />
           <Pointers items={[["e", "Fraud and abuse register"], ["h", "Decision log"]]} />
 
           <SectionHead label="Judgement" title="Where I changed my mind, and where I held my ground" />
@@ -367,10 +359,11 @@ export function NaviCase() {
           </ul>
           <ChapterEnd>The bet: fix the night before it starts, and when it still fails, send a destination and the money, not a promise.</ChapterEnd>
         </Chapter>
+        <div className={s.endSpace} aria-hidden="true" />
       </div>
 
       <ChapterRail chapters={RAIL} />
-      <AppendixPanel title="Confirmed before you board · Appendix" sections={naviAppendixSections}>
+      <AppendixPanel title="Confirmed before you board · Appendix" sections={naviAppendixSections} scrollTabs>
         <NaviAppendix />
       </AppendixPanel>
     </div>

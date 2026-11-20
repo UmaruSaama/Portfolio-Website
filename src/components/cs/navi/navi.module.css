@@ -330,3 +330,106 @@
   .callout { padding: 16px 18px; }
   .liveIntro { padding: 16px 16px 0; }
 }
+
+/* ---------- mobile pass ---------- */
+
+/* Responsive tables (RTable): a table on wide screens, one card per row on phones. */
+.rtWrap { width: 100%; }
+@media (max-width: 1023px) {
+  .rtWrap {
+    margin: 0 calc(-1 * var(--gutter, 20px));
+    padding: 0 var(--gutter, 20px);
+    width: auto;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .rtWrap::-webkit-scrollbar { display: none; }
+}
+@media (max-width: 700px) {
+  .rtWrap { margin: 0; padding: 0; overflow: visible; }
+  .table.rt { min-width: 0; font-size: 15px; line-height: 1.45; }
+  .rt thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .rt, .rt tbody, .rt tr, .rt td { display: block; }
+  .rt caption { display: block; padding: 0 0 12px; }
+  .rt tbody { display: flex; flex-direction: column; gap: 12px; }
+  .rt tr {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: var(--cs-surface-10);
+  }
+  .table.rt td { padding: 0; border: 0; }
+  .rt td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cs-text-tertiary);
+  }
+  .rt td:first-child { font-size: 17px; line-height: 1.35; }
+  .rt td:first-child::before { display: none; }
+  .rtLabelled td:first-child { font-size: 15px; line-height: 1.45; }
+  .rtLabelled td:first-child::before { display: block; }
+}
+
+/* Tablet touch: the "Open full screen" link gets a finger-sized hit area. */
+.protoWideOnly .link { display: inline-block; padding: 10px 0; }
+
+/* A table inside a figure frame: flush on wide screens, inset as cards on phones. */
+@media (max-width: 700px) {
+  .figTable { padding: 16px; }
+}
+
+/* Prototype: inline on wide screens, a launch card on phones. */
+.protoLaunch { display: none; }
+@media (min-width: 768px) {
+  .protoWrap { min-height: 900px; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .protoWrap { min-height: 820px; }
+}
+@media (max-width: 767px) {
+  .protoWrap, .protoWideOnly { display: none; }
+  .protoLaunch {
+    display: grid;
+    grid-template-columns: 112px 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 18px;
+  }
+  .protoPoster {
+    width: 112px;
+    height: auto;
+    border-radius: 16px;
+    background: #0f0f0f;
+  }
+  .protoLaunchText { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; min-width: 0; }
+  .protoLaunchCta { grid-column: 1 / -1; justify-content: center; white-space: nowrap; }
+}
+@media (max-width: 380px) {
+  .protoLaunch { grid-template-columns: 1fr; }
+  .protoPoster { width: 132px; }
+}
+
+/* Room at the end so the floating chapter pill never covers the last line. */
+.endSpace { height: 0; }
+@media (max-width: 1023px) {
+  .endSpace { height: 88px; }
+}
+
+@media (max-width: 600px) {
+  .cite { font-size: 12px; }
+}

@@ -36,15 +36,18 @@ function render(b: Block, i: number): ReactNode {
         </L>
       );
     }
-    case "table":
+    case "table": {
+      // Column names double as labels in the phone card layout (see appendix.module.css).
+      const label = (h: string) => h.replace(/\*/g, "");
       return (
         <div key={i} className={a.scroll}>
-          <table className={a.table}>
-            <thead><tr>{b.head.map((h, j) => <th key={j}><Inline text={h} /></th>)}</tr></thead>
-            <tbody>{b.rows.map((r, j) => <tr key={j}>{r.map((c, k) => <td key={k}><Inline text={c} /></td>)}</tr>)}</tbody>
+          <table className={a.table} role="table">
+            <thead role="rowgroup"><tr role="row">{b.head.map((h, j) => <th key={j} role="columnheader" scope="col"><Inline text={h} /></th>)}</tr></thead>
+            <tbody role="rowgroup">{b.rows.map((r, j) => <tr key={j} role="row">{r.map((c, k) => <td key={k} role="cell" data-label={label(b.head[k] ?? "")}><Inline text={c} /></td>)}</tr>)}</tbody>
           </table>
         </div>
       );
+    }
     case "kv":
       return (
         <dl key={i} className={a.kv}>

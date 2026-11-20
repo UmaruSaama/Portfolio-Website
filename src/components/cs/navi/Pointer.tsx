@@ -7,7 +7,7 @@ import p from "./pointer.module.css";
 export function Pointer({ id, label }: { id: string; label: string }) {
   return (
     <button type="button" className={p.pointer} aria-haspopup="dialog" onClick={() => openAppendix(id)}>
-      <span aria-hidden="true">→</span> Appendix {id.toUpperCase()} <span className={p.label}>· {label}</span>
+      <span className={p.key}><span aria-hidden="true">→</span> Appendix {id.toUpperCase()}</span> <span className={p.label}>· {label}</span>
     </button>
   );
 }

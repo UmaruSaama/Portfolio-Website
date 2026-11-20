@@ -23,8 +23,8 @@ export function LiveResults() {
     return () => { alive = false; clearInterval(id); };
   }, []);
 
-  if (d === undefined) return <p className={cs.small}>Loading live results…</p>;
-  if (!d || d.testers === 0) return <p className={cs.small}>The test is open now. Results appear here as testers finish.</p>;
+  if (d === undefined) return <div className={l.wrap}><p className={cs.small}>Loading live results…</p></div>;
+  if (!d || d.testers === 0) return <div className={l.wrap}><p className={cs.small}>The test is open now. Results appear here as testers finish.</p></div>;
 
   const pct = (n: number) => (d.testers ? Math.round((100 * n) / d.testers) : 0);
   const mmss = (s: number) => (s ? `${Math.floor(s / 60)}m ${s % 60}s` : "–");

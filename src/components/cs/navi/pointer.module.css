@@ -2,3 +2,9 @@
 .pointer { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--cs-pink-28); background: var(--cs-pink-14); color: var(--cs-pink); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s; }
 .pointer:hover { background: var(--cs-pink-28); }
 .label { font-weight: 400; color: var(--cs-text-secondary); }
+.key { white-space: nowrap; }
+/* Narrow screens: a long label wraps as text under the pill's own padding
+   instead of splitting "Appendix F" across two lines. */
+@media (max-width: 600px) {
+  .pointer { display: inline-block; max-width: 100%; padding: 8px 14px; border-radius: 18px; text-align: left; line-height: 1.4; }
+}

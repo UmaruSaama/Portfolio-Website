@@ -22,16 +22,20 @@ export function AppendixPanel({
   title,
   sections,
   children,
+  scrollTabs = false,
 }: {
   title: string;
   sections: AppendixSection[];
   children: ReactNode;
+  /** Phones/tablets: keep the section tabs on one scrolling row (for long A–J lists) instead of wrapping. */
+  scrollTabs?: boolean;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLUListElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
   const prevOverflow = useRef("");
   const busy = useRef(false);
@@ -120,6 +124,16 @@ export function AppendixPanel({
     };
   }, [close]);
 
+  // One-row tabs: keep the current section's tab in view as the reader scrolls.
+  useEffect(() => {
+    const ul = tabsRef.current;
+    if (!scrollTabs || !ul || ul.scrollWidth <= ul.clientWidth + 1) return;
+    const li = ul.querySelector<HTMLElement>('[aria-current="true"]')?.parentElement;
+    if (!li) return;
+    const left = li.offsetLeft - (ul.clientWidth - li.offsetWidth) / 2;
+    ul.scrollTo({ left: Math.max(0, left), behavior: reduced() ? "auto" : "smooth" });
+  }, [current, scrollTabs]);
+
   // Scroll-spy for the section tabs.
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -164,7 +178,7 @@ export function AppendixPanel({
               </button>
             </div>
             <nav aria-label="Appendix sections">
-              <ul className={s.tabs}>
+              <ul ref={tabsRef} className={`${s.tabs} ${scrollTabs ? s.tabsScroll : ""}`}>
                 {sections.map((sec) => (
                   <li key={sec.id}>
                     <button

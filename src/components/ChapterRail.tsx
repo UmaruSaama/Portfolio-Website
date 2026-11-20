@@ -5,7 +5,8 @@ import { chapterAnchor } from "@/data/projects";
 import { Sheet } from "./Sheet";
 import styles from "./ChapterRail.module.css";
 
-type Chapter = { id: string; label: string; short?: string };
+/** `num` overrides the shown number (default: position, 01-based). */
+type Chapter = { id: string; label: string; short?: string; num?: string };
 
 /**
  * Left-hand chapter pagination for a case study: the home page's dot pill,
@@ -89,7 +90,7 @@ export function ChapterRail({ chapters }: { chapters: Chapter[] }) {
               >
                 <span className={styles.dot} aria-hidden="true" />
                 <span className={styles.label}>
-                  <span className={styles.num}>{pad(i + 1)}</span>
+                  <span className={styles.num}>{c.num ?? pad(i + 1)}</span>
                   {c.short ? (
                     <>
                       <span className={styles.full}>{c.label}</span>
@@ -117,7 +118,7 @@ export function ChapterRail({ chapters }: { chapters: Chapter[] }) {
           aria-expanded={open}
           onClick={() => setOpen(true)}
         >
-          <span className={styles.pillNum}>{pad(active + 1)}</span>
+          <span className={styles.pillNum}>{current?.num ?? pad(active + 1)}</span>
           <span className={styles.pillLabel}>{current?.label}</span>
           <span className={styles.pillChevron} aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12">
@@ -150,7 +151,7 @@ export function ChapterRail({ chapters }: { chapters: Chapter[] }) {
                 aria-current={i === active ? "step" : undefined}
                 onClick={() => go(i)}
               >
-                <span className={styles.sheetNum}>{pad(i + 1)}</span>
+                <span className={styles.sheetNum}>{c.num ?? pad(i + 1)}</span>
                 {c.label}
               </button>
             </li>
