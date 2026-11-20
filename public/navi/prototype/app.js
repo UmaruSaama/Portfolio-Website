@@ -13,7 +13,7 @@
   const SCEN = [
     { id: "ramesh", label: "Ramesh confirms (his phone)", cap: "20:40. Ramesh opens the SMS link. No app, no account. Hindi first, English under it.", stack: ["ramesh"], ds: { time: "20:40", net: "online", battery: 71 } },
     { id: "board", label: "Not confirmed at boarding", cap: "21:15 at the bus station, with signal. Ramesh hasn't said yes. Meera decides now, not at the gate.", stack: ["board"], plan: "unconfirmed", ds: { time: "21:15", net: "online", battery: 48 } },
-    { id: "pack", label: "At the building, details saved", cap: "01:45, 6% battery, no signal. Ramesh confirmed. Everything needed is saved on the phone.", stack: ["pack"] },
+    { id: "pack", label: "Meera's night (the complaint)", cap: "The brief's night: 1:45 AM after an overnight bus, 6% battery, barely any network (calls and SMS work, no mobile data). The gate lock isn't working and the host isn't picking up. Ramesh, the caretaker, confirmed before boarding.", stack: ["pack"], ds: { net: "sms" } },
     { id: "gate", label: "The guard won't open", cap: "Show the guard card: Rohan's line in the guard's language, the society code, and a request to ring Ramesh.", stack: ["pack", "stuck", "gate"] },
     { id: "door", label: "The lock is dead", cap: "The host's steps for this lock, one at a time. Each ends in \"Still locked\".", stack: ["pack", "stuck", "door"] },
     { id: "asleep", label: "Ramesh is asleep: covered", cap: "Answer the bell question, then press +30 min. Try going offline: the clock keeps running and the screen gives a walking route.", stack: ["pack", "stuck", "noone"], ds: { net: "sms" } },
@@ -280,6 +280,7 @@
     $$(".screen").forEach(s => s.classList.toggle("is-active", s.dataset.screen === id));
     $("#phone").dataset.app = id === "sms" ? "sms" : id === "ramesh" ? "web" : "airbnb";
     renderPlanStatus(); renderLock(); renderNoone(); renderSMS(); renderCovered(); renderRamesh(); renderIn(); renderBoard(); renderHarness();
+    if (id !== lastScreen) { lastScreen = id; track("screen_view"); }
     document.dispatchEvent(new Event("app:rendered"));
     DS.refreshIcons();
     const st = DS.get(); $$("[data-bind='battery']").forEach(e => (e.textContent = st.battery + "%")); $$("[data-bind='time']").forEach(e => (e.textContent = hm(st.time)));
@@ -299,6 +300,11 @@
   /* ---------- events ---------- */
   document.addEventListener("click", e => {
     const t = e.target.closest("button, a"); if (!t) return;
+    if (t.hasAttribute("data-intro-start")) { closeIntro("start"); return; }
+    if (t.hasAttribute("data-intro-open")) { openIntro(); return; }
+    if (t.closest("#phone")) track("tap", { label: (t.innerText || t.getAttribute("aria-label") || "").replace(/\s+/g, " ").trim().slice(0, 60), disabled: getComputedStyle(t).pointerEvents === "none" });
+    else if (t.dataset.scen) track("scenario_pick", { pick: t.dataset.scen });
+    else if (t.closest(".harness")) track("harness", { label: (t.innerText || "").trim().slice(0, 40) });
     if (t.dataset.reason) S.reason = t.dataset.reason;
     if (t.dataset.from) S.from = t.dataset.from;
     if (t.dataset.go) { e.preventDefault(); go(t.dataset.go); }
@@ -362,6 +368,30 @@
     if (document.readyState !== "loading") render();
   });
 
+  /* ---------- test analytics: provider-agnostic. Events queue here; a provider (PostHog etc.) is plugged in via NAVI_ANALYTICS ---------- */
+  const SID = (() => { try { let v = sessionStorage.getItem("navi-sid"); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem("navi-sid", v); } return v; } catch (e) { return "nosession"; } })();
+  const T0 = Date.now();
+  function track(event, props = {}) {
+    const st = DS.get();
+    const payload = { event, ...props, screen: cur(), scenario: S.scen, net: st.net, battery: st.battery, sim_time: st.time, plan: S.plan, sid: SID, t: Math.round((Date.now() - T0) / 1000) };
+    (window.__naviEvents = window.__naviEvents || []).push(payload);
+    try { if (window.NAVI_ANALYTICS) window.NAVI_ANALYTICS(event, payload); } catch (e) {}
+  }
+  window.naviTrack = track;
+  let lastScreen = null;
+
+  /* ---------- first-visit intro (the brief's scenario) ---------- */
+  function openIntro() { const m = $("#intro"); if (!m) return; m.hidden = false; $("[data-intro-start]", m).focus(); track("intro_open"); }
+  function closeIntro(how) { const m = $("#intro"); if (!m) return; m.hidden = true; try { localStorage.setItem("navi-intro-seen", "1"); } catch (e) {} track("intro_close", { how }); }
+
+  /* ---------- keep the whole phone in view on short windows ---------- */
+  function fitPhone() {
+    const ph = $("#phone"); if (!ph) return;
+    const wide = window.innerWidth > 860 && !document.documentElement.classList.contains("demo");
+    ph.style.zoom = wide ? String(Math.min(1, (window.innerHeight - 48) / 866)) : "";
+  }
+  window.addEventListener("resize", fitPhone);
+
   // ?demo: phone only, no harness, taps shown as ripples (used to record the case-study film and journey stills)
   const DEMO = new URLSearchParams(location.search).has("demo");
   if (DEMO) {
@@ -374,9 +404,16 @@
     window.NAVI_DEMO = { run: runScenario, state: () => S, set: patch => { Object.assign(S, patch); render(); } };
   }
 
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#intro")?.hidden) closeIntro("escape"); });
+  window.addEventListener("pagehide", () => track("leave"));
+
   function init() {
+    fitPhone();
+    let seen = false; try { seen = !!localStorage.getItem("navi-intro-seen"); } catch (e) {}
+    if (!seen && !DEMO) setTimeout(openIntro, 300);
+    track("open", { ref: document.referrer ? new URL(document.referrer).hostname : "", w: window.innerWidth });
     let first = true;
-    try { first = !localStorage.getItem("navi-proto-started-v7"); localStorage.setItem("navi-proto-started-v7", "1"); } catch (e) {}
+    try { first = !localStorage.getItem("navi-proto-started-v8"); localStorage.setItem("navi-proto-started-v8", "1"); } catch (e) {}
     if (first) { runScenario("pack"); return; }
     render();
   }

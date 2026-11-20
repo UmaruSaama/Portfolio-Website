@@ -318,3 +318,21 @@ body { background: #EDEDED; font-family: var(--font); color: #222; margin: 0; }
 .demo .stage { padding: 24px; gap: 0; }
 .tap-ripple { position: fixed; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255,56,92,.35); border: 2px solid rgba(255,56,92,.9); pointer-events: none; z-index: 9999; animation: tapr 600ms ease-out forwards; }
 @keyframes tapr { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+
+/* ---- pass 7: tester-ready ---- */
+/* the phone stays in view while the demo panel scrolls */
+.harness { position: static; }
+.stage > .device { position: sticky; top: 24px; }
+@media (max-width: 860px) { .stage > .device { position: relative; top: 0; } }
+
+/* first-visit intro (not product UI) */
+.intro { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; padding: 24px; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); }
+.intro[hidden] { display: none; }
+.intro__card { width: min(520px, 100%); max-height: calc(100vh - 48px); overflow: auto; background: #fff; color: #222; border-radius: 24px; padding: 32px; box-shadow: 0 24px 64px rgba(0,0,0,.35); font-family: var(--font); }
+.intro__eyebrow { margin: 0 0 8px; font: 600 12px/16px var(--font); letter-spacing: .06em; text-transform: uppercase; color: #6a6a6a; }
+.intro__title { margin: 0 0 12px; font: 600 28px/32px var(--font); letter-spacing: -0.01em; }
+.intro__lead { margin: 0 0 16px; font: 400 16px/24px var(--font); }
+.intro__list { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 8px; font: 400 15px/22px var(--font); color: #222; }
+.intro__fine { margin: 0 0 20px; font: 400 13px/18px var(--font); color: #6a6a6a; }
+.intro__btn { width: 100%; min-height: 52px; border: 0; border-radius: 12px; background: linear-gradient(90deg, #E61E4D, #D70466); color: #fff; font: 600 16px/20px var(--font); cursor: pointer; }
+.intro__btn:focus-visible { outline: 3px solid #222; outline-offset: 3px; }

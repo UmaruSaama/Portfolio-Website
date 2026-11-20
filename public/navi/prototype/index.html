@@ -40,6 +40,7 @@
       <p class="hx__caption" id="caption"></p>
       <button class="hx__peek" data-peek-sms>See Priya's SMS now</button>
       <button class="dsp-reset" style="margin-top:12px;text-decoration:underline;background:none;border:0;cursor:pointer;font:inherit" data-reset-demo>Reset demo</button>
+      <button class="dsp-reset" style="margin:12px 0 0 16px;text-decoration:underline;background:none;border:0;cursor:pointer;font:inherit" data-intro-open>About this test</button>
     </div>
   </aside>
 
@@ -307,6 +308,21 @@
 
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <script src="design-system/ds.js"></script>
+<!-- first-visit intro: the brief's scenario (not product UI) -->
+<div class="intro" id="intro" hidden role="dialog" aria-modal="true" aria-labelledby="introTitle">
+  <div class="intro__card">
+    <p class="intro__eyebrow">Prototype test · Airbnb late-night check-in</p>
+    <h2 class="intro__title" id="introTitle">You're Meera. It's 1:45 AM.</h2>
+    <p class="intro__lead">You and 3 friends just got off an overnight bus. Your phone is at <b>6%</b>, and there's <b>barely any network</b>: calls and SMS work, mobile data doesn't. The <b>gate lock isn't working</b>, and the host, Rohan, <b>isn't picking up</b>.</p>
+    <ul class="intro__list">
+      <li><b>Your task:</b> use the Airbnb app on the right to get all 4 of you into a bed for the night.</li>
+      <li><b>Before you left,</b> Ramesh, the building's caretaker, said he'd be awake until 3 AM to let you in.</li>
+      <li>The <b>panel on the left</b> isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
+    </ul>
+    <p class="intro__fine">Think out loud if someone is with you. This test records which screens you visit and what you tap, anonymously: no names, no personal data.</p>
+    <button class="intro__btn" data-intro-start>Start at the gate</button>
+  </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
