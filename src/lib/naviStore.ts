@@ -49,6 +49,8 @@ export type NaviEvent = {
   how?: string;
   disabled?: boolean;
   country?: string;
+  rating?: number;
+  comment?: string;
 };
 
 /** Newest first. */

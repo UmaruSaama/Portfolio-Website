@@ -20,16 +20,17 @@ const SCREEN_NAMES: Record<string, string> = {
   covered: "Where to go (covered / night moves)", in: "We're in", sms: "Priya's SMS", board: "Boarding decision", ramesh: "Ramesh's page",
 };
 
-type Session = { sid: string; first: number; last: number; dur: number; screens: Set<string>; taps: number; dead: number; picks: string[]; country: string; lastScreen: string; rang: boolean; allIn: boolean };
+type Session = { sid: string; first: number; last: number; dur: number; screens: Set<string>; taps: number; dead: number; picks: string[]; country: string; lastScreen: string; rang: boolean; allIn: boolean; done: string; secs: number };
 
 function summarise(evs: NaviEvent[]) {
   const asc = [...evs].reverse();
   const sessions = new Map<string, Session>();
   const screenViews = new Map<string, number>();
   const deadTaps = new Map<string, number>();
+  const feedback: NaviEvent[] = [];
   for (const e of asc) {
     let s = sessions.get(e.sid);
-    if (!s) { s = { sid: e.sid, first: e.ts, last: e.ts, dur: 0, screens: new Set(), taps: 0, dead: 0, picks: [], country: e.country || "", lastScreen: "", rang: false, allIn: false }; sessions.set(e.sid, s); }
+    if (!s) { s = { sid: e.sid, first: e.ts, last: e.ts, dur: 0, screens: new Set(), taps: 0, dead: 0, picks: [], country: e.country || "", lastScreen: "", rang: false, allIn: false, done: "", secs: 0 }; sessions.set(e.sid, s); }
     s.last = e.ts; s.dur = Math.max(s.dur, e.t ?? 0);
     if (e.screen) { s.screens.add(e.screen); s.lastScreen = e.screen; }
     if (e.event === "screen_view" && e.screen) screenViews.set(e.screen, (screenViews.get(e.screen) ?? 0) + 1);
@@ -40,6 +41,8 @@ function summarise(evs: NaviEvent[]) {
       if (/All 4 are in/i.test(e.label || "")) s.allIn = true;
     }
     if (e.event === "scenario_pick" && e.pick) s.picks.push(e.pick);
+    if (e.event === "task_complete" && !s.done) { s.done = e.how || "done"; s.secs = Number(e.label) || 0; }
+    if (e.event === "feedback") feedback.push(e);
   }
   const list = [...sessions.values()].sort((a, b) => b.last - a.last);
   const n = list.length || 1;
@@ -51,9 +54,14 @@ function summarise(evs: NaviEvent[]) {
     ["Rang G2 / guard rang (started the 30 min)", reached((s) => s.rang)],
     ["Reached “where to go”", reached((s) => s.screens.has("covered"))],
     ["Got everyone in (“All 4 are in”)", reached((s) => s.allIn)],
+    ["Finished: reached a bed (in, where-to-go or switched)", reached((s) => !!s.done)],
   ];
+  const rated = feedback.filter((f) => f.rating);
+  const avg = rated.length ? rated.reduce((a, f) => a + (f.rating || 0), 0) / rated.length : 0;
+  const doneTimes = list.filter((s) => s.done && s.secs).map((s) => s.secs).sort((a, b) => a - b);
+  const median = doneTimes.length ? doneTimes[Math.floor(doneTimes.length / 2)] : 0;
   const live = list.filter((s) => Date.now() - s.last < 5 * 60_000).length;
-  return { live, list, n, funnel, screenViews: [...screenViews.entries()].sort((a, b) => b[1] - a[1]), deadTaps: [...deadTaps.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12) };
+  return { live, list, n, funnel, feedback: [...feedback].reverse(), avg, rated: rated.length, median, screenViews: [...screenViews.entries()].sort((a, b) => b[1] - a[1]), deadTaps: [...deadTaps.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12) };
 }
 
 const ago = (ts: number) => {
@@ -76,7 +84,7 @@ async function Stats({ params }: { params: Promise<{ key: string }> }) {
   if (!storeReady()) return <>{head}<p className={st.warn}>No store connected yet. In Vercel: Storage → Upstash for Redis → Connect to this project, then redeploy.</p></>;
 
   const evs = await readEvents();
-  const { live, list, n, funnel, screenViews, deadTaps } = summarise(evs);
+  const { live, list, n, funnel, feedback, avg, rated, median, screenViews, deadTaps } = summarise(evs);
 
   return (
     <>
@@ -86,7 +94,21 @@ async function Stats({ params }: { params: Promise<{ key: string }> }) {
         <div><b>{live}</b><span>active in the last 5 min</span></div>
         <div><b>{evs.length}</b><span>events</span></div>
         <div><b>{evs[0] ? ago(evs[0].ts) : "–"}</b><span>last event</span></div>
+        <div><b>{list.filter((s) => s.done).length}</b><span>finished the task</span></div>
+        <div><b>{median ? `${Math.floor(median / 60)}m ${median % 60}s` : "–"}</b><span>median time to finish</span></div>
+        <div><b>{rated ? avg.toFixed(1) : "–"}</b><span>ease rating (1–5), {rated} answers</span></div>
       </div>
+
+      <section className={st.card}>
+        <h2>What testers said</h2>
+        {feedback.length ? (
+          <ul className={st.list}>
+            {feedback.slice(0, 40).map((f, i) => (
+              <li key={i}><span>{f.comment ? `“${f.comment}”` : <em>No comment</em>} <small>· {ist(f.ts)} · <code>{f.sid}</code></small></span><b>{f.rating ? `${f.rating}/5` : "–"}</b></li>
+            ))}
+          </ul>
+        ) : <p className={st.note}>No answers yet. Testers see one question when they reach a bed.</p>}
+      </section>
 
       <section className={st.card}>
         <h2>Funnel: Meera’s night</h2>
@@ -117,12 +139,12 @@ async function Stats({ params }: { params: Promise<{ key: string }> }) {
         <h2>Testers</h2>
         <div className={st.scroll}>
           <table className={st.table}>
-            <thead><tr><th>Session</th><th>Started (IST)</th><th>Time in test</th><th>Last screen</th><th>Reached where-to-go</th><th>Taps (greyed)</th><th>Scenarios tried</th><th>Country</th></tr></thead>
+            <thead><tr><th>Session</th><th>Started (IST)</th><th>Time in test</th><th>Last screen</th><th>Finished</th><th>Taps (greyed)</th><th>Scenarios tried</th><th>Country</th></tr></thead>
             <tbody>
               {list.slice(0, 100).map((s) => (
                 <tr key={s.sid}>
                   <td><code>{s.sid}</code></td><td>{ist(s.first)}</td><td>{Math.floor(s.dur / 60)}m {s.dur % 60}s</td>
-                  <td>{SCREEN_NAMES[s.lastScreen] || s.lastScreen}</td><td>{s.screens.has("covered") ? "Yes" : "No"}</td>
+                  <td>{SCREEN_NAMES[s.lastScreen] || s.lastScreen}</td><td>{s.done ? `${s.done} · ${Math.floor(s.secs / 60)}m ${s.secs % 60}s` : "No"}</td>
                   <td>{s.taps} ({s.dead})</td><td>{[...new Set(s.picks)].join(", ") || "default only"}</td><td>{s.country}</td>
                 </tr>
               ))}

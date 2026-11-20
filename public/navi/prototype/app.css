@@ -388,3 +388,28 @@ html:has(#guardMode:not([hidden])) .hx-fab { display: none; }
   /* sit just right of the clock, clear of the signal/"No service" text however wide it gets */
   .hx-fabs { left: 96px; transform: none; }
 }
+
+/* ---- pass 10: labelled test bar (phones) + task-complete card ---- */
+.testbar { display: none; }
+@media (max-width: 600px) {
+  .testbar { display: flex; align-items: center; gap: 6px; position: fixed; top: 0; left: 0; right: 0; z-index: 8000; height: calc(40px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 8px 0 12px; background: #111; color: #fff; font: 600 12px/1 var(--font); }
+  .testbar__tag { flex: 1; opacity: .7; letter-spacing: .02em; }
+  .testbar__btn { height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; font: 600 13px/1 var(--font); cursor: pointer; }
+  .testbar__btn--dark { background: #fff; color: #111; border-color: #fff; }
+  .stage > .device { top: calc(40px + env(safe-area-inset-top)); height: calc(100dvh - 40px - env(safe-area-inset-top)); }
+  .harness-open .testbar { display: none; }
+}
+/* thank-you card */
+.thanks { text-align: left; }
+.thanks__badge { width: 56px; height: 56px; border-radius: 50%; background: #FFF0F3; display: grid; place-items: center; font-size: 28px; margin-bottom: 12px; }
+.thanks__q { display: block; margin: 16px 0 8px; font: 600 15px/20px var(--font); color: #222; }
+.thanks__q span { font-weight: 400; color: #6a6a6a; }
+.thanks__scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.thanks__scale button { height: 48px; border-radius: 12px; border: 1px solid #ddd; background: #fff; font: 600 17px/1 var(--font); color: #222; cursor: pointer; }
+.thanks__scale button[aria-checked=true] { background: #222; color: #fff; border-color: #222; }
+.thanks__ends { display: flex; justify-content: space-between; margin-top: 6px; font: 400 12px/16px var(--font); color: #6a6a6a; }
+#thanksNote { width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 12px; padding: 12px; font: 400 15px/21px var(--font); resize: vertical; margin-bottom: 16px; }
+#thanksNote:focus { outline: 2px solid #222; outline-offset: 1px; }
+.intro__btn:disabled { background: #ddd; color: #888; cursor: not-allowed; }
+.thanks__skip { display: block; margin: 12px auto 0; border: 0; background: none; font: 600 14px/20px var(--font); text-decoration: underline; color: #222; cursor: pointer; }
+#confetti { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 10001; pointer-events: none; display: none; }

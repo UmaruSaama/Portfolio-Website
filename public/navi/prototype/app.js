@@ -21,7 +21,7 @@
     { id: "unconf", label: "Not confirmed, no one opens", cap: "Meera went ahead without a Yes. The night still moves with her (host's payout, existing policy); the extra (up to ₹1,500) for a bed and cab doesn't apply.", stack: ["pack", "stuck", "noone"], plan: "unconfirmed", ds: { net: "sms" } },
     { id: "coguest", label: "Meera's phone is dead: co-guest SMS", cap: "What Priya's phone got: an opt-in with no address, then the arrival details, then the guard line. She can reply HELP or CALL. Tip: in scenario 6, tap \"See Priya's SMS now\" to watch the clock reach her phone.", stack: ["sms"], ds: { net: "sms", battery: 54 } }
   ];
-  const fresh = () => ({ stack: ["pack"], scen: "pack", plan: "confirmed", pinShare: "yes", late: false, t0: null, layer: null, offStart: false, offEnd: null, sent: false, peekFrom: null, boardDone: null, log: [], lockStep: 0, bell: null, from: null, reason: "noone", allIn: false, ramesh: "ask", until: "03:00" });
+  const fresh = () => ({ stack: ["pack"], scen: "pack", plan: "confirmed", pinShare: "yes", late: false, t0: null, layer: null, offStart: false, offEnd: null, sent: false, peekFrom: null, boardDone: null, log: [], lockStep: 0, done: false, startedAt: Date.now(), bell: null, from: null, reason: "noone", allIn: false, ramesh: "ask", until: "03:00" });
   let S = fresh();
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -42,7 +42,7 @@
   // who funds layer 1 when layer 2 doesn't apply
   const funder = () => S.plan !== "confirmed" ? "host" : S.late ? "airbnb" : "review";
 
-  function go(id) { if (cur() !== id) S.stack.push(id); onEnter(id); render(); $("#screens").scrollTop = 0; }
+  function go(id) { if (cur() !== id) S.stack.push(id); onEnter(id); render(); $("#screens").scrollTop = 0; if (id === "covered") complete("covered"); }
   function back() { if (S.stack.length > 1) S.stack.pop(); render(); }
   function addLog(who, what, icon = "phone-missed") { S.log.push({ t: now(), who, what, icon }); }
 
@@ -300,6 +300,10 @@
   /* ---------- events ---------- */
   document.addEventListener("click", e => {
     const t = e.target.closest("button, a"); if (!t) return;
+    if (t.dataset.rate) { rating = Number(t.dataset.rate); $$("[data-rate]").forEach(b => b.setAttribute("aria-checked", String(b === t))); $("[data-thanks-send]").disabled = false; return; }
+    if (t.hasAttribute("data-thanks-send")) { track("feedback", { rating, comment: ($("#thanksNote").value || "").trim().slice(0, 280) }); $("#thanksAsk").hidden = true; $("#thanksDone").hidden = false; return; }
+    if (t.hasAttribute("data-thanks-close")) { closeThanks("close"); return; }
+    if (t.hasAttribute("data-thanks-more")) { closeThanks("more"); setSheet(true); track("harness_open"); return; }
     if (t.hasAttribute("data-intro-start")) { closeIntro("start"); return; }
     if (t.hasAttribute("data-intro-open")) { setSheet(false); openIntro(); return; }
     if (t.hasAttribute("data-harness-open")) { setSheet(true); track("harness_open"); return; }
@@ -343,7 +347,7 @@
       render();
     }
     if (t.dataset.allIn) {
-      if (t.dataset.allIn === "yes") { S.allIn = true; render(); }
+      if (t.dataset.allIn === "yes") { S.allIn = true; render(); complete("in"); }
       else { DS.toast("Tap We're in again when everyone is inside.", $("#phone")); back(); }
     }
     if (t.dataset.board) {
@@ -351,7 +355,7 @@
         S.plan = "unconfirmed"; S.stack = ["pack"]; S.scen = "pack";
         DS.set({ time: "01:45", net: "offline", battery: 6 });
         DS.toast("Prototype: skipping ahead to 1:45 AM, at the building", $("#phone"));
-      } else S.boardDone = t.dataset.board;
+      } else { S.boardDone = t.dataset.board; if (S.boardDone === "rebook") complete("switched"); }
       render();
     }
     if (t.dataset.until) { S.until = t.dataset.until; render(); }
@@ -391,14 +395,52 @@
     if (open) $("#harness [data-harness-close]")?.focus();
   }
 
+  /* ---------- task complete: confetti + thank-you + one question ---------- */
+  const OUTCOME = {
+    in: ["You got all 4 of you inside", "Everyone's in the flat."],
+    covered: ["You got your group to a bed", "You knew where to go and what you'd pay."],
+    switched: ["You switched to a 24-hour desk", "A bed is sorted before the bus leaves."],
+  };
+  let rating = 0;
+  function complete(outcome) {
+    if (S.done || DEMO) return;
+    S.done = true;
+    const secs = Math.max(1, Math.round((Date.now() - S.startedAt) / 1000));
+    track("task_complete", { how: outcome, label: String(secs) });
+    const [title, lead] = OUTCOME[outcome] || OUTCOME.covered;
+    setTimeout(() => {   // let them see the screen they reached first
+      $("#thanksTitle").textContent = title;
+      $("#thanksLead").textContent = `${lead} It took you ${secs < 60 ? secs + " s" : Math.floor(secs / 60) + " min " + (secs % 60) + " s"}. Thank you for taking part in this test.`;
+      rating = 0; $$("[data-rate]").forEach(b => b.setAttribute("aria-checked", "false"));
+      $("#thanksNote").value = ""; $("[data-thanks-send]").disabled = true;
+      $("#thanksAsk").hidden = false; $("#thanksDone").hidden = true;
+      setSheet(false); $("#thanks").hidden = false; confetti();
+    }, outcome === "covered" ? 1800 : 700);
+  }
+  function confetti() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const c = $("#confetti"), ctx = c.getContext("2d");
+    const W = c.width = innerWidth * devicePixelRatio, H = c.height = innerHeight * devicePixelRatio;
+    const cols = ["#FF385C", "#E61E4D", "#00A699", "#FFB400", "#222222", "#FC642D"];
+    const bits = Array.from({ length: 140 }, () => ({ x: W / 2 + (Math.random() - .5) * W * .3, y: H * .35, vx: (Math.random() - .5) * 16 * devicePixelRatio, vy: (-Math.random() * 14 - 6) * devicePixelRatio, w: (6 + Math.random() * 6) * devicePixelRatio, h: (8 + Math.random() * 8) * devicePixelRatio, r: Math.random() * 6, vr: (Math.random() - .5) * .3, c: cols[Math.floor(Math.random() * cols.length)] }));
+    c.style.display = "block"; const t0 = performance.now();
+    (function frame(t) {
+      ctx.clearRect(0, 0, W, H);
+      for (const b of bits) { b.vy += .45 * devicePixelRatio; b.vx *= .99; b.x += b.vx; b.y += b.vy; b.r += b.vr; ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.fillStyle = b.c; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); ctx.restore(); }
+      if (t - t0 < 2600) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, W, H); c.style.display = "none"; }
+    })(t0);
+  }
+  function closeThanks(how) { $("#thanks").hidden = true; track("thanks_close", { how }); }
+
   /* ---------- first-visit intro (the brief's scenario) ---------- */
   function openIntro() {
     const m = $("#intro"); if (!m) return;
     let seen = false; try { seen = !!localStorage.getItem("navi-intro-seen"); } catch (e) {}
     const btn = $("[data-intro-start]", m); btn.textContent = seen ? "Back to the app" : "Start at the gate";   // a re-read shouldn't sound like a restart
+    m.dataset.first = seen ? "0" : "1";
     m.hidden = false; btn.focus(); track("intro_open", { how: seen ? "reread" : "first" });
   }
-  function closeIntro(how) { const m = $("#intro"); if (!m) return; m.hidden = true; try { localStorage.setItem("navi-intro-seen", "1"); } catch (e) {} track("intro_close", { how }); }
+  function closeIntro(how) { const m = $("#intro"); if (!m) return; m.hidden = true; if (m.dataset.first === "1") { S.startedAt = Date.now(); m.dataset.first = "0"; } /* the task clock starts when they start, not while they read */ try { localStorage.setItem("navi-intro-seen", "1"); } catch (e) {} track("intro_close", { how }); }
 
   /* ---------- keep the whole phone in view on short windows ---------- */
   function fitPhone() {
@@ -420,7 +462,7 @@
     window.NAVI_DEMO = { run: runScenario, state: () => S, set: patch => { Object.assign(S, patch); render(); } };
   }
 
-  document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#intro")?.hidden) closeIntro("escape"); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#intro")?.hidden) closeIntro("escape"); if (e.key === "Escape" && !$("#thanks")?.hidden) closeThanks("escape"); });
   window.addEventListener("pagehide", () => track("leave"));
 
   function init() {

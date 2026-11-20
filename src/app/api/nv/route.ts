@@ -5,7 +5,7 @@ import { pushEvents, storeReady } from "@/lib/naviStore";
   /navi/prototype). Anonymous: no IP is stored, only the country Vercel derives from it.
   Whitelisted fields, short strings, small batches, so junk can't grow the store much.
 */
-const EVENTS = new Set(["open", "intro_open", "intro_close", "screen_view", "tap", "scenario_pick", "harness", "harness_open", "leave"]);
+const EVENTS = new Set(["open", "intro_open", "intro_close", "screen_view", "tap", "scenario_pick", "harness", "harness_open", "leave", "task_complete", "feedback", "thanks_close"]);
 const STR = ["event", "sid", "screen", "scenario", "net", "sim_time", "plan", "label", "pick", "how"] as const;
 
 function clean(raw: unknown, country: string) {
@@ -18,6 +18,8 @@ function clean(raw: unknown, country: string) {
   if (typeof r.t === "number" && r.t >= 0 && r.t < 86400) e.t = Math.round(r.t);
   if (typeof r.battery === "number") e.battery = Math.round(r.battery);
   if (typeof r.disabled === "boolean") e.disabled = r.disabled;
+  if (typeof r.rating === "number" && r.rating >= 1 && r.rating <= 5) e.rating = Math.round(r.rating);
+  if (typeof r.comment === "string" && r.comment.trim()) e.comment = r.comment.trim().slice(0, 280);
   return e;
 }
 

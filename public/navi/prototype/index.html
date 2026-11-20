@@ -16,7 +16,7 @@
 
   <!-- ============ DEMO HARNESS (not product UI) ============ -->
   <aside class="harness" id="harness" aria-label="Demo controls">
-    <div class="hx-sheethead"><b>Test controls</b><button data-harness-close>Done</button></div>
+    <div class="hx-sheethead"><b>Test settings</b><button data-harness-close>Done</button></div>
     <div class="harness__note"><b>Demo controls, not part of the product.</b> Set the conditions Meera arrives in, then use the phone. Times are simulated.</div>
     <div data-ds-panel></div>
     <div class="hx">
@@ -44,10 +44,11 @@
       <button class="dsp-reset" style="margin:12px 0 0 16px;text-decoration:underline;background:none;border:0;cursor:pointer;font:inherit" data-intro-open>About this test</button>
     </div>
   </aside>
-  <!-- phones: the controls live behind a floating button, as a bottom sheet -->
-  <div class="hx-fabs">
-    <button class="hx-fab" data-intro-open aria-controls="intro" aria-label="Read the task again"><span aria-hidden="true">i</span></button>
-    <button class="hx-fab" data-harness-open aria-controls="harness" aria-label="Open test controls"><span aria-hidden="true">⚙</span></button>
+  <!-- phones: a thin labelled test bar above the app (not product UI) -->
+  <div class="testbar" role="toolbar" aria-label="Prototype test">
+    <span class="testbar__tag">Prototype test</span>
+    <button class="testbar__btn" data-intro-open aria-controls="intro">Your task</button>
+    <button class="testbar__btn testbar__btn--dark" data-harness-open aria-controls="harness">Test settings</button>
   </div>
   <div class="hx-backdrop" data-harness-close></div>
 
@@ -325,12 +326,37 @@
       <li><b>Your task:</b> use the Airbnb app<span class="only-wide"> on the right</span> to get all 4 of you into a bed for the night.</li>
       <li><b>Before you left,</b> Ramesh, the building's caretaker, said he'd be awake until 3 AM to let you in.</li>
       <li class="only-wide">The <b>panel on the left</b> isn't part of the app. It changes conditions (signal, battery, time) and opens other scenarios.</li>
-      <li class="only-phone">The two round buttons at the top aren't part of the app: <b>⚙</b> changes conditions (signal, battery, time) and opens other scenarios; <b>i</b> brings this back.</li>
+      <li class="only-phone">The thin black bar at the very top isn't part of the app. <b>Test settings</b> changes conditions (signal, battery, time) and opens other scenarios; <b>Your task</b> brings this back.</li>
     </ul>
     <p class="intro__fine">Think out loud if someone is with you. This test records which screens you visit and what you tap, anonymously: no names, no cookies, no personal data.</p>
     <button class="intro__btn" data-intro-start>Start at the gate</button>
   </div>
 </div>
+<!-- task complete: thank-you + one quick question (not product UI) -->
+<div class="intro" id="thanks" hidden role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+  <div class="intro__card thanks">
+    <div class="thanks__badge" aria-hidden="true">🎉</div>
+    <h2 class="intro__title" id="thanksTitle">You got your group to a bed</h2>
+    <p class="intro__lead" id="thanksLead"></p>
+    <div id="thanksAsk">
+      <p class="thanks__q">How easy was that?</p>
+      <div class="thanks__scale" role="radiogroup" aria-label="How easy was that, 1 very hard to 5 very easy">
+        <button role="radio" aria-checked="false" data-rate="1">1</button><button role="radio" aria-checked="false" data-rate="2">2</button><button role="radio" aria-checked="false" data-rate="3">3</button><button role="radio" aria-checked="false" data-rate="4">4</button><button role="radio" aria-checked="false" data-rate="5">5</button>
+      </div>
+      <div class="thanks__ends"><span>Very hard</span><span>Very easy</span></div>
+      <label class="thanks__q" for="thanksNote">What confused you, if anything? <span>(optional)</span></label>
+      <textarea id="thanksNote" maxlength="280" rows="3" placeholder="Please don't include names or phone numbers."></textarea>
+      <button class="intro__btn" data-thanks-send disabled>Send</button>
+      <button class="thanks__skip" data-thanks-close>Skip</button>
+    </div>
+    <div id="thanksDone" hidden>
+      <p class="intro__lead">Thanks, that really helps.</p>
+      <button class="intro__btn" data-thanks-more>Try another scenario</button>
+      <button class="thanks__skip" data-thanks-close>Close</button>
+    </div>
+  </div>
+</div>
+<canvas id="confetti" aria-hidden="true"></canvas>
 <script src="analytics.js"></script>
 <script src="app.js"></script>
 </body>
