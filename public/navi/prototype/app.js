@@ -60,7 +60,7 @@
 
   /* ---------- the fallback stays (chosen at boarding, saved on the phone) ---------- */
   const STAY_LIST = [
-    { name: "Lakeside Inn", walk: "10 min walk", addr: "100 Feet Rd, next to metro pillar 118", price: "from ₹2,200 for 4", tel: "080 4123 XXXX" },
+    { name: "Orchid Inn", walk: "10 min walk", addr: "100 Feet Rd, next to metro pillar 118", price: "from ₹2,200 for 4", tel: "080 4123 XXXX" },
     { name: "Stayz Residency", walk: "18 min walk", addr: "12th Main, HAL 2nd Stage", price: "from ₹2,600 for 4", tel: "080 4567 XXXX" }
   ];
   const staysHTML = () => STAY_LIST.map((s, i) => `<div class="person${i ? " mt-16" : ""}"><span class="stay__ic"><i data-lucide="building-2"></i></span><div class="person__body"><div class="step-row__t">${s.name} · ${s.walk}</div><div class="step-row__s">${s.addr} · 24-hour desk · ${s.price}</div></div><button class="c-iconbtn c-iconbtn--outline" aria-label="Call ${s.name}" data-needs="cell" data-toast="Calling ${s.name}'s 24-hour desk…"><i data-lucide="phone"></i></button></div>`).join("");
@@ -130,7 +130,7 @@
     } else if (layer === "night" && S.t0 === null) {
       if (S.late && !money) { title = "Ring G2 once. He may still open"; sub = "Your bus ran late. Ramesh didn't reply when we checked at 2:40 AM, and he's only awake until 3 AM."; }
       context = `<div class="c-callout mt-24"><span class="c-callout__icon"><i data-lucide="arrow-right-left"></i></span><div><div class="c-callout__title">If no one opens in 30 minutes, your night moves with you</div><div class="c-callout__text">${S.late
-        ? "Nobody chose the delay, so Airbnb moves your ₹1,500 to Lakeside Inn (10 min walk). You pay the rest, from ₹700. The extra (up to ₹1,500) for a bed and cab only applies during Ramesh's hours."
+        ? "Nobody chose the delay, so Airbnb moves your ₹1,500 to Orchid Inn (10 min walk). You pay the rest, from ₹700. The extra (up to ₹1,500) for a bed and cab only applies during Ramesh's hours."
         : "Your ₹1,500 goes to a hotel nearby that's open all night. We check the call log in the morning. The extra (up to ₹1,500) for a bed and cab only applies during Ramesh's hours."}</div></div></div>`;
     }
 
@@ -163,7 +163,7 @@
           : (full ? `<div class="step-row__t">You're covered tonight</div><div class="step-row__s">30 minutes and no one let you in</div>`
                   : `<div class="step-row__t">Your ₹1,500 night has moved</div><div class="step-row__s">30 minutes and no one let you in</div>`)}
         <div class="meter mt-12" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Time waited"><div class="meter__fill" style="width:${Math.max(pct, 3)}%"></div></div>
-        ${left > 0 ? `<p class="fine mt-12">You don't have to wait outside. We'll keep calling Ramesh, and your report is saved: Ramesh and Rohan can't cancel it. If Ramesh says he's on his way, we wait up to 15 more minutes.</p>` : ""}
+        ${left > 0 ? `<p class="fine mt-12">You don't have to wait outside. We'll keep calling Ramesh, and your report is saved: Ramesh and Rohan can't cancel it.</p>` : ""}
         ${left === 0 ? `<button class="c-btn c-btn--brand c-btn--block c-btn--lg mt-16" data-go="covered">See where to go</button>` : ""}
       </div>
       ${!canCall() ? `<div class="c-callout mt-12"><span class="c-callout__icon"><i data-lucide="wifi-off"></i></span><div><div class="c-callout__title">No signal. The timer still runs on this phone</div><div class="c-callout__text">Your location is saved here. If the 30 minutes end before you get signal, it still counts. We check your saved location in the morning, then pay you back.</div></div></div>` : ""}
@@ -185,18 +185,18 @@
     let hero;
     if (!noData() && !later) {
       hero = full
-        ? `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Lakeside Inn · you pay ₹0</div><div class="c-callout__text">Rooms for 4, ₹2,200. Your ₹1,500 night plus ₹700 extra are applied when you book. 10 min walk. Taking a cab? Keep the receipt: up to ₹3,000 in total with the cab, back by 6 PM tomorrow.</div>
-            <button class="c-btn c-btn--brand c-btn--block mt-12" data-toast="Opens Lakeside Inn with ₹2,200 applied: you pay ₹0">Book Lakeside Inn</button></div></div>`
-        : `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Lakeside Inn with your ₹1,500</div><div class="c-callout__text">Rooms for 4 from ₹2,200, 10 min walk. Your night's ₹1,500 is applied; you pay the rest, from ₹700.</div>
-            <button class="c-btn c-btn--brand c-btn--block mt-12" data-toast="Opens Lakeside Inn with ₹1,500 applied">Book Lakeside Inn</button></div></div>`;
+        ? `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Orchid Inn · you pay ₹0</div><div class="c-callout__text">Rooms for 4, ₹2,200. Your ₹1,500 night plus ₹700 extra are applied when you book. 10 min walk. Taking a cab? Keep the receipt: up to ₹3,000 in total with the cab, back by 6 PM on 21 Nov.</div>
+            <button class="c-btn c-btn--brand c-btn--block mt-12" data-toast="Opens Orchid Inn with ₹2,200 applied: you pay ₹0">Book Orchid Inn</button></div></div>`
+        : `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="check"></i></span><div><div class="c-callout__title">Book Orchid Inn with your ₹1,500</div><div class="c-callout__text">Rooms for 4 from ₹2,200, 10 min walk. Your night's ₹1,500 is applied; you pay the rest, from ₹700.</div>
+            <button class="c-btn c-btn--brand c-btn--block mt-12" data-toast="Opens Orchid Inn with ₹1,500 applied">Book Orchid Inn</button></div></div>`;
     } else {
-      hero = `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="footprints"></i></span><div><div class="c-callout__title">Walk to Lakeside Inn now · 10 min</div><div class="c-callout__text">${WALK} Ask the 24-hour desk for rooms for 4. Pay there and keep the receipts: ${repay} back by 6 PM tomorrow${later ? ", after we check your saved location" : ""}.</div>
-          ${canCall() ? `<button class="c-btn c-btn--primary c-btn--block mt-12" data-toast="Calling Lakeside Inn's 24-hour desk…"><i data-lucide="phone"></i>Call the desk first</button>` : ""}</div></div>`;
+      hero = `<div class="c-callout"><span class="c-callout__icon c-callout__icon--ok"><i data-lucide="footprints"></i></span><div><div class="c-callout__title">Walk to Orchid Inn now · 10 min</div><div class="c-callout__text">${WALK} Ask the 24-hour desk for rooms for 4. Pay there and keep the receipts: ${repay} back by 6 PM on 21 Nov${later ? ", after we check your saved location" : ""}.</div>
+          ${canCall() ? `<button class="c-btn c-btn--primary c-btn--block mt-12" data-toast="Calling Orchid Inn's 24-hour desk…"><i data-lucide="phone"></i>Call the desk first</button>` : ""}</div></div>`;
     }
     $("#coveredHero").innerHTML = hero;
     $("#coveredAmount").innerHTML = full
       ? `<div class="amount__row"><span>Tonight's stay, moved</span><span>₹1,500</span></div><div class="amount__row"><span>Extra for a bed and cab nearby</span><span>up to ₹1,500</span></div><div class="amount__row amount__row--total"><span>Covered tonight, in total with the cab</span><span>up to ₹3,000</span></div>`
-      : `<div class="amount__row"><span>Tonight's stay, moved</span><span>₹1,500</span></div><div class="amount__row"><span>Lakeside Inn, rooms for 4</span><span>from ₹2,200</span></div><div class="amount__row amount__row--total"><span>You pay the difference</span><span>from ₹700</span></div>`;
+      : `<div class="amount__row"><span>Tonight's stay, moved</span><span>₹1,500</span></div><div class="amount__row"><span>Orchid Inn, rooms for 4</span><span>from ₹2,200</span></div><div class="amount__row amount__row--total"><span>You pay the difference</span><span>from ₹700</span></div>`;
     $("#coveredStays").innerHTML = staysHTML();
     $("#coveredLog").innerHTML = logHTML();
   }
@@ -211,15 +211,15 @@
       ["in", "20:06", "Thanks. Meera will confirm it's you in her app."],
       ["in", "21:12", `Your Airbnb trip tonight: arrival details, check-in about 1:45 AM\nLakeview Residency, Flat 3B, Indiranagar. Opposite metro pillar 112\nGate: Block B, guard cabin on the right. Code 482913\n${S.pinShare === "yes"
         ? "Door: 3rd floor, 2nd door. PIN 4819# (Rohan shared it with your group)"
-        : "Door: 3rd floor, 2nd door. Ramesh opens it for you"}\nBackup: Ramesh (caretaker, flat G2). Reply CALL to ring him\nCarry ID for all 4. Your stay is paid: no one should ask you for money\nIf no one opens: Lakeside Inn, 24-hour desk, 10 min walk, 100 Feet Rd by metro pillar 118 (080 4123 XXXX). Stayz, 18 min (080 4567 XXXX)\nStuck? Reply HELP or open <a href="#" data-toast="Opens the light help page (needs data)">abnb.me/x7Q2</a>`],
+        : "Door: 3rd floor, 2nd door. Ramesh opens it for you"}\nBackup: Ramesh (caretaker, flat G2). Reply CALL to ring him\nCarry ID for all 4. Your stay is paid: no one should ask you for money\nIf no one opens: Orchid Inn, 24-hour desk, 10 min walk, 100 Feet Rd by metro pillar 118 (080 4123 XXXX). Stayz, 18 min (080 4567 XXXX)\nStuck? Reply HELP or open <a href="#" data-toast="Opens the light help page (needs data)">abnb.me/x7Q2</a>`],
       ["in", "21:12", `For the guard: <span lang="as" style="font-family:'Noto Sans Bengali',sans-serif">এওঁলোক ফ্লেট 3B ৰ অতিথি। অনুগ্ৰহ কৰি সোমাবলৈ দিয়ক।</span> Please ring G2 (Ramesh) on the intercom.`],
       ...(S.plan === "confirmed"
         ? [["in", "21:13", "Ramesh confirmed he'll be awake until 3 AM."],
-           ...(S.late ? [["in", "02:40", "Your bus is running late (now about 3:15 AM). We've asked Ramesh to stay up."], ["in", "02:50", "Ramesh hasn't replied, and he's only awake until 3 AM. When you arrive, ring G2 once. If no one opens in 30 minutes, Meera's Rs 1,500 goes to Lakeside Inn, 10 min walk from the gate. You pay the rest, from Rs 700. Once you've rung, you can walk there while the 30 minutes run."]] : []),
+           ...(S.late ? [["in", "02:40", "Your bus is running late (now about 3:15 AM). We've asked Ramesh to stay up."], ["in", "02:50", "Ramesh hasn't replied, and he's only awake until 3 AM. When you arrive, ring G2 once. If no one opens in 30 minutes, Meera's Rs 1,500 goes to Orchid Inn, 10 min walk from the gate. You pay the rest, from Rs 700. Once you've rung, you can walk there while the 30 minutes run."]] : []),
            ["in", fromMin(toMin(arrival()) - 15), "Ramesh didn't answer our wake-up call. We're calling host Rohan."]]
         : [["in", "21:15", "Ramesh hasn't confirmed. Meera chose to go ahead. If no one opens within 30 minutes of ringing G2, her Rs 1,500 goes to a hotel nearby that's open all night. You pay any difference. No extra money for a bed and cab."]]),
       ...(t0 ? [["out", t0, "HELP"], ["in", t0, `Got it. Keep ringing G2, or ask the guard to. Calls are logged. If no one lets you in by ${hm(at)}, ${full ? "you're all covered tonight: up to Rs 3,000 in total with the cab" : "Meera's Rs 1,500 goes to a hotel nearby that's open all night; you pay any difference"}. Reply CALL to ring Ramesh.`]] : []),
-      ...(covered ? [["in", at, `${full ? "You're all covered tonight: up to Rs 3,000 in total with the cab." : "Meera's Rs 1,500 night has moved."} Walk to Lakeside Inn: out of the gate, left, 800 m, next to metro pillar 118. Pay at the 24-hour desk and keep the receipt. ${full ? "Meera gets up to Rs 3,000 in total with the cab back by 6 PM tomorrow." : "Meera gets Rs 1,500 back by 6 PM tomorrow. You pay the rest, from Rs 700."}`]] : [])
+      ...(covered ? [["in", at, `${full ? "You're all covered tonight: up to Rs 3,000 in total with the cab." : "Meera's Rs 1,500 night has moved."} Walk to Orchid Inn: out of the gate, left, 800 m, next to metro pillar 118. Pay at the 24-hour desk and keep the receipt. ${full ? "Meera gets up to Rs 3,000 in total with the cab back by 6 PM on 21 Nov." : "Meera gets Rs 1,500 back by 6 PM on 21 Nov. You pay the rest, from Rs 700."}`]] : [])
     ];
     $("#smsThread").innerHTML = `<div class="c-chat__day">Today</div>` + msgs.map(([d, t, x]) =>
       `<span class="c-msg__meta ${d === "out" ? "c-msg__meta--out" : ""}">${hm(t)}</span><div class="sms ${d === "out" ? "sms--out" : ""}">${x}</div>`).join("") +
@@ -319,7 +319,7 @@
         DS.toast("Prototype: skipping ahead to 1:45 AM, at the building", $("#phone"));
       } else DS.toast(t.dataset.board === "cancel"
         ? "Cancelled. ₹1,500 back to your card. You have no stay booked for tonight."
-        : "Switched to Lakeside Inn (24-hour desk); your ₹1,500 went toward it. (Prototype: this path ends here.)", $("#phone"));
+        : "Switched to Orchid Inn (24-hour desk); your ₹1,500 went toward it. (Prototype: this path ends here.)", $("#phone"));
       render();
     }
     if (t.dataset.until) { S.until = t.dataset.until; render(); }

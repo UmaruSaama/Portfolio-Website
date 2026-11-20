@@ -295,7 +295,7 @@ export function NaviCase() {
               <thead><tr><th>Layer</th><th>Who gets it</th><th>Who pays</th><th>How fast</th></tr></thead>
               <tbody>
                 <tr><td className={cs.strong}>1 · Your night moves with you (₹1,500)</td><td>Anyone who rang G2, waited 30 min and wasn’t let in. Confirmed or not.</td><td>Host’s payout when the host owns access <Cite c="C350 C393" />. Airbnb for a late bus nobody chose.</td><td>Credit now. Paid at a desk: back by 6 PM next day*</td></tr>
-                <tr><td className={cs.strong}>2 · Covered tonight (top-up to ₹3,000)</td><td>Only when a confirmed Yes failed, inside the caretaker’s hours</td><td>Airbnb pays the gap</td><td>Applied at booking, or against the receipt</td></tr>
+                <tr><td className={cs.strong}>2 · Covered tonight (top-up to ₹3,000)</td><td>Only when a confirmed Yes failed, inside the caretaker’s hours. A Yes counts if it comes before the group rings, even after boarding.</td><td>Airbnb pays the gap</td><td>Applied at booking, or against the receipt</td></tr>
               </tbody>
             </table>
           </div>
@@ -336,7 +336,7 @@ export function NaviCase() {
           <SectionHead label="Where every night ends" title="No path ends with “you’re on your own”" />
           <div className={s.endings}>
             <div className={cs.card + " " + s.pad}><h4 className={cs.h3}>In the flat</h4><p className={cs.small}>PIN works · guard lets them in · lock fixed with a cable · switched to a 24h stay at boarding</p></div>
-            <div className={cs.card + " " + s.pad}><h4 className={cs.h3}>In a bed, paid by rule</h4><p className={cs.small}>Confirmed and no one opens · late bus · not confirmed and no one opens: the night moves; walk 10 min to Lakeside Inn</p></div>
+            <div className={cs.card + " " + s.pad}><h4 className={cs.h3}>In a bed, paid by rule</h4><p className={cs.small}>Confirmed and no one opens · late bus · not confirmed and no one opens: the night moves; walk 10 min to Orchid Inn</p></div>
             <div className={cs.card + " " + s.pad}><h4 className={cs.h3}>Honest limits</h4><p className={cs.small}>No working phone in the group · nobody can open and no self-entry · no affordable bed nearby · a lawful society ban · what happened at the gate can’t be proven</p></div>
           </div>
 
