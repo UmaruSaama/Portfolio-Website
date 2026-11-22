@@ -248,6 +248,56 @@ h1 { font: 900 120px/1 var(--display); margin: 0; letter-spacing: -2px; }
 .proto .ptitle { font: 800 18px/1.2 var(--display); font-stretch: 68%; letter-spacing: .5px; color: #FF8FA6; }
 /* condensed display type, after every font shorthand so it is not reset */
 h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
+
+/* ---- fluid mode: phones, tablets in portrait, narrow windows (set by fit() as html.fluid).
+   Wide screens keep the fixed 1600×900 stage, which is what a screen share shows. ---- */
+html.fluid, html.fluid body { height: auto; }
+html.fluid body { overflow-x: hidden; overflow-y: auto; }
+html.fluid .stage { position: relative; left: 0 !important; top: 0 !important; width: 100%; height: auto; min-height: 100vh; min-height: 100dvh; transform: none !important;
+  background: radial-gradient(ellipse 120% 40% at 50% 0%, var(--glow), var(--paper)); }
+html.fluid .bar { position: sticky; top: 0; left: 0; right: 0; padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px; gap: 12px; background: rgba(14, 11, 12, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+html.fluid .dots { flex: 1; min-width: 0; gap: 4px; }
+html.fluid .dots button { flex: 1; width: auto; min-width: 0; height: 6px; }
+html.fluid .nav button { height: 40px; min-width: 44px; font-size: 18px; }
+html.fluid .slide { position: relative; inset: auto; padding: 28px clamp(16px, 5vw, 48px) 48px; gap: 20px; justify-content: flex-start; }
+html.fluid .slide > *, html.fluid .slide > .row { margin-top: 0 !important; margin-bottom: 0 !important; }
+html.fluid .source { position: static; font-size: 13px; line-height: 1.45; order: 99; }
+html.fluid .flowbtn { position: static; align-self: flex-start; order: 98; font-size: 15px; }
+html.fluid .eyebrow { font-size: 13px; letter-spacing: 2px; }
+html.fluid .ps-h, html.fluid .big { font-size: clamp(28px, 7.4vw, 46px); line-height: 1.08; max-width: none; }
+html.fluid #problem { padding-top: 40px; gap: 22px; }
+html.fluid #problem .ps-h { font-size: clamp(34px, 9vw, 58px); }
+html.fluid #job .ps-h { font-size: clamp(22px, 5.4vw, 30px); }
+html.fluid .ps-body, html.fluid .ps-q { font-size: clamp(16px, 4.2vw, 20px); line-height: 1.55; max-width: 70ch; }
+html.fluid .ps-q { padding-left: 16px; }
+html.fluid .cap { font-size: 14px; }
+/* grids collapse to as many columns as fit */
+html.fluid .methods, html.fluid .trio, html.fluid .iter, html.fluid .nums { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; max-width: none; }
+html.fluid .ia { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
+html.fluid .m b, html.fluid .path .p b, html.fluid .way b, html.fluid .pc b, html.fluid .ic b { font-size: 22px; }
+html.fluid .m span, html.fluid .path .p span, html.fluid .way span, html.fluid .pc span, html.fluid .ic span, html.fluid .dl, html.fluid .itd { font-size: 16px; }
+html.fluid .m, html.fluid .path .p { padding: 18px; }
+html.fluid .path, html.fluid .hmw, html.fluid .ctx, html.fluid .dec, html.fluid .sys { flex-direction: column; align-items: stretch; gap: 16px; }
+html.fluid .arrowr { align-self: center; transform: rotate(90deg); font-size: 22px; }
+html.fluid .way { grid-template-columns: 1fr; gap: 4px; padding: 10px 0 10px 16px; }
+html.fluid .fact { width: auto; }
+html.fluid .fact b { font-size: 28px; } html.fluid .fact p:not(.eyebrow) { font-size: 16px; }
+html.fluid .pr, html.fluid .dimg, html.fluid .sysl { width: auto; }
+html.fluid .dimg, html.fluid .sysl { max-width: 560px; }
+html.fluid .hq p { font-size: 17px; }
+html.fluid .trio b { font-size: 26px; } html.fluid .trio span { font-size: 16px; }
+html.fluid .dt { grid-template-columns: 1fr; gap: 14px; }
+html.fluid .dimg .shot, html.fluid .sysl .shot { width: 100% !important; height: auto !important; max-height: 60vh; }
+html.fluid .it .shot { width: 100% !important; height: auto !important; aspect-ratio: 16 / 10; }
+html.fluid .devs { flex-wrap: wrap; align-items: flex-start; gap: 16px; }
+html.fluid .dv { flex: 1 1 140px; }
+html.fluid .dv .shot { width: 100% !important; height: auto !important; max-height: 340px; }
+html.fluid .tsample { font-size: 26px; }
+html.fluid .anat { grid-template-columns: 1fr; }
+/* the journey map keeps its columns and scrolls sideways */
+html.fluid #job { padding: 28px clamp(16px, 5vw, 48px) 48px; gap: 16px; }
+html.fluid #job .jm { grid-template-columns: 84px repeat(5, minmax(170px, 1fr)); overflow-x: auto; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
+html.fluid .notes { width: 100%; }
 </style>
 
 </head>
@@ -541,9 +591,22 @@ h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
   document.querySelectorAll('.flowbtn').forEach(b => b.onclick = () => openFlow(b.dataset.flow));
 
   const stage = document.getElementById('stage');
-  function fit() { const w = innerWidth, h = innerHeight, k = Math.min(w / 1600, h / 900);
+  // Wide screens: the fixed 1600×900 stage scaled to fit. Narrow or portrait screens: fluid, scrolling layout.
+  const root = document.documentElement;
+  function fit() { const w = innerWidth, h = innerHeight;
+    const fluid = w < 900 || w / h < 1.1;
+    root.classList.toggle('fluid', fluid);
+    if (fluid) { stage.style.transform = stage.style.left = stage.style.top = ''; return; }
+    const k = Math.min(w / 1600, h / 900);
     stage.style.transform = `scale(${k})`; stage.style.left = Math.max(0, (w - 1600 * k) / 2) + 'px'; stage.style.top = Math.max(0, (h - 900 * k) / 2) + 'px'; }
   addEventListener('resize', fit); fit();
+
+  // Swipe between slides in fluid mode (not inside the sideways-scrolling journey map).
+  let tx = null, ty = 0;
+  stage.addEventListener('touchstart', e => { if (!root.classList.contains('fluid') || e.target.closest('.jm')) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  stage.addEventListener('touchend', e => { if (tx === null) return; const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty; tx = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1)); }, { passive: true });
 
   const notes = document.getElementById('notes');
   const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
@@ -556,8 +619,10 @@ h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
   }
   function hydrate(j) { const s = slides[j]; if (!s) return; s.querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; im.removeAttribute('data-src'); }); }
   function go(i) {
+    const prev = cur;
     cur = Math.max(0, Math.min(ids.length - 1, i));
-    hydrate(cur); hydrate(cur + 1);
+    hydrate(cur); hydrate(cur + 1); hydrate(cur - 1);
+    if (cur !== prev && root.classList.contains('fluid')) scrollTo(0, 0);
     const isProto = cur === ids.length - 1;
     slides.forEach((s, j) => s.classList.toggle('on', j === cur));
     document.getElementById('proto').classList.toggle('on', isProto);
@@ -579,8 +644,31 @@ h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
     if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
   });
-  function fromHash() { const i = ids.indexOf(location.hash.slice(1)); go(i < 0 ? 0 : i); }
+  // The slide ids double as anchors, so the browser would scroll to the section on its own; in fluid mode keep each slide at its top.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const toTop = () => { if (root.classList.contains('fluid')) scrollTo(0, 0); };
+  function fromHash() { const i = ids.indexOf(location.hash.slice(1)); go(i < 0 ? 0 : i); toTop(); requestAnimationFrame(toTop); }
   addEventListener('hashchange', fromHash); fromHash();
+  addEventListener('load', toTop, { once: true });
+
+  // Background preloading, after the page has loaded and the browser is idle:
+  // 1) every slide's images, 2) both prototypes' files, 3) the Japanese word splitter's dictionary (~17 MB, from jsDelivr),
+  // which the full prototype otherwise downloads when it opens. Step 3 is skipped on data-saver or slow connections.
+  const conn = navigator.connection || {};
+  const lean = !!conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '');
+  const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 300));
+  async function warm(urls, opts) { for (const u of urls) { try { const r = await fetch(u, opts); await r.arrayBuffer(); } catch (e) { /* offline or blocked: the page still works */ } } }
+  const SAME = ['proto/index.html', 'proto/css/app.css', 'proto/css/screens.css', 'proto/js/content.js', 'proto/js/catalog.js', 'proto/js/app.js', 'proto/js/screens.js', 'v2/index.html']
+    .concat('abcdef'.split('').map(c => `v2/assets/cover-${c}.jpg`), [0, 1, 2, 3, 4].map(n => `v2/assets/still${n}.jpg`),
+      [...Array(9).keys()].map(n => `v2/assets/line${n}.mp3`), [...Array(14).keys()].map(n => `v2/assets/w${String(n).padStart(2, '0')}.mp3`));
+  const KURO = 'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/';
+  const DICT = ['build/kuromoji.js'].concat(['base', 'check', 'tid', 'tid_pos', 'tid_map', 'cc', 'unk', 'unk_pos', 'unk_map', 'unk_char', 'unk_compat', 'unk_invoke'].map(f => `dict/${f}.dat.gz`)).map(f => KURO + f);
+  function preload() { if (/[?&]nopreload\b/.test(location.search)) return; idle(async () => {
+    slides.forEach((_, j) => hydrate(j));
+    await warm(SAME);
+    if (!lean) await warm(DICT, { mode: 'cors', credentials: 'omit' });
+  }); }
+  if (document.readyState === 'complete') setTimeout(preload, 1200); else addEventListener('load', () => setTimeout(preload, 1200), { once: true });
 })();
 </script>
 
