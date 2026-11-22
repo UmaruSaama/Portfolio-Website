@@ -249,6 +249,20 @@ h1 { font: 900 120px/1 var(--display); margin: 0; letter-spacing: -2px; }
 /* condensed display type, after every font shorthand so it is not reset */
 h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
 
+/* ---- laptop pass: the stage stretches to the window's shape (fit() sets its size and --side),
+   so there are no black bands; content stays in a centred 1600-wide column. Smallest text raised for screen share. ---- */
+.stage .slide, .stage #job { padding-left: var(--side, 160px); padding-right: var(--side, 160px); }
+.bar { left: var(--side, 160px); right: var(--side, 160px); }
+.source { left: var(--side, 160px); right: var(--side, 160px); font-size: 16px; }
+.slide .source { right: calc(var(--side, 160px) + 310px); }
+.flowbtn { right: var(--side, 160px); }
+.cap { font-size: 18px; }
+.anat span { font-size: 16px; }
+.sw span { font-size: 14px; }
+#job .jd { font-size: 16px; } #job .jt { font-size: 17px; } #job .jn { font-size: 15px; } #job .jl { font-size: 13px; }
+#job .ji b { font-size: 16px; } #job .ji span { font-size: 14px; }
+.nav #fs { font-size: 16px; }
+
 /* ---- fluid mode: phones, tablets in portrait, narrow windows (set by fit() as html.fluid).
    Wide screens keep the fixed 1600×900 stage, which is what a screen share shows. ---- */
 html.fluid, html.fluid body { height: auto; }
@@ -305,7 +319,7 @@ html.fluid .notes { width: 100%; }
 <div class="stage" id="stage">
   <div class="bar">
     <div class="dots" id="dots" aria-label="Slides"></div>
-    <div class="nav"><button type="button" id="prev" aria-label="Previous slide">←</button><button type="button" id="next" aria-label="Next slide">→</button></div>
+    <div class="nav"><button type="button" id="prev" aria-label="Previous slide">←</button><button type="button" id="next" aria-label="Next slide">→</button><button type="button" id="fs" aria-label="Full screen (F)" title="Full screen (F)">⛶</button></div>
   </div>
 
   <section class="slide" id="problem">
@@ -596,9 +610,14 @@ html.fluid .notes { width: 100%; }
   function fit() { const w = innerWidth, h = innerHeight;
     const fluid = w < 900 || w / h < 1.1;
     root.classList.toggle('fluid', fluid);
-    if (fluid) { stage.style.transform = stage.style.left = stage.style.top = ''; return; }
-    const k = Math.min(w / 1600, h / 900);
-    stage.style.transform = `scale(${k})`; stage.style.left = Math.max(0, (w - 1600 * k) / 2) + 'px'; stage.style.top = Math.max(0, (h - 900 * k) / 2) + 'px'; }
+    if (fluid) { stage.style.transform = stage.style.left = stage.style.top = stage.style.width = stage.style.height = ''; stage.style.removeProperty('--side'); return; }
+    // Stage takes the window's shape (between 16:10 and 2.2:1): wider windows get a wider stage, taller ones a taller stage.
+    const a = Math.min(2.2, Math.max(1.6, w / h));
+    const SW = a >= 16 / 9 ? Math.round(900 * a) : 1600, SH = a >= 16 / 9 ? 900 : Math.round(1600 / a);
+    stage.style.width = SW + 'px'; stage.style.height = SH + 'px';
+    stage.style.setProperty('--side', Math.round(160 + (SW - 1600) / 2) + 'px');
+    const k = Math.min(w / SW, h / SH);
+    stage.style.transform = `scale(${k})`; stage.style.left = Math.max(0, (w - SW * k) / 2) + 'px'; stage.style.top = Math.max(0, (h - SH * k) / 2) + 'px'; }
   addEventListener('resize', fit); fit();
 
   // Swipe between slides in fluid mode (not inside the sideways-scrolling journey map).
@@ -637,8 +656,16 @@ html.fluid .notes { width: 100%; }
   document.getElementById('prev').onclick = () => go(cur - 1);
   document.getElementById('next').onclick = () => go(cur + 1);
   document.getElementById('protoBack').onclick = () => flowFrom >= 0 ? closeFlow() : go(ids.length - 2);
+  function toggleFs() {
+    const p = document.fullscreenElement ? document.exitFullscreen() : root.requestFullscreen && root.requestFullscreen({ navigationUI: 'hide' });
+    if (p && p.catch) p.catch(() => {});   // not allowed here (e.g. inside a frame): ignore
+  }
+  document.getElementById('fs').onclick = toggleFs;
+  document.addEventListener('fullscreenchange', () => document.getElementById('fs').textContent = document.fullscreenElement ? '✕' : '⛶');
   document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'n' || e.key === 'N') { notes.hidden = !notes.hidden; return; }
+    if (e.key === 'f' || e.key === 'F') { toggleFs(); return; }
     if (flowFrom >= 0) { if (e.key === 'Escape') closeFlow(); return; }
     if (cur === ids.length - 1) { if (e.key === 'Escape') go(ids.length - 2); return; }
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
