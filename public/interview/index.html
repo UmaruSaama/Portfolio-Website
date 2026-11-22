@@ -618,7 +618,7 @@ html.fluid .notes { width: 100%; }
 
 <!-- Talk timer: counts up to 20:00, then overtime (+m:ss), resets itself at 30:00. Never starts on its own.
      T start/pause · Shift+T reset · H hide/show. Click it to start/pause. Ticks under it: 5:00, 9:00, 13:15, 18:15 (interview script). -->
-<div class="tt" id="talkTimer" title="T start/pause · Shift+T reset · H hide"><span class="tt-t" id="ttTime">0:00</span><i class="tt-bar"><b id="ttFill"></b></i></div>
+<div class="tt" id="talkTimer" title="T or click: start/pause · Shift+T or double-click: reset · H hide"><span class="tt-t" id="ttTime">0:00</span><i class="tt-bar"><b id="ttFill"></b></i></div>
 
 <script src="notes.js"></script>
 <script>
@@ -744,6 +744,7 @@ html.fluid .notes { width: 100%; }
       elapsed, render
     };
     el.addEventListener('click', api.toggle);
+    el.addEventListener('dblclick', e => { e.preventDefault(); api.reset(); });   // the two clicks toggle twice first; reset wins
     setInterval(render, 250); render();
     window.__talkTimer = api;   // for testing only
     return api;
