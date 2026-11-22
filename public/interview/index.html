@@ -263,6 +263,21 @@ h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
 #job .ji b { font-size: 16px; } #job .ji span { font-size: 14px; }
 .nav #fs { font-size: 16px; }
 
+/* ---- script order: needs on the job slide, testing results, summary, backup marker ---- */
+.needs { display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
+.needs p { margin: 0; font: 400 17px/1.3 var(--text); color: var(--ink-soft); }
+.needs p b { color: var(--ink); font-weight: 700; margin-right: 6px; }
+.needs .eyebrow { font-size: 13px; }
+#job .jm { margin-top: 6px; }
+.tests { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: auto; margin-bottom: auto; }
+.tests > div { display: flex; flex-direction: column; gap: 6px; border-top: 1.5px solid var(--line); padding-top: 12px; }
+.tests .dl { font-size: 18px; }
+#sketches .iter { margin-top: 0; }
+#who .sample { font-size: 20px; margin-top: -6px; }
+#summary .trio { margin-top: auto; } #summary .ps-body { margin-bottom: auto; }
+.dots button.backup { opacity: .45; margin-left: 10px; }
+.stage #context .ps-body { margin-bottom: 0; } #context .ps-q { margin-bottom: auto; font-size: 21px; }
+
 /* ---- fluid mode: phones, tablets in portrait, narrow windows (set by fit() as html.fluid).
    Wide screens keep the fixed 1600×900 stage, which is what a screen share shows. ---- */
 html.fluid, html.fluid body { height: auto; }
@@ -286,7 +301,7 @@ html.fluid .ps-body, html.fluid .ps-q { font-size: clamp(16px, 4.2vw, 20px); lin
 html.fluid .ps-q { padding-left: 16px; }
 html.fluid .cap { font-size: 14px; }
 /* grids collapse to as many columns as fit */
-html.fluid .methods, html.fluid .trio, html.fluid .iter, html.fluid .nums { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; max-width: none; }
+html.fluid .methods, html.fluid .trio, html.fluid .iter, html.fluid .nums, html.fluid .tests { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; max-width: none; }
 html.fluid .ia { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
 html.fluid .m b, html.fluid .path .p b, html.fluid .way b, html.fluid .pc b, html.fluid .ic b { font-size: 22px; }
 html.fluid .m span, html.fluid .path .p span, html.fluid .way span, html.fluid .pc span, html.fluid .ic span, html.fluid .dl, html.fluid .itd { font-size: 16px; }
@@ -326,7 +341,6 @@ html.fluid .notes { width: 100%; }
     <p class="eyebrow">ImmerLingo · The problem</p>
     <h1 class="ps-h">Learners start Japanese for the anime they love, <em>then study it somewhere else.</em></h1>
     <p class="ps-body">Most of the people I surveyed already learn through <b>anime or TV</b>. But their apps teach words through <b>drills</b>, away from the scenes they care about, and the words don’t hold: <b>half of those who’d tried say they forget</b> what they learned.</p>
-    <p class="ps-q">So the question I set out to answer:<br><b>How might a beginner learn Japanese inside the show they love, and keep the words they meet there?</b></p>
   </section>
 
   <section class="slide" id="context">
@@ -347,19 +361,8 @@ html.fluid .notes { width: 100%; }
       </div>
     </div>
     <p class="ps-body">My bet: <b>learn before the scene, not only during it.</b> See where you stand, warm up on its words, check yourself, then watch. Or just watch, the way Migaku works.</p>
+    <p class="ps-q">So my question became:<br><b>How might a beginner learn Japanese inside the show they love, and keep the words they meet there?</b></p>
     <p class="source">Tools: my competitive audit and Migaku’s Chrome Web Store listing. Learner numbers: Japan Foundation, Survey on Japanese-Language Education Abroad (2024 survey).</p>
-  </section>
-
-  <section class="slide" id="research">
-    <p class="eyebrow">Research</p>
-    <h2 class="ps-h">I studied the learners, the evidence, <em>and myself</em>.</h2>
-    <div class="methods">
-      <div class="m"><p class="eyebrow">Community</p><b>YouTube, Discord, forums</b><span>How learners already teach each other, and where they give up.</span></div>
-      <div class="m"><p class="eyebrow">Evidence</p><b>Every mechanic, checked</b><span>Spaced review, recall, learning from captions: research first, then design.</span></div>
-      <div class="m"><p class="eyebrow">Learners</p><b>52 surveyed · 5 interviewed</b><span>38 had tried learning a language. Interviews across five cities.</span></div>
-      <div class="m me"><p class="eyebrow">Myself</p><b>3 months as the test subject</b><span>Tried every method, and went deepest where the evidence was strongest: <em>200 mature Anki words</em>.</span></div>
-    </div>
-    <p class="source">Survey: 6–15 June, self-selected. Interviews: Bangalore, Guwahati, Delhi, Pune, Gwalior.</p>
   </section>
 
   <section class="slide" id="who">
@@ -372,12 +375,14 @@ html.fluid .notes { width: 100%; }
       <div class="arrowr">→</div>
       <div class="p"><p class="eyebrow">The immersion learner</p><b>Anime plus Anki, every day</b><span>Served well today by Migaku and Language Reactor. Who the beginner wants to become.</span></div>
     </div>
+    <p class="ps-body sample">Sample: <b>52 surveyed · 5 interviewed</b></p>
     <p class="source">Duolingo with Crunchyroll, 2023 (company survey data). Immersion routines: Refold and r/Refold community posts. Plus my survey, 5 interviews and three months as a learner.</p>
   </section>
 
   <section class="slide" id="job">
     <p class="eyebrow">The job</p>
     <h2 class="ps-h">“When I watch a show I love, help me understand it, <em>without stopping the fun</em>, so I can feel I’m really learning.”</h2>
+    <div class="needs"><p class="eyebrow">They asked for</p><p><b>Tap a word to translate it</b> 27 of 38</p><p><b>Keep what I learn</b> 19 of 38 forget</p><p><b>Someone to practise with</b> 26 of 38</p></div>
     <div class="jm">
       <div></div>
       <div class="jh"><i>01</i> Starts</div><div class="jh"><i>02</i> Collects</div><div class="jh"><i>03</i> First episode</div><div class="jh"><i>04</i> Grinds</div><div class="jh"><i>05</i> Doubts</div>
@@ -406,7 +411,7 @@ html.fluid .notes { width: 100%; }
       <div class="ji"><b>Look up a word without leaving the scene</b><span>Player · word card</span></div>
       <div class="ji"><b>See your own gain: 76% → 84% by episode 3</b><span>Episode end · sample data</span></div>
     </div>
-    <p class="source">Composite journey from interviews, forum threads and my own three months; quotes are illustrative. Japan Foundation data, via Melbourne Asia Review.</p>
+    <p class="source">Needs: 38 who had tried learning a language, of 52 surveyed. Composite journey from interviews, forum threads and my own three months; quotes are illustrative. Japan Foundation data, via Melbourne Asia Review.</p>
   </section>
 
   <section class="slide" id="principles">
@@ -428,18 +433,6 @@ html.fluid .notes { width: 100%; }
     </div>
   </section>
 
-  <section class="slide" id="sketches">
-    <p class="eyebrow">Ideation</p>
-    <h2 class="ps-h">One screen, <em>four versions</em>.</h2>
-    <div class="iter">
-      <div class="it"><img class="shot" data-src="imgw/loop-sketches.webp" decoding="async" alt="iPad sketches: home is a progress dashboard with level progress and a study streak" style="width:100%;height:250px"><p class="itn">01 · Sketch</p><p class="itd">Home was a progress dashboard.</p></div>
-      <div class="it"><img class="shot" data-src="imgw/s1-proto.webp" decoding="async" alt="First coded prototype: What do you want to watch? A practice scene and one YouTube clip" style="width:100%;height:250px"><p class="itn">02 · First coded prototype</p><p class="itd">No test. A pause after every line with new words.</p></div>
-      <div class="it"><img class="shot" data-src="imgw/s3-onboard1.webp" decoding="async" alt="Onboarding prototype: six shows, each with how it sounds, and Start" style="width:100%;height:250px"><p class="itn">03 · Onboarding</p><p class="itd">Six shows rated by how they sound. Six words, then a short scene.</p></div>
-      <div class="it on"><img class="shot" data-src="imgw/s4-onboard2.webp" decoding="async" alt="Onboarding v2: the same six shows, built to match the hi-fi Figma frames" style="width:100%;height:250px"><p class="itn">04 · After 12 tests</p><p class="itd">A guided first run, and the review schedule shown as real dates.</p></div>
-    </div>
-    <p class="ps-body">Sketched by hand, wireframed and designed in Figma, then built and changed as clickable prototypes with Claude, so every version could be used, not just looked at.</p>
-  </section>
-
   <section class="slide" id="structure">
     <p class="eyebrow">Ideation</p>
     <h2 class="ps-h">Six sections, <em>one hub</em>.</h2>
@@ -454,17 +447,16 @@ html.fluid .notes { width: 100%; }
     <p class="ps-body">Every path leads into the player and back out. Desktop gets a sidebar, tablet a rail, phone a tab bar.</p>
   </section>
 
-
   <section class="slide" id="d-start">
     <button type="button" class="flowbtn" data-flow="d-start" aria-label="See it in the prototype: Pick a show, warm up, watch">See it in the prototype <span>→</span></button>
-    <p class="eyebrow">Decision 1 of 4</p>
+    <p class="eyebrow">Decision 1 of 4 · Before the scene</p>
     <h2 class="ps-h">Start from a show, and learn its words <em>before the scene.</em></h2>
     <div class="dec">
       <div class="dimg"><img class="shot" data-src="imgw/warm-card.webp" decoding="async" alt="Onboarding warm-up card: いらっしゃいませ, welcome (said to customers), the line it appears in, and Again, Hard, Good, Easy"><p class="cap">Warm-up: six words from the scene, graded like flashcards</p></div>
       <div class="dcol">
         <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>Placement quiz.</b> Asks people to judge themselves before they see anything.</p><p class="dl"><b>Self-rating.</b> Same problem, and two setup steps before any content.</p><p class="dl"><b>Course first.</b> Migaku’s order. The show arrives weeks later.</p></div>
-        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">32 of 52 already learn through anime or TV.</p><p class="dl">The Japanese-only rewatch was the moment testers liked most.</p><p class="dl">Knowing the words before a scene raises how much of it you follow.</p></div>
-        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">Content in the first minute. Placement comes from how you watch.</p></div><div><p class="eyebrow">Give up</p><p class="dl">No placement before the first scene, so the first scene must suit everyone. First-timers still needed guiding.</p></div></div>
+        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">32 of 52 already learn through anime or TV.</p><p class="dl">Knowing the words before a scene raises how much of it you follow.</p></div>
+        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">Content in the first minute. Placement comes from how you watch.</p></div><div><p class="eyebrow">Give up</p><p class="dl">No placement before the first scene, so the first scene must suit everyone.</p></div></div>
       </div>
     </div>
     <p class="source">Survey W3. Test findings #01, #04. Coverage: Hu &amp; Nation 2000; Durbahn et al. 2024.</p>
@@ -472,7 +464,7 @@ html.fluid .notes { width: 100%; }
 
   <section class="slide" id="d-pause">
     <button type="button" class="flowbtn" data-flow="d-pause" aria-label="See it in the prototype: The three learning modes">See it in the prototype <span>→</span></button>
-    <p class="eyebrow">Decision 2 of 4</p>
+    <p class="eyebrow">Decision 2 of 4 · During</p>
     <h2 class="ps-h">Pause after each line with new words, <em>with two other ways to watch.</em></h2>
     <div class="dec">
       <div class="dimg"><img class="shot" data-src="imgw/modes.webp" decoding="async" alt="Prototype settings: Pause on new words (default), Just watch, Primed listening"><p class="cap">Three modes are built; pausing is the default</p></div>
@@ -485,9 +477,24 @@ html.fluid .notes { width: 100%; }
     <p class="source">Adamczyk &amp; Bailey 2004; Mayer &amp; Chandler 2001; Biard, Cojean &amp; Jamet 2018. Test finding #03.</p>
   </section>
 
+  <section class="slide" id="d-ai">
+    <button type="button" class="flowbtn" data-flow="d-ai" aria-label="See it in the prototype: Explain this line, with its labels">See it in the prototype <span>→</span></button>
+    <p class="eyebrow">Decision 3 of 4 · During</p>
+    <h2 class="ps-h">Explain any line with AI, <em>and say what it is.</em></h2>
+    <div class="dec">
+      <div class="dimg"><img class="shot" data-src="imgw/ai-label.webp" decoding="async" alt="Prototype: Written for this prototype. In the product: an AI explanation, grammar checked against a reference dictionary. Report a mistake."><p class="cap">Prototype: the label says what is and isn’t real</p></div>
+      <div class="dcol">
+        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>No AI, written notes only.</b> Can’t cover every line of every show.</p><p class="dl"><b>AI with no label.</b> A beginner can’t tell a wrong answer from a right one.</p><p class="dl"><b>AI for single words only.</b> Leaves the real question: why it was said that way.</p></div>
+        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Say what the system can do, and how well. Let people correct it.</p><p class="dl">Show confidence in words, not a precise percentage.</p></div>
+        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">An explanation for any line, at scale.</p></div><div><p class="eyebrow">Give up</p><p class="dl">Certainty. A label shows a mistake only after the fact, so grammar gets high, medium or low confidence.</p></div></div>
+      </div>
+    </div>
+    <p class="source">Amershi et al. 2019, Guidelines for Human-AI Interaction (G1, G2, G9, G11); Google PAIR Guidebook.</p>
+  </section>
+
   <section class="slide" id="d-number">
     <button type="button" class="flowbtn" data-flow="d-number" aria-label="See it in the prototype: Shows rated by how much you’ll follow">See it in the prototype <span>→</span></button>
-    <p class="eyebrow">Decision 3 of 4</p>
+    <p class="eyebrow">Decision 4 of 4 · After</p>
     <h2 class="ps-h">Show how much you’ll follow, <em>as a known-word %.</em></h2>
     <div class="dec">
       <div class="dimg"><img class="shot" data-src="imgw/media-panel.webp" decoding="async" alt="Case-study panel: 82% of this show’s words, a stretch fit, with the bands shown"><p class="cap">Case-study design · sample learner</p></div>
@@ -500,19 +507,22 @@ html.fluid .notes { width: 100%; }
     <p class="source">Hu &amp; Nation 2000; Durbahn et al. 2024; Prichard 2008; Meara &amp; Buxton 1987.</p>
   </section>
 
-  <section class="slide" id="d-ai">
-    <button type="button" class="flowbtn" data-flow="d-ai" aria-label="See it in the prototype: Explain this line, with its labels">See it in the prototype <span>→</span></button>
-    <p class="eyebrow">Decision 4 of 4</p>
-    <h2 class="ps-h">Explain any line with AI, <em>and say what it is.</em></h2>
-    <div class="dec">
-      <div class="dimg"><img class="shot" data-src="imgw/ai-label.webp" decoding="async" alt="Prototype: Written for this prototype. In the product: an AI explanation, grammar checked against a reference dictionary. Report a mistake."><p class="cap">Prototype: the label says what is and isn’t real</p></div>
-      <div class="dcol">
-        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>No AI, written notes only.</b> Can’t cover every line of every show.</p><p class="dl"><b>AI with no label.</b> A beginner can’t tell a wrong answer from a right one.</p><p class="dl"><b>AI for single words only.</b> Leaves the real question: why it was said that way.</p></div>
-        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Say what the system can do, and how well. Let people correct it.</p><p class="dl">Show confidence in words, not a precise percentage.</p></div>
-        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">An explanation for any line, at scale.</p></div><div><p class="eyebrow">Give up</p><p class="dl">Certainty. A label shows a mistake only after the fact, so grammar gets high, medium or low confidence.</p></div></div>
-      </div>
+  <section class="slide" id="sketches">
+    <p class="eyebrow">Testing</p>
+    <h2 class="ps-h">What <em>12 tests</em> changed.</h2>
+    <div class="iter">
+      <div class="it"><img class="shot" data-src="imgw/loop-sketches.webp" decoding="async" alt="iPad sketches: home is a progress dashboard with level progress and a study streak" style="width:100%;height:190px"><p class="itn">01 · Sketch</p><p class="itd">Home was a progress dashboard.</p></div>
+      <div class="it"><img class="shot" data-src="imgw/s1-proto.webp" decoding="async" alt="First coded prototype: What do you want to watch? A practice scene and one YouTube clip" style="width:100%;height:190px"><p class="itn">02 · First coded prototype</p><p class="itd">No test. A pause after every line with new words.</p></div>
+      <div class="it"><img class="shot" data-src="imgw/s3-onboard1.webp" decoding="async" alt="Onboarding prototype: six shows, each with how it sounds, and Start" style="width:100%;height:190px"><p class="itn">03 · Onboarding · tested with 12</p><p class="itd">Six shows rated by how they sound. Six words, then a short scene.</p></div>
+      <div class="it on"><img class="shot" data-src="imgw/s4-onboard2.webp" decoding="async" alt="Onboarding v2: the same six shows, built to match the hi-fi Figma frames" style="width:100%;height:190px"><p class="itn">04 · After the tests · not yet tested</p><p class="itd">A guided first run, and the review schedule shown as real dates.</p></div>
     </div>
-    <p class="source">Amershi et al. 2019, Guidelines for Human-AI Interaction (G1, G2, G9, G11); Google PAIR Guidebook.</p>
+    <div class="tests">
+      <div><p class="eyebrow">Changed</p><p class="dl">First-timers got stuck at the same few points: a guided first run. Flashcards needed explaining: the review schedule as real dates.</p></div>
+      <div><p class="eyebrow">Held</p><p class="dl">Rewatching in Japanese only was the moment people liked most.</p></div>
+      <div><p class="eyebrow">Open</p><p class="dl">People wanted shows they’d already seen. That questions the known-word number.</p></div>
+      <div><p class="eyebrow">Limits</p><p class="dl">12 people, one session each, not recorded. Most didn’t know Japanese. Version 4 isn’t tested yet.</p></div>
+    </div>
+    <p class="source">Sketched by hand, wireframed and designed in Figma, then built and changed as clickable prototypes with Claude, so every version could be used, not just looked at.</p>
   </section>
 
   <section class="slide" id="system">
@@ -556,6 +566,29 @@ html.fluid .notes { width: 100%; }
     </div>
     <p class="ps-body">Next to check: screen readers on the subtitle layer, and testing with people who use them.</p>
   </section>
+
+  <section class="slide" id="summary">
+    <p class="eyebrow">Summary</p>
+    <h2 class="ps-h">Build the loop, <em>fix the number</em>, prove it over weeks.</h2>
+    <div class="trio">
+      <div class="h"><b>Build</b><span>The loop of watch, look up, save, review and rewatch, for a learner who reads hiragana.</span></div>
+      <div class="o"><b>Fix first</b><span>The known-word number, and what the AI does when it’s wrong.</span></div>
+      <div class="c"><b>Prove next</b><span>Learners over weeks. Do they come back on day 7 and day 30?</span></div>
+    </div>
+    <p class="ps-body">The same three habits I’d bring to AI analytics: <b>show what an answer is based on, how sure it is, and how to correct it.</b></p>
+  </section>
+
+  <section class="slide" id="research">
+    <p class="eyebrow">Backup · Research</p>
+    <h2 class="ps-h">I studied the learners, the evidence, <em>and myself</em>.</h2>
+    <div class="methods">
+      <div class="m"><p class="eyebrow">Community</p><b>YouTube, Discord, forums</b><span>How learners already teach each other, and where they give up.</span></div>
+      <div class="m"><p class="eyebrow">Evidence</p><b>Every mechanic, checked</b><span>Spaced review, recall, learning from captions: research first, then design.</span></div>
+      <div class="m"><p class="eyebrow">Learners</p><b>52 surveyed · 5 interviewed</b><span>38 had tried learning a language. Interviews across five cities.</span></div>
+      <div class="m me"><p class="eyebrow">Myself</p><b>3 months as the test subject</b><span>Tried every method, and went deepest where the evidence was strongest: <em>200 mature Anki words</em>.</span></div>
+    </div>
+    <p class="source">Survey: 6–15 June, self-selected. Interviews: Bangalore, Guwahati, Delhi, Pune, Gwalior.</p>
+  </section>
 </div>
 
 <section class="proto" id="proto" aria-label="Live prototype">
@@ -563,6 +596,7 @@ html.fluid .notes { width: 100%; }
     <button type="button" id="protoBack">← Slides</button>
     <span class="ptitle" id="ptitle"></span>
     <div class="routes" id="routes" aria-label="Prototype options"></div>
+    <button type="button" id="protoNext">Summary →</button>
   </div>
   <iframe id="protoFrame" title="ImmerLingo prototype" src="about:blank"></iframe>
 </section>
@@ -572,17 +606,23 @@ html.fluid .notes { width: 100%; }
 <script src="notes.js"></script>
 <script>
 (function () {
-  const slides = [...document.querySelectorAll('.slide')];
-  const ids = slides.map(s => s.id).concat('prototype');
+  // Talk order from the interview script: ... accessibility, live demo, summary, then the backup research slide.
+  const slideIds = [...document.querySelectorAll('.slide')].map(s => s.id);
+  const ids = slideIds.slice(0, slideIds.indexOf('summary')).concat('prototype', slideIds.slice(slideIds.indexOf('summary')));
+  const PROTO = ids.indexOf('prototype'), BACKUP = ids.indexOf('research');
+  const sec = i => (ids[i] && ids[i] !== 'prototype') ? document.getElementById(ids[i]) : null;
   const dots = document.getElementById('dots');
-  ids.forEach((id, i) => { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Slide ' + (i + 1)); b.onclick = () => go(i); dots.appendChild(b); });
+  ids.forEach((id, i) => { const b = document.createElement('button'); b.type = 'button';
+    b.setAttribute('aria-label', i === BACKUP ? 'Backup: research' : 'Slide ' + (i + 1)); if (i === BACKUP) b.classList.add('backup');
+    b.onclick = () => go(i); dots.appendChild(b); });
 
-  const routes = [['Warm-up', 'v2/index.html?flow=warm'], ['Onboarding', 'v2/index.html?flow=d1'], ['Full prototype', 'proto/index.html#/start']];
+  // The demo starts in the coded prototype (Practice scene), so it opens first.
+  const routes = [['Full prototype', 'proto/index.html#/start'], ['Warm-up', 'v2/index.html?flow=warm'], ['Onboarding', 'v2/index.html?flow=d1']];
   const FLOWS = {
     'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=d1'],
     'd-pause': ['Decision 2 · When to pause', 'proto/index.html?demo=modes#/play/practice'],
-    'd-number': ['Decision 3 · Known-word %', 'proto/index.html#/discover'],
-    'd-ai': ['Decision 4 · Explain this line', 'proto/index.html?demo=explain#/play/practice']
+    'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?demo=explain#/play/practice'],
+    'd-number': ['Decision 4 · Known-word %', 'proto/index.html#/discover']
   };
   const frame = document.getElementById('protoFrame'), rbox = document.getElementById('routes'), ptitle = document.getElementById('ptitle');
   let flowFrom = -1;   // slide a decision flow was opened from; -1 = the last slide's prototype
@@ -598,7 +638,7 @@ html.fluid .notes { width: 100%; }
   function openFlow(id) {
     flowFrom = cur; const [t, src] = FLOWS[id];
     ptitle.textContent = t; ptitle.hidden = false; rbox.hidden = true;
-    document.getElementById('protoBack').textContent = '← Back to slide';
+    document.getElementById('protoBack').textContent = '← Back to slide'; document.getElementById('protoNext').hidden = true;
     document.getElementById('proto').classList.add('on'); load(src);
   }
   function closeFlow() { flowFrom = -1; frame.src = 'about:blank'; go(cur); }
@@ -632,21 +672,24 @@ html.fluid .notes { width: 100%; }
   let cur = 0;
   function renderNotes() {
     const n = (window.NOTES || {})[ids[cur]]; if (!n) { notes.innerHTML = ''; return; }
-    notes.innerHTML = `<h4>${cur + 1}. ${esc(n.title)}</h4><p class="k">Say</p><ul>${n.say.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` +
-      (n.facts.length ? `<p class="k">Facts and sources</p><ul>${n.facts.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '') +
+    const list = (k, a) => a && a.length ? `<p class="k">${k}</p><ul>${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '';
+    notes.innerHTML = `<h4>${cur === BACKUP ? 'Backup' : cur + 1}. ${esc(n.title)}</h4>` +
+      (n.takeaway ? `<p class="k">Takeaway</p><p>${esc(n.takeaway)}</p>` : '') + list('Say', n.say) +
+      (n.bridge ? `<p class="k">→ Bridge</p><p>${esc(n.bridge)}</p>` : '') + list('Know, clashes, be ready', n.facts) +
       `<p class="hint">Only you see this when you aren’t sharing. Press N to hide. While presenting, open notes.html on another screen instead.</p>`;
   }
-  function hydrate(j) { const s = slides[j]; if (!s) return; s.querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; im.removeAttribute('data-src'); }); }
+  function hydrate(j) { const s = sec(j); if (!s) return; s.querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; im.removeAttribute('data-src'); }); }
   function go(i) {
     const prev = cur;
     cur = Math.max(0, Math.min(ids.length - 1, i));
     hydrate(cur); hydrate(cur + 1); hydrate(cur - 1);
     if (cur !== prev && root.classList.contains('fluid')) scrollTo(0, 0);
-    const isProto = cur === ids.length - 1;
-    slides.forEach((s, j) => s.classList.toggle('on', j === cur));
+    const isProto = cur === PROTO;
+    slideIds.forEach(id => document.getElementById(id).classList.toggle('on', id === ids[cur]));
     document.getElementById('proto').classList.toggle('on', isProto);
     flowFrom = -1; ptitle.hidden = !isProto; rbox.hidden = !isProto;
     document.getElementById('protoBack').textContent = '← Slides';
+    document.getElementById('protoNext').hidden = !isProto;
     if (isProto) { ptitle.textContent = 'Live prototype'; if (!rbox.querySelector('.on')) pickRoute(0); }
     else if (frame.src !== 'about:blank') frame.src = 'about:blank';
     [...dots.children].forEach((b, j) => b.classList.toggle('on', j === cur));
@@ -655,7 +698,8 @@ html.fluid .notes { width: 100%; }
   }
   document.getElementById('prev').onclick = () => go(cur - 1);
   document.getElementById('next').onclick = () => go(cur + 1);
-  document.getElementById('protoBack').onclick = () => flowFrom >= 0 ? closeFlow() : go(ids.length - 2);
+  document.getElementById('protoBack').onclick = () => flowFrom >= 0 ? closeFlow() : go(PROTO - 1);
+  document.getElementById('protoNext').onclick = () => go(PROTO + 1);
   function toggleFs() {
     const p = document.fullscreenElement ? document.exitFullscreen() : root.requestFullscreen && root.requestFullscreen({ navigationUI: 'hide' });
     if (p && p.catch) p.catch(() => {});   // not allowed here (e.g. inside a frame): ignore
@@ -667,7 +711,7 @@ html.fluid .notes { width: 100%; }
     if (e.key === 'n' || e.key === 'N') { notes.hidden = !notes.hidden; return; }
     if (e.key === 'f' || e.key === 'F') { toggleFs(); return; }
     if (flowFrom >= 0) { if (e.key === 'Escape') closeFlow(); return; }
-    if (cur === ids.length - 1) { if (e.key === 'Escape') go(ids.length - 2); return; }
+    if (cur === PROTO) { if (e.key === 'Escape' || e.key === 'ArrowLeft') go(PROTO - 1); if (e.key === 'ArrowRight' || e.key === 'PageDown') go(PROTO + 1); return; }
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
     if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
   });
@@ -691,7 +735,7 @@ html.fluid .notes { width: 100%; }
   const KURO = 'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/';
   const DICT = ['build/kuromoji.js'].concat(['base', 'check', 'tid', 'tid_pos', 'tid_map', 'cc', 'unk', 'unk_pos', 'unk_map', 'unk_char', 'unk_compat', 'unk_invoke'].map(f => `dict/${f}.dat.gz`)).map(f => KURO + f);
   function preload() { if (/[?&]nopreload\b/.test(location.search)) return; idle(async () => {
-    slides.forEach((_, j) => hydrate(j));
+    ids.forEach((_, j) => hydrate(j));
     await warm(SAME);
     if (!lean) await warm(DICT, { mode: 'cors', credentials: 'omit' });
   }); }
