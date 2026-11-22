@@ -113,6 +113,12 @@ html.fluid .tt { background: rgba(14, 11, 12, 0.85); border-radius: 6px; }   /* 
 .routes { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
 .proto iframe { flex: 1; width: 100%; border: 0; background: #262626; }
 .ctx { display: flex; gap: 48px; align-items: flex-start; }
+.logos { flex: 1; display: flex; gap: 56px; align-items: flex-start; justify-content: flex-start; min-width: 0; align-self: center; }
+.logo { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.logo img, .logo .lg-mask { width: 132px; height: 132px; border-radius: 50%; display: block; }
+.logo .lg-mask { background: var(--bg); position: relative; }
+.logo .lg-mask::after { content: ""; position: absolute; inset: 27%; background: #fff; -webkit-mask: var(--src) center/contain no-repeat; mask: var(--src) center/contain no-repeat; }
+.logo b { font: 800 26px/1.2 var(--display); font-stretch: 68%; color: var(--ink); text-align: center; }
 .ways { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .way { display: grid; grid-template-columns: 230px 1fr; gap: 24px; padding: 16px 0 16px 24px; border-left: 4px solid var(--line); }
 .way b { font: 800 30px/1.2 var(--display); font-stretch: 68%; color: var(--ink); }
@@ -188,7 +194,7 @@ html.fluid .tt { background: rgba(14, 11, 12, 0.85); border-radius: 6px; }   /* 
 .nums, .methods, .path, .qs, .trio, .ctx, .jm { margin-top: auto; margin-bottom: auto; }
 .slide > .row { margin-top: auto; margin-bottom: auto; }
 .loop { margin-top: auto; } .out { margin-bottom: auto; }
-#context .ctx { margin-bottom: 0; } #context .ps-body { margin-bottom: auto; }
+#context .ctx { margin-bottom: auto; }
 #summary .big { margin-top: auto; margin-bottom: auto; }
 .num b { font-size: 120px; } .num b small { font-size: 52px; } .num span { font-size: 24px; }
 .q { font-size: 40px; } .q i { font-size: 40px; width: 40px; } .qs { gap: 22px; }
@@ -226,8 +232,41 @@ html.fluid .tt { background: rgba(14, 11, 12, 0.85); border-radius: 6px; }   /* 
 .it.on .shot { border: 2.5px solid var(--accent); }
 #sketches .ps-body { margin-bottom: auto; }
 .dec { display: flex; gap: 48px; align-items: flex-start; margin-top: auto; margin-bottom: auto; }
-.dimg { width: 420px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
-.dimg .shot { width: 420px; height: auto; max-height: 470px; object-fit: contain; }
+/* responsive slide: device mock-ups, overlapping */
+.devstage { position: relative; width: 1279px; height: 530px; margin: auto 0; }
+.mk { position: absolute; }
+.mk .shot { display: block; width: 100%; height: auto; border: 0; background: #000; }
+.mk-tl, .mk-tp, .mk-m { background: #09090b; padding: 11px; border-radius: 30px; box-shadow: 0 0 0 1.5px #34343a, inset 0 0 0 1px #1f1f24, 0 34px 70px -18px rgba(0,0,0,.85); }
+.mk-tl .shot, .mk-tp .shot { border-radius: 19px; }
+.mk-m { padding: 8px; border-radius: 40px; }
+.mk-m .shot { border-radius: 32px; }
+.mk-d .shot { background: transparent; filter: drop-shadow(0 34px 40px rgba(0,0,0,.75)); }
+.mk-tl { left: 494px; top: 0; width: 494px; z-index: 1; }
+.mk-d  { left: 0; top: 88px; width: 590px; z-index: 3; }
+.mk-tp { left: 912px; top: 56px; width: 290px; z-index: 2; }
+.mk-m  { left: 1100px; top: 130px; width: 179px; z-index: 4; }
+html.fluid .devstage { width: auto; height: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: end; }
+html.fluid .mk { position: static; width: auto; }
+/* next-steps slide */
+.nextlist { list-style: none; counter-reset: n; margin: auto 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 64px; max-width: 1280px; }
+.nextlist li { counter-increment: n; display: grid; grid-template-columns: 56px 1fr; column-gap: 8px; border-top: 1.5px solid var(--line); padding-top: 16px; }
+.nextlist li::before { content: counter(n, decimal-leading-zero); grid-row: span 2; font: 800 30px/1.1 var(--display); color: var(--accent); }
+.nextlist b { font: 800 30px/1.2 var(--display); font-stretch: 68%; color: var(--ink); }
+.nextlist span { font: 400 22px/1.4 var(--text); color: var(--ink-soft); margin-top: 4px; }
+html.fluid .nextlist { grid-template-columns: 1fr; gap: 16px; }
+html.fluid .nextlist b { font-size: 22px; } html.fluid .nextlist span { font-size: 16px; }
+/* closing slide */
+#end { justify-content: center; align-items: center; }
+.cheers { margin: 0; font: 800 220px/1 var(--display); font-stretch: 68%; color: var(--ink); letter-spacing: -0.01em; }
+.cheers em { font-style: normal; color: var(--accent); }
+html.fluid .cheers { font-size: 96px; }
+/* testing slide: the key changes only */
+.tests.keys { display: block; margin-top: auto; margin-bottom: auto; max-width: 1100px; }
+.tests.keys .dl { font-size: 34px; line-height: 1.35; margin: 0 0 18px; color: var(--ink); }
+/* decision slides: the prototype screen alone, centred */
+.dec { justify-content: center; }
+.dimg { flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+.dimg .shot { width: auto; height: 520px; max-width: 1200px; object-fit: contain; }
 .dcol { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
 .db { display: flex; flex-direction: column; gap: 6px; }
 .dl { margin: 0; font: 400 19px/1.45 var(--text); color: var(--ink-soft); }
@@ -333,6 +372,7 @@ html.fluid .path, html.fluid .hmw, html.fluid .ctx, html.fluid .dec, html.fluid 
 html.fluid .arrowr { align-self: center; transform: rotate(90deg); font-size: 22px; }
 html.fluid .way { grid-template-columns: 1fr; gap: 4px; padding: 10px 0 10px 16px; }
 html.fluid .fact { width: auto; }
+html.fluid .logos { gap: 28px; } html.fluid .logo img, html.fluid .logo .lg-mask { width: 84px; height: 84px; } html.fluid .logo b { font-size: 18px; }
 html.fluid .fact b { font-size: 28px; } html.fluid .fact p:not(.eyebrow) { font-size: 16px; }
 html.fluid .pr, html.fluid .dimg, html.fluid .sysl { width: auto; }
 html.fluid .dimg, html.fluid .sysl { max-width: 560px; }
@@ -361,42 +401,30 @@ html.fluid .notes { width: 100%; }
   </div>
 
   <section class="slide" id="problem">
-    <p class="eyebrow">ImmerLingo · The problem</p>
-    <h1 class="ps-h">Learners start Japanese for the anime they love, <em>then study it somewhere else.</em></h1>
-    <p class="ps-body">Most of the people I surveyed already learn through <b>anime or TV</b>. But their apps teach words through <b>drills</b>, away from the scenes they care about, and the words don’t hold: <b>half of those who’d tried say they forget</b> what they learned.</p>
+    <h1 class="ps-h">The Problem</h1>
   </section>
 
   <section class="slide" id="context">
     <p class="eyebrow">The context</p>
     <h2 class="ps-h">How people learn Japanese from anime today</h2>
     <div class="ctx">
-      <div class="ways">
-        <div class="way"><b>Drill apps</b><span>Duolingo builds a strong daily habit, but <em>drills don’t carry over</em> to real shows.</span></div>
-        <div class="way"><b>Flashcards</b><span>Anki’s spaced review is powerful, but <em>every card is made by hand</em>.</span></div>
-        <div class="way"><b>Subtitle add-ons</b><span>Language Reactor looks words up on Netflix and YouTube, but <em>review happens somewhere else</em>.</span></div>
-        <div class="way"><b>Migaku</b><span>The closest to my idea: look-ups while you watch, cards and stats in one place. But <em>every look-up still breaks the scene</em>.</span></div>
-      </div>
-      <div class="fact">
-        <p class="eyebrow">Japanese learners</p>
-        <p><b>4,000,750</b> learning worldwide</p>
-        <p><b>61%</b> of schools name anime, manga and J-pop as a reason, the most cited</p>
-        <p><b>52,946</b> in India, up 47% in three years</p>
+      <div class="logos" aria-label="Tools learners use today">
+        <div class="logo"><i class="lg-mask" style="--bg:#58CC02;--src:url(imgw/logos/duolingo.svg)"></i><b>Duolingo</b></div>
+        <div class="logo"><i class="lg-mask" style="--bg:#80C2EE;--src:url(imgw/logos/anki.svg)"></i><b>Anki</b></div>
+        <div class="logo"><img src="imgw/logos/language-reactor.png" alt=""><b>Language Reactor</b></div>
       </div>
     </div>
-    <p class="ps-body">My bet: <b>learn before the scene, not only during it.</b> See where you stand, warm up on its words, check yourself, then watch. Or just watch, the way Migaku works.</p>
-    <p class="ps-q">So my question became:<br><b>How might a beginner learn Japanese inside the show they love, and keep the words they meet there?</b></p>
-    <p class="source">Tools: my competitive audit and Migaku’s Chrome Web Store listing. Learner numbers: Japan Foundation, Survey on Japanese-Language Education Abroad (2024 survey).</p>
   </section>
 
   <section class="slide" id="who">
     <p class="eyebrow">Who it’s for</p>
     <h2 class="ps-h">Three learners, one path. <em>I designed for the middle.</em></h2>
     <div class="path">
-      <div class="p"><p class="eyebrow">The fan</p><b>Watches with English subtitles</b><span>Learning is a wish, not a habit yet. For a quarter of Duolingo’s Japanese learners, fun like anime is the top reason.</span></div>
+      <div class="p"><p class="eyebrow">The fan</p><b>Watches with English subtitles</b></div>
       <div class="arrowr">→</div>
-      <div class="p on"><p class="eyebrow">The beginner · focus</p><b>Reads hiragana, wants to follow a show</b><span>Needs every reading and English close by. Most likely to give up after the first real episode.</span></div>
+      <div class="p on"><p class="eyebrow">The beginner · focus</p><b>Reads hiragana, wants to follow a show</b></div>
       <div class="arrowr">→</div>
-      <div class="p"><p class="eyebrow">The immersion learner</p><b>Anime plus Anki, every day</b><span>Served well today by Migaku and Language Reactor. Who the beginner wants to become.</span></div>
+      <div class="p"><p class="eyebrow">The immersion learner</p><b>Anime plus Anki, every day</b></div>
     </div>
     <p class="ps-body sample">Sample: <b>52 surveyed · 5 interviewed</b></p>
     <p class="source">Duolingo with Crunchyroll, 2023 (company survey data). Immersion routines: Refold and r/Refold community posts. Plus my survey, 5 interviews and three months as a learner.</p>
@@ -404,8 +432,6 @@ html.fluid .notes { width: 100%; }
 
   <section class="slide" id="job">
     <p class="eyebrow">The job</p>
-    <h2 class="ps-h">“When I watch a show I love, help me understand it, <em>without stopping the fun</em>, so I can feel I’m really learning.”</h2>
-    <div class="needs"><p class="eyebrow">They asked for</p><p><b>Tap a word to translate it</b> 27 of 38</p><p><b>Keep what I learn</b> 19 of 38 forget</p><p><b>Someone to practise with</b> 26 of 38</p></div>
     <div class="jm">
       <div></div>
       <div class="jh"><i>01</i> Starts</div><div class="jh"><i>02</i> Collects</div><div class="jh"><i>03</i> First episode</div><div class="jh"><i>04</i> Grinds</div><div class="jh"><i>05</i> Doubts</div>
@@ -456,32 +482,10 @@ html.fluid .notes { width: 100%; }
     </div>
   </section>
 
-  <section class="slide" id="structure">
-    <p class="eyebrow">Ideation</p>
-    <h2 class="ps-h">Six sections, <em>one hub</em>.</h2>
-    <div class="ia">
-      <div class="ic"><b>Today</b><span>Tonight’s plan · Continue · This week</span></div>
-      <div class="ic hub"><b>Library</b><span>Show &amp; episodes · Warm-up</span><em>Player</em><span class="kids">Word card · Card creator · Explain this line · Settings · Episode end</span></div>
-      <div class="ic"><b>Read</b><span>Novel reader · Manga reader</span></div>
-      <div class="ic"><b>Learn</b><span>Courses · Lessons · Reviews</span></div>
-      <div class="ic"><b>Dictionary</b><span>Search · Entry</span></div>
-      <div class="ic"><b>Stats</b><span>Progress by medium · Settings</span></div>
-    </div>
-    <p class="ps-body">Every path leads into the player and back out. Desktop gets a sidebar, tablet a rail, phone a tab bar.</p>
-  </section>
-
   <section class="slide" id="d-start">
     <button type="button" class="flowbtn" data-flow="d-start" aria-label="See it in the prototype: Pick a show, warm up, watch">See it in the prototype <span>→</span></button>
     <p class="eyebrow">Decision 1 of 4 · Before the scene</p>
     <h2 class="ps-h">Start from a show, and learn its words <em>before the scene.</em></h2>
-    <div class="dec">
-      <div class="dimg"><img class="shot" data-src="imgw/warm-card.webp" decoding="async" alt="Onboarding warm-up card: いらっしゃいませ, welcome (said to customers), the line it appears in, and Again, Hard, Good, Easy"><p class="cap">Warm-up: six words from the scene, graded like flashcards</p></div>
-      <div class="dcol">
-        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>Placement quiz.</b> Asks people to judge themselves before they see anything.</p><p class="dl"><b>Self-rating.</b> Same problem, and two setup steps before any content.</p><p class="dl"><b>Course first.</b> Migaku’s order. The show arrives weeks later.</p></div>
-        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">32 of 52 already learn through anime or TV.</p><p class="dl">Knowing the words before a scene raises how much of it you follow.</p></div>
-        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">Content in the first minute. Placement comes from how you watch.</p></div><div><p class="eyebrow">Give up</p><p class="dl">No placement before the first scene, so the first scene must suit everyone.</p></div></div>
-      </div>
-    </div>
     <p class="source">Survey W3. Test findings #01, #04. Coverage: Hu &amp; Nation 2000; Durbahn et al. 2024.</p>
   </section>
 
@@ -489,14 +493,6 @@ html.fluid .notes { width: 100%; }
     <button type="button" class="flowbtn" data-flow="d-pause" aria-label="See it in the prototype: The three learning modes">See it in the prototype <span>→</span></button>
     <p class="eyebrow">Decision 2 of 4 · During</p>
     <h2 class="ps-h">Pause after each line with new words, <em>with two other ways to watch.</em></h2>
-    <div class="dec">
-      <div class="dimg"><img class="shot" data-src="imgw/modes.webp" decoding="async" alt="Prototype settings: Pause on new words (default), Just watch, Primed listening"><p class="cap">Three modes are built; pausing is the default</p></div>
-      <div class="dcol">
-        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>Pause on every look-up.</b> Stops even more often.</p><p class="dl"><b>Never pause.</b> A beginner can’t read a line while it plays on.</p><p class="dl"><b>Dual subtitles.</b> Nothing to save, so nothing to review.</p></div>
-        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Stopping mid-task costs the most; stopping at a break costs less.</p><p class="dl">Learner-paced segments help beginners, and few pause on their own.</p><p class="dl">In testing, even hovering over a word broke the flow.</p></div>
-        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">Time to read at every line end, never mid-line.</p></div><div><p class="eyebrow">Give up</p><p class="dl">The feeling of just watching. So it’s a mode, and the default gets an A/B test.</p></div></div>
-      </div>
-    </div>
     <p class="source">Adamczyk &amp; Bailey 2004; Mayer &amp; Chandler 2001; Biard, Cojean &amp; Jamet 2018. Test finding #03.</p>
   </section>
 
@@ -504,14 +500,6 @@ html.fluid .notes { width: 100%; }
     <button type="button" class="flowbtn" data-flow="d-ai" aria-label="See it in the prototype: Explain this line, with its labels">See it in the prototype <span>→</span></button>
     <p class="eyebrow">Decision 3 of 4 · During</p>
     <h2 class="ps-h">Explain any line with AI, <em>and say what it is.</em></h2>
-    <div class="dec">
-      <div class="dimg"><img class="shot" data-src="imgw/ai-label.webp" decoding="async" alt="Prototype: Written for this prototype. In the product: an AI explanation, grammar checked against a reference dictionary. Report a mistake."><p class="cap">Prototype: the label says what is and isn’t real</p></div>
-      <div class="dcol">
-        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>No AI, written notes only.</b> Can’t cover every line of every show.</p><p class="dl"><b>AI with no label.</b> A beginner can’t tell a wrong answer from a right one.</p><p class="dl"><b>AI for single words only.</b> Leaves the real question: why it was said that way.</p></div>
-        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Say what the system can do, and how well. Let people correct it.</p><p class="dl">Show confidence in words, not a precise percentage.</p></div>
-        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">An explanation for any line, at scale.</p></div><div><p class="eyebrow">Give up</p><p class="dl">Certainty. A label shows a mistake only after the fact, so grammar gets high, medium or low confidence.</p></div></div>
-      </div>
-    </div>
     <p class="source">Amershi et al. 2019, Guidelines for Human-AI Interaction (G1, G2, G9, G11); Google PAIR Guidebook.</p>
   </section>
 
@@ -519,33 +507,15 @@ html.fluid .notes { width: 100%; }
     <button type="button" class="flowbtn" data-flow="d-number" aria-label="See it in the prototype: Shows rated by how much you’ll follow">See it in the prototype <span>→</span></button>
     <p class="eyebrow">Decision 4 of 4 · After</p>
     <h2 class="ps-h">Show how much you’ll follow, <em>as a known-word %.</em></h2>
-    <div class="dec">
-      <div class="dimg"><img class="shot" data-src="imgw/media-panel.webp" decoding="async" alt="Case-study panel: 82% of this show’s words, a stretch fit, with the bands shown"><p class="cap">Case-study design · sample learner</p></div>
-      <div class="dcol">
-        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>JLPT level tags.</b> An exam level, not this show.</p><p class="dl"><b>Difficulty stars.</b> Same for every learner.</p><p class="dl"><b>A quiz after each scene.</b> Turns watching back into a test.</p></div>
-        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Comfortable comprehension needs about 95–98% of words known.</p><p class="dl">But learners skip words they don’t know, and over-claim what they know.</p></div>
-        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">One number per show, before you press play, at no extra effort.</p></div><div><p class="eyebrow">Give up</p><p class="dl">Accuracy: it runs high. Next: a range, a “seen, not confirmed” state and a three-word check.</p></div></div>
-      </div>
-    </div>
     <p class="source">Hu &amp; Nation 2000; Durbahn et al. 2024; Prichard 2008; Meara &amp; Buxton 1987.</p>
   </section>
 
   <section class="slide" id="sketches">
     <p class="eyebrow">Testing</p>
     <h2 class="ps-h">What <em>12 tests</em> changed.</h2>
-    <div class="iter">
-      <div class="it"><img class="shot" data-src="imgw/loop-sketches.webp" decoding="async" alt="iPad sketches: home is a progress dashboard with level progress and a study streak" style="width:100%;height:190px"><p class="itn">01 · Sketch</p><p class="itd">Home was a progress dashboard.</p></div>
-      <div class="it"><img class="shot" data-src="imgw/s1-proto.webp" decoding="async" alt="First coded prototype: What do you want to watch? A practice scene and one YouTube clip" style="width:100%;height:190px"><p class="itn">02 · First coded prototype</p><p class="itd">No test. A pause after every line with new words.</p></div>
-      <div class="it"><img class="shot" data-src="imgw/s3-onboard1.webp" decoding="async" alt="Onboarding prototype: six shows, each with how it sounds, and Start" style="width:100%;height:190px"><p class="itn">03 · Onboarding · tested with 12</p><p class="itd">Six shows rated by how they sound. Six words, then a short scene.</p></div>
-      <div class="it on"><img class="shot" data-src="imgw/s4-onboard2.webp" decoding="async" alt="Onboarding v2: the same six shows, built to match the hi-fi Figma frames" style="width:100%;height:190px"><p class="itn">04 · After the tests · not yet tested</p><p class="itd">A guided first run, and the review schedule shown as real dates.</p></div>
+    <div class="tests keys">
+      <div><p class="eyebrow">Changed</p><p class="dl">First-timers got stuck at the same few points: a guided first run.</p><p class="dl">Flashcards needed explaining: the review schedule as real dates.</p></div>
     </div>
-    <div class="tests">
-      <div><p class="eyebrow">Changed</p><p class="dl">First-timers got stuck at the same few points: a guided first run. Flashcards needed explaining: the review schedule as real dates.</p></div>
-      <div><p class="eyebrow">Held</p><p class="dl">Rewatching in Japanese only was the moment people liked most.</p></div>
-      <div><p class="eyebrow">Open</p><p class="dl">People wanted shows they’d already seen. That questions the known-word number.</p></div>
-      <div><p class="eyebrow">Limits</p><p class="dl">12 people, one session each, not recorded. Most didn’t know Japanese. Version 4 isn’t tested yet.</p></div>
-    </div>
-    <p class="source">Sketched by hand, wireframed and designed in Figma, then built and changed as clickable prototypes with Claude, so every version could be used, not just looked at.</p>
   </section>
 
   <section class="slide" id="system">
@@ -554,7 +524,6 @@ html.fluid .notes { width: 100%; }
     <div class="sys">
       <div class="sysl">
         <img class="shot" data-src="imgw/word-card-m.webp" decoding="async" alt="Word card: こんばんは with audio and a New label, tags Greeting and JLPT N5, the meaning, the meaning in this line, Save card and Explain, Mark as known and Ignore word" style="width:400px;height:309px">
-        <div class="anat"><span><b>1</b> Word, reading, audio, status</span><span><b>2</b> Where it’s common, JLPT level</span><span><b>3</b> Meanings</span><span><b>4</b> Meaning in this line</span><span><b>5</b> Save, explain</span><span><b>6</b> Known, ignore</span></div>
       </div>
       <div class="sysr">
         <div class="sb"><p class="eyebrow">Type</p><p class="tsample"><span lang="ja">こんばんは</span> Good evening</p><p class="dl">Noto Sans with Noto Sans JP: Latin and Japanese stay clear at small subtitle sizes.</p></div>
@@ -570,24 +539,17 @@ html.fluid .notes { width: 100%; }
   <section class="slide" id="responsive">
     <p class="eyebrow">Responsive and adaptation</p>
     <h2 class="ps-h">Same scene, <em>four screens</em>.</h2>
-    <div class="devs">
-      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-d.webp" decoding="async" alt="Desktop: hovering a word opens its card over the subtitle" style="width:416px;height:310px"><p class="itn">Desktop</p><p class="itd">Hover a word. The card opens over the line.</p></div>
-      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-tl.webp" decoding="async" alt="Tablet landscape: the word card docks below the video, transcript on the right" style="width:444px;height:310px"><p class="itn">Tablet, landscape</p><p class="itd">Tap. The card docks below; transcript beside.</p></div>
-      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-tp.webp" decoding="async" alt="Tablet portrait: card below the video, transcript below that" style="width:216px;height:310px"><p class="itn">Tablet, portrait</p><p class="itd">Transcript moves under.</p></div>
-      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-m.webp" decoding="async" alt="Phone: the word card becomes a sheet under the player" style="width:143px;height:310px"><p class="itn">Phone</p><p class="itd">A sheet under the player.</p></div>
+    <div class="devstage" role="img" aria-label="The same scene with a word card open on desktop, tablet landscape, tablet portrait and phone">
+      <div class="mk mk-tl"><img class="shot" data-src="imgw/dev-tablet-l.webp" decoding="async" alt=""></div>
+      <div class="mk mk-d"><img class="shot" data-src="imgw/dev-desktop.webp" decoding="async" alt=""></div>
+      <div class="mk mk-tp"><img class="shot" data-src="imgw/dev-tablet-p.webp" decoding="async" alt=""></div>
+      <div class="mk mk-m"><img class="shot" data-src="imgw/dev-phone.webp" decoding="async" alt=""></div>
     </div>
-    <p class="ps-body">Navigation follows the screen: a sidebar of six, a rail of six icons, then a tab bar of five, where Library and Read merge and Stats and Settings become “You”.</p>
   </section>
 
   <section class="slide" id="a11y">
     <p class="eyebrow">Accessibility</p>
     <h2 class="ps-h">Readable for everyone, <em>and honest about the gaps</em>.</h2>
-    <div class="trio a11">
-      <div class="h"><b>Contrast</b><span>Body text 15.5:1 in dark, 16.4:1 in light. All six level colours pass AA for text. The accent fill is 3.7:1 in dark, so it’s for shapes, never text.</span></div>
-      <div class="c"><b>Not colour alone</b><span>A new word has an underline, a word you’re practising a flame, a known word no line. The card also names the status.</span></div>
-      <div class="o"><b>More than one way in</b><span>Every hover has a tap. Keys: Alt+T look up, R replay, A and D for lines, S save. Slow to 0.75×, readings over kanji, reduced motion respected.</span></div>
-    </div>
-    <p class="ps-body">Next to check: screen readers on the subtitle layer, and testing with people who use them.</p>
   </section>
 
   <section class="slide" id="demo">
@@ -601,14 +563,20 @@ html.fluid .notes { width: 100%; }
     </div>
   </section>
   <section class="slide" id="summary">
-    <p class="eyebrow">Summary</p>
-    <h2 class="ps-h">Build the loop, <em>fix the number</em>, prove it over weeks.</h2>
-    <div class="trio">
-      <div class="h"><b>Build</b><span>The loop of watch, look up, save, review and rewatch, for a learner who reads hiragana.</span></div>
-      <div class="o"><b>Fix first</b><span>The known-word number, and what the AI does when it’s wrong.</span></div>
-      <div class="c"><b>Prove next</b><span>Learners over weeks. Do they come back on day 7 and day 30?</span></div>
-    </div>
-    <p class="ps-body">The same three habits I’d bring to AI analytics: <b>show what an answer is based on, how sure it is, and how to correct it.</b></p>
+    <p class="eyebrow">Next</p>
+    <h2 class="ps-h">What I’ll do <em>next</em>.</h2>
+    <ol class="nextlist">
+      <li><b>Fix first</b><span>The known-word number, and what the AI does when it’s wrong.</span></li>
+      <li><b>Known-word %</b><span>A range, a “seen, not confirmed” state and a three-word check.</span></li>
+      <li><b>Test version 4</b><span>Version 4 isn’t tested yet.</span></li>
+      <li><b>Learning modes</b><span>The default gets an A/B test.</span></li>
+      <li><b>Accessibility</b><span>Screen readers on the subtitle layer, and testing with people who use them.</span></li>
+      <li><b>Prove next</b><span>Learners over weeks. Do they come back on day 7 and day 30?</span></li>
+    </ol>
+  </section>
+
+  <section class="slide" id="end">
+    <h2 class="cheers">Cheers<em>.</em></h2>
   </section>
 
   <section class="slide" id="research">
@@ -630,7 +598,7 @@ html.fluid .notes { width: 100%; }
     <span class="ptitle" id="ptitle"></span>
   </div>
   <iframe id="protoFrame" title="ImmerLingo prototype" src="about:blank"></iframe>
-</section>
+  </section>
 
 <aside class="notes" id="notes" hidden aria-label="Speaker notes"></aside>
 
@@ -653,10 +621,10 @@ html.fluid .notes { width: 100%; }
 
   // The full prototype is no longer embedded (22 Nov). Each decision opens one view; the demo slide opens all four in order.
   const FLOWS = {
-    'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=d1'],
-    'd-pause': ['Decision 2 · When to pause', 'proto/index.html?demo=modes#/play/practice'],
-    'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?demo=explain#/play/practice'],
-    'd-number': ['Decision 4 · Known-word %', 'proto/index.html#/discover']
+    'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=warm'],
+    'd-pause': ['Decision 2 · When to pause', 'proto/index.html?v=8&tour=d2&demo=modes#/play/practice'],
+    'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?v=8&tour=d3&demo=explain#/play/practice'],
+    'd-number': ['Decision 4 · Known-word %', 'proto/index.html?v=8&tour=d4#/discover']
   };
   const frame = document.getElementById('protoFrame'), ptitle = document.getElementById('ptitle');
   let flowFrom = -1, opener = null;   // slide and button a prototype view was opened from; -1 = none open
@@ -799,7 +767,7 @@ html.fluid .notes { width: 100%; }
   const lean = !!conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '');
   const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 300));
   async function warm(urls, opts) { for (const u of urls) { try { const r = await fetch(u, opts); await r.arrayBuffer(); } catch (e) { /* offline or blocked: the page still works */ } } }
-  const SAME = ['proto/index.html', 'proto/css/app.css', 'proto/css/screens.css', 'proto/js/content.js', 'proto/js/catalog.js', 'proto/js/app.js', 'proto/js/screens.js', 'v2/index.html']
+  const SAME = ['proto/index.html?v=8', 'proto/css/app.css?v=8', 'proto/css/screens.css?v=8', 'proto/js/content.js?v=8', 'proto/js/catalog.js?v=8', 'proto/js/app.js?v=8', 'proto/js/screens.js?v=8', 'proto/js/guide.js?v=8', 'v2/index.html']
     .concat('abcdef'.split('').map(c => `v2/assets/cover-${c}.jpg`), [0, 1, 2, 3, 4].map(n => `v2/assets/still${n}.jpg`),
       [...Array(9).keys()].map(n => `v2/assets/line${n}.mp3`), [...Array(14).keys()].map(n => `v2/assets/w${String(n).padStart(2, '0')}.mp3`));
   const KURO = 'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/';

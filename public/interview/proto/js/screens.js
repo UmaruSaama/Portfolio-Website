@@ -24,6 +24,7 @@ function addCard(c) {
 
 /* ============================== small helpers ============================== */
 const IC = {
+  pause: '<path d="M8 5v14M16 5v14"/>',
   home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
   compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
   book: '<path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3zM21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/>',
@@ -286,7 +287,7 @@ function scrDiscover() {
 let detailSeason = 1, detailEp = 3;
 function scrShow(id) {
   const s = showById(id) || showById('kissaten'), full = !!s.words;
-  const w = s.words || { known: Math.round(s.fit * 22), learning: 90, unknown: Math.round((100 - s.fit) * 22), ignored: 10 };
+  const w = s.words || (() => { const counted = 2290, known = Math.round(counted * s.fit / 100), learning = 90; return { known, learning, unknown: counted - known - learning, ignored: 10 }; })();
   const total = w.known + w.learning + w.unknown + w.ignored, sen = s.sentences || { all: Math.round(s.fit / 2), one: 30, more: 100 - Math.round(s.fit / 2) - 30 };
   const epFit = s.epFit || Array.from({ length: Math.min(12, s.eps) }, (_, i) => Math.max(70, Math.min(95, s.fit + ((i * 7) % 9) - 4)));
   const eps = detailSeason === 1 ? epFit : epFit.map(v => Math.max(70, v - 4));

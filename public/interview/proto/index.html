@@ -7,8 +7,8 @@
 <!-- ImmerLingo prototype. Run with "Start ImmerLingo.bat" or `npm start` — see README.md. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css">
-<link rel="stylesheet" href="css/screens.css">
+<link rel="stylesheet" href="css/app.css?v=8">
+<link rel="stylesheet" href="css/screens.css?v=8">
 </head>
 <body>
 
@@ -24,23 +24,23 @@
 
 <!-- ======================= PLAYER ======================= -->
 <section id="player" class="hidden">
-  <div class="appbar"><button class="btn ghost small" id="backLib">← Library</button><div class="spacer"></div><span class="small subtle">ImmerLingo player</span></div>
+  <div class="appbar"><button class="btn ghost small" id="backLib"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Library</button><div class="spacer"></div><span class="brand"><i></i>ImmerLingo</span></div>
   <div class="toolbar">
     <span class="learning-chip"><span id="libChip">0 known · 0 new</span></span>
     <span id="pFit"></span>
     <span class="small subtle" id="pTitle"></span>
     <div class="spacer"></div>
-    <button class="btn ghost small" id="modeBtn" title="Learning mode">Mode: <span id="modeLbl">Pause on new words</span> ▾</button>
+    <button class="btn ghost small" id="modeBtn" title="Learning mode"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><span id="modeLbl">Pause on new words</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
     <span class="helpbox" id="helpBox" title="How much help you see"><button class="btn ghost small" id="lessHelp" aria-label="Less help">−</button><b id="helpLabel"></b><button class="btn ghost small" id="moreHelp" aria-label="More help">+</button></span>
-    <button class="btn ghost small" id="dictBtn">Dictionary</button>
-    <button class="btn ghost small" id="settingsBtn">Settings</button>
-    <button class="btn ghost small" id="howBtn">Shortcuts</button>
-    <button class="btn small" id="endBtn">Stop</button>
+    <button class="btn ghost small icon" id="dictBtn" title="Dictionary" aria-label="Dictionary"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3zM21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg></button>
+    <button class="btn ghost small icon" id="settingsBtn" title="Settings" aria-label="Settings"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+    <button class="btn ghost small icon" id="howBtn" title="Shortcuts" aria-label="Shortcuts"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></button>
+    <button class="btn small icon" id="endBtn" title="Stop" aria-label="Stop"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="pbody" id="pbody">
     <div class="stage" id="stage">
       <div id="yt"></div>
-      <div id="demoScreen" class="hidden">Practice scene — lines are spoken by your computer’s Japanese voice.</div>
+      <div id="demoScreen" class="hidden" role="img" aria-label="Practice scene: a small café at night"></div>
       <div class="clickcatch" id="clickcatch"></div>
       <div class="scrim"></div>
       <div class="cover-band" id="coverBand"></div>
@@ -48,7 +48,7 @@
       <div class="subs" id="subs">
         <div class="jp" id="jpLine" lang="ja"></div><div class="en hidden" id="enLine"></div>
         <button class="btn ghost small show-en hidden" id="showEn">Show English <span class="kbd">E</span></button>
-        <div class="turn hidden" id="turn"><span class="small" id="turnText"></span><button class="btn ghost small" id="turnReplay">🔊 Hear it again <span class="kbd">R</span></button><button class="btn primary small" id="turnGo">Continue ▷ <span class="kbd" style="color:#fff;border-color:rgba(255,255,255,.5)">Space</span></button></div>
+        <div class="turn hidden" id="turn"><span class="small" id="turnText"></span><button class="btn ghost small icon" id="turnReplay" title="Hear it again (R)" aria-label="Hear it again"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><button class="btn primary small" id="turnGo">Continue ▷ <span class="kbd" style="color:#fff;border-color:rgba(255,255,255,.5)">Space</span></button></div>
       </div>
       <div class="popup hidden" id="popup" role="dialog" aria-label="Word"></div>
       <div class="checkin hidden" id="checkin"></div>
@@ -66,9 +66,9 @@
     <div class="track" id="track"><i id="trackFill"></i></div>
     <span class="small subtle" id="timeLbl">0:00 / 0:00</span>
     <button class="btn ghost small" id="speedBtn" title="Playback speed">1×</button>
-    <button class="btn ghost small" id="prevLine">← Prev line <span class="kbd">A</span></button>
-    <button class="btn ghost small" id="replayLine">🔊 Replay <span class="kbd">R</span></button>
-    <button class="btn ghost small" id="nextLine">Next line → <span class="kbd">D</span></button>
+    <button class="btn ghost small icon" id="prevLine" title="Previous line (A)" aria-label="Previous line"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6l-8 6 8 6z"/><path d="M6 6v12"/></svg></button>
+    <button class="btn ghost small icon" id="replayLine" title="Replay line (R)" aria-label="Replay line"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
+    <button class="btn ghost small icon" id="nextLine" title="Next line (D)" aria-label="Next line"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l8 6-8 6z"/><path d="M18 6v12"/></svg></button>
   </div>
 </section>
 
@@ -155,10 +155,11 @@
 <script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
 <script>/* portfolio launcher: decision demos skip the first-run tips (not part of the product) */
 (function(){if(!new URLSearchParams(location.search).get("demo"))return;try{localStorage.setItem("il3.tips",JSON.stringify({turn:1,tap:1,popup:1,continued:1,help:1,status:1}))}catch(e){}})();</script>
-<script src="js/content.js"></script>
-<script src="js/catalog.js"></script>
-<script src="js/app.js"></script>
-<script src="js/screens.js"></script>
+<script src="js/content.js?v=8"></script>
+<script src="js/catalog.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
+<script src="js/screens.js?v=8"></script>
+<script src="js/guide.js?v=8"></script>
 <script>initTokenizer();handleRoute();</script>
 <script>/* portfolio launcher demo hooks: open existing panels only (not part of the product) */
 (function(){var d=new URLSearchParams(location.search).get("demo");if(!d)return;

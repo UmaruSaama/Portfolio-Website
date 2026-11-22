@@ -130,8 +130,11 @@ function tokEl(t,lvl,lineIdx){
   return el;}
 let curLine=-1,enRevealed=new Set();
 function englishFor(i){if(help>=2)return true;if(enRevealed.has(i))return true;if(help===1)return content(data.lines[i].jp).filter(t=>{const s=stOf(t.base);return s==='unknown'||s==='learning'}).length>=2;return false;}
+/* portfolio visual pass: the practice scene shows the café stills from the onboarding build, one per beat */
+const STILL=[0,0,1,1,2,2,3,4,4,4];
+function setStill(i){const d=$('demoScreen');if(!d||d.classList.contains('hidden'))return;d.style.backgroundImage='url(../v2/assets/still'+(STILL[Math.max(0,Math.min(i,STILL.length-1))]||0)+'.jpg)';}
 function renderLine(i,force){
-  if(i===curLine&&!force)return;if(i!==curLine)tappedThisLine=new Set();curLine=i;const jp=$('jpLine'),en=$('enLine'),se=$('showEn');jp.innerHTML='';en.classList.add('hidden');se.classList.add('hidden');
+  if(i===curLine&&!force)return;if(i!==curLine)tappedThisLine=new Set();curLine=i;setStill(i);const jp=$('jpLine'),en=$('enLine'),se=$('showEn');jp.innerHTML='';en.classList.add('hidden');se.classList.add('hidden');
   if(i<0)return;const L=data.lines[i];
   if(!sig.seen.has(i)){sig.seen.add(i);for(const t of content(L.jp)){const w=words[t.base]||(words[t.base]={st:'unknown',seen:0});w.seen=(w.seen||0)+1;if(!w.ctx)w.ctx={jp:plain(L.jp),en:L.en||'',title:data.title};}save();updateLibChip();}
   for(const t of tokenize(L.jp))jp.appendChild(tokEl(t,help,i));
@@ -218,17 +221,19 @@ function renderSide(){
 function markSideLine(i){const box=$('ptabs');if(!box)return;box.querySelectorAll('.tline.cur').forEach(e=>e.classList.remove('cur'));const el=box.querySelector(`.tline[data-li="${i}"]`);if(el){el.classList.add('cur');el.scrollIntoView({block:'nearest'});}}
 function openExplain(i){
   if(i<0)i=curLine;if(i<0)i=Math.max(0,lineStartIdx(P?P.time():0));const L=data.lines[i];if(!L)return;
-  const X=data===PRACTICE?EXPLAIN[i]:null;if(P&&P.playing())P.pause();$('stageNote').classList.remove('hidden');sig.helped.add(i);
+  const X=data===PRACTICE?EXPLAIN[i]:null;if(P&&P.playing())P.pause();
+  /* show the explained line on screen too (portfolio demo fix: the panel and the subtitle must match) */
+  if(P&&P.seek&&curLine!==i){P.seek(Math.max(0,L.t+0.05));renderLine(i,true);}$('stageNote').classList.remove('hidden');sig.helped.add(i);
   const pieces=X?X.pieces:[...new Map(content(L.jp).filter(t=>glossOf(t.base,t.surface)).map(t=>[t.surface,[t.surface,glossOf(t.base,t.surface),'']])).values()];
   panel(`<div class="row"><b class="h4">${ic('spark','accent')} Explain this line</b><div class="spacer"></div><button class="btn ghost small" id="pX" aria-label="Close">${ic('x')}</button></div>
    <div class="box col" style="gap:2px"><b lang="ja" class="jp-m">${esc(plain(L.jp))}</b><span class="small subtle">${fmt(L.t-(data.start||0))} · ${esc(data.title)}</span></div>
+   <div class="ai-note">${ic('help')}<span>${X?'Written for this prototype. In the product: an AI explanation, grammar checked against a reference dictionary.':'Built from the dictionary in this prototype. In the product: an AI explanation.'} <button class="link small" id="xReport">Report a mistake</button></span></div>
    <span class="eyebrow">Piece by piece</span>${pieces.map(([j,m,n])=>`<div class="col" style="gap:2px"><span><b lang="ja">${esc(j)}</b>&nbsp; <b>${esc(m)}</b></span>${n?`<span class="small muted">${esc(n)}</span>`:''}</div>`).join('')||'<span class="small muted">No dictionary entries for this line yet.</span>'}
    <hr><span class="eyebrow">In plain English</span><div>${esc(X?X.plain:(L.en?'“'+L.en+'”':'No translation for this line yet.'))}</div>
    <div class="row wr"><button class="btn small" id="xSent">Save as sentence card ${ic('plus')}</button><button class="btn primary small" id="xResume">Resume ${ic('play')}</button></div>
    <div class="row"><span class="eyebrow">Ask a follow-up</span><div class="spacer"></div><button class="link small" id="xAsk">Ask</button></div>
    <input id="xQ" placeholder="${esc(X&&X.ask?X.ask:'Ask about this line…')}" aria-label="Ask a follow-up"><div id="xA" class="small"></div>
-   <span class="small subtle">${ic('help')} ${X?'Written for this prototype. In the product: an AI explanation, grammar checked against a reference dictionary.':'Built from the dictionary in this prototype. In the product: an AI explanation.'}</span>
-   <button class="link small" id="xReport" style="align-self:flex-start">Report a mistake</button>`);
+`);
   $('pX').onclick=panelClose;$('xResume').onclick=()=>{panelClose();if(turnLine>=0)continueTurn();else if(P)P.play();};
   $('xSent').onclick=()=>{const t=content(L.jp).find(t=>stOf(t.base)!=='known')||content(L.jp)[0];popLine=i;openCardPanel(t,'Sentence');};
   const ask=()=>{const q=$('xQ').value.trim();$('xA').innerHTML=X&&X.answer&&(!q||q===X.ask||/の|か|why/i.test(q))?`<b>${esc(q||X.ask)}</b><br><span class="muted">${esc(X.answer)}</span>`:'<span class="muted">Follow-up questions use the AI service, which isn’t connected in this prototype.</span>';};
@@ -290,8 +295,8 @@ function setMode(m){settings.mode=m;settings.autoPause=m==='pause';save();$('mod
 function openSettings(){$('settingsBtn').classList.add('on');
   const sw=(k,t,d)=>`<div class="toggle"><div><b>${t}</b><div class="small muted">${d}</div></div><button class="switch" data-k="${k}" role="switch" aria-checked="${!!settings[k]}" aria-label="${t}"></button></div>`;
   panel(`<div class="row"><span class="col" style="gap:0"><b class="h4">${ic('gear')} Settings for this episode</b><span class="small muted">Carries over to the next one unless you change it</span></span><div class="spacer"></div><button class="btn ghost small" id="pX" aria-label="Close">${ic('x')}</button></div>
-   <div class="box col"><b>Help level</b><div class="seg2" id="sHelp">${['None','Some','Lots'].map((h,i)=>`<button class="${help===i?'on':''}" data-h="${i}" title="${HELP[i]}">${h}</button>`).join('')}</div><span class="small muted" id="sHelpDesc">${HELP_DESC[help]}</span></div>
    <span class="eyebrow">Learning mode</span><div class="col" id="sMode" style="gap:6px">${MODES.map(([k,l,d])=>`<button class="radio${settings.mode===k?' on':''}" data-m="${k}" role="radio" aria-checked="${settings.mode===k}"><span class="rd"></span><span class="col" style="gap:0;text-align:left"><b>${l}</b><span class="small muted">${d}</span></span></button>`).join('')}</div>
+   <div class="box col"><b>Help level</b><div class="seg2" id="sHelp">${['None','Some','Lots'].map((h,i)=>`<button class="${help===i?'on':''}" data-h="${i}" title="${HELP[i]}">${h}</button>`).join('')}</div><span class="small muted" id="sHelpDesc">${HELP_DESC[help]}</span></div>
    <span class="eyebrow">Words</span>
    ${sw('autoKnown','Words I don’t tap become known','When you press Continue. Off = they stay new until you mark them.')}
    ${sw('pauseOnLookup','Pause when I tap a word','Resumes when you close the card')}
@@ -344,7 +349,7 @@ function startPlayer(){
     if(p.kind==='yt'&&data===mine&&!mine.videoId){const id=p.videoId&&p.videoId();if(id){mine.videoId=id;save();}}
     let author='',vt='';try{const vd=p.yt.getVideoData();author=vd.author||'';vt=vd.title||''}catch(e){}
     if(p.kind==='yt'&&/dub|hindi|tamil|telugu|english audio/i.test(vt)&&!/japanese audio/i.test(vt))toast('<b>This video looks dubbed</b> (“'+vt.replace(/[<>&]/g,'')+'”). Dubbed versions have no Japanese audio — pick the “English Sub” version of the episode in <b>Your clip</b>.',12000);
-    $('credit').textContent=p.kind==='yt'?['Video: '+(author||'YouTube')+' on YouTube',data.credit].filter(Boolean).join(' · '):'Practice scene: original lines written for this prototype';},()=>endSession(true));
+    $('credit').textContent=p.kind==='yt'?['Video: '+(author||'YouTube')+' on YouTube',data.credit].filter(Boolean).join(' · '):'Practice scene: original lines written for this prototype · Stills: AI-generated';},()=>endSession(true));
   runLoop();$('track').querySelectorAll('b').forEach(b=>b.remove());}
 function runLoop(){clearInterval(loop);lastT=P?P.time():data.start||0;
   loop=setInterval(()=>{if(!P)return;const t=P.time(),playing=P.playing();
@@ -359,7 +364,7 @@ function runLoop(){clearInterval(loop);lastT=P?P.time():data.start||0;
       if(lineNewWords(si)>0&&!coachActive){enterTurn(si);lastT=t;return;}doneLines.add(si);}
     lastT=t;const vis=lineVisible(t);if(vis!==curLine&&vis>=0)markSideLine(vis);renderLine(vis);
     const s=data.start||0,e=data.end||P.duration()||1,span=Math.max(1,e-s);
-    $('trackFill').style.width=Math.max(0,Math.min(100,100*(t-s)/span))+'%';$('timeLbl').textContent=fmt(t-s)+' / '+fmt(span);$('playPause').innerHTML=playing?'❚❚':ic('play');
+    $('trackFill').style.width=Math.max(0,Math.min(100,100*(t-s)/span))+'%';$('timeLbl').textContent=fmt(t-s)+' / '+fmt(span);$('playPause').innerHTML=playing?ic('pause'):ic('play');
     const tr=$('track');if(!tr.querySelector('b'))for(const b of bt){if(b<s||b>e)continue;const m=document.createElement('b');m.style.left=(100*(b-s)/span)+'%';tr.appendChild(m);}
     if(data.end&&t>=data.end-0.1&&!sig.ended&&turnLine<0){P.pause();endSession(true);}
   },80);}
