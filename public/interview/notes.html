@@ -26,7 +26,7 @@ ul { margin: 0 0 8px; padding-left: 20px; }
 </main>
 <script src="notes.js"></script>
 <script>
-const order = ['problem', 'context', 'who', 'job', 'principles', 'structure', 'd-start', 'd-pause', 'd-ai', 'd-number', 'sketches', 'system', 'responsive', 'a11y', 'prototype', 'summary', 'research'];
+const order = ['problem', 'context', 'who', 'job', 'principles', 'structure', 'd-start', 'd-pause', 'd-ai', 'd-number', 'sketches', 'system', 'responsive', 'a11y', 'demo', 'summary', 'research'];
 const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 const list = (k, a) => a && a.length ? `<p class="k">${k}</p><ul>${a.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '';
 document.getElementById('list').innerHTML = order.map((id, i) => { const n = window.NOTES[id];

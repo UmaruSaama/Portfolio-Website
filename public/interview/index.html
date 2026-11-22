@@ -291,6 +291,16 @@ h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
 .dots button.backup { opacity: .45; margin-left: 10px; }
 .stage #context .ps-body { margin-bottom: 0; } #context .ps-q { margin-bottom: auto; font-size: 21px; }
 
+/* ---- demo slide: four buttons, one per decision view ---- */
+.demos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: auto 0; }
+.demobtn { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; text-align: left; padding: 22px 22px 24px; border-radius: 18px;
+  border: 1.5px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; font: inherit; }
+.demobtn i { font: 800 44px/1 var(--display); font-style: normal; color: var(--accent); }
+.demobtn b { font: 700 22px/1.2 var(--text); }
+.demobtn span { font: 400 16px/1.3 var(--text); color: var(--ink-soft); }
+.demobtn:hover { border-color: var(--accent); }
+.demobtn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
 /* ---- fluid mode: phones, tablets in portrait, narrow windows (set by fit() as html.fluid).
    Wide screens keep the fixed 1600×900 stage, which is what a screen share shows. ---- */
 html.fluid, html.fluid body { height: auto; }
@@ -314,7 +324,7 @@ html.fluid .ps-body, html.fluid .ps-q { font-size: clamp(16px, 4.2vw, 20px); lin
 html.fluid .ps-q { padding-left: 16px; }
 html.fluid .cap { font-size: 14px; }
 /* grids collapse to as many columns as fit */
-html.fluid .methods, html.fluid .trio, html.fluid .iter, html.fluid .nums, html.fluid .tests { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; max-width: none; }
+html.fluid .methods, html.fluid .trio, html.fluid .iter, html.fluid .nums, html.fluid .tests, html.fluid .demos { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; max-width: none; }
 html.fluid .ia { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
 html.fluid .m b, html.fluid .path .p b, html.fluid .way b, html.fluid .pc b, html.fluid .ic b { font-size: 22px; }
 html.fluid .m span, html.fluid .path .p span, html.fluid .way span, html.fluid .pc span, html.fluid .ic span, html.fluid .dl, html.fluid .itd { font-size: 16px; }
@@ -580,6 +590,16 @@ html.fluid .notes { width: 100%; }
     <p class="ps-body">Next to check: screen readers on the subtitle layer, and testing with people who use them.</p>
   </section>
 
+  <section class="slide" id="demo">
+    <p class="eyebrow">Live demo</p>
+    <h2 class="ps-h">The four decisions, <em>in the order you just heard them</em>.</h2>
+    <div class="demos">
+      <button type="button" class="demobtn" data-flow="d-start"><i>1</i><b>Start from a show</b><span>Before the scene</span></button>
+      <button type="button" class="demobtn" data-flow="d-pause"><i>2</i><b>When to pause</b><span>During</span></button>
+      <button type="button" class="demobtn" data-flow="d-ai"><i>3</i><b>Explain this line</b><span>During</span></button>
+      <button type="button" class="demobtn" data-flow="d-number"><i>4</i><b>Known-word %</b><span>After</span></button>
+    </div>
+  </section>
   <section class="slide" id="summary">
     <p class="eyebrow">Summary</p>
     <h2 class="ps-h">Build the loop, <em>fix the number</em>, prove it over weeks.</h2>
@@ -604,12 +624,10 @@ html.fluid .notes { width: 100%; }
   </section>
 </div>
 
-<section class="proto" id="proto" aria-label="Live prototype">
+<section class="proto" id="proto" aria-label="Prototype view">
   <div class="top">
-    <button type="button" id="protoBack">← Slides</button>
+    <button type="button" id="protoBack">← Back to slide</button>
     <span class="ptitle" id="ptitle"></span>
-    <div class="routes" id="routes" aria-label="Prototype options"></div>
-    <button type="button" id="protoNext">Summary →</button>
   </div>
   <iframe id="protoFrame" title="ImmerLingo prototype" src="about:blank"></iframe>
 </section>
@@ -625,41 +643,47 @@ html.fluid .notes { width: 100%; }
 (function () {
   // Talk order from the interview script: ... accessibility, live demo, summary, then the backup research slide.
   const slideIds = [...document.querySelectorAll('.slide')].map(s => s.id);
-  const ids = slideIds.slice(0, slideIds.indexOf('summary')).concat('prototype', slideIds.slice(slideIds.indexOf('summary')));
-  const PROTO = ids.indexOf('prototype'), BACKUP = ids.indexOf('research');
-  const sec = i => (ids[i] && ids[i] !== 'prototype') ? document.getElementById(ids[i]) : null;
+  const ids = slideIds;
+  const BACKUP = ids.indexOf('research');
+  const sec = i => ids[i] ? document.getElementById(ids[i]) : null;
   const dots = document.getElementById('dots');
   ids.forEach((id, i) => { const b = document.createElement('button'); b.type = 'button';
     b.setAttribute('aria-label', i === BACKUP ? 'Backup: research' : 'Slide ' + (i + 1)); if (i === BACKUP) b.classList.add('backup');
     b.onclick = () => go(i); dots.appendChild(b); });
 
-  // The demo starts in the coded prototype (Practice scene), so it opens first.
-  const routes = [['Full prototype', 'proto/index.html#/start'], ['Warm-up', 'v2/index.html?flow=warm'], ['Onboarding', 'v2/index.html?flow=d1']];
+  // The full prototype is no longer embedded (22 Nov). Each decision opens one view; the demo slide opens all four in order.
   const FLOWS = {
     'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=d1'],
     'd-pause': ['Decision 2 · When to pause', 'proto/index.html?demo=modes#/play/practice'],
     'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?demo=explain#/play/practice'],
     'd-number': ['Decision 4 · Known-word %', 'proto/index.html#/discover']
   };
-  const frame = document.getElementById('protoFrame'), rbox = document.getElementById('routes'), ptitle = document.getElementById('ptitle');
-  let flowFrom = -1;   // slide a decision flow was opened from; -1 = the last slide's prototype
+  const frame = document.getElementById('protoFrame'), ptitle = document.getElementById('ptitle');
+  let flowFrom = -1, opener = null;   // slide and button a prototype view was opened from; -1 = none open
   function load(src) {
     const run = () => { frame.src = 'about:blank'; setTimeout(() => { frame.src = src; frame.focus(); }, 30); };
     if (document.readyState === 'complete') run(); else addEventListener('load', run, { once: true });
   }
-  function pickRoute(i) { [...rbox.children].forEach((x, j) => x.classList.toggle('on', j === i)); load(routes[i][1]); }
-  routes.forEach(([n], i) => {
-    const b = document.createElement('button'); b.type = 'button'; b.textContent = n;
-    b.onclick = () => pickRoute(i); rbox.appendChild(b);
-  });
-  function openFlow(id) {
-    flowFrom = cur; const [t, src] = FLOWS[id];
-    ptitle.textContent = t; ptitle.hidden = false; rbox.hidden = true;
-    document.getElementById('protoBack').textContent = '← Back to slide'; document.getElementById('protoNext').hidden = true;
+  // The open view has the keyboard. Pass the timer keys (T, Shift+T, H) up to the deck; everything else, Escape included,
+  // stays with the prototype, which uses Escape to close its own panels.
+  frame.addEventListener('load', () => { try {
+    const d = frame.contentDocument; if (!d || d.__deckKeys) return; d.__deckKeys = true;
+    d.addEventListener('keydown', e => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      if (e.code === 'KeyT') { e.preventDefault(); e.shiftKey ? timer.reset() : timer.toggle(); }
+      else if (e.code === 'KeyH') { e.preventDefault(); timer.hide(); }
+    });
+  } catch (err) { /* view not loaded or not same-origin */ } });
+  function openFlow(id, btn) {
+    flowFrom = cur; opener = btn || null; const [t, src] = FLOWS[id];
+    ptitle.textContent = t;
     document.getElementById('proto').classList.add('on'); load(src);
   }
-  function closeFlow() { flowFrom = -1; frame.src = 'about:blank'; go(cur); }
-  document.querySelectorAll('.flowbtn').forEach(b => b.onclick = () => openFlow(b.dataset.flow));
+  // Give the keyboard back to the deck: without this, focus stays in the hidden, blank frame and the arrow keys do nothing.
+  function closeFlow() { const b = opener; flowFrom = -1; opener = null; frame.src = 'about:blank'; go(cur);
+    frame.blur(); if (b) b.focus({ preventScroll: true }); else document.body.focus(); }
+  document.querySelectorAll('.flowbtn, .demobtn').forEach(b => b.onclick = () => openFlow(b.dataset.flow, b));
 
   const stage = document.getElementById('stage');
   // Wide screens: the fixed 1600×900 stage scaled to fit. Narrow or portrait screens: fluid, scrolling layout.
@@ -701,22 +725,17 @@ html.fluid .notes { width: 100%; }
     cur = Math.max(0, Math.min(ids.length - 1, i));
     hydrate(cur); hydrate(cur + 1); hydrate(cur - 1);
     if (cur !== prev && root.classList.contains('fluid')) scrollTo(0, 0);
-    const isProto = cur === PROTO;
     slideIds.forEach(id => document.getElementById(id).classList.toggle('on', id === ids[cur]));
-    document.getElementById('proto').classList.toggle('on', isProto);
-    flowFrom = -1; ptitle.hidden = !isProto; rbox.hidden = !isProto;
-    document.getElementById('protoBack').textContent = '← Slides';
-    document.getElementById('protoNext').hidden = !isProto;
-    if (isProto) { ptitle.textContent = 'Live prototype'; if (!rbox.querySelector('.on')) pickRoute(0); }
-    else if (frame.src !== 'about:blank') frame.src = 'about:blank';
+    document.getElementById('proto').classList.remove('on');
+    flowFrom = -1;
+    if (frame.src !== 'about:blank') frame.src = 'about:blank';
     [...dots.children].forEach((b, j) => b.classList.toggle('on', j === cur));
     renderNotes();
     if (location.hash.slice(1) !== ids[cur]) history.replaceState(null, '', location.pathname + location.search + '#' + ids[cur]);
   }
   document.getElementById('prev').onclick = () => go(cur - 1);
   document.getElementById('next').onclick = () => go(cur + 1);
-  document.getElementById('protoBack').onclick = () => flowFrom >= 0 ? closeFlow() : go(PROTO - 1);
-  document.getElementById('protoNext').onclick = () => go(PROTO + 1);
+  document.getElementById('protoBack').onclick = closeFlow;
   // Talk timer. Elapsed time comes from Date.now(), so a background tab or a slow interval can't make it drift.
   // State survives a reload: { acc: ms banked while paused, start: epoch ms when running (or null), hidden }.
   const timer = (() => {
@@ -763,7 +782,6 @@ html.fluid .notes { width: 100%; }
     if (e.code === 'KeyT') { e.preventDefault(); e.shiftKey ? timer.reset() : timer.toggle(); return; }
     if (e.code === 'KeyH') { e.preventDefault(); timer.hide(); return; }
     if (flowFrom >= 0) { if (e.key === 'Escape') closeFlow(); return; }
-    if (cur === PROTO) { if (e.key === 'Escape' || e.key === 'ArrowLeft') go(PROTO - 1); if (e.key === 'ArrowRight' || e.key === 'PageDown') go(PROTO + 1); return; }
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
     if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
   });
@@ -776,7 +794,7 @@ html.fluid .notes { width: 100%; }
 
   // Background preloading, after the page has loaded and the browser is idle:
   // 1) every slide's images, 2) both prototypes' files, 3) the Japanese word splitter's dictionary (~17 MB, from jsDelivr),
-  // which the full prototype otherwise downloads when it opens. Step 3 is skipped on data-saver or slow connections.
+  // which decision views 2–4 otherwise download when they open. Step 3 is skipped on data-saver or slow connections.
   const conn = navigator.connection || {};
   const lean = !!conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '');
   const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 300));

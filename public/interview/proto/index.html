@@ -147,6 +147,11 @@
 <div class="modal-bg hidden" id="result"><div class="modal" id="resultBody" role="dialog" aria-modal="true"></div></div>
 <div class="toast g hidden" id="gtoast" role="status"></div>
 
+<script>/* portfolio host fix (not part of the product): kuromoji joins its dictionary path with path.join, which turns
+   "https://cdn…" into "https:/cdn…". On an https page the browser reads that as a path on this site: 404 on every
+   dictionary file, then the tab stops responding. Put the second slash back before the request goes out. */
+(function(){var open=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){
+  if(typeof u==="string")arguments[1]=u.replace(/^(https?:)\/(?!\/)/,"$1//");return open.apply(this,arguments);};})();</script>
 <script src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
 <script>/* portfolio launcher: decision demos skip the first-run tips (not part of the product) */
 (function(){if(!new URLSearchParams(location.search).get("demo"))return;try{localStorage.setItem("il3.tips",JSON.stringify({turn:1,tap:1,popup:1,continued:1,help:1,status:1}))}catch(e){}})();</script>

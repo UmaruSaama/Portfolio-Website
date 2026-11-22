@@ -231,7 +231,7 @@ window.NOTES = {
    "Mock 1: “WCAG is mostly a web standard. What changes on mobile?” Think touch target size, motor needs and situational impairment, not just contrast. [YOUR ANSWER]"
   ]
  },
- "prototype": {
+ "demo": {
   "title": "Live demo · 1:30",
   "takeaway": "The four decisions, in the order you just heard them.",
   "say": [
@@ -241,10 +241,12 @@ window.NOTES = {
    "0:50 Press Continue (Space) (decision 4). “The scene moves on. Words I didn't tap now count as known. That's the flaw I told you about.”",
    "1:05 Click Review. “And the loop closes. A card with its scene, and the next review date under each grade.”"
   ],
-  "bridge": "Press “Summary →” (top right) or → to go to the summary.",
+  "bridge": "Press → to go to the summary.",
   "facts": [
-   "Which build? This frame runs the older coded v0.4. The v0.6.0 artifact is separate, was tested only on your machine, and was built after the 12 tests. Rehearse this exact path on the build you'll present.",
-   "If the frame fails: go back to the slides and close on the summary. Slide 9 has the Explain screenshot.",
+   "⚠ The full prototype is off the deck (22 Nov). The Say lines above were written for it (Practice scene → word card → Explain → Continue → Review) and no longer match. This slide now has four buttons that open the decision views in order: 1 Start from a show (onboarding, v2), 2 When to pause (the three modes), 3 Explain this line, 4 Known-word % (Discover). [YOUR DEMO PATH: which views you open and what you say over each.]",
+   "Each view: “← Back to slide” (top left) returns here. Escape belongs to the prototype (it closes its own panels). T and H still work inside a view.",
+   "Which build? Views 2–4 run the older coded v0.4; view 1 runs v2 (not tested with people). The v0.6.0 artifact is separate.",
+   "If a view fails: “← Back to slide” and close on the summary. Slide 9 has the Explain screenshot.",
    "The top bar shows “82% for you” with 0 known words. It's a fixed sample.",
    "Test the Japanese voice on the laptop you'll present from. Reset the prototype first: Help & feedback → Restart onboarding."
   ]
