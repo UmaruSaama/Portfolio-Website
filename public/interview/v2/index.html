@@ -143,7 +143,10 @@ svg.i{display:block;fill:currentColor}
 .controls{position:absolute;left:0;top:952px;width:1440px;height:72px;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--base)}
 .controls .pp{width:24px;height:24px;display:grid;place-items:center}
 .controls .pp svg{width:20px;height:20px}
-.track{flex:1;height:6px;border-radius:3px;background:var(--fill);position:relative;cursor:default}
+.track{flex:1;height:6px;border-radius:3px;background:var(--fill);position:relative;cursor:pointer;touch-action:none}
+.track::before{content:"";position:absolute;left:0;right:0;top:-12px;bottom:-12px}
+.track:hover,.track.drag{height:8px}
+.track:focus-visible{outline:2px solid #fff;outline-offset:6px}
 .track i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:#fff}
 .time{font:400 14px/20px var(--sans);color:var(--t2);font-variant-numeric:tabular-nums;white-space:nowrap}
 
@@ -349,7 +352,7 @@ body.clean #proto{display:none}
       <div id="tip" hidden><span>Hover over any word you don’t know. Everything else counts as known.</span><button id="tipX">Dismiss</button></div>
       <div class="subs"><div class="jp" id="jp" lang="ja"></div><p class="en" id="en"></p><button class="show-en" id="showEn" hidden>Show English · E</button></div>
     </div>
-    <div class="controls"><button class="pp" id="pp" aria-label="Play"></button><div class="track"><i id="fill"></i></div><span class="time" id="time">0:00 / 0:39</span></div>
+    <div class="controls"><button class="pp" id="pp" aria-label="Play"></button><div class="track" id="track" role="slider" tabindex="0" aria-label="Scene position" aria-valuemin="0" aria-valuemax="39" aria-valuenow="0"><i id="fill"></i></div><span class="time" id="time">0:00 / 0:39</span></div>
   </section>
 
   <!-- ===== OB-06 / 09 · Summary ===== -->
@@ -535,7 +538,7 @@ const now=()=>playing?Math.min(END,base+(performance.now()-t0)/1000):base;
 function play(){if(playing||cardOpen||guideOpen())return;t0=performance.now();playing=true;ppIcon()}
 function pause(){if(!playing)return;base=now();playing=false;hush();ppIcon()}
 function ppIcon(){$('pp').innerHTML=playing?IC.pause:IC.play;$('pp').setAttribute('aria-label',playing?'Pause':'Play');updTime()}
-function updTime(){const t=now();$('fill').style.width=(100*t/END)+'%';$('time').textContent=fmt(t)+' / '+fmt(END)+(playing||t===0||t>=END?'':' · paused')}
+function updTime(){const t=now();$('fill').style.width=(100*t/END)+'%';$('track').setAttribute('aria-valuenow',Math.floor(t));$('track').setAttribute('aria-valuetext',fmt(t));$('time').textContent=fmt(t)+' / '+fmt(END)+(playing||t===0||t>=END?'':' · paused')}
 const lineEnd=i=>i<LINES.length-1?LINES[i+1].t-0.4:END-1;
 const lineAt=t=>{for(let i=LINES.length-1;i>=0;i--)if(LINES[i].t<=t)return t<lineEnd(i)?i:-1;return -1};
 function buildShots(){$('shots').innerHTML=[0,1,2,3,4].map(i=>`<div class="shot" style="background-image:url(assets/still${i}.jpg)"></div>`).join('')}
@@ -650,6 +653,17 @@ function firstSave(t,el){
 $('pp').onclick=()=>{if(cardOpen||$('sched'))return;playing?pause():play()};
 $('scene').onclick=e=>{if(e.target.closest('#card,.tok,#tip,.show-en,#sched'))return;if(cardOpen){closeCard();return}if($('sched'))return;playing?pause():play()};
 $('stopBtn').onclick=()=>finishWatch(false);
+/* seek: click or drag the bar; Left/Right on the focused bar move 5 s. The line you land on plays from its start. */
+function seek(t,quiet){if(cardOpen||$('sched')||guideOpen())return;hush();
+  base=Math.max(0,Math.min(END-0.5,t));if(playing)t0=performance.now();spoken=quiet?lineAt(base):-1;cur=-2;tick();if(!playing)updTime();}
+(function(){const tr=$('track');let drag=false;
+  const at=e=>{const r=tr.getBoundingClientRect();return (e.clientX-r.left)/r.width*END};
+  tr.addEventListener('pointerdown',e=>{if(cardOpen||$('sched')||guideOpen())return;e.preventDefault();e.stopPropagation();drag=true;tr.classList.add('drag');try{tr.setPointerCapture(e.pointerId)}catch(_){}seek(at(e),true)});
+  tr.addEventListener('pointermove',e=>{if(drag)seek(at(e),true)});
+  const end=e=>{if(!drag)return;drag=false;tr.classList.remove('drag');try{tr.releasePointerCapture(e.pointerId)}catch(_){}seek(now());};
+  tr.addEventListener('pointerup',end);tr.addEventListener('pointercancel',end);
+  tr.addEventListener('click',e=>e.stopPropagation());
+  tr.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();e.stopPropagation();seek(now()+(e.key==='ArrowRight'?5:-5))}});})();
 document.addEventListener('keydown',e=>{if(view!=='watch'||guideOpen())return;
   if(e.code==='Space'){e.preventDefault();if($('sched')){$('schedOk').click();return}if(cardOpen)closeCard();else playing?pause():play();}
   else if(e.key==='Escape'&&cardOpen)closeCard();
