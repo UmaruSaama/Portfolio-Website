@@ -18,7 +18,6 @@ const nextConfig: NextConfig = artifact
       async rewrites() {
         return [
           { source: "/interview", destination: "/interview/index.html" },
-          { source: "/interview/notes", destination: "/interview/notes.html" },
         ];
       },
     };

@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Noto+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&display=swap">
 <style>
 /* Layout: a 1600×900 stage scaled to the window. Each slide = one short line + one picture or number.
-   Everything else lives in speaker notes (press N, or open notes.html on a second screen).
    One dark look on purpose, matching the portfolio site: near-black with a maroon glow, condensed Archivo, one pink. */
 :root {
   --paper: #0E0B0C;
@@ -600,13 +599,11 @@ html.fluid .notes { width: 100%; }
   <iframe id="protoFrame" title="ImmerLingo prototype" src="about:blank"></iframe>
   </section>
 
-<aside class="notes" id="notes" hidden aria-label="Speaker notes"></aside>
 
 <!-- Talk timer: counts up to 20:00, then overtime (+m:ss), resets itself at 30:00. Never starts on its own.
      T start/pause · Shift+T reset · H hide/show. Click it to start/pause. Ticks under it: 5:00, 9:00, 13:15, 18:15 (interview script). -->
 <div class="tt" id="talkTimer" title="T or click: start/pause · Shift+T or double-click: reset · H hide"><span class="tt-t" id="ttTime">0:00</span><i class="tt-bar"><b id="ttFill"></b></i></div>
 
-<script src="notes.js"></script>
 <script>
 (function () {
   // Talk order from the interview script: ... accessibility, live demo, summary, then the backup research slide.
@@ -676,7 +673,7 @@ html.fluid .notes { width: 100%; }
   stage.addEventListener('touchend', e => { if (tx === null) return; const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty; tx = null;
     if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1)); }, { passive: true });
 
-  const notes = document.getElementById('notes');
+  const notes = document.getElementById('notes') || document.createElement('aside');
   const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
   let cur = 0;
   function renderNotes() {
@@ -685,7 +682,7 @@ html.fluid .notes { width: 100%; }
     notes.innerHTML = `<h4>${cur === BACKUP ? 'Backup' : cur + 1}. ${esc(n.title)}</h4>` +
       (n.takeaway ? `<p class="k">Takeaway</p><p>${esc(n.takeaway)}</p>` : '') + list('Say', n.say) +
       (n.bridge ? `<p class="k">→ Bridge</p><p>${esc(n.bridge)}</p>` : '') + list('Know, clashes, be ready', n.facts) +
-      `<p class="hint">Only you see this when you aren’t sharing. Press N to hide. While presenting, open notes.html on another screen instead.</p>`;
+      `<p class="hint"></p>`;
   }
   function hydrate(j) { const s = sec(j); if (!s) return; s.querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; im.removeAttribute('data-src'); }); }
   function go(i) {
@@ -745,7 +742,6 @@ html.fluid .notes { width: 100%; }
   document.addEventListener('fullscreenchange', () => document.getElementById('fs').textContent = document.fullscreenElement ? '✕' : '⛶');
   document.addEventListener('keydown', e => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
-    if (e.key === 'n' || e.key === 'N') { notes.hidden = !notes.hidden; return; }
     if (e.key === 'f' || e.key === 'F') { toggleFs(); return; }
     if (e.code === 'KeyT') { e.preventDefault(); e.shiftKey ? timer.reset() : timer.toggle(); return; }
     if (e.code === 'KeyH') { e.preventDefault(); timer.hide(); return; }
