@@ -85,6 +85,19 @@ h1 { font: 900 120px/1 var(--display); margin: 0; letter-spacing: -2px; }
 .ps-q { font: 400 32px/1.45 var(--text); color: var(--ink-soft); margin: 0; max-width: 1180px; padding-left: 28px; border-left: 4px solid var(--accent); }
 .trio .c { border-color: var(--st-practising); } .trio .h { border-color: var(--st-known); } .trio .o { border-color: var(--st-new); }
 
+/* talk timer: small and dim in the bottom-left corner, outside the slide's content column */
+.tt { position: fixed; left: max(10px, env(safe-area-inset-left, 0px)); bottom: max(8px, env(safe-area-inset-bottom, 0px)); z-index: 25; display: flex; flex-direction: column; gap: 3px;
+  padding: 4px 6px; font: 600 12px/1 "Noto Sans", Arial, sans-serif; font-variant-numeric: tabular-nums; letter-spacing: .3px;
+  color: rgba(255, 255, 255, 0.3); cursor: pointer; user-select: none; -webkit-user-select: none; }
+.tt[hidden] { display: none; }
+html.fluid .tt { background: rgba(14, 11, 12, 0.85); border-radius: 6px; }   /* scrolling layout: keep it legible over text */
+.tt.run { color: rgba(255, 255, 255, 0.5); }
+.tt.over { color: rgba(255, 184, 77, 0.9); }
+.tt-bar { position: relative; display: block; width: 44px; height: 2px; background:
+  linear-gradient(90deg, transparent 24.5%, rgba(255,255,255,.28) 24.5% 25.5%, transparent 25.5% 44.5%, rgba(255,255,255,.28) 44.5% 45.5%,
+    transparent 45.5% 65.8%, rgba(255,255,255,.28) 65.8% 66.8%, transparent 66.8% 90.8%, rgba(255,255,255,.28) 90.8% 91.8%, transparent 91.8%), rgba(255,255,255,0.08); }
+.tt-bar b { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: rgba(255, 255, 255, 0.28); }
+.tt.over .tt-bar b { background: rgba(255, 184, 77, 0.7); }
 .notes { position: fixed; right: 0; top: 0; bottom: 0; width: min(460px, 100%); background: #FFFFFF; --ink: #17181D; --ink-soft: #4B4E59; --accent: #B8284F; --line: #D9DBE1; border-left: 1px solid var(--line); z-index: 30; padding: 20px max(18px, env(safe-area-inset-right, 0px)) 20px 20px; box-sizing: border-box; overflow-y: auto; font-size: 16px; line-height: 1.5; color: var(--ink); }
 .notes h4 { margin: 0 0 10px; font: 700 18px/1.3 var(--display); }
 .notes ul { margin: 0 0 14px; padding-left: 18px; }
@@ -603,6 +616,10 @@ html.fluid .notes { width: 100%; }
 
 <aside class="notes" id="notes" hidden aria-label="Speaker notes"></aside>
 
+<!-- Talk timer: counts up to 20:00, then overtime (+m:ss), resets itself at 30:00. Never starts on its own.
+     T start/pause · Shift+T reset · H hide/show. Click it to start/pause. Ticks under it: 5:00, 9:00, 13:15, 18:15 (interview script). -->
+<div class="tt" id="talkTimer" title="T start/pause · Shift+T reset · H hide"><span class="tt-t" id="ttTime">0:00</span><i class="tt-bar"><b id="ttFill"></b></i></div>
+
 <script src="notes.js"></script>
 <script>
 (function () {
@@ -700,6 +717,38 @@ html.fluid .notes { width: 100%; }
   document.getElementById('next').onclick = () => go(cur + 1);
   document.getElementById('protoBack').onclick = () => flowFrom >= 0 ? closeFlow() : go(PROTO - 1);
   document.getElementById('protoNext').onclick = () => go(PROTO + 1);
+  // Talk timer. Elapsed time comes from Date.now(), so a background tab or a slow interval can't make it drift.
+  // State survives a reload: { acc: ms banked while paused, start: epoch ms when running (or null), hidden }.
+  const timer = (() => {
+    const KEY = 'immerlingo.talkTimer', GOAL = 20 * 60e3, LIMIT = 30 * 60e3;
+    const el = document.getElementById('talkTimer'), tEl = document.getElementById('ttTime'), fill = document.getElementById('ttFill');
+    let s = { acc: 0, start: null, hidden: false };
+    try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && typeof v.acc === 'number') s = { acc: v.acc, start: typeof v.start === 'number' ? v.start : null, hidden: !!v.hidden }; } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} };
+    const elapsed = () => Math.max(0, s.acc + (s.start !== null ? Date.now() - s.start : 0));
+    const fmt = ms => { const t = Math.floor(ms / 1000); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); };
+    function render() {
+      let ms = elapsed();
+      if (ms >= LIMIT) { s = { acc: 0, start: null, hidden: s.hidden }; save(); ms = 0; }   // 30:00: back to 0:00, stopped
+      const over = ms >= GOAL;
+      tEl.textContent = over ? '+' + fmt(ms - GOAL) : fmt(ms);
+      fill.style.width = (over ? 100 : ms / GOAL * 100) + '%';
+      el.classList.toggle('run', s.start !== null); el.classList.toggle('over', over);
+      el.hidden = s.hidden;
+      el.setAttribute('aria-label', 'Talk timer ' + (over ? 'overtime ' : '') + tEl.textContent + (s.start !== null ? ', running' : ', paused'));
+    }
+    const api = {
+      toggle() { if (s.start === null) s.start = Date.now(); else { s.acc = elapsed(); s.start = null; } save(); render(); },
+      reset() { s = { acc: 0, start: null, hidden: s.hidden }; save(); render(); },
+      hide() { s.hidden = !s.hidden; save(); render(); },
+      elapsed, render
+    };
+    el.addEventListener('click', api.toggle);
+    setInterval(render, 250); render();
+    window.__talkTimer = api;   // for testing only
+    return api;
+  })();
+
   function toggleFs() {
     const p = document.fullscreenElement ? document.exitFullscreen() : root.requestFullscreen && root.requestFullscreen({ navigationUI: 'hide' });
     if (p && p.catch) p.catch(() => {});   // not allowed here (e.g. inside a frame): ignore
@@ -710,6 +759,8 @@ html.fluid .notes { width: 100%; }
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'n' || e.key === 'N') { notes.hidden = !notes.hidden; return; }
     if (e.key === 'f' || e.key === 'F') { toggleFs(); return; }
+    if (e.code === 'KeyT') { e.preventDefault(); e.shiftKey ? timer.reset() : timer.toggle(); return; }
+    if (e.code === 'KeyH') { e.preventDefault(); timer.hide(); return; }
     if (flowFrom >= 0) { if (e.key === 'Escape') closeFlow(); return; }
     if (cur === PROTO) { if (e.key === 'Escape' || e.key === 'ArrowLeft') go(PROTO - 1); if (e.key === 'ArrowRight' || e.key === 'PageDown') go(PROTO + 1); return; }
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
