@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<base href="/interview/">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<title>ImmerLingo, step by step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Noto+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&display=swap">
+<style>
+/* Layout: a 1600×900 stage scaled to the window. Each slide = one short line + one picture or number.
+   Everything else lives in speaker notes (press N, or open notes.html on a second screen).
+   One dark look on purpose, matching the portfolio site: near-black with a maroon glow, condensed Archivo, one pink. */
+:root {
+  --paper: #0E0B0C;
+  --glow: #3A1219;
+  --card: #1A1517;
+  --ink: rgba(255, 255, 255, 0.92);
+  --ink-soft: rgba(255, 255, 255, 0.62);
+  --line: rgba(255, 255, 255, 0.14);
+  --accent: #FF375F;
+  --st-new: #D83A5E;
+  --st-practising: #8B5CF6;
+  --st-known: #1F9D68;
+  --night: #1B1B20;
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --text: "Noto Sans", "Noto Sans JP", Arial, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--text); overflow: hidden;
+  padding-left: max(0px, env(safe-area-inset-left, 0px)); padding-right: max(0px, env(safe-area-inset-right, 0px)); }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: radial-gradient(ellipse 70% 55% at 50% 0%, var(--glow), var(--paper)); }
+
+.slide { position: absolute; inset: 0; padding: 120px 110px 80px; box-sizing: border-box; display: none; flex-direction: column; gap: 40px; justify-content: center; }
+.slide > * { flex-shrink: 0; }
+.slide.on { display: flex; animation: arrive .35s ease-out both; }
+@keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .slide.on { animation: none; } }
+
+.bar { position: absolute; left: 110px; right: 110px; top: 40px; display: flex; align-items: center; gap: 8px; z-index: 5; }
+.dots { display: flex; gap: 8px; }
+.dots button { width: 34px; height: 8px; border-radius: 4px; border: 0; padding: 0; background: var(--line); cursor: pointer; }
+.dots button.on { background: var(--accent); }
+.dots button:focus-visible, .nav button:focus-visible, .routes button:focus-visible { outline: 3px solid var(--st-practising); outline-offset: 3px; }
+.nav { margin-left: auto; display: flex; gap: 8px; }
+.nav button { font: 500 18px/1 var(--text); height: 38px; padding: 0 14px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink-soft); cursor: pointer; }
+
+h1 { font: 900 120px/1 var(--display); margin: 0; letter-spacing: -2px; }
+.big { font: 900 72px/1.1 var(--display); margin: 0; letter-spacing: -1px; text-wrap: balance; max-width: 1380px; }
+.sub { font: 500 34px/1.35 var(--text); color: var(--ink-soft); margin: 0; max-width: 1200px; text-wrap: balance; }
+.cap { font: 500 24px/1.3 var(--text); color: var(--ink-soft); margin: 0; }
+.source { position: absolute; left: 110px; right: 110px; bottom: 30px; font-size: 18px; color: var(--ink-soft); margin: 0; }
+.shot { display: block; border-radius: 16px; background: #000; object-fit: contain; border: 1.5px solid var(--line); }
+.row { display: flex; gap: 40px; align-items: center; }
+.col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+.num b { display: block; font: 900 120px/1 var(--display); letter-spacing: -2px; }
+.num b small { font-size: 56px; color: var(--ink-soft); font-weight: 700; }
+.num span { display: block; margin-top: 14px; font: 500 30px/1.3 var(--text); color: var(--ink-soft); }
+
+.loop { display: flex; align-items: center; gap: 18px; flex-wrap: nowrap; }
+.node { font: 700 40px/1 var(--display); padding: 28px 34px; border-radius: 22px; background: var(--card); border: 2px solid var(--line); white-space: nowrap; }
+.node.last { border-color: var(--accent); color: var(--accent); }
+.arrow { font: 700 40px/1 var(--display); color: var(--ink-soft); }
+.out { font: 500 30px/1.3 var(--text); color: var(--ink-soft); margin: 0; }
+.out s { text-decoration-thickness: 3px; }
+
+.qs { display: flex; flex-direction: column; gap: 22px; }
+.q { display: flex; align-items: baseline; gap: 28px; font: 700 46px/1.2 var(--display); margin: 0; }
+.q i { font-style: normal; font: 900 46px/1 var(--display); color: var(--accent); width: 44px; }
+
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.trio div { border-top: 6px solid; padding-top: 18px; }
+.trio b { display: block; font: 900 44px/1.1 var(--display); }
+.trio span { display: block; margin-top: 10px; font: 500 28px/1.35 var(--text); color: var(--ink-soft); }
+.eyebrow { font: 700 22px/1.2 var(--text); letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin: 0; }
+.ps-h { font: 800 84px/1.02 var(--display); margin: 0; letter-spacing: -1px; text-wrap: balance; max-width: 1380px; }
+.ps-h em { font-style: normal; color: var(--accent); }
+.ps-body { font: 400 32px/1.5 var(--text); color: var(--ink-soft); margin: 0; max-width: 1180px; }
+.ps-body b, .ps-q b { color: var(--ink); font-weight: 700; }
+.ps-q { font: 400 32px/1.45 var(--text); color: var(--ink-soft); margin: 0; max-width: 1180px; padding-left: 28px; border-left: 4px solid var(--accent); }
+.trio .c { border-color: var(--st-practising); } .trio .h { border-color: var(--st-known); } .trio .o { border-color: var(--st-new); }
+
+.notes { position: fixed; right: 0; top: 0; bottom: 0; width: min(460px, 100%); background: #FFFFFF; --ink: #17181D; --ink-soft: #4B4E59; --accent: #B8284F; --line: #D9DBE1; border-left: 1px solid var(--line); z-index: 30; padding: 20px max(18px, env(safe-area-inset-right, 0px)) 20px 20px; box-sizing: border-box; overflow-y: auto; font-size: 16px; line-height: 1.5; color: var(--ink); }
+.notes h4 { margin: 0 0 10px; font: 700 18px/1.3 var(--display); }
+.notes ul { margin: 0 0 14px; padding-left: 18px; }
+.notes .k { font: 700 12px/1 var(--text); letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin: 10px 0 6px; }
+.notes .hint { color: var(--ink-soft); font-size: 13px; }
+
+.proto { position: fixed; inset: 0; display: none; flex-direction: column; background: var(--night); color: #F2F0F5; z-index: 20; }
+.proto.on { display: flex; }
+.proto .top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); border-bottom: 1px solid #34333C; }
+.proto button { font: 500 14px/1 var(--text); height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #45444F; background: #26252D; color: #F2F0F5; cursor: pointer; }
+.proto button.on { background: #F2F0F5; color: #1B1B20; }
+.routes { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
+.proto iframe { flex: 1; width: 100%; border: 0; background: #262626; }
+.ctx { display: flex; gap: 48px; align-items: flex-start; }
+.ways { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.way { display: grid; grid-template-columns: 230px 1fr; gap: 24px; padding: 16px 0 16px 24px; border-left: 4px solid var(--line); }
+.way b { font: 800 30px/1.2 var(--display); font-stretch: 68%; color: var(--ink); }
+.way span { font: 400 26px/1.4 var(--text); color: var(--ink-soft); }
+.way em { font-style: normal; color: var(--ink); font-weight: 700; }
+.fact { width: 420px; flex-shrink: 0; border-top: 3px solid var(--accent); border-bottom: 3px solid var(--accent); padding: 22px 4px; display: flex; flex-direction: column; gap: 14px; }
+.fact p:not(.eyebrow) { margin: 0; font: 400 24px/1.4 var(--text); color: var(--ink-soft); }
+.fact b { display: block; font: 800 44px/1.05 var(--display); font-stretch: 68%; color: var(--ink); }
+.methods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.m { border: 1.5px solid var(--line); border-radius: 18px; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 12px; background: rgba(255,255,255,0.03); }
+.m b { font: 800 34px/1.1 var(--display); font-stretch: 68%; color: var(--ink); }
+.m span { font: 400 24px/1.45 var(--text); color: var(--ink-soft); }
+.m em { font-style: normal; color: var(--ink); font-weight: 700; }
+.m.me { border-color: var(--accent); }
+.path { display: flex; align-items: stretch; gap: 14px; }
+.path .p { flex: 1; border: 1.5px solid var(--line); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px; background: rgba(255,255,255,0.03); }
+.path .p.on { border: 2.5px solid var(--accent); background: rgba(255,55,95,0.08); }
+.path .p b { font: 800 34px/1.1 var(--display); font-stretch: 68%; color: var(--ink); }
+.path .p span { font: 400 24px/1.45 var(--text); color: var(--ink-soft); }
+.arrowr { align-self: center; font: 700 36px/1 var(--display); color: var(--ink-soft); }
+.jm { display: grid; grid-template-columns: 150px repeat(5, 1fr); column-gap: 14px; row-gap: 12px; align-items: start; }
+.jh { font: 700 26px/1.2 var(--text); color: var(--ink); } .jh i { font-style: normal; font-size: 20px; color: var(--ink-soft); margin-right: 6px; }
+.jl { font: 700 16px/1.2 var(--text); letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft); padding-top: 10px; }
+.jd { border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; font: 400 19px/1.35 var(--text); color: var(--ink-soft); background: rgba(255,255,255,0.03); min-height: 72px; box-sizing: border-box; }
+.jt { font: 700 20px/1.3 var(--text); color: var(--ink); }
+.jf { grid-column: 2 / 7; } .jf svg { width: 100%; height: auto; display: block; overflow: visible; }
+.jn { font: 500 18px/1.3 var(--text); color: var(--ink-soft); padding-top: 10px; }
+.ji { border: 1.5px solid var(--accent); border-radius: 12px; padding: 12px 14px; background: rgba(255,55,95,0.10); display: flex; flex-direction: column; gap: 6px; }
+.ji b { font: 700 19px/1.3 var(--text); color: var(--ink); } .ji span { font: 400 16px/1.3 var(--text); color: var(--ink-soft); }
+
+/* ---- scale and composition pass: smaller type, 160px side margins, every heading top-aligned at the same height ---- */
+.slide { padding: 150px 160px 100px; gap: 26px; justify-content: flex-start; }
+.bar { left: 160px; right: 160px; }
+.source { left: 160px; right: 160px; bottom: 40px; font-size: 15px; }
+.eyebrow { font-size: 16px; letter-spacing: 2.5px; }
+.ps-h { font-size: 50px; line-height: 1.06; max-width: 1160px; }
+#problem .ps-h { font-size: 66px; max-width: 1140px; }
+#problem { gap: 34px; padding-top: 170px; }
+#job .ps-h { font-size: 32px; max-width: 1280px; }
+.big { font-size: 50px; line-height: 1.08; max-width: 1160px; }
+.ps-body, .ps-q { font-size: 23px; line-height: 1.6; max-width: 920px; }
+.ps-q { padding-left: 24px; }
+.sub { font-size: 26px; }
+.cap { font-size: 17px; }
+.way { grid-template-columns: 190px 1fr; gap: 20px; padding: 12px 0 12px 20px; }
+.way b { font-size: 25px; } .way span { font-size: 19px; }
+.ctx { gap: 64px; } .fact { width: 340px; padding: 18px 2px; gap: 12px; }
+.fact b { font-size: 32px; } .fact p:not(.eyebrow) { font-size: 17px; }
+.methods { gap: 18px; } .m { padding: 22px 22px 24px; gap: 10px; }
+.m b { font-size: 25px; } .m span { font-size: 18px; }
+.path { gap: 12px; } .path .p { padding: 22px; gap: 10px; }
+.path .p b { font-size: 25px; } .path .p span { font-size: 18px; }
+.arrowr { font-size: 26px; }
+.nums { gap: 72px; max-width: 1100px; margin-top: 30px; }
+.num b { font-size: 92px; } .num b small { font-size: 40px; } .num span { font-size: 21px; margin-top: 12px; }
+.loop { gap: 14px; margin-top: 30px; } .node { font-size: 28px; padding: 18px 24px; border-radius: 16px; } .arrow { font-size: 26px; }
+.out { font-size: 20px; }
+.qs { gap: 18px; margin-top: 20px; } .q { font-size: 34px; gap: 22px; } .q i { font-size: 34px; width: 34px; }
+.trio { gap: 48px; max-width: 1100px; margin-top: 30px; } .trio b { font-size: 30px; } .trio span { font-size: 20px; }
+#summary .big { font-size: 64px; margin-top: 40px; }
+.row { gap: 32px; }
+.jm { grid-template-columns: 120px repeat(5, 1fr); column-gap: 12px; row-gap: 10px; }
+.jh { font-size: 20px; } .jh i { font-size: 15px; }
+.jl { font-size: 12px; padding-top: 8px; }
+.jd { font-size: 15px; padding: 10px 12px; min-height: 64px; }
+.jt { font-size: 16px; }
+.jn { font-size: 14px; }
+.ji { padding: 10px 12px; } .ji b { font-size: 15px; } .ji span { font-size: 13px; }
+#job { padding: 120px 160px 70px; gap: 16px; }
+
+/* composition: heading anchored at the top, content centred in the space below */
+#problem { justify-content: center; padding-top: 120px; }
+.nums, .methods, .path, .qs, .trio, .ctx, .jm { margin-top: auto; margin-bottom: auto; }
+.slide > .row { margin-top: auto; margin-bottom: auto; }
+.loop { margin-top: auto; } .out { margin-bottom: auto; }
+#context .ctx { margin-bottom: 0; } #context .ps-body { margin-bottom: auto; }
+#summary .big { margin-top: auto; margin-bottom: auto; }
+.num b { font-size: 120px; } .num b small { font-size: 52px; } .num span { font-size: 24px; }
+.q { font-size: 40px; } .q i { font-size: 40px; width: 40px; } .qs { gap: 22px; }
+.trio b { font-size: 36px; } .trio span { font-size: 22px; }
+.node { font-size: 32px; padding: 22px 28px; } .arrow { font-size: 30px; } .out { font-size: 22px; }
+.m span, .path .p span { font-size: 19px; }
+
+/* journey map: breathing room */
+#job { padding: 112px 160px 64px; gap: 14px; }
+#job .ps-h { font-size: 30px; }
+#job .jm { row-gap: 22px; column-gap: 18px; margin-top: 18px; }
+#job .jd { min-height: 0; }
+#job .jt { padding-bottom: 4px; }
+#job .jf { margin: 6px 0 10px; }
+#job .ji, #job .jn { margin-top: 4px; }
+.hmw { display: flex; gap: 40px; align-items: center; }
+.hq { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.hq p { margin: 0; font: 400 21px/1.45 var(--text); color: var(--ink-soft); padding-left: 18px; border-left: 3px solid var(--line); }
+.hq p b { color: var(--ink); } .hq p.parked { opacity: .6; }
+.pr { width: 560px; display: flex; flex-direction: column; gap: 12px; }
+.pc { border: 1.5px solid var(--accent); border-radius: 16px; padding: 18px 22px; display: flex; flex-direction: column; gap: 6px; background: rgba(255,55,95,0.07); }
+.pc b { font: 800 28px/1.1 var(--display); font-stretch: 68%; color: var(--ink); } .pc span { font: 400 19px/1.4 var(--text); color: var(--ink-soft); } .pc i { font-style: normal; font: 500 14px/1.3 var(--text); color: var(--ink-soft); opacity: .8; }
+.sk { align-items: flex-start; }
+.ia { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; align-items: start; }
+.ic { border: 1.5px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.03); }
+.ic b { font: 800 26px/1.1 var(--display); font-stretch: 68%; color: var(--ink); } .ic span { font: 400 16px/1.45 var(--text); color: var(--ink-soft); }
+.ic.hub { border: 2.5px solid var(--accent); background: rgba(255,55,95,0.08); }
+.ic.hub em { font-style: normal; font: 800 22px/1.1 var(--display); font-stretch: 68%; color: var(--accent); margin-top: 6px; } .ic .kids { padding-left: 10px; border-left: 2px solid var(--accent); }
+.hmw, .ia, .sk { margin-top: auto; } #principles .hmw { margin-bottom: auto; }
+.iter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: auto; }
+.it { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.it .shot { object-fit: cover; object-position: top left; }
+.itn { margin: 6px 0 0; font: 700 15px/1.2 var(--text); letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); }
+.itd { margin: 0; font: 400 18px/1.4 var(--text); color: var(--ink-soft); }
+.it.on .shot { border: 2.5px solid var(--accent); }
+#sketches .ps-body { margin-bottom: auto; }
+.dec { display: flex; gap: 48px; align-items: flex-start; margin-top: auto; margin-bottom: auto; }
+.dimg { width: 420px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+.dimg .shot { width: 420px; height: auto; max-height: 470px; object-fit: contain; }
+.dcol { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+.db { display: flex; flex-direction: column; gap: 6px; }
+.dl { margin: 0; font: 400 19px/1.45 var(--text); color: var(--ink-soft); }
+.dl b { color: var(--ink); font-weight: 700; }
+.dt { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 18px; border-top: 1.5px solid var(--line); }
+.dt > div { display: flex; flex-direction: column; gap: 6px; }
+.sys { display: flex; gap: 56px; align-items: flex-start; margin-top: auto; margin-bottom: auto; }
+.sysl { width: 400px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
+.anat { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.anat span { font: 400 15px/1.35 var(--text); color: var(--ink-soft); }
+.anat b { display: inline-grid; place-items: center; width: 20px; height: 20px; margin-right: 6px; border-radius: 10px; background: var(--accent); color: #fff; font: 700 12px/1 var(--text); }
+.sysr { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.sb { display: flex; flex-direction: column; gap: 8px; }
+.tsample { margin: 0; font: 500 34px/1.2 "Noto Sans", "Noto Sans JP", sans-serif; color: var(--ink); }
+.sws { display: flex; gap: 10px; flex-wrap: wrap; }
+.sw { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.sw i { width: 64px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line); }
+.sw span { font: 500 13px/1.2 var(--text); color: var(--ink-soft); }
+.devs { display: flex; gap: 20px; align-items: flex-end; margin-top: auto; }
+.dv { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.dv .itd { max-width: 260px; }
+#responsive .ps-body { margin-bottom: auto; }
+.a11 { margin-top: auto; }
+#a11y .ps-body { margin-bottom: auto; }
+.flowbtn { position: absolute; right: 160px; bottom: 34px; z-index: 4; font: 700 16px/1 var(--text); color: #fff; background: var(--accent); border: 0; border-radius: 999px; padding: 12px 20px; cursor: pointer; box-shadow: 0 6px 20px rgba(255,55,95,0.25); }
+.flowbtn span { margin-left: 6px; }
+.routes[hidden], .ptitle[hidden] { display: none !important; }
+.flowbtn:hover { filter: brightness(1.08); }
+.flowbtn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.slide .source { right: 470px; }
+.proto .ptitle { font: 800 18px/1.2 var(--display); font-stretch: 68%; letter-spacing: .5px; color: #FF8FA6; }
+/* condensed display type, after every font shorthand so it is not reset */
+h1, .big, .q, .q i, .node, .arrow, .trio b, .num b, .ps-h { font-stretch: 68%; }
+</style>
+
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="bar">
+    <div class="dots" id="dots" aria-label="Slides"></div>
+    <div class="nav"><button type="button" id="prev" aria-label="Previous slide">←</button><button type="button" id="next" aria-label="Next slide">→</button></div>
+  </div>
+
+  <section class="slide" id="problem">
+    <p class="eyebrow">ImmerLingo · The problem</p>
+    <h1 class="ps-h">Learners start Japanese for the anime they love, <em>then study it somewhere else.</em></h1>
+    <p class="ps-body">Most of the people I surveyed already learn through <b>anime or TV</b>. But their apps teach words through <b>drills</b>, away from the scenes they care about, and the words don’t hold: <b>half of those who’d tried say they forget</b> what they learned.</p>
+    <p class="ps-q">So the question I set out to answer:<br><b>How might a beginner learn Japanese inside the show they love, and keep the words they meet there?</b></p>
+  </section>
+
+  <section class="slide" id="context">
+    <p class="eyebrow">The context</p>
+    <h2 class="ps-h">How people learn Japanese from anime today</h2>
+    <div class="ctx">
+      <div class="ways">
+        <div class="way"><b>Drill apps</b><span>Duolingo builds a strong daily habit, but <em>drills don’t carry over</em> to real shows.</span></div>
+        <div class="way"><b>Flashcards</b><span>Anki’s spaced review is powerful, but <em>every card is made by hand</em>.</span></div>
+        <div class="way"><b>Subtitle add-ons</b><span>Language Reactor looks words up on Netflix and YouTube, but <em>review happens somewhere else</em>.</span></div>
+        <div class="way"><b>Migaku</b><span>The closest to my idea: look-ups while you watch, cards and stats in one place. But <em>every look-up still breaks the scene</em>.</span></div>
+      </div>
+      <div class="fact">
+        <p class="eyebrow">Japanese learners</p>
+        <p><b>4,000,750</b> learning worldwide</p>
+        <p><b>61%</b> of schools name anime, manga and J-pop as a reason, the most cited</p>
+        <p><b>52,946</b> in India, up 47% in three years</p>
+      </div>
+    </div>
+    <p class="ps-body">My bet: <b>learn before the scene, not only during it.</b> See where you stand, warm up on its words, check yourself, then watch. Or just watch, the way Migaku works.</p>
+    <p class="source">Tools: my competitive audit and Migaku’s Chrome Web Store listing. Learner numbers: Japan Foundation, Survey on Japanese-Language Education Abroad (2024 survey).</p>
+  </section>
+
+  <section class="slide" id="research">
+    <p class="eyebrow">Research</p>
+    <h2 class="ps-h">I studied the learners, the evidence, <em>and myself</em>.</h2>
+    <div class="methods">
+      <div class="m"><p class="eyebrow">Community</p><b>YouTube, Discord, forums</b><span>How learners already teach each other, and where they give up.</span></div>
+      <div class="m"><p class="eyebrow">Evidence</p><b>Every mechanic, checked</b><span>Spaced review, recall, learning from captions: research first, then design.</span></div>
+      <div class="m"><p class="eyebrow">Learners</p><b>52 surveyed · 5 interviewed</b><span>38 had tried learning a language. Interviews across five cities.</span></div>
+      <div class="m me"><p class="eyebrow">Myself</p><b>3 months as the test subject</b><span>Tried every method, and went deepest where the evidence was strongest: <em>200 mature Anki words</em>.</span></div>
+    </div>
+    <p class="source">Survey: 6–15 June, self-selected. Interviews: Bangalore, Guwahati, Delhi, Pune, Gwalior.</p>
+  </section>
+
+  <section class="slide" id="who">
+    <p class="eyebrow">Who it’s for</p>
+    <h2 class="ps-h">Three learners, one path. <em>I designed for the middle.</em></h2>
+    <div class="path">
+      <div class="p"><p class="eyebrow">The fan</p><b>Watches with English subtitles</b><span>Learning is a wish, not a habit yet. For a quarter of Duolingo’s Japanese learners, fun like anime is the top reason.</span></div>
+      <div class="arrowr">→</div>
+      <div class="p on"><p class="eyebrow">The beginner · focus</p><b>Reads hiragana, wants to follow a show</b><span>Needs every reading and English close by. Most likely to give up after the first real episode.</span></div>
+      <div class="arrowr">→</div>
+      <div class="p"><p class="eyebrow">The immersion learner</p><b>Anime plus Anki, every day</b><span>Served well today by Migaku and Language Reactor. Who the beginner wants to become.</span></div>
+    </div>
+    <p class="source">Duolingo with Crunchyroll, 2023 (company survey data). Immersion routines: Refold and r/Refold community posts. Plus my survey, 5 interviews and three months as a learner.</p>
+  </section>
+
+  <section class="slide" id="job">
+    <p class="eyebrow">The job</p>
+    <h2 class="ps-h">“When I watch a show I love, help me understand it, <em>without stopping the fun</em>, so I can feel I’m really learning.”</h2>
+    <div class="jm">
+      <div></div>
+      <div class="jh"><i>01</i> Starts</div><div class="jh"><i>02</i> Collects</div><div class="jh"><i>03</i> First episode</div><div class="jh"><i>04</i> Grinds</div><div class="jh"><i>05</i> Doubts</div>
+      <div class="jl">Doing</div>
+      <div class="jd">Downloads anime and manga enthusiastically</div><div class="jd">Curates an immersion library by content type</div><div class="jd">Opens the first episode, understands nothing, tries another</div><div class="jd">Pauses every three seconds to look up words</div><div class="jd">Compares progress to others, considers quitting</div>
+      <div class="jl">Thinking</div>
+      <div class="jt">“I’m going to learn the natural way!”</div><div class="jt">“So much authentic content to explore!”</div><div class="jt">“Wait… I don’t understand anything at all”</div><div class="jt">“My brain hurts from all this effort”</div><div class="jt">“Maybe I’m just not good at languages”</div>
+      <div class="jl">Feeling</div>
+      <div class="jf">
+        <svg viewBox="0 0 1270 190" role="img" aria-label="Feeling: excited, inspired, then confused, drained and defeated">
+          <line x1="0" y1="88" x2="1270" y2="88" stroke="rgba(255,255,255,0.16)" stroke-width="2" stroke-dasharray="6 8"/>
+          <path d="M 127 58 C 230 40, 300 32, 381 38 S 540 120, 635 130 S 820 142, 889 146 S 1060 158, 1143 162" fill="none" stroke="url(#g2)" stroke-width="5" stroke-linecap="round"/>
+          <defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#BDBAC4"/><stop offset="0.38" stop-color="#BDBAC4"/><stop offset="0.52" stop-color="#FF375F"/><stop offset="1" stop-color="#FF375F"/></linearGradient></defs>
+          <g font-family="Archivo, Arial Narrow, Arial, sans-serif" font-weight="800" font-size="26" text-anchor="middle" style="font-stretch:68%">
+            <circle cx="127" cy="58" r="10" fill="#BDBAC4"/><text x="127" y="28" fill="#F2F0F5">Excited</text>
+            <circle cx="381" cy="38" r="10" fill="#BDBAC4"/><text x="381" y="10" fill="#F2F0F5">Inspired</text>
+            <circle cx="635" cy="130" r="10" fill="#FF375F"/><text x="635" y="176" fill="#FF375F">Confused</text>
+            <circle cx="889" cy="146" r="10" fill="#FF375F"/><text x="889" y="116" fill="#FF375F">Drained</text>
+            <circle cx="1143" cy="162" r="10" fill="#FF375F"/><text x="1143" y="132" fill="#FF375F">Defeated</text>
+          </g>
+        </svg>
+      </div>
+      <div class="jl">ImmerLingo</div>
+      <div class="jn">No help needed yet</div><div class="jn">No help needed yet</div>
+      <div class="ji"><b>Know how much you’ll follow before pressing play</b><span>Media detail · fit %</span></div>
+      <div class="ji"><b>Look up a word without leaving the scene</b><span>Player · word card</span></div>
+      <div class="ji"><b>See your own gain: 76% → 84% by episode 3</b><span>Episode end · sample data</span></div>
+    </div>
+    <p class="source">Composite journey from interviews, forum threads and my own three months; quotes are illustrative. Japan Foundation data, via Melbourne Asia Review.</p>
+  </section>
+
+  <section class="slide" id="principles">
+    <p class="eyebrow">Ideation</p>
+    <h2 class="ps-h">Four questions became <em>three principles</em>.</h2>
+    <div class="hmw">
+      <div class="hq">
+        <p>How might we turn watching into small learning moments, <b>without breaking the flow?</b></p>
+        <p>How might we tie progress to <b>episodes watched</b>, so milestones feel real?</p>
+        <p>How might we show help <b>only when it’s wanted?</b></p>
+        <p class="parked">How might we fit in speaking practice? <b>Parked for later.</b></p>
+      </div>
+      <div class="arrowr">→</div>
+      <div class="pr">
+        <div class="pc"><b>Immersion first</b><span>Learn from real shows, not textbook dialogues.</span><i>Peacock 1997</i></div>
+        <div class="pc"><b>Active recall</b><span>Remember by retrieving on a schedule, not re-reading.</span><i>Karpicke &amp; Roediger 2008 · Kang 2016</i></div>
+        <div class="pc"><b>One experience</b><span>Watch, look up, save and review in one place.</span><i>Mayer &amp; Chandler 2001 · Sweller 1988</i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="sketches">
+    <p class="eyebrow">Ideation</p>
+    <h2 class="ps-h">One screen, <em>four versions</em>.</h2>
+    <div class="iter">
+      <div class="it"><img class="shot" data-src="imgw/loop-sketches.webp" decoding="async" alt="iPad sketches: home is a progress dashboard with level progress and a study streak" style="width:100%;height:250px"><p class="itn">01 · Sketch</p><p class="itd">Home was a progress dashboard.</p></div>
+      <div class="it"><img class="shot" data-src="imgw/s1-proto.webp" decoding="async" alt="First coded prototype: What do you want to watch? A practice scene and one YouTube clip" style="width:100%;height:250px"><p class="itn">02 · First coded prototype</p><p class="itd">No test. A pause after every line with new words.</p></div>
+      <div class="it"><img class="shot" data-src="imgw/s3-onboard1.webp" decoding="async" alt="Onboarding prototype: six shows, each with how it sounds, and Start" style="width:100%;height:250px"><p class="itn">03 · Onboarding</p><p class="itd">Six shows rated by how they sound. Six words, then a short scene.</p></div>
+      <div class="it on"><img class="shot" data-src="imgw/s4-onboard2.webp" decoding="async" alt="Onboarding v2: the same six shows, built to match the hi-fi Figma frames" style="width:100%;height:250px"><p class="itn">04 · After 12 tests</p><p class="itd">A guided first run, and the review schedule shown as real dates.</p></div>
+    </div>
+    <p class="ps-body">Sketched by hand, wireframed and designed in Figma, then built and changed as clickable prototypes with Claude, so every version could be used, not just looked at.</p>
+  </section>
+
+  <section class="slide" id="structure">
+    <p class="eyebrow">Ideation</p>
+    <h2 class="ps-h">Six sections, <em>one hub</em>.</h2>
+    <div class="ia">
+      <div class="ic"><b>Today</b><span>Tonight’s plan · Continue · This week</span></div>
+      <div class="ic hub"><b>Library</b><span>Show &amp; episodes · Warm-up</span><em>Player</em><span class="kids">Word card · Card creator · Explain this line · Settings · Episode end</span></div>
+      <div class="ic"><b>Read</b><span>Novel reader · Manga reader</span></div>
+      <div class="ic"><b>Learn</b><span>Courses · Lessons · Reviews</span></div>
+      <div class="ic"><b>Dictionary</b><span>Search · Entry</span></div>
+      <div class="ic"><b>Stats</b><span>Progress by medium · Settings</span></div>
+    </div>
+    <p class="ps-body">Every path leads into the player and back out. Desktop gets a sidebar, tablet a rail, phone a tab bar.</p>
+  </section>
+
+
+  <section class="slide" id="d-start">
+    <button type="button" class="flowbtn" data-flow="d-start" aria-label="See it in the prototype: Pick a show, warm up, watch">See it in the prototype <span>→</span></button>
+    <p class="eyebrow">Decision 1 of 4</p>
+    <h2 class="ps-h">Start from a show, and learn its words <em>before the scene.</em></h2>
+    <div class="dec">
+      <div class="dimg"><img class="shot" data-src="imgw/warm-card.webp" decoding="async" alt="Onboarding warm-up card: いらっしゃいませ, welcome (said to customers), the line it appears in, and Again, Hard, Good, Easy"><p class="cap">Warm-up: six words from the scene, graded like flashcards</p></div>
+      <div class="dcol">
+        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>Placement quiz.</b> Asks people to judge themselves before they see anything.</p><p class="dl"><b>Self-rating.</b> Same problem, and two setup steps before any content.</p><p class="dl"><b>Course first.</b> Migaku’s order. The show arrives weeks later.</p></div>
+        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">32 of 52 already learn through anime or TV.</p><p class="dl">The Japanese-only rewatch was the moment testers liked most.</p><p class="dl">Knowing the words before a scene raises how much of it you follow.</p></div>
+        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">Content in the first minute. Placement comes from how you watch.</p></div><div><p class="eyebrow">Give up</p><p class="dl">No placement before the first scene, so the first scene must suit everyone. First-timers still needed guiding.</p></div></div>
+      </div>
+    </div>
+    <p class="source">Survey W3. Test findings #01, #04. Coverage: Hu &amp; Nation 2000; Durbahn et al. 2024.</p>
+  </section>
+
+  <section class="slide" id="d-pause">
+    <button type="button" class="flowbtn" data-flow="d-pause" aria-label="See it in the prototype: The three learning modes">See it in the prototype <span>→</span></button>
+    <p class="eyebrow">Decision 2 of 4</p>
+    <h2 class="ps-h">Pause after each line with new words, <em>with two other ways to watch.</em></h2>
+    <div class="dec">
+      <div class="dimg"><img class="shot" data-src="imgw/modes.webp" decoding="async" alt="Prototype settings: Pause on new words (default), Just watch, Primed listening"><p class="cap">Three modes are built; pausing is the default</p></div>
+      <div class="dcol">
+        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>Pause on every look-up.</b> Stops even more often.</p><p class="dl"><b>Never pause.</b> A beginner can’t read a line while it plays on.</p><p class="dl"><b>Dual subtitles.</b> Nothing to save, so nothing to review.</p></div>
+        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Stopping mid-task costs the most; stopping at a break costs less.</p><p class="dl">Learner-paced segments help beginners, and few pause on their own.</p><p class="dl">In testing, even hovering over a word broke the flow.</p></div>
+        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">Time to read at every line end, never mid-line.</p></div><div><p class="eyebrow">Give up</p><p class="dl">The feeling of just watching. So it’s a mode, and the default gets an A/B test.</p></div></div>
+      </div>
+    </div>
+    <p class="source">Adamczyk &amp; Bailey 2004; Mayer &amp; Chandler 2001; Biard, Cojean &amp; Jamet 2018. Test finding #03.</p>
+  </section>
+
+  <section class="slide" id="d-number">
+    <button type="button" class="flowbtn" data-flow="d-number" aria-label="See it in the prototype: Shows rated by how much you’ll follow">See it in the prototype <span>→</span></button>
+    <p class="eyebrow">Decision 3 of 4</p>
+    <h2 class="ps-h">Show how much you’ll follow, <em>as a known-word %.</em></h2>
+    <div class="dec">
+      <div class="dimg"><img class="shot" data-src="imgw/media-panel.webp" decoding="async" alt="Case-study panel: 82% of this show’s words, a stretch fit, with the bands shown"><p class="cap">Case-study design · sample learner</p></div>
+      <div class="dcol">
+        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>JLPT level tags.</b> An exam level, not this show.</p><p class="dl"><b>Difficulty stars.</b> Same for every learner.</p><p class="dl"><b>A quiz after each scene.</b> Turns watching back into a test.</p></div>
+        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Comfortable comprehension needs about 95–98% of words known.</p><p class="dl">But learners skip words they don’t know, and over-claim what they know.</p></div>
+        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">One number per show, before you press play, at no extra effort.</p></div><div><p class="eyebrow">Give up</p><p class="dl">Accuracy: it runs high. Next: a range, a “seen, not confirmed” state and a three-word check.</p></div></div>
+      </div>
+    </div>
+    <p class="source">Hu &amp; Nation 2000; Durbahn et al. 2024; Prichard 2008; Meara &amp; Buxton 1987.</p>
+  </section>
+
+  <section class="slide" id="d-ai">
+    <button type="button" class="flowbtn" data-flow="d-ai" aria-label="See it in the prototype: Explain this line, with its labels">See it in the prototype <span>→</span></button>
+    <p class="eyebrow">Decision 4 of 4</p>
+    <h2 class="ps-h">Explain any line with AI, <em>and say what it is.</em></h2>
+    <div class="dec">
+      <div class="dimg"><img class="shot" data-src="imgw/ai-label.webp" decoding="async" alt="Prototype: Written for this prototype. In the product: an AI explanation, grammar checked against a reference dictionary. Report a mistake."><p class="cap">Prototype: the label says what is and isn’t real</p></div>
+      <div class="dcol">
+        <div class="db"><p class="eyebrow">Cut</p><p class="dl"><b>No AI, written notes only.</b> Can’t cover every line of every show.</p><p class="dl"><b>AI with no label.</b> A beginner can’t tell a wrong answer from a right one.</p><p class="dl"><b>AI for single words only.</b> Leaves the real question: why it was said that way.</p></div>
+        <div class="db"><p class="eyebrow">Evidence</p><p class="dl">Say what the system can do, and how well. Let people correct it.</p><p class="dl">Show confidence in words, not a precise percentage.</p></div>
+        <div class="dt"><div><p class="eyebrow">Gain</p><p class="dl">An explanation for any line, at scale.</p></div><div><p class="eyebrow">Give up</p><p class="dl">Certainty. A label shows a mistake only after the fact, so grammar gets high, medium or low confidence.</p></div></div>
+      </div>
+    </div>
+    <p class="source">Amershi et al. 2019, Guidelines for Human-AI Interaction (G1, G2, G9, G11); Google PAIR Guidebook.</p>
+  </section>
+
+  <section class="slide" id="system">
+    <p class="eyebrow">Design system</p>
+    <h2 class="ps-h">One small system, <em>two scripts, two themes</em>.</h2>
+    <div class="sys">
+      <div class="sysl">
+        <img class="shot" data-src="imgw/word-card-m.webp" decoding="async" alt="Word card: こんばんは with audio and a New label, tags Greeting and JLPT N5, the meaning, the meaning in this line, Save card and Explain, Mark as known and Ignore word" style="width:400px;height:309px">
+        <div class="anat"><span><b>1</b> Word, reading, audio, status</span><span><b>2</b> Where it’s common, JLPT level</span><span><b>3</b> Meanings</span><span><b>4</b> Meaning in this line</span><span><b>5</b> Save, explain</span><span><b>6</b> Known, ignore</span></div>
+      </div>
+      <div class="sysr">
+        <div class="sb"><p class="eyebrow">Type</p><p class="tsample"><span lang="ja">こんばんは</span> Good evening</p><p class="dl">Noto Sans with Noto Sans JP: Latin and Japanese stay clear at small subtitle sizes.</p></div>
+        <div class="sb"><p class="eyebrow">Colour</p>
+          <div class="sws"><div class="sw"><i style="background:#0E0E10"></i><span>Base</span></div><div class="sw"><i style="background:#18181B"></i><span>Raised</span></div><div class="sw"><i style="background:#E6E6EA"></i><span>Text</span></div><div class="sw"><i style="background:#C23A4F"></i><span>Accent</span></div><div class="sw"><i style="background:#E8838F"></i><span>Accent text</span></div></div>
+          <div class="sws"><div class="sw"><i style="background:#73B4E2"></i><span>L0</span></div><div class="sw"><i style="background:#5FC57F"></i><span>L1</span></div><div class="sw"><i style="background:#5B80CE"></i><span>L2</span></div><div class="sw"><i style="background:#EEC542"></i><span>L3</span></div><div class="sw"><i style="background:#F78C49"></i><span>L4</span></div><div class="sw"><i style="background:#DD4F71"></i><span>L5</span></div></div>
+          <p class="dl">Tokens in HSBA with transparency layers, so surfaces and states hold in dark and light themes. Six level colours rate how hard a show is.</p></div>
+        <div class="sb"><p class="eyebrow">Components</p><p class="dl">Cards, buttons and inputs with defined states. Every screen is built from one set.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="responsive">
+    <p class="eyebrow">Responsive and adaptation</p>
+    <h2 class="ps-h">Same scene, <em>four screens</em>.</h2>
+    <div class="devs">
+      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-d.webp" decoding="async" alt="Desktop: hovering a word opens its card over the subtitle" style="width:416px;height:310px"><p class="itn">Desktop</p><p class="itd">Hover a word. The card opens over the line.</p></div>
+      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-tl.webp" decoding="async" alt="Tablet landscape: the word card docks below the video, transcript on the right" style="width:444px;height:310px"><p class="itn">Tablet, landscape</p><p class="itd">Tap. The card docks below; transcript beside.</p></div>
+      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-tp.webp" decoding="async" alt="Tablet portrait: card below the video, transcript below that" style="width:216px;height:310px"><p class="itn">Tablet, portrait</p><p class="itd">Transcript moves under.</p></div>
+      <div class="dv"><img class="shot" data-src="imgw/hover-lookup-m.webp" decoding="async" alt="Phone: the word card becomes a sheet under the player" style="width:143px;height:310px"><p class="itn">Phone</p><p class="itd">A sheet under the player.</p></div>
+    </div>
+    <p class="ps-body">Navigation follows the screen: a sidebar of six, a rail of six icons, then a tab bar of five, where Library and Read merge and Stats and Settings become “You”.</p>
+  </section>
+
+  <section class="slide" id="a11y">
+    <p class="eyebrow">Accessibility</p>
+    <h2 class="ps-h">Readable for everyone, <em>and honest about the gaps</em>.</h2>
+    <div class="trio a11">
+      <div class="h"><b>Contrast</b><span>Body text 15.5:1 in dark, 16.4:1 in light. All six level colours pass AA for text. The accent fill is 3.7:1 in dark, so it’s for shapes, never text.</span></div>
+      <div class="c"><b>Not colour alone</b><span>A new word has an underline, a word you’re practising a flame, a known word no line. The card also names the status.</span></div>
+      <div class="o"><b>More than one way in</b><span>Every hover has a tap. Keys: Alt+T look up, R replay, A and D for lines, S save. Slow to 0.75×, readings over kanji, reduced motion respected.</span></div>
+    </div>
+    <p class="ps-body">Next to check: screen readers on the subtitle layer, and testing with people who use them.</p>
+  </section>
+</div>
+
+<section class="proto" id="proto" aria-label="Live prototype">
+  <div class="top">
+    <button type="button" id="protoBack">← Slides</button>
+    <span class="ptitle" id="ptitle"></span>
+    <div class="routes" id="routes" aria-label="Prototype options"></div>
+  </div>
+  <iframe id="protoFrame" title="ImmerLingo prototype" src="about:blank"></iframe>
+</section>
+
+<aside class="notes" id="notes" hidden aria-label="Speaker notes"></aside>
+
+<script src="notes.js"></script>
+<script>
+(function () {
+  const slides = [...document.querySelectorAll('.slide')];
+  const ids = slides.map(s => s.id).concat('prototype');
+  const dots = document.getElementById('dots');
+  ids.forEach((id, i) => { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Slide ' + (i + 1)); b.onclick = () => go(i); dots.appendChild(b); });
+
+  const routes = [['Warm-up', 'v2/index.html?flow=warm'], ['Onboarding', 'v2/index.html?flow=d1'], ['Full prototype', 'proto/index.html#/start']];
+  const FLOWS = {
+    'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=d1'],
+    'd-pause': ['Decision 2 · When to pause', 'proto/index.html?demo=modes#/play/practice'],
+    'd-number': ['Decision 3 · Known-word %', 'proto/index.html#/discover'],
+    'd-ai': ['Decision 4 · Explain this line', 'proto/index.html?demo=explain#/play/practice']
+  };
+  const frame = document.getElementById('protoFrame'), rbox = document.getElementById('routes'), ptitle = document.getElementById('ptitle');
+  let flowFrom = -1;   // slide a decision flow was opened from; -1 = the last slide's prototype
+  function load(src) {
+    const run = () => { frame.src = 'about:blank'; setTimeout(() => { frame.src = src; frame.focus(); }, 30); };
+    if (document.readyState === 'complete') run(); else addEventListener('load', run, { once: true });
+  }
+  function pickRoute(i) { [...rbox.children].forEach((x, j) => x.classList.toggle('on', j === i)); load(routes[i][1]); }
+  routes.forEach(([n], i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = n;
+    b.onclick = () => pickRoute(i); rbox.appendChild(b);
+  });
+  function openFlow(id) {
+    flowFrom = cur; const [t, src] = FLOWS[id];
+    ptitle.textContent = t; ptitle.hidden = false; rbox.hidden = true;
+    document.getElementById('protoBack').textContent = '← Back to slide';
+    document.getElementById('proto').classList.add('on'); load(src);
+  }
+  function closeFlow() { flowFrom = -1; frame.src = 'about:blank'; go(cur); }
+  document.querySelectorAll('.flowbtn').forEach(b => b.onclick = () => openFlow(b.dataset.flow));
+
+  const stage = document.getElementById('stage');
+  function fit() { const w = innerWidth, h = innerHeight, k = Math.min(w / 1600, h / 900);
+    stage.style.transform = `scale(${k})`; stage.style.left = Math.max(0, (w - 1600 * k) / 2) + 'px'; stage.style.top = Math.max(0, (h - 900 * k) / 2) + 'px'; }
+  addEventListener('resize', fit); fit();
+
+  const notes = document.getElementById('notes');
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  let cur = 0;
+  function renderNotes() {
+    const n = (window.NOTES || {})[ids[cur]]; if (!n) { notes.innerHTML = ''; return; }
+    notes.innerHTML = `<h4>${cur + 1}. ${esc(n.title)}</h4><p class="k">Say</p><ul>${n.say.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` +
+      (n.facts.length ? `<p class="k">Facts and sources</p><ul>${n.facts.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '') +
+      `<p class="hint">Only you see this when you aren’t sharing. Press N to hide. While presenting, open notes.html on another screen instead.</p>`;
+  }
+  function hydrate(j) { const s = slides[j]; if (!s) return; s.querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; im.removeAttribute('data-src'); }); }
+  function go(i) {
+    cur = Math.max(0, Math.min(ids.length - 1, i));
+    hydrate(cur); hydrate(cur + 1);
+    const isProto = cur === ids.length - 1;
+    slides.forEach((s, j) => s.classList.toggle('on', j === cur));
+    document.getElementById('proto').classList.toggle('on', isProto);
+    flowFrom = -1; ptitle.hidden = !isProto; rbox.hidden = !isProto;
+    document.getElementById('protoBack').textContent = '← Slides';
+    if (isProto) { ptitle.textContent = 'Live prototype'; if (!rbox.querySelector('.on')) pickRoute(0); }
+    else if (frame.src !== 'about:blank') frame.src = 'about:blank';
+    [...dots.children].forEach((b, j) => b.classList.toggle('on', j === cur));
+    renderNotes();
+    if (location.hash.slice(1) !== ids[cur]) history.replaceState(null, '', location.pathname + location.search + '#' + ids[cur]);
+  }
+  document.getElementById('prev').onclick = () => go(cur - 1);
+  document.getElementById('next').onclick = () => go(cur + 1);
+  document.getElementById('protoBack').onclick = () => flowFrom >= 0 ? closeFlow() : go(ids.length - 2);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'n' || e.key === 'N') { notes.hidden = !notes.hidden; return; }
+    if (flowFrom >= 0) { if (e.key === 'Escape') closeFlow(); return; }
+    if (cur === ids.length - 1) { if (e.key === 'Escape') go(ids.length - 2); return; }
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+  });
+  function fromHash() { const i = ids.indexOf(location.hash.slice(1)); go(i < 0 ? 0 : i); }
+  addEventListener('hashchange', fromHash); fromHash();
+})();
+</script>
+
+</body>
+</html>

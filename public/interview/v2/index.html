@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ImmerLingo · Onboarding prototype v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* ImmerLingo onboarding · prototype v2
+   Built 1:1 from Figma Immerlingo-2023, page "2026 · 02b Hi-fi — Desktop" (OB-01 … OB-10), Theme = Dark.
+   The app is a 1440 × 1024 stage scaled to fit the window, so every screen matches its Figma frame.
+   New in v2 (from the 12-person test): a guided first run, and flashcards in three moments
+   (first save, first review, a week later). */
+:root{
+  --base:#191919; --raised:rgba(38,38,38,.9); --overlay:rgba(51,51,51,.9);
+  --t1:#fff; --t2:rgba(255,255,255,.86); --t3:rgba(255,255,255,.6);
+  --stroke:rgba(255,255,255,.12); --stroke-strong:rgba(255,255,255,.6); --fill:rgba(255,255,255,.06);
+  --accent:#d84b6c; --accent-fill:rgba(216,75,108,.10); --accent-stroke:rgba(216,75,108,.2);
+  --learning:#b48af0; --learning-fill:rgba(180,138,240,.12);
+  --success:#77c7af; --success-fill:rgba(119,199,175,.10); --danger:#ff9c9c;
+  --shadow:0 12px 32px rgba(0,0,0,.35);
+  --sans:"Noto Sans",system-ui,sans-serif; --jp:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0b0b0b;overflow:hidden}
+body{font:16px/24px var(--sans);color:var(--t1);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+[lang=ja]{font-family:var(--jp)}
+[hidden]{display:none!important}
+svg.i{display:block;fill:currentColor}
+
+/* ---------- stage: the 1440 × 1024 app, scaled to the window ---------- */
+#stage{position:absolute;left:0;top:0;width:1440px;height:1024px;background:var(--base);overflow:hidden;transform-origin:0 0}
+.screen{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .32s var(--ease),visibility 0s .32s}
+.screen.on{opacity:1;visibility:visible;transition:opacity .32s var(--ease)}
+
+/* ---------- shared pieces ---------- */
+.logo{position:absolute;left:120px;top:48px;display:flex;align-items:center;gap:10px;font:600 18px/28px var(--sans)}
+.logo i{width:28px;height:28px;border-radius:14px;background:#fff;display:grid;place-items:center}
+.logo i::after{content:"";width:12px;height:12px;border-radius:6px;background:#bc002d}
+.eyebrow{font:600 14px/20px var(--sans);letter-spacing:.06em;color:var(--t2)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:1000px;padding:12px 24px;font:600 18px/24px var(--sans);white-space:nowrap;transition:transform .12s var(--ease),filter .15s,background .15s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.secondary{background:var(--fill);box-shadow:inset 0 0 0 1px var(--stroke);color:#fff}
+.btn.secondary:hover{background:rgba(255,255,255,.1)}
+.btn.text{padding:8px 0;font:600 16px/24px var(--sans);color:var(--t2)}
+.btn.text:hover{color:#fff}
+.btn.sm{padding:8px 12px;font:600 14px/20px var(--sans)}
+.btn.textsm{padding:8px 0;font:600 14px/20px var(--sans);color:var(--t2)}
+.btn.textsm:hover{color:#fff}
+.btn svg{width:20px;height:20px}
+.btn.sm svg{width:16px;height:16px}
+.badge{display:inline-flex;align-items:center;gap:4px;height:30px;padding:4px 12px;border-radius:1000px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--stroke);font:600 14px/20px var(--sans);color:var(--t2);white-space:nowrap}
+.badge.learning{color:var(--learning);box-shadow:inset 0 0 0 1px rgba(180,138,240,.5)}
+.badge.known{color:var(--success);box-shadow:inset 0 0 0 1px rgba(119,199,175,.5)}
+
+/* ---------- OB-01 · Pick a show ---------- */
+#pick .content{position:absolute;left:120px;top:48px;width:1200px}
+#pick .eyebrow{position:absolute;left:0;top:76px}
+#pick h1{position:absolute;left:0;top:104px;font:600 40px/50px var(--sans)}
+#pick .lead{position:absolute;left:0;top:164px;font:400 18px/28px var(--sans);color:var(--t2)}
+#shows{position:absolute;left:0;top:232px;width:1200px;display:flex;gap:16px}
+.show{flex:1 1 0;min-width:0;height:390px;border-radius:16px;padding:8px 8px 14px;display:flex;flex-direction:column;gap:8px;text-align:left;box-shadow:inset 0 0 0 1px var(--stroke);transition:box-shadow .2s,background .2s}
+.show:hover{box-shadow:inset 0 0 0 1px var(--stroke-strong)}
+.show.sel{background:var(--raised);box-shadow:inset 0 0 0 2px var(--accent)}
+.show .cover{width:168px;height:220px;border-radius:10px;background-size:cover;background-position:center;flex:none}
+.show b{font:600 16px/24px var(--sans);display:block}
+.show .meta{display:flex;flex-direction:column;gap:8px;align-items:flex-start;font:400 14px/20px var(--sans);color:var(--t2)}
+.show .like{font:400 14px/20px var(--sans);color:var(--t3)}
+#pick .foot{position:absolute;left:0;top:654px;width:1200px;height:48px;display:flex;align-items:center;gap:16px}
+#pick .foot p{flex:1;color:var(--t2)}
+
+/* ---------- OB-02/03/07 · Deck (warm-up and practise) ---------- */
+.deckwrap{position:absolute;inset:0 0 48px;display:grid;place-items:center}
+.deck{width:560px;display:flex;flex-direction:column;gap:20px}
+.deck .head{display:flex;align-items:flex-start;height:50px}
+.deck .head .tc{flex:1;display:flex;flex-direction:column;gap:6px}
+.counts{display:flex;gap:14px;font:600 16px/24px var(--sans);font-variant-numeric:tabular-nums}
+.counts .n{color:var(--learning)}.counts .l{color:var(--danger)}.counts .r{color:var(--success)}
+.counts .cur{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.deck .skip{padding:8px 0;font:600 14px/20px var(--sans);color:var(--t2)}
+.deck .skip:hover{color:#fff}
+.steps{display:flex;gap:6px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--fill);transition:background .3s}
+.steps i.on{background:var(--accent)}
+.fc{width:560px;border-radius:20px;background:var(--raised);box-shadow:inset 0 0 0 1px var(--stroke);padding:56px 40px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;cursor:pointer}
+.fc.back{padding:40px;cursor:default}
+.fc .word{font:700 52px/56px var(--jp)}
+.fc hr{align-self:stretch;margin:0;border:0;height:1px;background:var(--stroke)}
+.fc .mean{font:600 20px/28px var(--sans)}
+.fc .line{font:400 18px/30px var(--jp);color:var(--t2)}
+.fc .tr{font:400 16px/24px var(--sans);color:var(--t2)}
+.say{width:36px;height:36px;border-radius:999px;background:var(--fill);display:grid;place-items:center}
+.say:hover{background:rgba(255,255,255,.12)}
+.say svg{width:18px;height:18px}
+.deck .actions{display:flex;flex-direction:column;align-items:center;gap:12px}
+.grades{display:flex;gap:12px}
+.grade{display:flex;flex-direction:column;align-items:center;gap:6px}
+.grade em{font:400 14px/20px var(--sans);font-style:normal;color:var(--t3)}
+.hint{font:400 14px/20px var(--sans);color:var(--t3);white-space:pre}
+.fc-in{animation:fcIn .36s var(--ease) both}
+@keyframes fcIn{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+
+/* ---------- OB-04/05/08 · Watch ---------- */
+#watch .bar{position:absolute;left:0;top:0;width:1440px;height:52px;display:flex;align-items:center;gap:12px;padding:0 16px 0 8px;background:var(--base)}
+#watch .bar .stop{display:flex;align-items:center;gap:8px;font:600 16px/24px var(--sans);color:var(--t2)}
+#watch .bar .stop:hover{color:#fff}
+#watch .bar .stop svg{width:18px;height:18px}
+#watch .bar .title{flex:1;font:400 14px/20px var(--sans);color:var(--t2)}
+#scene{position:absolute;left:0;top:52px;width:1440px;height:900px;overflow:hidden;background:#0b0f1a}
+.shot{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .9s ease}
+.shot.on{opacity:1}
+#scene .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.75) 100%);pointer-events:none}
+#scene .credit{position:absolute;right:16px;top:12px;font:400 11px/20px var(--sans);color:var(--t2);pointer-events:none}
+#tip{position:absolute;left:16px;top:16px;height:56px;display:flex;align-items:center;gap:16px;padding:10px 12px 10px 16px;border-radius:10px;background:var(--overlay);font:600 16px/24px var(--sans);z-index:6}
+#tip button{padding:8px 12px;border-radius:1000px;font:600 14px/20px var(--sans)}
+#tip button:hover{background:var(--fill)}
+.subs{position:absolute;left:0;right:0;bottom:56px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:3;pointer-events:none}
+.jp{display:flex;align-items:flex-end;pointer-events:auto;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.tok{display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 2px 0;border-radius:6px;transition:background .15s}
+.tok .fu{font:500 16px/24px var(--jp);color:var(--t2);white-space:nowrap}
+.tok .w{font:500 32px/48px var(--jp)}
+.tok .ul{align-self:stretch;height:3px;border-radius:2px;background:transparent}
+.tok .mk{width:16px;height:16px;color:var(--learning)}
+.tok .mk svg{width:14px;height:14px;margin:1px}
+.tok.new .ul{background:var(--accent)}
+.tok.saved .ul{background:var(--learning)}
+.tok.sel{background:var(--accent-fill)}
+.tok.saved.sel{background:var(--learning-fill)}
+.tok.t{cursor:pointer}
+.tok.t:hover{background:rgba(255,255,255,.08)}
+.tok.sel,.tok.sel:hover{background:var(--accent-fill)}
+.tok.saved.sel,.tok.saved.sel:hover{background:var(--learning-fill)}
+.punct{padding:0 2px 14px;font:500 32px/48px var(--jp)}
+.en{font:400 18px/28px var(--sans);text-shadow:0 1px 3px rgba(0,0,0,.8);pointer-events:auto}
+.show-en{pointer-events:auto;padding:4px 12px;border-radius:999px;font:600 14px/20px var(--sans);color:var(--t2);background:rgba(0,0,0,.35)}
+.controls{position:absolute;left:0;top:952px;width:1440px;height:72px;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--base)}
+.controls .pp{width:24px;height:24px;display:grid;place-items:center}
+.controls .pp svg{width:20px;height:20px}
+.track{flex:1;height:6px;border-radius:3px;background:var(--fill);position:relative;cursor:default}
+.track i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:#fff}
+.time{font:400 14px/20px var(--sans);color:var(--t2);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* word card (OB-05) */
+#card{position:absolute;width:420px;padding:20px;border-radius:20px;background:var(--overlay);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 12px 32px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);display:flex;flex-direction:column;gap:12px;z-index:8;transform-origin:var(--cx) 100%;animation:cardIn .2s var(--ease) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
+#card .caret{position:absolute;left:calc(var(--cx) - 10px);bottom:-10px;width:20px;height:10px}
+#card .caret svg{display:block;width:20px;height:10px;fill:rgba(51,51,51,.9)}
+#card .hd{display:flex;align-items:center;gap:8px;height:36px}
+#card .hd .wd{font:700 24px/36px var(--jp)}
+#card .hd .rd{font:500 16px/24px var(--jp);color:var(--t2)}
+#card .hd .spk{width:20px;height:20px;color:var(--t2)}
+#card .hd .spk:hover{color:#fff}
+#card .hd .spk svg{width:20px;height:20px}
+#card .hd .sp{flex:1}
+#card .tags{display:flex;gap:6px}
+#card .def{font:400 16px/24px var(--sans)}
+#card .here{font:400 14px/20px var(--sans);color:var(--t2)}
+#card .act{display:flex;gap:8px;align-items:flex-start}
+#card .act .secondary{height:38px}
+#card .more{display:flex;gap:16px}
+#card .ex{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:10px;background:var(--fill);font:400 14px/20px var(--sans);color:var(--t2)}
+#card .ex b{font:500 16px/24px var(--jp);color:#fff}
+
+/* ---------- OB-06/09 · Summary ---------- */
+.sumwrap{position:absolute;inset:0;display:grid;place-items:center}
+.sum{width:600px;padding:32px;border-radius:20px;background:var(--raised);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:20px}
+.sum .hdg{display:flex;flex-direction:column;gap:8px}
+.sum .big{font:600 32px/42px var(--sans)}
+.sum .sub{font:400 16px/24px var(--sans);color:var(--t2)}
+.next{display:flex;gap:12px;padding:16px;border-radius:12px;background:var(--fill)}
+.next .dot{width:8px;height:8px;border-radius:4px;margin-top:6px;flex:none}
+.next .tx{display:flex;flex-direction:column;gap:4px}
+.next b{font:600 16px/24px var(--sans)}
+.next span{font:400 14px/20px var(--sans);color:var(--t2)}
+.grp{display:flex;flex-direction:column;gap:10px}
+.grp>b{font:600 14px/20px var(--sans)}
+.grp>span{font:400 14px/20px var(--sans);color:var(--t3)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;flex-direction:column;gap:2px;padding:8px 12px;border-radius:10px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--stroke);text-align:left;transition:background .15s}
+.chip b{font:500 16px/24px var(--jp)}
+.chip span{font:400 14px/20px var(--sans);color:var(--t2)}
+.chip.on{background:var(--learning-fill)}
+button.chip:hover{box-shadow:inset 0 0 0 1px var(--stroke-strong)}
+.sum .acts{display:flex;align-items:center;gap:12px}
+.sum .acts .sp{flex:1}
+.seg{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--fill);width:fit-content}
+.seg button{height:40px;padding:8px 16px;border-radius:1000px;font:600 16px/24px var(--sans);color:var(--t2)}
+.seg button.on{height:42px;margin:-1px 0;background:var(--overlay);box-shadow:inset 0 0 0 1px var(--stroke),0 1px 2px rgba(0,0,0,.35);color:#fff}
+
+/* ---------- OB-10 · Day-1 home ---------- */
+#home .wrap{position:absolute;left:120px;top:140px;width:800px;display:flex;flex-direction:column;gap:32px}
+#home h1{font:600 40px/50px var(--sans);margin-top:8px}
+.upnext{display:flex;align-items:center;gap:24px;padding:20px;border-radius:20px;background:var(--raised);box-shadow:var(--shadow)}
+.upnext .cv{width:160px;height:200px;border-radius:12px;background-size:cover;background-position:30% center;flex:none}
+.upnext .tx{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.upnext h2{font:600 24px/32px var(--sans)}
+.upnext p{color:var(--t2)}
+.status{display:flex;gap:16px}
+.status>div{padding:20px;border-radius:16px;box-shadow:inset 0 0 0 1px var(--stroke);display:flex;flex-direction:column;gap:6px}
+.status .prac{width:408px}
+.status .stat{width:180px;gap:4px}
+.status .stat b{font:600 32px/42px var(--sans)}
+.status span{font:400 14px/20px var(--sans);color:var(--t2)}
+.status .prac b{font:600 16px/24px var(--sans)}
+.saved-list{display:flex;flex-wrap:wrap;gap:6px}
+.saved-list span{font:500 14px/20px var(--jp);color:#fff;padding:2px 10px;border-radius:999px;background:var(--learning-fill)}
+
+/* ---------- v2 · flashcards in three moments ---------- */
+/* 01 · first save: the schedule, shown once, as real gaps */
+#sched{position:absolute;width:420px;padding:20px;border-radius:20px;background:var(--overlay);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),var(--shadow);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);display:flex;flex-direction:column;gap:14px;z-index:9;animation:cardIn .24s var(--ease) both}
+#sched .hd{display:flex;align-items:baseline;gap:10px}
+#sched .hd b{font:700 24px/36px var(--jp)}
+#sched .hd span{font:400 14px/20px var(--sans);color:var(--t3)}
+#sched .msg{font:600 16px/24px var(--sans)}
+.tl{position:relative;height:44px;margin:0 8px}
+.tl .ln{position:absolute;left:0;right:0;top:7px;height:2px;background:rgba(255,255,255,.18)}
+.tl .ln i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:0;transition:width 1.6s var(--ease)}
+.tl .pt{position:absolute;top:0;width:16px;margin-left:-8px;display:flex;flex-direction:column;align-items:center;gap:6px;font:400 13px/18px var(--sans);color:var(--t3);white-space:nowrap}
+.tl .pt i{width:16px;height:16px;border-radius:8px;background:var(--base);box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);transition:background .3s,box-shadow .3s}
+.tl .pt.on i{background:var(--accent);box-shadow:none}
+.tl .pt.on{color:var(--accent)}
+#sched .note{padding:10px 12px;border-radius:10px;background:var(--accent-fill);font:400 14px/20px var(--sans);color:var(--t2)}
+#sched .row{display:flex;justify-content:flex-end}
+/* 03 · a week later (home) */
+.payoff{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:20px;background:var(--raised);box-shadow:var(--shadow)}
+.payoff .k{font:400 14px/20px var(--sans);color:var(--t3)}
+.payoff h2{font:600 24px/32px var(--sans)}
+.payoff .pb{height:8px;border-radius:4px;background:var(--fill);overflow:hidden}
+.payoff .pb i{display:block;height:100%;border-radius:4px;background:var(--success);width:76%;transition:width 1.4s var(--ease) .3s}
+.payoff .pc{font:400 14px/20px var(--sans);color:var(--success)}
+
+/* ---------- v2 · guided first run ---------- */
+#guide{position:absolute;inset:0;z-index:20;pointer-events:none}
+#guide .dim{position:absolute;border-radius:14px;box-shadow:0 0 0 3000px rgba(0,0,0,.62);transition:all .45s var(--ease);pointer-events:none}
+#guide .pop{position:absolute;width:380px;border-radius:18px;background:#2b2b2b;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 20px 48px rgba(0,0,0,.5);overflow:hidden;pointer-events:auto;transition:left .45s var(--ease),top .45s var(--ease)}
+#guide .pop.enter{animation:popIn .3s var(--ease) both}
+@keyframes popIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+#guide .ani{height:132px;background:#1d1d1d;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.08)}
+#guide .gb{padding:18px 20px 16px;display:flex;flex-direction:column;gap:6px}
+#guide .gb b{font:600 17px/24px var(--sans)}
+#guide .gb p{font:400 14px/21px var(--sans);color:var(--t2)}
+#guide .gf{display:flex;align-items:center;gap:12px;padding:0 20px 18px}
+#guide .gf .of{font:500 13px/20px var(--sans);color:var(--t3);font-variant-numeric:tabular-nums}
+#guide .gf .sp{flex:1}
+#guide .gf .skip{font:600 14px/20px var(--sans);color:var(--t3)}
+#guide .gf .skip:hover{color:#fff}
+
+/* motion explainers: small loops drawn in the app's own vocabulary */
+.ex-flip{position:absolute;left:50%;top:22px;width:150px;height:88px;margin-left:-75px;perspective:600px}
+.ex-flip .c{position:absolute;inset:0;border-radius:12px;background:#2e2e2e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);display:grid;place-items:center;font:700 22px/1 var(--jp);backface-visibility:hidden;animation:flipA 3.2s var(--ease) infinite}
+.ex-flip .c.b{transform:rotateY(180deg);animation-name:flipB;font:600 14px/1.3 var(--sans);text-align:center}
+@keyframes flipA{0%,30%{transform:rotateY(0)}45%,85%{transform:rotateY(-180deg)}100%{transform:rotateY(-360deg)}}
+@keyframes flipB{0%,30%{transform:rotateY(180deg)}45%,85%{transform:rotateY(0)}100%{transform:rotateY(-180deg)}}
+.ex-gaps{position:absolute;left:28px;right:28px;top:40px;height:60px}
+.ex-gaps .ln{position:absolute;left:0;right:0;top:9px;height:2px;background:rgba(255,255,255,.16)}
+.ex-gaps .d{position:absolute;top:2px;width:16px;height:16px;margin-left:-8px;border-radius:8px;background:#1d1d1d;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);animation:gap 4s var(--ease) infinite}
+.ex-gaps .d span{position:absolute;top:24px;left:50%;transform:translateX(-50%);font:400 12px/1 var(--sans);color:var(--t3);white-space:nowrap}
+.ex-gaps .d:nth-child(2){animation-delay:0s}.ex-gaps .d:nth-child(3){animation-delay:.5s}.ex-gaps .d:nth-child(4){animation-delay:1s}.ex-gaps .d:nth-child(5){animation-delay:1.5s}.ex-gaps .d:nth-child(6){animation-delay:2s}
+@keyframes gap{0%,8%{background:#1d1d1d;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}16%,80%{background:var(--accent);box-shadow:0 0 0 4px rgba(216,75,108,.2)}100%{background:#1d1d1d;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}}
+.ex-hover{position:absolute;inset:0}
+.ex-hover .line{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:4px;font:500 22px/1.4 var(--jp)}
+.ex-hover .line span{padding:0 3px;border-radius:5px;border-bottom:3px solid transparent}
+.ex-hover .line .n{border-color:var(--accent);animation:hl 4s infinite}
+@keyframes hl{0%,22%{background:transparent}30%,72%{background:rgba(216,75,108,.16)}80%,100%{background:transparent}}
+.ex-hover .pop2{position:absolute;left:50%;bottom:68px;width:150px;margin-left:-62px;padding:8px 10px;border-radius:10px;background:#3a3a3a;font:600 12px/1.3 var(--sans);opacity:0;animation:pp 4s var(--ease) infinite}
+.ex-hover .pop2 b{display:block;font:700 15px/1.3 var(--jp)}
+@keyframes pp{0%,26%{opacity:0;transform:translateY(6px)}32%,72%{opacity:1;transform:none}80%,100%{opacity:0;transform:translateY(6px)}}
+.ex-hover .ptr{position:absolute;left:50%;bottom:4px;width:18px;height:26px;margin-left:120px;animation:ptr 4s var(--ease) infinite}
+@keyframes ptr{0%{transform:translate(0,0)}25%,72%{transform:translate(-96px,-28px)}90%,100%{transform:translate(0,0)}}
+.ex-hover .st{position:absolute;right:14px;top:12px;display:flex;align-items:center;gap:6px;font:600 12px/1 var(--sans);color:var(--t3)}
+.ex-hover .st i{width:10px;height:12px;border-left:3px solid currentColor;border-right:3px solid currentColor;animation:pz 4s infinite;opacity:0}
+.ex-hover .st em{font-style:normal}
+@keyframes pz{0%,26%{opacity:0}30%,72%{opacity:1}78%,100%{opacity:0}}
+.ex-lines{position:absolute;left:0;right:0;top:14px;display:flex;flex-direction:column;align-items:center;gap:9px}
+.ex-lines div{display:flex;align-items:center;gap:12px;font:500 13px/1 var(--sans);color:var(--t2);width:220px}
+.ex-lines i{width:56px;height:4px;border-radius:2px;flex:none}
+.ex-lines div{opacity:0;animation:li 4.5s var(--ease) infinite}
+.ex-lines div:nth-child(2){animation-delay:.4s}.ex-lines div:nth-child(3){animation-delay:.8s}.ex-lines div:nth-child(4){animation-delay:1.2s}.ex-lines div:nth-child(5){animation-delay:1.6s}
+@keyframes li{0%{opacity:0;transform:translateX(-8px)}12%,88%{opacity:1;transform:none}100%{opacity:0}}
+.ex-score{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:16px}
+.ex-score .chipz{display:flex;flex-direction:column;gap:6px}
+.ex-score .chipz span{display:block;width:70px;height:16px;border-radius:5px;background:rgba(255,255,255,.08)}
+.ex-score .chipz span.p{background:rgba(180,138,240,.35);animation:cp 4s infinite}
+@keyframes cp{0%,20%{opacity:.3}35%,100%{opacity:1}}
+.ex-score .arrow{color:var(--t3);font:600 18px/1 var(--sans)}
+.ex-score .pct{font:600 30px/1 var(--sans);font-variant-numeric:tabular-nums}
+.ex-jp{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.ex-jp .l{display:flex;align-items:flex-end;gap:4px;font:500 22px/1.2 var(--jp)}
+.ex-jp .l span{display:flex;flex-direction:column;align-items:center}
+.ex-jp .l small{font:500 11px/1.2 var(--jp);color:var(--t2);height:14px}
+.ex-jp .l .s{border-bottom:3px solid var(--learning)}
+.ex-jp .en{font:400 13px/1 var(--sans);color:var(--t3);text-shadow:none;animation:enx 3.6s infinite}
+@keyframes enx{0%,30%{opacity:1}45%,100%{opacity:0;text-decoration:line-through}}
+
+/* ---------- prototype controls (not part of the app) ---------- */
+#proto{position:fixed;right:12px;bottom:12px;z-index:50;display:flex;gap:6px;padding:6px;border-radius:12px;background:rgba(20,20,20,.86);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font:500 12px/16px var(--sans)}
+#proto button{padding:6px 10px;border-radius:8px;color:rgba(255,255,255,.75)}
+#proto button:hover{background:rgba(255,255,255,.08);color:#fff}
+#proto .on{color:#fff;background:rgba(216,75,108,.25)}
+#proto .lbl{padding:6px 6px 6px 8px;color:rgba(255,255,255,.4)}
+body.clean #proto{display:none}
+
+#toast{position:absolute;left:50%;top:68px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:var(--overlay);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),var(--shadow);font:400 15px/22px var(--sans);animation:cardIn .25s var(--ease) both}
+#toast .sw{width:32px;height:4px;border-radius:2px;flex:none}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ===== OB-01 · Pick a show ===== -->
+  <section class="screen" id="pick" aria-label="Pick a show">
+    <div class="content">
+      <div class="logo" style="left:0;top:0"><i></i>ImmerLingo</div>
+      <p class="eyebrow">No test. Just start.</p>
+      <h1>What do you want to watch?</h1>
+      <p class="lead">Pick one to start. First, six everyday words. Then a short scene that uses them.</p>
+      <div id="shows" role="list"></div>
+      <div class="foot"><p id="pickNote">Kissaten no Yoru selected · about 3 minutes from here to your first scene</p>
+        <button class="btn primary" id="startBtn">Start<svg class="i" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></button></div>
+    </div>
+  </section>
+
+  <!-- ===== OB-02 / 03 / 07 · Deck ===== -->
+  <section class="screen" id="deck" aria-label="Flashcards">
+    <div class="deckwrap"><div class="deck">
+      <div class="head"><div class="tc"><p class="eyebrow" id="dEye"></p><div class="counts" id="dCount"></div></div><button class="skip" id="dSkip"></button></div>
+      <div class="steps" id="dSteps"></div>
+      <div id="fcWrap"></div>
+      <div class="actions"><div id="dBtns"></div><p class="hint" id="dKeys"></p></div>
+    </div></div>
+  </section>
+
+  <!-- ===== OB-04 / 05 / 08 · Watch ===== -->
+  <section class="screen" id="watch" aria-label="Watch">
+    <div class="bar"><button class="stop" id="stopBtn"><svg class="i" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg>Stop</button>
+      <span class="title" id="wTitle">Kissaten no Yoru · Episode 1</span><span class="badge" id="helpBadge">Lots of help</span></div>
+    <div id="scene">
+      <div id="shots"></div><div class="grad"></div>
+      <p class="credit">Stills: AI-generated · Voices: VOICEVOX:麒ヶ島宗麟, VOICEVOX:春日部つむぎ</p>
+      <div id="tip" hidden><span>Hover over any word you don’t know. Everything else counts as known.</span><button id="tipX">Dismiss</button></div>
+      <div class="subs"><div class="jp" id="jp" lang="ja"></div><p class="en" id="en"></p><button class="show-en" id="showEn" hidden>Show English · E</button></div>
+    </div>
+    <div class="controls"><button class="pp" id="pp" aria-label="Play"></button><div class="track"><i id="fill"></i></div><span class="time" id="time">0:00 / 0:39</span></div>
+  </section>
+
+  <!-- ===== OB-06 / 09 · Summary ===== -->
+  <section class="screen" id="summary" aria-label="Summary">
+    <div class="logo"><i></i>ImmerLingo</div>
+    <div class="sumwrap"><div class="sum" id="sum"></div></div>
+  </section>
+
+  <!-- ===== OB-10 · Day-1 home ===== -->
+  <section class="screen" id="home" aria-label="Home">
+    <div class="logo"><i></i>ImmerLingo</div>
+    <div class="wrap" id="homeWrap"></div>
+  </section>
+
+  <div id="guide" hidden></div>
+  <div id="toast" hidden></div>
+</div>
+
+<div id="proto" aria-label="Prototype controls"><span class="lbl">Prototype</span><button id="pGuide">Guide on</button><button id="pWeek" hidden>Jump a week</button><button id="pRestart">Restart</button></div>
+
+<script>
+"use strict";
+/* ============================================================
+   Content: the onboarding scene (original lines, VOICEVOX audio)
+   ============================================================ */
+const LINES=[
+ {t:0.5,jp:'いらっしゃいませ 。',en:'Welcome.'},
+ {t:4,jp:'こんばんは 。',en:'Good evening.'},
+ {t:7.5,jp:'コーヒー 、 ください 。',en:'A coffee, please.'},
+ {t:12.5,jp:'はい 、 どうぞ 。',en:'Here you go.'},
+ {t:16.5,jp:'ありがとう 。',en:'Thank you.'},
+ {t:20,jp:'うん 、 おいしい ！',en:'Mm, delicious!'},
+ {t:25.5,jp:'よかった 。',en:'I’m glad.'},
+ {t:29,jp:'じゃあ 、 また 明日[あした] 。',en:'Well then, see you tomorrow.'},
+ {t:34,jp:'おやすみなさい 。',en:'Good night.'}];
+const END=39;
+const SHOT_AT=[0,0,1,2,2,3,3,4,4];   // café · orders · served · tasting · street goodbye
+const GL={'いらっしゃいませ':'welcome (said to customers)','こんばんは':'good evening','コーヒー':'coffee','ください':'please (give me)','はい':'yes; here you go','どうぞ':'here you go, please (offering)','ありがとう':'thank you','うん':'yeah, mm (casual yes)','おいしい':'delicious','よかった':'I’m glad, that’s good','じゃあ':'well then','また':'again','明日':'tomorrow','おやすみなさい':'good night'};
+const SHORT={'いらっしゃいませ':'welcome','うん':'yeah, mm (casual yes)'};
+const INFO={'いらっしゃいませ':[['Common in anime','Shops'],['welcome (to a shop or restaurant)']],'こんばんは':[['Greeting','JLPT N5'],['good evening']],'コーヒー':[['Katakana','JLPT N5'],['coffee']],
+ 'ください':[['JLPT N5','Very common'],['please give me','please (do …)']],'はい':[['JLPT N5','Very common'],['yes','here you go']],'どうぞ':[['JLPT N5'],['here you are','please, go ahead']],
+ 'ありがとう':[['JLPT N5','Very common'],['thank you']],'うん':[['Casual','Common in anime'],['yeah','mm-hm']],'おいしい':[['Adjective','JLPT N5'],['delicious','tasty']],
+ 'よかった':[['Common in anime'],['I’m glad','that’s good']],'じゃあ':[['Casual','Very common'],['well then','so']],'また':[['JLPT N5'],['again','also']],'明日':[['Kanji','JLPT N5'],['tomorrow']],'おやすみなさい':[['Greeting','JLPT N5'],['good night']]};
+const EXPL=['Shop staff say this when you walk in. You don’t answer it.','Evening greeting. こんにちは is for daytime, こんばんは after dark.','Thing + ください means “… please”. The most useful way to order.','はい is yes; どうぞ is “here you are”. Together: handing something over.','Casual thanks. Add ございます to be polite: ありがとうございます.','うん is a casual yes. おいしい means tasty.','Past form of いい (good): “that turned out well”, so “I’m glad”.','じゃあ starts a goodbye. また明日 is “again tomorrow”: see you tomorrow.','Polite good night. Friends shorten it to おやすみ.'];
+const WARM=[{w:'いらっしゃいませ',line:0},{w:'コーヒー',line:2},{w:'ください',line:2},{w:'ありがとう',line:4},{w:'おいしい',line:5},{w:'おやすみなさい',line:8}];
+const SHOWS=[
+ {id:'kissaten',title:'Kissaten no Yoru',meta:'40-second scene · Café',like:'Everyday café talk · easiest start',cover:'a',play:true},
+ {id:'jikan',title:'Jikan no Okujō',meta:'24 min · Sci-fi mystery',like:'Fast talk, lots of jargon',cover:'b'},
+ {id:'icho',title:'Ichō no Tegami',meta:'23 min · Drama',like:'Soft, emotional dialogue',cover:'c'},
+ {id:'tobe',title:'Tobe!',meta:'24 min · Sports',like:'Short shouts and team chatter',cover:'d'},
+ {id:'kitsune',title:'Kitsune no Tabiji',meta:'25 min · Fantasy',like:'Calm, old-fashioned speech',cover:'e'},
+ {id:'akatsuki',title:'Akai Tsuki no Kaidan',meta:'24 min · Supernatural mystery',like:'Heavy wordplay · hardest',cover:'f'}];
+const HELP=[{name:'Japanese first',desc:'Readings only on words you saved. English when you ask for it.'},
+ {name:'Some help',desc:'Readings on new words. English only on lines with 2 or more new words.'},
+ {name:'Lots of help',desc:'Readings on every kanji and katakana word. English under every line.'}];
+const WAUDIO={'ありがとう':'w00','いらっしゃいませ':'w01','うん':'w02','おいしい':'w03','おやすみなさい':'w04','ください':'w05','こんばんは':'w06','じゃあ':'w07','どうぞ':'w08','はい':'w09','また':'w10','よかった':'w11','コーヒー':'w12','明日':'w13'};
+
+/* icons (Phosphor, as in the Figma file) */
+const IC={
+ speaker:'<svg class="i" viewBox="0 0 256 256"><path d="M155.51,24.81a8,8,0,0,0-8.42.88L77.25,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V32A8,8,0,0,0,155.51,24.81ZM32,96H72v64H32ZM144,207.64,88,164.09V91.91l56-43.55Zm54-106.08a40,40,0,0,1,0,52.88,8,8,0,0,1-12-10.58,24,24,0,0,0,0-31.72,8,8,0,0,1,12-10.58ZM248,128a79.9,79.9,0,0,1-20.37,53.34,8,8,0,0,1-11.92-10.67,64,64,0,0,0,0-85.33,8,8,0,1,1,11.92-10.67A79.83,79.83,0,0,1,248,128Z"/></svg>',
+ pause:'<svg class="i" viewBox="0 0 256 256"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>',
+ play:'<svg class="i" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>',
+ fire:'<svg class="i" viewBox="0 0 256 256"><path d="M143.38,17.85a8,8,0,0,0-12.63,3.41l-22,60.41L84.59,58.26a8,8,0,0,0-11.93.89C51,87.53,40,116.08,40,144a88,88,0,0,0,176,0C216,84.55,165.21,36,143.38,17.85Zm40.51,135.49a57.6,57.6,0,0,1-46.56,46.55A7.65,7.65,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z"/></svg>',
+ plus:'<svg class="i" viewBox="0 0 256 256"><path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"/></svg>',
+ sparkle:'<svg class="i" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/></svg>',
+ check:'<svg class="i" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>',
+ cursor:'<svg viewBox="0 0 17 25" width="18" height="26"><path d="M1 1v19.5l4.7-4.4 3.1 7.1 3.2-1.4-3.1-6.9h6.4z" fill="#000" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>'};
+
+/* ============================================================
+   State (per viewer, best effort)
+   ============================================================ */
+const KEY='il.onboarding.v2';
+const fresh=()=>({words:{},minutes:20,help:2,onboarded:false,done:false,guide:true,seen:{},firstPct:null,secondPct:null,week:false});
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||null}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=Object.assign(fresh(),load()||{});
+const params=new URLSearchParams(location.search);
+if(params.has('clean'))document.body.classList.add('clean');
+if(params.has('reset'))S=fresh();
+if(params.get('guide')==='off')S.guide=false;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const toHira=s=>s.replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));
+const isKata=s=>/^[ァ-ヿー]+$/.test(s);
+const isPunct=s=>/^[、。！？!?「」]+$/.test(s);
+const stOf=b=>S.words[b]||'new';
+
+/* tokens: 'word[reading]{dictionary form}' */
+function tokens(line){return line.split(/\s+/).map(raw=>{let base=null,body=raw;const m=raw.match(/\{([^}]*)\}$/);if(m){base=m[1];body=raw.slice(0,m.index);}
+  const parts=[];let rest=body;while(rest.length){const k=rest.match(/^([^\[]*?)([㐀-鿿々]+)\[([^\]]+)\]/);if(k){if(k[1])parts.push({text:k[1]});parts.push({text:k[2],rt:k[3]});rest=rest.slice(k[0].length);}else{parts.push({text:rest});rest='';}}
+  const surface=parts.map(p=>p.text).join('');base=base||surface;const punct=isPunct(surface);
+  return {surface,parts,base,punct,track:!punct};});}
+const reading=t=>t.parts.map(p=>p.rt||toHira(p.text)).join('');
+const plain=line=>tokens(line).map(t=>t.surface).join('');
+const tracked=i=>tokens(LINES[i].jp).filter(t=>t.track);
+const lineOf=w=>LINES.findIndex(L=>tokens(L.jp).some(t=>t.base===w));
+const ALL=[...new Set(LINES.flatMap((_,i)=>tracked(i).map(t=>t.base)))];
+
+/* ============================================================
+   Stage scaling: the 1440 × 1024 app fits the window
+   ============================================================ */
+function fit(){const s=Math.min(innerWidth/1440,innerHeight/1024);const st=$('stage');st.style.transform=`translate(${(innerWidth-1440*s)/2}px,${(innerHeight-1024*s)/2}px) scale(${s})`;}
+addEventListener('resize',fit);fit();
+
+/* ============================================================
+   Audio: VOICEVOX lines and words, pre-rendered
+   ============================================================ */
+const AU=new Audio();AU.preload='auto';
+function playLine(i){try{AU.pause();AU.src='assets/line'+i+'.mp3';AU.currentTime=0;AU.play().catch(()=>{})}catch(e){}}
+function sayWord(w){const f=WAUDIO[w];if(!f)return;try{AU.pause();AU.src='assets/'+f+'.mp3';AU.currentTime=0;AU.play().catch(()=>{})}catch(e){}}
+function hush(){try{AU.pause()}catch(e){}}
+
+let toastT;
+function toast(html,ms){const t=$('toast');t.innerHTML=html;t.hidden=false;t.style.animation='none';void t.offsetWidth;t.style.animation='';clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,ms||4500)}
+
+/* ============================================================
+   Views
+   ============================================================ */
+let view='pick';
+function show(id){view=id;document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));$('pWeek').hidden=id!=='home';closeGuide(true);$('toast').hidden=true;}
+
+/* ---------- OB-01 · Pick ---------- */
+let pick='kissaten';
+function renderPick(){
+  $('shows').innerHTML=SHOWS.map(s=>`<button class="show${pick===s.id?' sel':''}" role="listitem" data-id="${s.id}" aria-pressed="${pick===s.id}">
+    <span class="cover" style="background-image:url(assets/cover-${s.cover}.jpg)"></span>
+    <b>${esc(s.title)}</b><span class="meta"><span>${esc(s.meta)}</span>${s.play?'':'<span class="badge">Preview</span>'}</span><span class="like">${esc(s.like)}</span></button>`).join('');
+  $('shows').querySelectorAll('.show').forEach(b=>b.onclick=()=>{const s=SHOWS.find(x=>x.id===b.dataset.id);
+    if(!s.play){toast(`<span>${esc(s.title)} is a preview. Only Kissaten no Yoru plays in this prototype.</span>`,3000);return;}pick=s.id;renderPick();});
+}
+$('startBtn').onclick=()=>openDeck(WARM,'warm');
+
+/* ---------- OB-02/03/07 · Deck ---------- */
+const WARM_GRADES=[{k:'again',label:'Again',ivl:'<1m',key:'1'},{k:'hard',label:'Hard',ivl:'<6m',key:'2'},{k:'good',label:'Good',ivl:'<10m',key:'3'},{k:'easy',label:'Easy',ivl:'4d',key:'4'}];
+const REVIEW_GRADES=[{k:'again',label:'Again',ivl:'<1m',key:'1'},{k:'hard',label:'Hard',ivl:'2d',key:'2'},{k:'good',label:'Good',ivl:'4d',key:'3'},{k:'easy',label:'Easy',ivl:'8d',key:'4'}];
+let deck=[],deckMode='warm',queue=[],flipped=false,learning=new Set(),doneCards=new Set();
+function openDeck(cards,mode){deck=cards;deckMode=mode;queue=deck.map((_,i)=>i);learning=new Set();doneCards=new Set();flipped=false;
+  $('dEye').textContent=mode==='warm'?`Before you watch · ${deck.length} new words`:`Practise · ${deck.length} word${deck.length===1?'':'s'} you don’t know yet`;
+  $('dSkip').textContent=mode==='warm'?'Skip to the scene':'Skip to watching again';show('deck');drawCard(true);}
+const cardWord=i=>{const c=deck[i],t=tokens(LINES[c.line].jp).find(x=>x.base===c.w);return {c,L:LINES[c.line],r:t?reading(t):c.w}};
+function drawCard(anim){
+  if(!queue.length){finishDeck();return;}
+  const {c,L,r}=cardWord(queue[0]),W=deckMode==='warm',isL=learning.has(queue[0]);
+  const fresh=queue.filter(i=>!learning.has(i)).length,lrn=queue.filter(i=>learning.has(i)).length;
+  $('dCount').innerHTML=`<span class="n${W&&!isL?' cur':''}" title="New">${W?fresh:0}</span><span class="l${isL?' cur':''}" title="Learning">${lrn}</span><span class="r${!W&&!isL?' cur':''}" title="Review">${W?0:fresh}</span>`;
+  $('dSteps').innerHTML=deck.map((_,i)=>`<i class="${doneCards.has(i)||i===queue[0]?'on':''}"></i>`).join('');
+  const back=flipped;
+  $('fcWrap').innerHTML=`<div class="fc${back?' back':''}${anim?' fc-in':''}" id="fc" ${back?'':'role="button" tabindex="0" aria-label="Show answer"'}>
+    <span class="word" lang="ja">${esc(c.w)}</span>
+    ${back?`<hr>${r!==c.w?`<span class="tr" lang="ja" style="color:var(--t3)">${esc(r)}</span>`:''}<span class="mean">${esc(GL[c.w])}</span><span class="line" lang="ja">${esc(plain(L.jp))}</span><span class="tr">${esc(L.en)}</span>`:''}
+    <button class="say" id="fcSay" aria-label="Play the word again">${IC.speaker}</button></div>`;
+  $('fcSay').onclick=e=>{e.stopPropagation();sayWord(c.w)};
+  const G=W?WARM_GRADES:REVIEW_GRADES;
+  $('dBtns').innerHTML=back?`<div class="grades" id="grades">${G.map(g=>`<span class="grade"><em>${g.ivl}</em><button class="btn secondary" data-g="${g.k}">${g.label}</button></span>`).join('')}</div>`
+    :`<button class="btn secondary" id="flipBtn">Show answer</button>`;
+  $('dKeys').textContent=back?'1  again  ·  2  hard  ·  3  good  ·  4  easy  ·  R  replay':'Space  show answer  ·  R  replay';
+  if(back)$('dBtns').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>grade(b.dataset.g));
+  else{$('flipBtn').onclick=flip;$('fc').onclick=flip;sayWord(c.w);}
+  guideFor('deck');
+}
+function flip(){if(flipped||!queue.length||guideOpen())return;flipped=true;drawCard(false);}
+function grade(k){if(guideOpen())return;
+  const i=queue.shift();
+  if(k==='again'){learning.add(i);queue.splice(Math.min(2,queue.length),0,i);S.words[deck[i].w]='saved';}
+  else if(k==='hard'){learning.add(i);queue.push(i);S.words[deck[i].w]='saved';}
+  else{learning.delete(i);doneCards.add(i);S.words[deck[i].w]=(k==='easy'||deckMode==='practice')?'known':'saved';}
+  save();flipped=false;drawCard(true);}
+function finishDeck(){
+  if(deckMode==='warm'){toast('<span class="sw" style="background:var(--learning)"></span><span>Words you’re still learning have a <b>purple</b> line in the scene.</span>',4500);startWatch(1);}
+  else{toast('<span class="sw" style="background:var(--success)"></span><span>Practised. Now watch it again in Japanese only.</span>',4500);startWatch(2);}
+}
+$('dSkip').onclick=()=>{if(guideOpen())return;startWatch(deckMode==='warm'?1:2)};
+document.addEventListener('keydown',e=>{if(view!=='deck'||guideOpen())return;
+  if(e.key==='r'||e.key==='R'){if(queue.length)sayWord(deck[queue[0]].w);return}
+  if(e.code==='Space'){e.preventDefault();if(!flipped)flip();return}
+  if(flipped&&'1234'.includes(e.key))grade(WARM_GRADES[+e.key-1].k);});
+
+/* ---------- OB-04/05/08 · Watch (a clock stands in for the video) ---------- */
+let base=0,t0=0,playing=false,cur=-1,spoken=-1,cardOpen=false,wasPlaying=false,loop=null,pass=1,sig=null,shotOn=-1;
+const now=()=>playing?Math.min(END,base+(performance.now()-t0)/1000):base;
+function play(){if(playing||cardOpen||guideOpen())return;t0=performance.now();playing=true;ppIcon()}
+function pause(){if(!playing)return;base=now();playing=false;hush();ppIcon()}
+function ppIcon(){$('pp').innerHTML=playing?IC.pause:IC.play;$('pp').setAttribute('aria-label',playing?'Pause':'Play');updTime()}
+function updTime(){const t=now();$('fill').style.width=(100*t/END)+'%';$('time').textContent=fmt(t)+' / '+fmt(END)+(playing||t===0||t>=END?'':' · paused')}
+const lineEnd=i=>i<LINES.length-1?LINES[i+1].t-0.4:END-1;
+const lineAt=t=>{for(let i=LINES.length-1;i>=0;i--)if(LINES[i].t<=t)return t<lineEnd(i)?i:-1;return -1};
+function buildShots(){$('shots').innerHTML=[0,1,2,3,4].map(i=>`<div class="shot" style="background-image:url(assets/still${i}.jpg)"></div>`).join('')}
+function setShot(n){if(n===shotOn)return;shotOn=n;$('shots').querySelectorAll('.shot').forEach((el,i)=>el.classList.toggle('on',i===n))}
+
+function startWatch(p){
+  pass=p||1;sig={tapped:new Set(),seen:new Set()};
+  base=0;playing=false;cur=-1;spoken=-1;cardOpen=false;closeCard(true);
+  $('wTitle').textContent=pass===2?(S.week?'Kissaten no Yoru · Episode 3 · rewatch':'Kissaten no Yoru · Episode 1 · second watch'):S.onboarded?'Kissaten no Yoru · Episode 2':'Kissaten no Yoru · Episode 1';
+  $('helpBadge').textContent=pass===2?'Japanese only':HELP[S.help].name;
+  $('tip').hidden=!!S.onboarded||pass===2||S.guide;
+  shotOn=-1;setShot(0);show('watch');render(-1);updTime();
+  clearInterval(loop);loop=setInterval(tick,50);
+  if(!guideFor('watch'))play();
+}
+function tick(){
+  if(view!=='watch'||guideOpen())return;
+  const t=now();
+  if(t>=END-0.3&&playing){finishWatch(true);return;}
+  const i=lineAt(t);
+  if(i!==cur){render(i);if(i>=0){setShot(SHOT_AT[i]);sig.seen.add(i);if(playing&&i!==spoken){spoken=i;playLine(i)}}}
+  updTime();
+}
+function render(i){
+  cur=i;const jp=$('jp'),en=$('en');jp.innerHTML='';en.textContent='';$('showEn').hidden=true;if(i<0)return;
+  const L=LINES[i],h=pass===2?0:S.help;
+  tokens(L.jp).forEach((t,k)=>{
+    if(t.punct){const s=document.createElement('span');s.className='punct';s.textContent=t.surface;jp.appendChild(s);return;}
+    const st=stOf(t.base);
+    let rt=t.parts.filter(p=>p.rt).map(p=>p.rt).join('');if(!rt&&isKata(t.surface))rt=toHira(t.surface);
+    const showR=rt&&(h===2||(h===1&&(st==='new'||st==='saved'))||(h===0&&st==='saved'));
+    const b=document.createElement('button');b.className='tok t '+st;b.dataset.k=k;
+    b.innerHTML=`${showR?`<span class="fu">${esc(rt)}</span>`:''}<span class="w">${esc(t.surface)}</span><span class="ul"></span><span class="mk">${st==='saved'?IC.fire:''}</span>`;
+    b.setAttribute('aria-label',t.surface+(st==='new'?', new word':st==='saved'?', practising':''));
+    b.onclick=e=>{e.stopPropagation();openCard(t,b)};
+    if(HOVER){const go=()=>{if(hoverLock||guideOpen())return;clearTimeout(hoverT);clearTimeout(intentT);intentT=setTimeout(()=>openCard(t,b),120)};
+      b.onmouseenter=go;b.onmousemove=()=>{if(!hoverLock&&!b.classList.contains('sel'))go()};b.onmouseleave=()=>{clearTimeout(intentT);hoverOut()};}
+    jp.appendChild(b);});
+  if(pass===2)return;   // second watch: Japanese only
+  const newIn=[...new Set(tracked(i).filter(t=>stOf(t.base)==='new').map(t=>t.base))].length;
+  if(h===2||(h===1&&newIn>=2))en.textContent=L.en;else $('showEn').hidden=false;
+}
+$('showEn').onclick=e=>{e.stopPropagation();if(cur<0)return;$('en').textContent=LINES[cur].en;$('showEn').hidden=true};
+$('tipX').onclick=e=>{e.stopPropagation();$('tip').hidden=true};
+
+/* word card (OB-05): hover pauses, leaving resumes, without replaying the line */
+const HOVER=matchMedia('(hover:hover) and (pointer:fine)').matches;
+let hoverT,intentT,hoverLock=false,lastXY='',cardTok=null;
+document.addEventListener('mousemove',e=>{const xy=e.clientX+','+e.clientY;if(xy!==lastXY){lastXY=xy;hoverLock=false;}},true);
+function openCard(t,el){
+  if(guideOpen()||$('sched'))return;
+  clearTimeout(hoverT);if(!cardOpen)wasPlaying=playing;pause();cardOpen=true;$('tip').hidden=true;cardTok=t;
+  document.querySelectorAll('.tok.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');
+  if(!sig.tapped.has(t.base))sig.tapped.add(t.base);
+  const r=reading(t),st=stOf(t.base),inf=INFO[t.base]||[[],[GL[t.base]||'']],L=LINES[cur]||{jp:'',en:''},li=cur;
+  const lab={new:'New',saved:'Practising',known:'Known'}[st]||'';
+  let c=$('card');if(!c){c=document.createElement('div');c.id='card';$('scene').appendChild(c);}
+  c.setAttribute('role','dialog');c.setAttribute('aria-label','Word');
+  c.innerHTML=`<div class="hd"><span class="wd" lang="ja">${esc(t.base)}</span>${t.base===t.surface&&r!==t.base?`<span class="rd" lang="ja">${esc(r)}</span>`:''}
+    <button class="spk" id="cSay" aria-label="Hear it">${IC.speaker}</button><span class="sp"></span>${lab?`<span class="badge ${st==='saved'?'learning':st}">${lab}</span>`:''}</div>
+    ${inf[0].length?`<div class="tags">${inf[0].map(x=>`<span class="badge">${esc(x)}</span>`).join('')}</div>`:''}
+    <p class="def">${inf[1].map((m,i)=>inf[1].length>1?`${i+1}. ${esc(m)}`:esc(m)).join('&nbsp;&nbsp;&nbsp;')}</p>
+    <p class="here" lang="ja">Here: ${esc(t.surface)}${t.surface!==t.base?' ('+esc(r)+')':''} — ${esc(L.en)}</p>
+    <div class="act"><button class="btn primary sm" id="cSave">${st==='saved'?'Saved':'Save card'}${st==='saved'?IC.check:IC.plus}</button><button class="btn secondary sm" id="cExplain">Explain line${IC.sparkle}</button></div>
+    <div class="ex" id="exBox" hidden><b lang="ja">${esc(plain(L.jp))}</b><span>${esc(EXPL[li]||'')}</span></div>
+    <div class="more"><button class="btn textsm" id="cKnow">${st==='known'?'Known ✓':'Mark as known'}</button><button class="btn textsm" id="cIgnore">Ignore word</button></div>
+    <span class="caret"><svg viewBox="0 0 20 10"><path d="M0 0h20L10 10z"/></svg></span>`;
+  c.hidden=false;c.style.animation='none';void c.offsetWidth;c.style.animation='';placeCard(el);
+  $('cSay').onclick=()=>sayWord(t.base);
+  $('cSave').onclick=()=>{const first=!S.seen.firstSave;S.words[t.base]='saved';save();closeCard(false,first?()=>firstSave(t,el):null);};
+  $('cExplain').onclick=()=>{const b=$('exBox');b.hidden=!b.hidden;placeCard(el)};
+  $('cKnow').onclick=()=>{S.words[t.base]='known';save();closeCard()};
+  $('cIgnore').onclick=()=>{S.words[t.base]='ignored';save();closeCard()};
+}
+function placeCard(el){const c=$('card');if(!c)return;const sc=$('scene'),k=stageScale();
+  const sr=sc.getBoundingClientRect(),er=el.getBoundingClientRect();
+  const cx=(er.left-sr.left+er.width/2)/k,top=(er.top-sr.top)/k;
+  const w=420,h=c.offsetHeight;let left=Math.max(16,Math.min(1440-w-16,cx-w/2));
+  c.style.left=left+'px';c.style.top=(top-14-h)+'px';c.style.setProperty('--cx',(cx-left)+'px');}
+function closeCard(quiet,then){clearTimeout(hoverT);clearTimeout(intentT);const c=$('card');if(c)c.hidden=true;
+  if(!cardOpen){if(then)then();return;}
+  cardOpen=false;hoverLock=true;cardTok=null;if(quiet)return;render(cur);
+  if(then){then();return;}
+  if(wasPlaying)play();}
+function hoverOut(){if(!HOVER)return;clearTimeout(hoverT);hoverT=setTimeout(()=>{if(!$('sched'))closeCard()},220)}
+document.addEventListener('mouseover',e=>{const c=$('card');if(c&&!c.hidden&&c.contains(e.target))clearTimeout(hoverT)});
+document.addEventListener('mouseout',e=>{const c=$('card');if(c&&!c.hidden&&c.contains(e.target)&&!c.contains(e.relatedTarget))hoverOut()});
+const stageScale=()=>$('stage').getBoundingClientRect().width/1440;
+
+/* v2 · moment 01: the first save shows the schedule once, as real gaps */
+function firstSave(t,el){
+  S.seen.firstSave=true;save();
+  el=$('jp').querySelector(`[data-k="${el.dataset.k}"]`)||el;   // the line was re-rendered
+  const r=reading(t),k=stageScale(),sr=$('scene').getBoundingClientRect(),er=el.getBoundingClientRect();
+  const cx=(er.left-sr.left+er.width/2)/k,top=(er.top-sr.top)/k;
+  const d=document.createElement('div');d.id='sched';d.setAttribute('role','dialog');d.setAttribute('aria-label','Saved');
+  const P=[['Today',0],['1 d',17],['3 d',36],['1 wk',62],['1 mo',100]];
+  d.innerHTML=`<div class="hd"><b lang="ja">${esc(t.base)}</b><span lang="ja">${esc(r!==t.base?r+' · ':'')}${esc(SHORT[t.base]||GL[t.base]||'')}</span></div>
+    <p class="msg">Saved. You’ll see it again tomorrow.</p>
+    <div class="tl"><div class="ln"><i></i></div>${P.map(([l,x],i)=>`<span class="pt${i===0?' on':''}" style="left:${x}%"><i></i>${l}</span>`).join('')}</div>
+    <p class="note">Each time you remember it, the next gap gets longer.</p>
+    <div class="row"><button class="btn primary sm" id="schedOk">Keep watching${IC.play}</button></div>`;
+  $('scene').appendChild(d);
+  const left=Math.max(16,Math.min(1440-420-16,cx-210));d.style.left=left+'px';d.style.top=(top-14-d.offsetHeight)+'px';
+  // the gaps light up one after another, wider each time
+  const pts=d.querySelectorAll('.pt');[1,2,3,4].forEach((n,j)=>setTimeout(()=>{if(pts[n])pts[n].classList.add('on');d.querySelector('.ln i').style.width=P[n][1]+'%'},500+j*420));
+  $('schedOk').focus({preventScroll:true});
+  $('schedOk').onclick=()=>{d.remove();if(wasPlaying)play();};
+}
+
+/* controls */
+$('pp').onclick=()=>{if(cardOpen||$('sched'))return;playing?pause():play()};
+$('scene').onclick=e=>{if(e.target.closest('#card,.tok,#tip,.show-en,#sched'))return;if(cardOpen){closeCard();return}if($('sched'))return;playing?pause():play()};
+$('stopBtn').onclick=()=>finishWatch(false);
+document.addEventListener('keydown',e=>{if(view!=='watch'||guideOpen())return;
+  if(e.code==='Space'){e.preventDefault();if($('sched')){$('schedOk').click();return}if(cardOpen)closeCard();else playing?pause():play();}
+  else if(e.key==='Escape'&&cardOpen)closeCard();
+  else if((e.key==='e'||e.key==='E')&&!$('showEn').hidden)$('showEn').click();});
+
+/* ---------- OB-06/09 · Summary ---------- */
+let lastDone=true,stoppedAt=0;
+function finishWatch(done){
+  clearInterval(loop);pause();hush();closeCard(true);const sd=$('sched');if(sd)sd.remove();
+  lastDone=done;stoppedAt=now();
+  // words you met: the ones you looked up go to practice, the rest count as known
+  const met=new Set();sig.seen.forEach(i=>tracked(i).forEach(t=>met.add(t.base)));
+  met.forEach(b=>{if(stOf(b)==='new')S.words[b]=sig.tapped.has(b)?'saved':'known'});
+  const scored=[...met].filter(b=>stOf(b)!=='ignored');
+  const known=scored.filter(b=>stOf(b)==='known').length,pct=scored.length?Math.round(100*known/scored.length):0;
+  const rough=scored.length<8;
+  if(pass===1&&done&&!rough)S.firstPct=pct;
+  if(pass===2&&done)S.secondPct=pct;
+  if(!rough)S.help=pct>=85?0:pct>=60?1:2;
+  S.onboarded=true;save();
+  renderSummary(done,pct,rough);
+}
+function renderSummary(done,pct,rough){
+  const lookedUp=[...sig.tapped].filter(b=>stOf(b)==='saved');
+  const settling=WARM.map(x=>x.w).filter(w=>stOf(w)==='saved'&&!sig.tapped.has(w));
+  const weak=ALL.filter(w=>stOf(w)==='saved');
+  const cmp=pass===2&&S.firstPct!=null&&!rough;
+  let h='';
+  if(!done){
+    h=`<div class="hdg"><p class="eyebrow">Stopped at ${fmt(stoppedAt)}</p><p class="big">Pick up where you left off</p><p class="sub">Nothing is lost. The scene resumes on the line you were on.</p></div>
+    <div class="acts"><button class="btn primary" id="aResume">Resume at ${fmt(stoppedAt)}${IC.play}</button><span class="sp"></span><button class="btn text" id="aDone">Done for today</button></div>`;
+  }else if(pass===1){
+    h=`<div class="hdg"><p class="eyebrow">Kissaten no Yoru · Scene done</p><p class="big" id="pctLine">${rough?'Too early to tell':`You knew about ${pct}% of the words`}</p>
+      <p class="sub">${rough?'Watch a little more and we’ll tune the help to you. Nothing is lost.':'Worked out from what you looked up while watching. There was no test.'}</p></div>
+    ${weak.length?`<div class="next"><span class="dot" style="background:var(--learning)"></span><div class="tx"><b>Next: practise the ${weak.length} word${weak.length===1?'':'s'} you don’t know yet</b>
+      <span>${lookedUp.length} you looked up · ${settling.length} from the warm-up that ${settling.length===1?'is':'are'} still settling</span><span>Flashcards until each one sticks, then the scene again in Japanese only.</span></div></div>`:''}
+    ${lookedUp.length?`<div class="grp"><b>You looked up ${lookedUp.length} word${lookedUp.length===1?'':'s'}</b><div class="chips" id="lu">${lookedUp.map(b=>`<button class="chip on" data-b="${esc(b)}" aria-pressed="true"><b lang="ja">${esc(b)}</b><span>${esc(GL[b]||'')}</span></button>`).join('')}</div><span>These go to practice. Tap any you actually knew.</span></div>`:''}
+    ${settling.length?`<div class="grp"><b>Still settling from the warm-up</b><div class="chips">${settling.map(b=>`<div class="chip"><b lang="ja">${esc(b)}</b><span>${esc(SHORT[b]||GL[b]||'')}</span></div>`).join('')}</div></div>`:''}
+    <div class="acts">${weak.length?`<button class="btn primary" id="aPractise">Practise ${weak.length} word${weak.length===1?'':'s'}${IC.play}</button><button class="btn secondary" id="aAgain">Watch again</button>`:`<button class="btn primary" id="aAgain">Watch again${IC.play}</button>`}<span class="sp"></span><button class="btn text" id="aDone">Done for today</button></div>`;
+  }else{
+    h=`<div class="hdg"><p class="eyebrow">Second watch done</p><p class="big">${cmp?`${S.firstPct}% → ${pct}% of the words`:`You knew about ${pct}% of the words`}</p>
+      <p class="sub">${cmp?'First watch, then after practising. Same scene, more of it is yours.':'Japanese only, after practising.'}</p></div>
+    <div class="next"><span class="dot" style="background:var(--success)"></span><div class="tx"><b>Next time: ${HELP[S.help].name}</b><span>${HELP[S.help].desc}</span></div></div>
+    <div class="grp"><b>How much time on a normal day?</b><div class="seg" id="mins">${[10,20,45].map(m=>`<button class="${S.minutes===m?'on':''}" data-m="${m}" aria-pressed="${S.minutes===m}">${m} min</button>`).join('')}</div></div>
+    <div class="acts"><button class="btn primary" id="aKeep">Keep watching${IC.play}</button>${weak.length?`<button class="btn secondary" id="aPractise">Practise ${weak.length} more</button>`:''}<span class="sp"></span><button class="btn text" id="aDone">Done for today</button></div>`;
+  }
+  $('sum').innerHTML=h;show('summary');
+  const on=(id,f)=>{const el=$(id);if(el)el.onclick=f};
+  if($('lu'))$('lu').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{const b=c.dataset.b,o=c.classList.toggle('on');c.setAttribute('aria-pressed',o);S.words[b]=o?'saved':'known';save();});
+  if($('mins'))$('mins').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.minutes=+b.dataset.m;save();$('mins').querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)})});
+  on('aPractise',()=>{const w=ALL.filter(x=>stOf(x)==='saved');openDeck(w.map(x=>({w:x,line:lineOf(x)})),'practice')});
+  on('aAgain',()=>startWatch(2));
+  on('aKeep',()=>{S.done=false;save();renderHome()});
+  on('aResume',()=>{show('watch');render(cur);clearInterval(loop);loop=setInterval(tick,50);play()});
+  on('aDone',()=>{S.done=true;save();renderHome()});
+  if(done&&pass===1)guideFor('summary');
+}
+
+/* ---------- OB-10 · Day-1 home (and, v2, a week later) ---------- */
+function renderHome(){
+  const savedW=Object.entries(S.words).filter(([,v])=>v==='saved').map(([w])=>w);
+  const knownN=Object.values(S.words).filter(v=>v==='known').length;
+  const hr=new Date().getHours(),part=hr<12?'morning':hr<17?'afternoon':'evening';
+  const ep=S.week?3:2;
+  $('homeWrap').innerHTML=`<div style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">${S.week?'A week in':'Good '+part}</p><h1 style="margin:0">${S.week?'Tonight: '+S.minutes+' minutes':S.done?'See you tomorrow':'Tonight: '+S.minutes+' minutes'}</h1></div>
+    ${S.week?`<div class="payoff" id="payoff"><span class="k">Kissaten no Yoru · Ep 3</span><h2>You now know 23 more words in this episode.</h2><div class="pb"><i id="pbar"></i></div><span class="pc">≈ 76% → 84% of words you know</span>
+      <div><button class="btn primary" id="hRewatch">Rewatch without subtitles${IC.play}</button></div></div>`:''}
+    <div class="upnext"><span class="cv" style="background-image:url(assets/still3.jpg)"></span><div class="tx"><p class="eyebrow">Up next</p><h2>Kissaten no Yoru · Episode ${ep}</h2>
+      <p>${HELP[S.help].name}: ${esc(HELP[S.help].desc.charAt(0).toLowerCase()+HELP[S.help].desc.slice(1))}</p><button class="btn primary" id="hWatch">Watch${IC.play}</button></div></div>
+    ${S.week?'':`<div class="status"><div class="prac"><b>To practise · ${savedW.length}</b>${savedW.length?`<div class="saved-list">${savedW.map(w=>`<span lang="ja">${esc(w)}</span>`).join('')}</div><div><button class="btn secondary sm" id="hPractise">Practise now</button></div>`:'<span>Words you save while watching show up here.</span>'}</div>
+      <div class="stat"><b>${knownN}</b><span>words known so far</span></div><div class="stat"><b>${S.minutes} min</b><span>daily goal</span></div></div>`}`;
+  show('home');
+  $('hWatch').onclick=()=>startWatch(1);
+  if($('hPractise'))$('hPractise').onclick=()=>openDeck(savedW.map(x=>({w:x,line:lineOf(x)})),'practice');
+  if($('hRewatch'))$('hRewatch').onclick=()=>startWatch(2);
+  if($('pbar'))requestAnimationFrame(()=>requestAnimationFrame(()=>$('pbar').style.width='84%'));
+}
+
+/* ============================================================
+   v2 · Guided first run
+   Short pop-ups with motion explainers at the points where the twelve
+   testers needed help. Each shows once; "Skip guide" turns them all off.
+   ============================================================ */
+const GUIDES={
+  'deck-front':{target:()=>$('fc'),place:'right',steps:[{t:'Say it, then check',b:'Each card is a word from the scene you’re about to watch. Try to recall it, then show the answer.',ani:'flip'}]},
+  'deck-back':{target:()=>$('grades'),place:'right',steps:[{t:'Grade it honestly',b:'Again brings it back in a minute. Easy means you already knew it. The time above each button is when you’ll see it next.',ani:'gaps'}]},
+  'review-back':{target:()=>$('grades'),place:'right',steps:[{t:'This is the whole trick',b:'Every answer shows when the word comes back. Remember it, and the gap gets longer: 4 days, then 8, then weeks.',ani:'gaps'}]},
+  'watch':{target:()=>$('jp'),pad:18,place:'above',steps:[
+    {t:'Hover any word you don’t know',b:'Its meaning opens above the subtitle and the scene waits. Move away and it carries on. Everything you don’t hover counts as known.',ani:'hover'},
+    {t:'The lines under words',b:'Red: new to you. Purple: practising. Yellow: practised for a while. Green: mature, it’s sticking. No line: you know it.',ani:'lines'}]},
+  'summary':{target:()=>$('pctLine'),pad:14,place:'right',steps:[{t:'No quiz. This is the score.',b:'It comes from what you looked up while watching. Those words go to practice; the rest count as known.',ani:'score'}]},
+  'watch2':{target:()=>$('jp'),pad:18,place:'above',steps:[{t:'Japanese only this time',b:'No English. Readings show only on the words you’re practising. Most people find they can follow it.',ani:'jp'}]}
+};
+const ANI={
+  flip:'<div class="ex-flip"><div class="c" lang="ja">ください</div><div class="c b">please<br><span style="color:var(--t3);font-weight:400">(give me)</span></div></div>',
+  gaps:'<div class="ex-gaps"><div class="ln"></div><span class="d" style="left:0%"><span>Today</span></span><span class="d" style="left:17%"><span>1 d</span></span><span class="d" style="left:36%"><span>3 d</span></span><span class="d" style="left:62%"><span>1 wk</span></span><span class="d" style="left:100%"><span>1 mo</span></span></div>',
+  hover:`<div class="ex-hover"><span class="st"><i></i><em>paused</em></span><div class="pop2"><b lang="ja">こんばんは</b>good evening</div><div class="line" lang="ja"><span class="n">こんばんは</span><span>。</span></div><span class="ptr">${IC.cursor}</span></div>`,
+  lines:'<div class="ex-lines"><div><i style="background:var(--accent)"></i>New to you</div><div><i style="background:var(--learning)"></i>Practising</div><div><i style="background:#e0bf70"></i>Practised for a while</div><div><i style="background:var(--success)"></i>Mature</div><div><i style="background:rgba(255,255,255,.12)"></i>Known: no line</div></div>',
+  score:'<div class="ex-score"><div class="chipz"><span class="p"></span><span></span><span class="p"></span><span></span></div><span class="arrow">→</span><span class="pct" id="exPct">57%</span></div>',
+  jp:'<div class="ex-jp"><div class="l" lang="ja"><span><small></small>じゃあ</span><span><small></small>、</span><span><small></small>また</span><span><small>あした</small><b class="s">明日</b></span></div><span class="en">Well then, see you tomorrow.</span></div>'
+};
+let G=null;   // {id, step, then}
+const guideOpen=()=>!!G;
+function guideFor(where){
+  if(!S.guide)return false;
+  let id=null;
+  if(where==='deck')id=deckMode==='warm'?(flipped?'deck-back':'deck-front'):(flipped?'review-back':null);
+  if(where==='watch')id=pass===2?'watch2':'watch';
+  if(where==='summary')id='summary';
+  if(!id||S.seen['g:'+id])return false;
+  // the scene guide waits for the first line, so it can point at real subtitles
+  if(id==='watch'||id==='watch2'){render(0);setShot(0);}
+  setTimeout(()=>{if(G&&G.id===id&&G.pending)openGuide(id)},where==='deck'?420:260);
+  G={id,step:0,pending:true};return true;
+}
+function openGuide(id){
+  const g=GUIDES[id];if(!g)return;const tgt=g.target();if(!tgt){G=null;return;}
+  G={id,step:G&&G.id===id?G.step:0};
+  const box=$('guide');box.hidden=false;
+  const k=stageScale(),st=$('stage').getBoundingClientRect(),r=tgt.getBoundingClientRect(),pad=g.pad??12;
+  const R={x:(r.left-st.left)/k-pad,y:(r.top-st.top)/k-pad,w:r.width/k+pad*2,h:r.height/k+pad*2};
+  const s=g.steps[G.step];
+  box.innerHTML=`<div class="dim" style="left:${R.x}px;top:${R.y}px;width:${R.w}px;height:${R.h}px"></div>
+    <div class="pop enter" role="dialog" aria-modal="true" aria-labelledby="gT"><div class="ani">${ANI[s.ani]||''}</div>
+    <div class="gb"><b id="gT">${esc(s.t)}</b><p>${esc(s.b)}</p></div>
+    <div class="gf"><span class="of">${g.steps.length>1?(G.step+1)+' of '+g.steps.length:''}</span><span class="sp"></span><button class="skip" id="gSkip">Skip guide</button><button class="btn primary sm" id="gNext">${G.step<g.steps.length-1?'Next':'Got it'}</button></div></div>`;
+  const pop=box.querySelector('.pop'),pw=380,ph=pop.offsetHeight;
+  let x,y;
+  if(g.place==='right'){x=R.x+R.w+24;y=R.y+R.h/2-ph/2;if(x+pw>1424){x=R.x-pw-24;}}
+  else{x=R.x+R.w/2-pw/2;y=R.y-ph-20;}
+  x=Math.max(16,Math.min(1440-pw-16,x));y=Math.max(16,Math.min(1024-ph-16,y));
+  pop.style.left=x+'px';pop.style.top=y+'px';
+  if(s.ani==='score')countUp(S.firstPct??57);
+  $('gNext').onclick=nextGuide;$('gSkip').onclick=()=>{S.guide=false;save();syncProto();closeGuide();};
+  $('gNext').focus({preventScroll:true});
+}
+function nextGuide(){if(!G)return;const g=GUIDES[G.id];if(G.step<g.steps.length-1){G.step++;openGuide(G.id);return;}closeGuide();}
+function closeGuide(silent){
+  const id=G&&G.id;if(id&&!silent){S.seen['g:'+id]=true;save();}
+  G=null;const box=$('guide');box.hidden=true;box.innerHTML='';
+  if(silent||!id)return;
+  if(id==='watch'||id==='watch2'){render(-1);play();}
+}
+function countUp(to){const el=$('exPct');if(!el)return;let v=0;const t0=performance.now();const f=t=>{if(!$('exPct'))return;const p=Math.min(1,(t-t0)/1400);v=Math.round(to*(1-Math.pow(1-p,3)));el.textContent=v+'%';if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+document.addEventListener('keydown',e=>{if(!G)return;if(e.key==='Enter'||e.code==='Space'){e.preventDefault();nextGuide();}else if(e.key==='Escape'){closeGuide();}},true);
+// a guide is re-placed when the window resizes
+addEventListener('resize',()=>{if(G&&!$('guide').hidden)openGuide(G.id)});
+// show the first-review guide when the practice card flips
+
+/* ============================================================
+   Prototype controls (not part of the product)
+   ============================================================ */
+function syncProto(){$('pGuide').textContent=S.guide?'Guide on':'Guide off';$('pGuide').classList.toggle('on',S.guide)}
+$('pGuide').onclick=()=>{S.guide=!S.guide;if(S.guide)S.seen=Object.fromEntries(Object.entries(S.seen).filter(([k])=>!k.startsWith('g:')));save();syncProto();if(!S.guide)closeGuide(true);};
+$('pRestart').onclick=()=>{const g=S.guide;S=fresh();S.guide=g;save();pick='kissaten';hush();clearInterval(loop);closeCard(true);renderPick();show('pick');};
+$('pWeek').onclick=()=>{S.week=!S.week;save();$('pWeek').textContent=S.week?'Back to day 1':'Jump a week';renderHome();};
+syncProto();
+
+/* boot */
+buildShots();ppIcon();renderPick();
+if(params.get('screen')){const sc=params.get('screen');if(sc==='home'){S.onboarded=true;renderHome();}else show('pick');}
+else if(S.onboarded)renderHome();else show('pick');
+$('pWeek').textContent=S.week?'Back to day 1':'Jump a week';
+
+/* ---- portfolio launcher deep links (added for the launcher; not part of the product) ---- */
+(function(){const f=params.get("flow");if(!f)return;const g=params.get("guide")!=="off";S=fresh();S.guide=g;save();syncProto();pick="kissaten";renderPick();
+  if(f==="warm")openDeck(WARM,"warm");else show("pick");})();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="/interview/">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ImmerLingo speaker notes</title>
+<style>
+:root { --bg: #FFFFFF; --ink: #17181D; --soft: #4B4E59; --accent: #B8284F; --line: #D9DBE1; color-scheme: light; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 "Noto Sans", Arial, sans-serif; padding: 20px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); }
+main { max-width: 720px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+p.lead { color: var(--soft); margin: 0 0 20px; }
+section { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+h2 { font-size: 19px; margin: 0 0 6px; }
+.k { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin: 8px 0 4px; }
+ul { margin: 0 0 8px; padding-left: 20px; }
+</style>
+</head>
+<body>
+<main>
+<h1>ImmerLingo · speaker notes</h1>
+<p class="lead">For you only. Open this on a second screen or your phone while you share the deck.</p>
+<div id="list"></div>
+</main>
+<script src="notes.js"></script>
+<script>
+const order = ['problem', 'context', 'research', 'who', 'job', 'principles', 'sketches', 'structure', 'd-start', 'd-pause', 'd-number', 'd-ai', 'system', 'responsive', 'a11y', 'prototype'];
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+document.getElementById('list').innerHTML = order.map((id, i) => { const n = window.NOTES[id];
+  return `<section id="${id}"><h2>${i + 1}. ${esc(n.title)}</h2><p class="k">Say</p><ul>${n.say.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` +
+    (n.facts.length ? `<p class="k">Facts and sources</p><ul>${n.facts.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : '') + '</section>'; }).join('');
+</script>
+</body>
+</html>

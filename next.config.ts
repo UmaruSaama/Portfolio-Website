@@ -14,6 +14,13 @@ const nextConfig: NextConfig = artifact
   : {
       cacheComponents: true,
       partialPrefetching: true,
+      // Static interview deck in public/interview/ (its pages set <base href="/interview/">).
+      async rewrites() {
+        return [
+          { source: "/interview", destination: "/interview/index.html" },
+          { source: "/interview/notes", destination: "/interview/notes.html" },
+        ];
+      },
     };
 
 export default nextConfig;
