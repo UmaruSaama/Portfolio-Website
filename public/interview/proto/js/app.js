@@ -257,7 +257,7 @@ function openExplain(i){
   $('xSent').onclick=()=>{const t=content(L.jp).find(t=>stOf(t.base)!=='known')||content(L.jp)[0];popLine=i;openCardPanel(t,'Sentence');};
   /* portfolio fix: answer follow-ups from data written for this prototype (kanji in the scene, the line's words,
      the scripted question) instead of a dead end. The product would call the AI service, checked against a dictionary. */
-  const ask=(preset)=>{const q=(typeof preset==='string'?preset:$('xQ').value).trim();if(typeof preset==='string')$('xQ').value=preset;
+  const localAsk=(preset)=>{const q=(typeof preset==='string'?preset:$('xQ').value).trim();if(typeof preset==='string')$('xQ').value=preset;
     const label='<span class="small subtle" style="display:block;margin-top:6px">Answer written for this prototype. In the product: an AI answer, checked against a dictionary.</span>';
     const out=[];
     // 1. kanji in the question
@@ -274,6 +274,19 @@ function openExplain(i){
     $('xA').innerHTML=`<span class="muted">This prototype answers questions about the kanji and words in this line${sug.length?'. Try:':'.'}</span>`+
       (sug.length?`<div class="row wr" style="gap:6px;margin-top:8px">${sug.map(s=>`<button class="chip-t" type="button" data-q="${esc(s)}" lang="ja">${esc(s)}</button>`).join('')}</div>`:'');
     $('xA').querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>ask(b.dataset.q));};
+  /* portfolio: ask the AI service (Claude, via /api/ask on the portfolio site) first; if it isn't reachable,
+     configured, or within its limits, answer from the data written for this prototype instead. */
+  const ask=async(preset)=>{const q=(typeof preset==='string'?preset:$('xQ').value).trim();if(typeof preset==='string')$('xQ').value=preset;
+    if(!q)return localAsk(preset);
+    const box=$('xA');box.innerHTML='<span class="muted">Asking…</span>';
+    const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),20000);
+    try{const r=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},signal:ctl.signal,
+        body:JSON.stringify({q,jp:plain(L.jp),en:L.en||'',show:data.title||''})});
+      clearTimeout(tm);if(!r.ok)throw new Error(r.status);const j=await r.json();if(!j.answer)throw new Error('empty');
+      if($('xQ').value.trim()!==q)return;
+      box.innerHTML=`<div class="col" style="gap:6px;margin-top:4px"><b>${esc(q)}</b><span style="white-space:pre-wrap">${esc(j.answer)}</span>`+
+        `<span class="small subtle">${ic('spark')} AI answer (Claude). It can be wrong: check readings against a dictionary, or report it.</span></div>`;
+    }catch(e){clearTimeout(tm);localAsk(q);}};
   $('xAsk').onclick=ask;$('xQ').onkeydown=e=>{if(e.key==='Enter')ask();};
   $('xReport').onclick=()=>toast('Thanks. Reports aren’t sent anywhere in this prototype.',3000);}
 function openCardPanel(t,type){

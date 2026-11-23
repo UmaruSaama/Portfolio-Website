@@ -628,9 +628,9 @@ html.fluid .notes { width: 100%; }
   // The full prototype is no longer embedded (22 Nov). Each decision opens one view; the demo slide opens all four in order.
   const FLOWS = {
     'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=warm'],
-    'd-pause': ['Decision 2 · When to pause', 'proto/index.html?v=11&tour=d2&demo=modes#/play/practice'],
-    'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?v=11&tour=d3&demo=explain#/play/practice'],
-    'd-number': ['Decision 4 · Known-word %', 'proto/index.html?v=11&tour=d4#/discover']
+    'd-pause': ['Decision 2 · When to pause', 'proto/index.html?v=12&tour=d2&demo=modes#/play/practice'],
+    'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?v=12&tour=d3&demo=explain#/play/practice'],
+    'd-number': ['Decision 4 · Known-word %', 'proto/index.html?v=12&tour=d4#/discover']
   };
   const frame = document.getElementById('protoFrame'), ptitle = document.getElementById('ptitle');
   let flowFrom = -1, opener = null;   // slide and button a prototype view was opened from; -1 = none open
@@ -772,7 +772,7 @@ html.fluid .notes { width: 100%; }
   const lean = !!conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '');
   const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 300));
   async function warm(urls, opts) { for (const u of urls) { try { const r = await fetch(u, opts); await r.arrayBuffer(); } catch (e) { /* offline or blocked: the page still works */ } } }
-  const SAME = ['proto/index.html?v=11', 'proto/css/app.css?v=8', 'proto/css/screens.css?v=8', 'proto/js/content.js?v=8', 'proto/js/catalog.js?v=8', 'proto/js/app.js?v=9', 'proto/js/screens.js?v=8', 'proto/js/guide.js?v=8', 'proto/js/collapse.js?v=2', 'v2/index.html']
+  const SAME = ['proto/index.html?v=12', 'proto/css/app.css?v=8', 'proto/css/screens.css?v=8', 'proto/js/content.js?v=8', 'proto/js/catalog.js?v=8', 'proto/js/app.js?v=10', 'proto/js/screens.js?v=8', 'proto/js/guide.js?v=8', 'proto/js/collapse.js?v=2', 'v2/index.html']
     .concat('abcdef'.split('').map(c => `v2/assets/cover-${c}.jpg`), [0, 1, 2, 3, 4].map(n => `v2/assets/still${n}.jpg`),
       [...Array(9).keys()].map(n => `v2/assets/line${n}.mp3`), [...Array(14).keys()].map(n => `v2/assets/w${String(n).padStart(2, '0')}.mp3`));
   const KURO = 'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/';

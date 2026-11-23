@@ -28,6 +28,12 @@ async function pipeline(cmds: (string | number)[][]): Promise<{ result?: unknown
   return res.json();
 }
 
+/** Counts one hit on `key` within a window of `ttlSec` seconds and returns the count so far. */
+export async function countHit(key: string, ttlSec: number): Promise<number> {
+  const [incr] = await pipeline([["INCR", key], ["EXPIRE", key, ttlSec, "NX"]]);
+  return Number(incr?.result ?? 0);
+}
+
 export async function pushEvents(events: object[]) {
   if (!events.length) return;
   await pipeline([["LPUSH", KEY_EVENTS, ...events.map((e) => JSON.stringify(e))], ["LTRIM", KEY_EVENTS, 0, MAX_EVENTS - 1]]);
