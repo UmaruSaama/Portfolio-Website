@@ -219,6 +219,25 @@ function renderSide(){
   box.innerHTML=`<div class="tabs full">${tabs.map(([k,l])=>`<button class="${sideTab===k?'on':''}" data-tab="${k}">${l}</button>`).join('')}</div><div class="side-list" id="sideList">${body}</div>`;
   const cur=box.querySelector('.tline.cur');if(cur&&sideTab==='transcript')cur.scrollIntoView({block:'nearest'});}
 function markSideLine(i){const box=$('ptabs');if(!box)return;box.querySelectorAll('.tline.cur').forEach(e=>e.classList.remove('cur'));const el=box.querySelector(`.tline[data-li="${i}"]`);if(el){el.classList.add('cur');el.scrollIntoView({block:'nearest'});}}
+
+/* portfolio fix: kanji that appear in the practice scene, for Ask a follow-up (standard dictionary meanings and readings) */
+const KANJI={
+ '喫':{m:'consume, drink, smoke',r:'キツ',w:'喫茶店 (きっさてん)',wm:'café, coffee shop'},
+ '茶':{m:'tea',r:'チャ, サ',w:'喫茶店 (きっさてん)',wm:'café, coffee shop'},
+ '店':{m:'shop, store',r:'テン · みせ',w:'喫茶店 (きっさてん) · 店 (みせ)',wm:'café · shop'},
+ '四':{m:'four',r:'シ · よ, よん, よっ(つ)',w:'四十年 (よんじゅうねん)',wm:'forty years'},
+ '十':{m:'ten',r:'ジュウ, ジッ · とお',w:'四十年 (よんじゅうねん)',wm:'forty years'},
+ '年':{m:'year',r:'ネン · とし',w:'四十年 (よんじゅうねん)',wm:'forty years'},
+ '閉':{m:'close, shut',r:'ヘイ · し(める), し(まる), と(じる)',w:'閉めちゃった (しめちゃった)',wm:'(have) closed, casual'},
+ '一':{m:'one',r:'イチ, イツ · ひと(つ)',w:'一つ (ひとつ)',wm:'one (thing)'},
+ '常':{m:'usual, always',r:'ジョウ · つね',w:'常連 (じょうれん)',wm:'regular customer'},
+ '連':{m:'take along, connect',r:'レン · つ(れる)',w:'常連 (じょうれん)',wm:'regular customer'},
+ '明':{m:'bright, next',r:'メイ, ミョウ · あか(るい), あ(ける)',w:'明日 (あした)',wm:'tomorrow (a special reading)'},
+ '日':{m:'day, sun',r:'ニチ, ジツ · ひ, か',w:'明日 (あした)',wm:'tomorrow'},
+ '朝':{m:'morning',r:'チョウ · あさ',w:'朝 (あさ)',wm:'morning'},
+ '早':{m:'early, fast',r:'ソウ · はや(い)',w:'早く (はやく)',wm:'early'},
+ '起':{m:'get up, rise',r:'キ · お(きる)',w:'起きて (おきて)',wm:'get up (please)'},
+ '山':{m:'mountain',r:'サン · やま',w:'山 (やま)',wm:'mountain'}};
 function openExplain(i){
   if(i<0)i=curLine;if(i<0)i=Math.max(0,lineStartIdx(P?P.time():0));const L=data.lines[i];if(!L)return;
   const X=data===PRACTICE?EXPLAIN[i]:null;if(P&&P.playing())P.pause();
@@ -236,7 +255,25 @@ function openExplain(i){
 `);
   $('pX').onclick=panelClose;$('xResume').onclick=()=>{panelClose();if(turnLine>=0)continueTurn();else if(P)P.play();};
   $('xSent').onclick=()=>{const t=content(L.jp).find(t=>stOf(t.base)!=='known')||content(L.jp)[0];popLine=i;openCardPanel(t,'Sentence');};
-  const ask=()=>{const q=$('xQ').value.trim();$('xA').innerHTML=X&&X.answer&&(!q||q===X.ask||/の|か|why/i.test(q))?`<b>${esc(q||X.ask)}</b><br><span class="muted">${esc(X.answer)}</span>`:'<span class="muted">Follow-up questions use the AI service, which isn’t connected in this prototype.</span>';};
+  /* portfolio fix: answer follow-ups from data written for this prototype (kanji in the scene, the line's words,
+     the scripted question) instead of a dead end. The product would call the AI service, checked against a dictionary. */
+  const ask=(preset)=>{const q=(typeof preset==='string'?preset:$('xQ').value).trim();if(typeof preset==='string')$('xQ').value=preset;
+    const label='<span class="small subtle" style="display:block;margin-top:6px">Answer written for this prototype. In the product: an AI answer, checked against a dictionary.</span>';
+    const out=[];
+    // 1. kanji in the question
+    const ks=[...new Set([...q].filter(c=>KANJI[c]))];
+    ks.forEach(c=>{const k=KANJI[c];out.push(`<div class="col" style="gap:2px"><span><b lang="ja" style="font-size:22px">${c}</b>&nbsp; <b>${esc(k.m)}</b></span><span class="small muted">Readings: <span lang="ja">${esc(k.r)}</span></span><span class="small muted">Here: <span lang="ja">${esc(k.w)}</span> · ${esc(k.wm)}</span></div>`);});
+    // 2. words of this line named in the question
+    if(!ks.length){const seen=new Set();content(L.jp).filter(t=>!t.punct&&t.surface.length>1&&q.includes(t.surface)).forEach(t=>{if(seen.has(t.base))return;seen.add(t.base);const g=glossOf(t.base,t.surface);if(g)out.push(`<div><b lang="ja">${esc(t.surface)}</b>&nbsp; ${esc(g)}</div>`);});}
+    // 3. the scripted question for this line
+    if(!out.length&&X&&X.answer&&(!q||q===X.ask||/の|か|why/i.test(q)))out.push(`<b>${esc(q||X.ask)}</b><br><span class="muted">${esc(X.answer)}</span>`);
+    if(out.length){$('xA').innerHTML=`<div class="col" style="gap:10px;margin-top:4px">${out.join('')}</div>`+label;return;}
+    // 4. nothing matched: offer questions this prototype can answer
+    const kOn=[...new Set([...plain(L.jp)].filter(c=>KANJI[c]))].slice(0,2);
+    const sug=[...kOn.map(c=>`What does ${c} mean?`),...(X&&X.ask?[X.ask]:[])];
+    $('xA').innerHTML=`<span class="muted">This prototype answers questions about the kanji and words in this line${sug.length?'. Try:':'.'}</span>`+
+      (sug.length?`<div class="row wr" style="gap:6px;margin-top:8px">${sug.map(s=>`<button class="chip-t" type="button" data-q="${esc(s)}" lang="ja">${esc(s)}</button>`).join('')}</div>`:'');
+    $('xA').querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>ask(b.dataset.q));};
   $('xAsk').onclick=ask;$('xQ').onkeydown=e=>{if(e.key==='Enter')ask();};
   $('xReport').onclick=()=>toast('Thanks. Reports aren’t sent anywhere in this prototype.',3000);}
 function openCardPanel(t,type){
