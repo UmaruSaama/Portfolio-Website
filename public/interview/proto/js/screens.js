@@ -287,7 +287,8 @@ function scrDiscover() {
 let detailSeason = 1, detailEp = 3;
 function scrShow(id) {
   const s = showById(id) || showById('kissaten'), full = !!s.words;
-  const w = s.words || (() => { const counted = 2290, known = Math.round(counted * s.fit / 100), learning = 90; return { known, learning, unknown: counted - known - learning, ignored: 10 }; })();
+  const w = preAdjust(s, s.words || (() => { const counted = 2290, known = Math.round(counted * s.fit / 100), learning = 90; return { known, learning, unknown: counted - known - learning, ignored: 10 }; })());
+  const fitNow = preFit(s, w);
   const total = w.known + w.learning + w.unknown + w.ignored, sen = s.sentences || { all: Math.round(s.fit / 2), one: 30, more: 100 - Math.round(s.fit / 2) - 30 };
   const epFit = s.epFit || Array.from({ length: Math.min(12, s.eps) }, (_, i) => Math.max(70, Math.min(95, s.fit + ((i * 7) % 9) - 4)));
   const eps = detailSeason === 1 ? epFit : epFit.map(v => Math.max(70, v - 4));
@@ -315,14 +316,15 @@ function scrShow(id) {
     <div class="col" style="gap:24px">
       <section class="panel col" style="gap:14px">
         <span class="eyebrow">Will I understand it?</span>
-        <div class="row" style="align-items:center;gap:16px"><span class="big-num">${s.fit}%</span><div class="col" style="gap:0"><b>of this show’s words you know</b><span class="small muted">Ideal is 85–90%: easy to follow, still teaching</span></div></div>
-        <div class="scale"><i style="width:${pctPos(s.fit)}%"></i><b style="left:${pctPos(85)}%;width:${pctPos(90) - pctPos(85)}%"></b></div>
+        <div class="row" style="align-items:center;gap:16px"><span class="big-num">${fitNow}%</span><div class="col" style="gap:0"><b>of this show’s words you know</b><span class="small muted">Ideal is 85–90%: easy to follow, still teaching</span></div></div>
+        <div class="scale"><i style="width:${pctPos(fitNow)}%"></i><b style="left:${pctPos(85)}%;width:${pctPos(90) - pctPos(85)}%"></b></div>
         <div class="row small muted"><span>50%</span><div class="spacer"></div><span style="margin-right:12px">You</span><span>85</span><span>90</span><span style="margin-left:24px">100%</span></div>
         <hr><div class="row"><b>Unique words</b><div class="spacer"></div><b>${total.toLocaleString()}</b></div>
         <div class="stack">${[['known', w.known], ['learning', w.learning], ['unknown', w.unknown], ['ignored', w.ignored]].map(([k, v]) => `<i class="${k}" style="flex:${v}"></i>`).join('')}</div>
         <div class="grid2 small"><span class="lg"><i class="sw known"></i>Known <b>${w.known.toLocaleString()}</b></span><span class="lg"><i class="sw learning"></i>Learning <b>${w.learning}</b></span><span class="lg"><i class="sw unknown"></i>Unknown <b>${w.unknown}</b></span><span class="lg"><i class="sw ignored"></i>Ignored (names) <b>${w.ignored}</b></span></div>
         <hr><b>Sentences</b>
         ${[['Every word known', sen.all], ['One new word', sen.one, true], ['Two or more new', sen.more]].map(([l, v, best]) => `<div class="col" style="gap:4px"><div class="row"><span>${l}</span>${best ? '<span class="fit fit-ideal">Best for learning</span>' : ''}<div class="spacer"></div><b>${v}%</b></div>${bar(v / 100)}</div>`).join('')}
+        ${preSection(s, w, fitNow)}
       </section>
       ${s.play ? `<section class="panel col path" style="gap:12px"><h2 class="h4">${ic('target', 'accent')} Path to 90%</h2>
         <p class="muted" style="margin:0">Learn ${nPrime} words that come up in episode ${detailEp} — about ${Math.max(1, Math.round(nPrime / 4))} minutes. You’ll follow nine lines in ten.</p>
