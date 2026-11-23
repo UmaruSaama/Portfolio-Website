@@ -517,15 +517,6 @@ html.fluid .notes { width: 100%; }
     <p class="source">Hu &amp; Nation 2000; Durbahn et al. 2024; Prichard 2008; Meara &amp; Buxton 1987.</p>
   </section>
 
-  <section class="slide" id="sketches">
-    <button type="button" class="flowbtn" data-flow="onboard" aria-label="See it in the prototype: the onboarding after the tests">See it in the prototype <span>→</span></button>
-    <p class="eyebrow">Testing</p>
-    <h2 class="ps-h">What <em>12 tests</em> changed.</h2>
-    <div class="tests keys">
-      <div><p class="eyebrow">Changed</p><p class="dl">First-timers got stuck at the same few points: a guided first run.</p><p class="dl">Flashcards needed explaining: the review schedule as real dates.</p></div>
-    </div>
-  </section>
-
   <section class="slide" id="system">
     <p class="eyebrow">Design system</p>
     <h2 class="ps-h">One small system, <em>two scripts, two themes</em>.</h2>
@@ -577,6 +568,15 @@ html.fluid .notes { width: 100%; }
     <h2 class="cheers">Cheers<em>.</em></h2>
   </section>
 
+  <section class="slide" id="sketches">
+    <button type="button" class="flowbtn" data-flow="onboard" aria-label="See it in the prototype: the onboarding after the tests">See it in the prototype <span>→</span></button>
+    <p class="eyebrow">Testing</p>
+    <h2 class="ps-h">What <em>12 tests</em> changed.</h2>
+    <div class="tests keys">
+      <div><p class="eyebrow">Changed</p><p class="dl">First-timers got stuck at the same few points: a guided first run.</p><p class="dl">Flashcards needed explaining: the review schedule as real dates.</p></div>
+    </div>
+  </section>
+
   <section class="slide" id="research">
     <p class="eyebrow">Backup · Research</p>
     <h2 class="ps-h">I studied the learners, the evidence, <em>and myself</em>.</h2>
@@ -619,7 +619,7 @@ html.fluid .notes { width: 100%; }
   // Talk order from the interview script: ... accessibility, live demo, summary, then the backup research slide.
   const slideIds = [...document.querySelectorAll('.slide')].map(s => s.id);
   const ids = slideIds;
-  const BACKUP = ids.indexOf('research');
+  const BACKUP = ids.indexOf('end') + 1;
   const sec = i => ids[i] ? document.getElementById(ids[i]) : null;
   const dots = document.getElementById('dots');
   ids.forEach((id, i) => { const b = document.createElement('button'); b.type = 'button';
