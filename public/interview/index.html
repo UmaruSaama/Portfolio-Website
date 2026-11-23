@@ -518,6 +518,7 @@ html.fluid .notes { width: 100%; }
   </section>
 
   <section class="slide" id="sketches">
+    <button type="button" class="flowbtn" data-flow="onboard" aria-label="See it in the prototype: the onboarding after the tests">See it in the prototype <span>→</span></button>
     <p class="eyebrow">Testing</p>
     <h2 class="ps-h">What <em>12 tests</em> changed.</h2>
     <div class="tests keys">
@@ -628,6 +629,7 @@ html.fluid .notes { width: 100%; }
   // The full prototype is no longer embedded (22 Nov). Each decision opens one view; the demo slide opens all four in order.
   const FLOWS = {
     'd-start': ['Decision 1 · Start from a show', 'v2/index.html?flow=warm'],
+    'onboard': ['Testing · Onboarding after the tests', 'v2/index.html?flow=d1'],
     'd-pause': ['Decision 2 · When to pause', 'proto/index.html?v=14&tour=d2&demo=modes#/play/practice'],
     'd-ai': ['Decision 3 · Explain this line', 'proto/index.html?v=14&tour=d3&demo=explain#/play/practice'],
     'd-number': ['Decision 4 · Known-word %', 'proto/index.html?v=14&tour=d4#/discover']
