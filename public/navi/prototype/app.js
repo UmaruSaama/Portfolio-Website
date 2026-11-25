@@ -421,7 +421,7 @@
   const T0 = Date.now();
   function track(event, props = {}) {
     const st = DS.get();
-    const payload = { event, ...props, screen: cur(), scenario: S.scen, net: st.net, battery: st.battery, sim_time: st.time, plan: S.plan, sid: SID, t: Math.round((Date.now() - T0) / 1000) };
+    const payload = { event, ...props, screen: cur(), scenario: S.scen, net: st.net, battery: st.battery, live: st.live, sim_time: st.time, plan: S.plan, sid: SID, t: Math.round((Date.now() - T0) / 1000) };
     (window.__naviEvents = window.__naviEvents || []).push(payload);
     try { if (window.NAVI_ANALYTICS) window.NAVI_ANALYTICS(event, payload); } catch (e) {}
   }
