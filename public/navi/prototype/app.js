@@ -308,12 +308,25 @@
     const pk = $("[data-peek-sms]"); pk.textContent = S.peekFrom ? "Back to Meera's phone" : "See Priya's SMS now"; pk.hidden = S.scen === "coguest";
   }
 
+  /* The arrival screen's main action follows the battery: above 15%, "We're in" leads;
+     at 15% or below, "Something's stopping us" leads. With the live drain on, it can swap mid-session. */
+  const PRIMARY_CUTOFF = 15;
+  const BTN_LEAD = "c-btn c-btn--brand c-btn--block c-btn--lg", BTN_TEXT = "c-btn c-btn--text";
+  function renderPackCTA() {
+    const foot = $('[data-screen="pack"] .c-footer'); if (!foot) return;
+    const stuck = $('[data-go="stuck"]', foot), inBtn = $('[data-go="in"]', foot); if (!stuck || !inBtn) return;
+    const lead = DS.get().battery > PRIMARY_CUTOFF ? inBtn : stuck, other = lead === inBtn ? stuck : inBtn;
+    if (lead.className !== BTN_LEAD) lead.className = BTN_LEAD;
+    if (other.className !== BTN_TEXT) other.className = BTN_TEXT;
+    if (foot.firstElementChild !== lead) foot.prepend(lead);
+  }
+
   function render() {
     const id = cur();
     if (id !== "gate") $("#guardMode").hidden = true;
     $$(".screen").forEach(s => s.classList.toggle("is-active", s.dataset.screen === id));
     $("#phone").dataset.app = id === "sms" ? "sms" : id === "ramesh" ? "web" : "airbnb";
-    renderPlanStatus(); renderLock(); renderNoone(); renderSMS(); renderCovered(); renderRamesh(); renderIn(); renderBoard(); renderHarness();
+    renderPlanStatus(); renderLock(); renderNoone(); renderSMS(); renderCovered(); renderRamesh(); renderIn(); renderBoard(); renderHarness(); renderPackCTA();
     if (id !== lastScreen) { lastScreen = id; track("screen_view"); }
     document.dispatchEvent(new Event("app:rendered"));
     DS.refreshIcons();
